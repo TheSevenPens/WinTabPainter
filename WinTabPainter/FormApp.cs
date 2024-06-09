@@ -49,6 +49,8 @@ namespace DemoWinTabPaint1
             this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
+            this.pictureBox_Canvas.Image = this.bitmap;
             this.EraseCanvas();
 
             this.wintab_context = OpenQueryDigitizerContext();
@@ -149,6 +151,7 @@ namespace DemoWinTabPaint1
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
                     this.panel_Canvas.Invalidate();
+                    this.pictureBox_Canvas.Invalidate();
                 }
             }
         }
