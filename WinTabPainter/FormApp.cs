@@ -27,10 +27,8 @@ namespace DemoWinTabPaint1
         private CWintabContext wintab_context = null;
         private CWintabData wintab_data = null;
 
-        private Graphics canvas_gfx;
         private Graphics bitmap_gfx;
         private Bitmap bitmap;
-
 
         PenInfo pen_info;
 
@@ -66,11 +64,6 @@ namespace DemoWinTabPaint1
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.CloseCurrentContext();
-
-            if (this.canvas_gfx != null)
-            {
-                this.canvas_gfx.Dispose();
-            }
 
 
             if (this.bitmap_gfx != null)
