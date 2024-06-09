@@ -21,16 +21,6 @@ using WintabDN;
 
 namespace DemoWinTabPaint1
 {
-    struct PenInfo
-    {
-        public int X;
-        public int Y;
-        public int Z;
-        public uint Pressure;
-        public double PressureNormalized;
-        public int Altitude;
-        public int Azimuth;
-    }
     public partial class FormApp : Form
     {
 
@@ -38,6 +28,9 @@ namespace DemoWinTabPaint1
         private CWintabData wintab_data = null;
 
         private Graphics canvas_gfx;
+        private Graphics bitmap_gfx;
+        private Bitmap bitmap;
+
 
         PenInfo pen_info;
 
@@ -51,6 +44,8 @@ namespace DemoWinTabPaint1
         private void Form1_Load(object sender, EventArgs e)
         {
             this.canvas_gfx = this.panel_Canvas.CreateGraphics();
+            this.bitmap = new Bitmap(1000, 1000);
+            this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap);
             this.wintab_context = OpenQueryDigitizerContext();
 
             // bring window to first display
@@ -70,6 +65,18 @@ namespace DemoWinTabPaint1
             {
                 this.canvas_gfx.Dispose();
             }
+
+
+            if (this.bitmap_gfx != null)
+            {
+                this.bitmap_gfx.Dispose();
+            }
+
+            if (this.bitmap != null)
+            {
+                this.bitmap.Dispose();
+            }
+
         }
 
         private CWintabContext OpenQueryDigitizerContext()
@@ -169,7 +176,10 @@ namespace DemoWinTabPaint1
                 var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
                 var rect_size = new Size((int)brush_size, (int)brush_size);
                 var rect = new Rectangle(p_client, rect_size);
-                this.canvas_gfx.DrawEllipse(pen, rect);
+
+                this.bitmap_gfx.DrawEllipse(pen, rect);
+                this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
+                //this.canvas_gfx.DrawEllipse(pen, rect);
             }
 
         }
