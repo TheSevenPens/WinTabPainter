@@ -44,7 +44,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label_DeviceInfo = new System.Windows.Forms.Label();
             this.textBox_Device = new System.Windows.Forms.TextBox();
-            this.panel_Canvas = new System.Windows.Forms.Panel();
             this.button_Clear = new System.Windows.Forms.Button();
             this.pictureBox_Canvas = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
@@ -194,15 +193,6 @@
             this.textBox_Device.Size = new System.Drawing.Size(400, 38);
             this.textBox_Device.TabIndex = 15;
             // 
-            // panel_Canvas
-            // 
-            this.panel_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_Canvas.Location = new System.Drawing.Point(426, 50);
-            this.panel_Canvas.Name = "panel_Canvas";
-            this.panel_Canvas.Size = new System.Drawing.Size(431, 580);
-            this.panel_Canvas.TabIndex = 19;
-            this.panel_Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_Canvas_Paint);
-            // 
             // button_Clear
             // 
             this.button_Clear.Location = new System.Drawing.Point(29, 495);
@@ -215,9 +205,10 @@
             // 
             // pictureBox_Canvas
             // 
-            this.pictureBox_Canvas.Location = new System.Drawing.Point(911, 53);
+            this.pictureBox_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox_Canvas.Location = new System.Drawing.Point(457, 48);
             this.pictureBox_Canvas.Name = "pictureBox_Canvas";
-            this.pictureBox_Canvas.Size = new System.Drawing.Size(442, 577);
+            this.pictureBox_Canvas.Size = new System.Drawing.Size(1350, 577);
             this.pictureBox_Canvas.TabIndex = 21;
             this.pictureBox_Canvas.TabStop = false;
             // 
@@ -228,7 +219,6 @@
             this.ClientSize = new System.Drawing.Size(1870, 694);
             this.Controls.Add(this.pictureBox_Canvas);
             this.Controls.Add(this.button_Clear);
-            this.Controls.Add(this.panel_Canvas);
             this.Controls.Add(this.textBox_PositionX);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textBox_PositionY);
@@ -272,7 +262,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label_DeviceInfo;
         private System.Windows.Forms.TextBox textBox_Device;
-        private System.Windows.Forms.Panel panel_Canvas;
         private System.Windows.Forms.Button button_Clear;
         private System.Windows.Forms.PictureBox pictureBox_Canvas;
     }

@@ -43,7 +43,6 @@ namespace DemoWinTabPaint1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.canvas_gfx = this.panel_Canvas.CreateGraphics();
             this.bitmap = new Bitmap(1000, 1000);
             this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap);
             this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -188,10 +187,8 @@ namespace DemoWinTabPaint1
 
         private void panel_Canvas_Paint(object sender, PaintEventArgs e)
         {
-            if (this.panel_Canvas.IsDisposed) return;
-            
+           
 
-            this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
@@ -204,7 +201,8 @@ namespace DemoWinTabPaint1
             using (var b = new SolidBrush(System.Drawing.Color.White))
             {
                 this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap.Width, this.bitmap.Height);
-                this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
+                this.pictureBox_Canvas.Invalidate();
+                //this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
             }
         }
     }
