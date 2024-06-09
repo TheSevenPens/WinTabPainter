@@ -44,6 +44,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label_DeviceInfo = new System.Windows.Forms.Label();
             this.textBox_Device = new System.Windows.Forms.TextBox();
+            this.panel_Canvas = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // textBox_PositionX
@@ -190,11 +191,21 @@
             this.textBox_Device.Size = new System.Drawing.Size(400, 38);
             this.textBox_Device.TabIndex = 15;
             // 
+            // panel_Canvas
+            // 
+            this.panel_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_Canvas.Location = new System.Drawing.Point(426, 50);
+            this.panel_Canvas.Name = "panel_Canvas";
+            this.panel_Canvas.Size = new System.Drawing.Size(1399, 580);
+            this.panel_Canvas.TabIndex = 19;
+            this.panel_Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_Canvas_Paint);
+            // 
             // FormApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1870, 694);
+            this.Controls.Add(this.panel_Canvas);
             this.Controls.Add(this.textBox_PositionX);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textBox_PositionY);
@@ -237,6 +248,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label_DeviceInfo;
         private System.Windows.Forms.TextBox textBox_Device;
+        private System.Windows.Forms.Panel panel_Canvas;
     }
 }
 

@@ -23,5 +23,6 @@
 // (usually in the "About this software" window/screen)
 
 // 2024/06/09 Note by TheSevenPens 
-// This app (WinTabPainter) is built on the code from Alessandro and Wacom
-// See above. The oriignal MIT license still applies.
+// This app (WinTabPainter) is built on the code from Alessandro and Wacom 
+// found in this repo https://github.com/DennisWacom/WintabControl/ 
+// The original MIT license still applies.
