@@ -80,7 +80,6 @@ namespace DemoWinTabPaint1
 
         private CWintabContext OpenQueryDigitizerContext()
         {
-            //var context = CWintabInfo.GetDefaultDigitizingContext(ECTXOptionValues.CXO_MESSAGES);
             var context = CWintabInfo.GetDefaultSystemContext(ECTXOptionValues.CXO_MESSAGES);
 
             if (context == null)
@@ -178,12 +177,6 @@ namespace DemoWinTabPaint1
             }
         }
 
-        private void panel_Canvas_Paint(object sender, PaintEventArgs e)
-        {
-           
-
-        }
-
         private void button_Clear_Click(object sender, EventArgs e)
         {
             this.EraseCanvas();
@@ -195,7 +188,6 @@ namespace DemoWinTabPaint1
             {
                 this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap.Width, this.bitmap.Height);
                 this.pictureBox_Canvas.Invalidate();
-                //this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
             }
         }
     }
