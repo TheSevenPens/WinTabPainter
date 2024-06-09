@@ -47,7 +47,8 @@ namespace DemoWinTabPaint1
             this.bitmap = new Bitmap(1000, 1000);
             this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap);
             this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.EraseCanvas();
 
             this.wintab_context = OpenQueryDigitizerContext();
@@ -167,8 +168,7 @@ namespace DemoWinTabPaint1
         {
             if (this.panel_Canvas.IsDisposed) return;
             
-            using (Pen pen = new Pen(Color.Blue, 4))
-            using (Brush brush = new SolidBrush(Color.Blue))
+            using (Brush brush = new SolidBrush(Color.Black))
             {
                 double scale = 2.5;
                 var p_screen = new Point((int)(pen_info.X/ scale) - this.panel_Canvas.Left, (int) (pen_info.Y/ scale) - this.panel_Canvas.Top);
@@ -180,7 +180,7 @@ namespace DemoWinTabPaint1
                 var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
                 var rect_size = new Size((int)brush_size, (int)brush_size);
 
-                p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
+                p_client = new Point(p_client.X - (int)(brush_size/2), p_client.Y - (int)(brush_size/2));
                 var rect = new Rectangle(p_client, rect_size);
 
                 this.bitmap_gfx.FillEllipse(brush, rect);
