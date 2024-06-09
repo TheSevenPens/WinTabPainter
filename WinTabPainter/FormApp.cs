@@ -41,18 +41,30 @@ namespace DemoWinTabPaint1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // All actual drawing will be done to this bitmap
             this.bitmap_canvas = new Bitmap(1000, 1000);
+
+            // Create a graphics object for the canvas bitmap and enable smoothing
+            // by default for better looking stroke edges
+
             this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap_canvas);
             this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            // Double-buffering to reduce flicket
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
+            // Link the bitmap canvas to the picturebox
+            // changes to the bitmap will be rendered
+            // whenever the picturebox is redrawn
 
             this.pictureBox_Canvas.Image = this.bitmap_canvas;
             this.EraseCanvas();
 
-            this.wintab_context = OpenQueryDigitizerContext();
+            this.wintab_context = OpenTabletContext();
 
             // bring window to first display
+            // Useful when debugging to avoid having to move the form over every time
 
             if (System.Windows.Forms.SystemInformation.MonitorCount > 1)
             {
@@ -63,7 +75,7 @@ namespace DemoWinTabPaint1
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.CloseCurrentContext();
+            this.CloseTabletContext();
 
 
             if (this.bitmap_gfx != null)
@@ -78,7 +90,7 @@ namespace DemoWinTabPaint1
 
         }
 
-        private CWintabContext OpenQueryDigitizerContext()
+        private CWintabContext OpenTabletContext()
         {
             var context = CWintabInfo.GetDefaultSystemContext(ECTXOptionValues.CXO_MESSAGES);
 
@@ -166,15 +178,17 @@ namespace DemoWinTabPaint1
             }
         }
 
-        private void CloseCurrentContext()
+        private void CloseTabletContext()
         {
-            if (this.wintab_context != null)
+            if (this.wintab_context == null)
             {
-                this.wintab_context.Close();
-                this.wintab_context = null;
-                this.wintab_data.ClearWTPacketEventHandler();
-                this.wintab_data = null;
+                return;
             }
+
+            this.wintab_context.Close();
+            this.wintab_context = null;
+            this.wintab_data.ClearWTPacketEventHandler();
+            this.wintab_data = null;
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
