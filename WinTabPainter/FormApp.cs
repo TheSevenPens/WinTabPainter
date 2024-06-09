@@ -150,6 +150,26 @@ namespace DemoWinTabPaint1
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
+
+                    using (Brush brush = new SolidBrush(Color.Black))
+                    {
+                        double scale = 2.5;
+                        var p_screen = new Point((int)(pen_info.X / scale) - this.panel_Canvas.Left, (int)(pen_info.Y / scale) - this.panel_Canvas.Top);
+                        var p_client = this.PointToClient(p_screen);
+                        if (p_client.X < 0) { return; }
+                        if (p_client.Y < 0) { return; }
+
+                        int max_brush_size = 40;
+                        var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
+                        var rect_size = new Size((int)brush_size, (int)brush_size);
+
+                        p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
+                        var rect = new Rectangle(p_client, rect_size);
+
+                        this.bitmap_gfx.FillEllipse(brush, rect);
+
+                    }
+
                     this.panel_Canvas.Invalidate();
                     this.pictureBox_Canvas.Invalidate();
                 }
@@ -171,25 +191,8 @@ namespace DemoWinTabPaint1
         {
             if (this.panel_Canvas.IsDisposed) return;
             
-            using (Brush brush = new SolidBrush(Color.Black))
-            {
-                double scale = 2.5;
-                var p_screen = new Point((int)(pen_info.X/ scale) - this.panel_Canvas.Left, (int) (pen_info.Y/ scale) - this.panel_Canvas.Top);
-                var p_client = this.PointToClient(p_screen);
-                if (p_client.X <0) { return; }
-                if (p_client.Y <0) { return; }
 
-                int max_brush_size = 40;
-                var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
-                var rect_size = new Size((int)brush_size, (int)brush_size);
-
-                p_client = new Point(p_client.X - (int)(brush_size/2), p_client.Y - (int)(brush_size/2));
-                var rect = new Rectangle(p_client, rect_size);
-
-                this.bitmap_gfx.FillEllipse(brush, rect);
-                this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
-            }
-
+            this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
