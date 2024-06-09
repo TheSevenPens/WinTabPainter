@@ -45,6 +45,7 @@
             this.label_DeviceInfo = new System.Windows.Forms.Label();
             this.textBox_Device = new System.Windows.Forms.TextBox();
             this.panel_Canvas = new System.Windows.Forms.Panel();
+            this.button_Clear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox_PositionX
@@ -176,7 +177,7 @@
             // label_DeviceInfo
             // 
             this.label_DeviceInfo.AutoSize = true;
-            this.label_DeviceInfo.Location = new System.Drawing.Point(30, 625);
+            this.label_DeviceInfo.Location = new System.Drawing.Point(39, 628);
             this.label_DeviceInfo.Name = "label_DeviceInfo";
             this.label_DeviceInfo.Size = new System.Drawing.Size(101, 32);
             this.label_DeviceInfo.TabIndex = 18;
@@ -200,11 +201,22 @@
             this.panel_Canvas.TabIndex = 19;
             this.panel_Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_Canvas_Paint);
             // 
+            // button_Clear
+            // 
+            this.button_Clear.Location = new System.Drawing.Point(29, 495);
+            this.button_Clear.Name = "button_Clear";
+            this.button_Clear.Size = new System.Drawing.Size(220, 55);
+            this.button_Clear.TabIndex = 20;
+            this.button_Clear.Text = "Clear";
+            this.button_Clear.UseVisualStyleBackColor = true;
+            this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
+            // 
             // FormApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1870, 694);
+            this.Controls.Add(this.button_Clear);
             this.Controls.Add(this.panel_Canvas);
             this.Controls.Add(this.textBox_PositionX);
             this.Controls.Add(this.label7);
@@ -249,6 +261,7 @@
         private System.Windows.Forms.Label label_DeviceInfo;
         private System.Windows.Forms.TextBox textBox_Device;
         private System.Windows.Forms.Panel panel_Canvas;
+        private System.Windows.Forms.Button button_Clear;
     }
 }
 

@@ -46,6 +46,10 @@ namespace DemoWinTabPaint1
             this.canvas_gfx = this.panel_Canvas.CreateGraphics();
             this.bitmap = new Bitmap(1000, 1000);
             this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap);
+            this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            this.EraseCanvas();
+
             this.wintab_context = OpenQueryDigitizerContext();
 
             // bring window to first display
@@ -164,7 +168,7 @@ namespace DemoWinTabPaint1
             if (this.panel_Canvas.IsDisposed) return;
             
             using (Pen pen = new Pen(Color.Blue, 4))
-            using (Brush brush = new SolidBrush(Color.Yellow))
+            using (Brush brush = new SolidBrush(Color.Blue))
             {
                 double scale = 2.5;
                 var p_screen = new Point((int)(pen_info.X/ scale) - this.panel_Canvas.Left, (int) (pen_info.Y/ scale) - this.panel_Canvas.Top);
@@ -175,13 +179,28 @@ namespace DemoWinTabPaint1
                 int max_brush_size = 40;
                 var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
                 var rect_size = new Size((int)brush_size, (int)brush_size);
+
+                p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
                 var rect = new Rectangle(p_client, rect_size);
 
-                this.bitmap_gfx.DrawEllipse(pen, rect);
+                this.bitmap_gfx.FillEllipse(brush, rect);
                 this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
-                //this.canvas_gfx.DrawEllipse(pen, rect);
             }
 
+        }
+
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            this.EraseCanvas();
+        }
+
+        private void EraseCanvas()
+        {
+            using (var b = new SolidBrush(System.Drawing.Color.White))
+            {
+                this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap.Width, this.bitmap.Height);
+                this.canvas_gfx.DrawImage(this.bitmap, new Point(0, 0));
+            }
         }
     }
 }
