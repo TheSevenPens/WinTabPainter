@@ -154,7 +154,7 @@ namespace DemoWinTabPaint1
                     using (Brush brush = new SolidBrush(Color.Black))
                     {
                         double scale = 2.5;
-                        var p_screen = new Point((int)(pen_info.X / scale) - this.panel_Canvas.Left, (int)(pen_info.Y / scale) - this.panel_Canvas.Top);
+                        var p_screen = new Point((int)(pen_info.X / scale) - this.pictureBox_Canvas.Left, (int)(pen_info.Y / scale) - this.pictureBox_Canvas.Top);
                         var p_client = this.PointToClient(p_screen);
                         if (p_client.X < 0) { return; }
                         if (p_client.Y < 0) { return; }
@@ -170,7 +170,6 @@ namespace DemoWinTabPaint1
 
                     }
 
-                    this.panel_Canvas.Invalidate();
                     this.pictureBox_Canvas.Invalidate();
                 }
             }
