@@ -28,7 +28,7 @@ namespace DemoWinTabPaint1
         private CWintabData wintab_data = null;
 
         private Graphics bitmap_gfx;
-        private Bitmap bitmap;
+        private Bitmap bitmap_canvas;
 
         PenInfo pen_info;
 
@@ -41,13 +41,13 @@ namespace DemoWinTabPaint1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.bitmap = new Bitmap(1000, 1000);
-            this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap);
+            this.bitmap_canvas = new Bitmap(1000, 1000);
+            this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap_canvas);
             this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            this.pictureBox_Canvas.Image = this.bitmap;
+            this.pictureBox_Canvas.Image = this.bitmap_canvas;
             this.EraseCanvas();
 
             this.wintab_context = OpenQueryDigitizerContext();
@@ -71,9 +71,9 @@ namespace DemoWinTabPaint1
                 this.bitmap_gfx.Dispose();
             }
 
-            if (this.bitmap != null)
+            if (this.bitmap_canvas != null)
             {
-                this.bitmap.Dispose();
+                this.bitmap_canvas.Dispose();
             }
 
         }
@@ -94,11 +94,11 @@ namespace DemoWinTabPaint1
 
             if (tablet_info.Device!= null)
             {
-                this.textBox_Device.Text = this.tablet_info.Device;
+                this.label_DeviceValue.Text = this.tablet_info.Device;
             }
             else
             {
-                this.textBox_Device.Text = "UNKNOWN";
+                this.label_DeviceValue.Text = "UNKNOWN";
             }
 
 
@@ -131,13 +131,13 @@ namespace DemoWinTabPaint1
                 this.pen_info.Altitude = wintab_pkt.pkOrientation.orAltitude;
                 this.pen_info.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
 
-                this.textBox_PositionX.Text = this.pen_info.X.ToString();
-                this.textBox_PositionY.Text = this.pen_info.Y.ToString();
-                this.textBox_PositionZ.Text = this.pen_info.Z.ToString();
-                this.textBox_PressureNormal.Text = this.pen_info.PressureNormalized.ToString();
+                this.label_PosXValue.Text = this.pen_info.X.ToString();
+                this.label_PosYValue.Text = this.pen_info.Y.ToString();
+                this.label_PosZValue.Text = this.pen_info.Z.ToString();
+                this.label_PressureValue.Text = this.pen_info.PressureNormalized.ToString();
 
-                this.textBox_OrientationAltitude.Text = this.pen_info.Altitude.ToString();
-                this.textBox_OrientationAzimuth.Text = this.pen_info.Azimuth.ToString();
+                this.label_AltitudeValue.Text = this.pen_info.Altitude.ToString();
+                this.label_AzimuthValue.Text = this.pen_info.Azimuth.ToString();
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
@@ -186,7 +186,7 @@ namespace DemoWinTabPaint1
         {
             using (var b = new SolidBrush(System.Drawing.Color.White))
             {
-                this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap.Width, this.bitmap.Height);
+                this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap_canvas.Width, this.bitmap_canvas.Height);
                 this.pictureBox_Canvas.Invalidate();
             }
         }
