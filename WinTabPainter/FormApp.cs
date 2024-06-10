@@ -146,6 +146,7 @@ namespace DemoWinTabPaint1
                 this.label_PosXValue.Text = this.pen_info.X.ToString();
                 this.label_PosYValue.Text = this.pen_info.Y.ToString();
                 this.label_PosZValue.Text = this.pen_info.Z.ToString();
+                this.label_PressureRawValue.Text = this.pen_info.Pressure.ToString();
                 this.label_PressureValue.Text = this.pen_info.PressureNormalized.ToString();
 
                 this.label_AltitudeValue.Text = this.pen_info.Altitude.ToString();
