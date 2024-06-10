@@ -48,7 +48,11 @@
             this.label_DeviceValue = new System.Windows.Forms.Label();
             this.label_PressureRawValue = new System.Windows.Forms.Label();
             this.label_PressureRaw = new System.Windows.Forms.Label();
+            this.trackBar_BrushSize = new System.Windows.Forms.TrackBar();
+            this.label_BrushSizeValue = new System.Windows.Forms.Label();
+            this.label_BrushSize = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             this.SuspendLayout();
             // 
             // label_X
@@ -125,7 +129,7 @@
             // 
             // button_ClearCanvas
             // 
-            this.button_ClearCanvas.Location = new System.Drawing.Point(1557, 689);
+            this.button_ClearCanvas.Location = new System.Drawing.Point(1573, 717);
             this.button_ClearCanvas.Name = "button_ClearCanvas";
             this.button_ClearCanvas.Size = new System.Drawing.Size(220, 55);
             this.button_ClearCanvas.TabIndex = 20;
@@ -136,7 +140,7 @@
             // pictureBox_Canvas
             // 
             this.pictureBox_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox_Canvas.Location = new System.Drawing.Point(497, 27);
+            this.pictureBox_Canvas.Location = new System.Drawing.Point(513, 71);
             this.pictureBox_Canvas.Name = "pictureBox_Canvas";
             this.pictureBox_Canvas.Size = new System.Drawing.Size(1280, 640);
             this.pictureBox_Canvas.TabIndex = 21;
@@ -214,11 +218,11 @@
             this.label_DeviceValue.TabIndex = 29;
             this.label_DeviceValue.Text = "---";
             // 
-            // label_PressureRaweValue
+            // label_PressureRawValue
             // 
             this.label_PressureRawValue.AutoSize = true;
             this.label_PressureRawValue.Location = new System.Drawing.Point(190, 179);
-            this.label_PressureRawValue.Name = "label_PressureRaweValue";
+            this.label_PressureRawValue.Name = "label_PressureRawValue";
             this.label_PressureRawValue.Size = new System.Drawing.Size(41, 32);
             this.label_PressureRawValue.TabIndex = 31;
             this.label_PressureRawValue.Text = "---";
@@ -232,11 +236,44 @@
             this.label_PressureRaw.TabIndex = 30;
             this.label_PressureRaw.Text = "Pressure";
             // 
+            // trackBar_BrushSize
+            // 
+            this.trackBar_BrushSize.AutoSize = false;
+            this.trackBar_BrushSize.Location = new System.Drawing.Point(659, 14);
+            this.trackBar_BrushSize.Maximum = 100;
+            this.trackBar_BrushSize.Minimum = 1;
+            this.trackBar_BrushSize.Name = "trackBar_BrushSize";
+            this.trackBar_BrushSize.Size = new System.Drawing.Size(424, 45);
+            this.trackBar_BrushSize.TabIndex = 32;
+            this.trackBar_BrushSize.Value = 1;
+            this.trackBar_BrushSize.Scroll += new System.EventHandler(this.trackBar_BrushSize_Scroll);
+            // 
+            // label_BrushSizeValue
+            // 
+            this.label_BrushSizeValue.AutoSize = true;
+            this.label_BrushSizeValue.Location = new System.Drawing.Point(1089, 21);
+            this.label_BrushSizeValue.Name = "label_BrushSizeValue";
+            this.label_BrushSizeValue.Size = new System.Drawing.Size(41, 32);
+            this.label_BrushSizeValue.TabIndex = 33;
+            this.label_BrushSizeValue.Text = "---";
+            // 
+            // label_BrushSize
+            // 
+            this.label_BrushSize.AutoSize = true;
+            this.label_BrushSize.Location = new System.Drawing.Point(507, 14);
+            this.label_BrushSize.Name = "label_BrushSize";
+            this.label_BrushSize.Size = new System.Drawing.Size(146, 32);
+            this.label_BrushSize.TabIndex = 34;
+            this.label_BrushSize.Text = "Brush size";
+            // 
             // FormApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1805, 770);
+            this.ClientSize = new System.Drawing.Size(1805, 786);
+            this.Controls.Add(this.label_BrushSize);
+            this.Controls.Add(this.label_BrushSizeValue);
+            this.Controls.Add(this.trackBar_BrushSize);
             this.Controls.Add(this.label_PressureRawValue);
             this.Controls.Add(this.label_PressureRaw);
             this.Controls.Add(this.label_DeviceValue);
@@ -262,6 +299,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -288,6 +326,9 @@
         private System.Windows.Forms.Label label_DeviceValue;
         private System.Windows.Forms.Label label_PressureRawValue;
         private System.Windows.Forms.Label label_PressureRaw;
+        private System.Windows.Forms.TrackBar trackBar_BrushSize;
+        private System.Windows.Forms.Label label_BrushSizeValue;
+        private System.Windows.Forms.Label label_BrushSize;
     }
 }
 

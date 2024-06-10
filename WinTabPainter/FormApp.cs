@@ -32,6 +32,7 @@ namespace DemoWinTabPaint1
 
         PenInfo pen_info;
 
+        int brush_size = 5;
         TabletInfo tablet_info = new TabletInfo();
 
         public FormApp()
@@ -71,6 +72,9 @@ namespace DemoWinTabPaint1
                 var screen = System.Windows.Forms.Screen.AllScreens[0];
                 this.Left = screen.Bounds.Left + (screen.Bounds.Width / 2) - (this.Width / 2);
             }
+
+            this.trackBar_BrushSize.Value = this.brush_size;
+            this.label_BrushSizeValue.Text = this.brush_size.ToString();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -163,7 +167,7 @@ namespace DemoWinTabPaint1
                         if (p_client.X < 0) { return; }
                         if (p_client.Y < 0) { return; }
 
-                        int max_brush_size = 40;
+                        int max_brush_size = this.brush_size;
                         var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
                         var rect_size = new Size((int)brush_size, (int)brush_size);
 
@@ -204,6 +208,12 @@ namespace DemoWinTabPaint1
                 this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap_canvas.Width, this.bitmap_canvas.Height);
                 this.pictureBox_Canvas.Invalidate();
             }
+        }
+
+        private void trackBar_BrushSize_Scroll(object sender, EventArgs e)
+        {
+            this.brush_size = this.trackBar_BrushSize.Value;
+            this.label_BrushSizeValue.Text = this.brush_size.ToString();
         }
     }
 }
