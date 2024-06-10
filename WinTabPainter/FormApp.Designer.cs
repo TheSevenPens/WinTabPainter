@@ -76,7 +76,7 @@
             // label_Z
             // 
             this.label_Z.AutoSize = true;
-            this.label_Z.Location = new System.Drawing.Point(25, 115);
+            this.label_Z.Location = new System.Drawing.Point(23, 115);
             this.label_Z.Name = "label_Z";
             this.label_Z.Size = new System.Drawing.Size(31, 32);
             this.label_Z.TabIndex = 10;
@@ -85,7 +85,7 @@
             // label_Pressure
             // 
             this.label_Pressure.AutoSize = true;
-            this.label_Pressure.Location = new System.Drawing.Point(21, 222);
+            this.label_Pressure.Location = new System.Drawing.Point(23, 222);
             this.label_Pressure.Name = "label_Pressure";
             this.label_Pressure.Size = new System.Drawing.Size(127, 32);
             this.label_Pressure.TabIndex = 11;
@@ -94,7 +94,7 @@
             // label_Azimuth
             // 
             this.label_Azimuth.AutoSize = true;
-            this.label_Azimuth.Location = new System.Drawing.Point(21, 375);
+            this.label_Azimuth.Location = new System.Drawing.Point(23, 375);
             this.label_Azimuth.Name = "label_Azimuth";
             this.label_Azimuth.Size = new System.Drawing.Size(117, 32);
             this.label_Azimuth.TabIndex = 14;
@@ -112,7 +112,7 @@
             // label_Buttons
             // 
             this.label_Buttons.AutoSize = true;
-            this.label_Buttons.Location = new System.Drawing.Point(21, 422);
+            this.label_Buttons.Location = new System.Drawing.Point(23, 422);
             this.label_Buttons.Name = "label_Buttons";
             this.label_Buttons.Size = new System.Drawing.Size(111, 32);
             this.label_Buttons.TabIndex = 16;
@@ -176,7 +176,7 @@
             // label_PosZValue
             // 
             this.label_PosZValue.AutoSize = true;
-            this.label_PosZValue.Location = new System.Drawing.Point(192, 115);
+            this.label_PosZValue.Location = new System.Drawing.Point(190, 115);
             this.label_PosZValue.Name = "label_PosZValue";
             this.label_PosZValue.Size = new System.Drawing.Size(41, 32);
             this.label_PosZValue.TabIndex = 24;
@@ -185,7 +185,7 @@
             // label_PressureValue
             // 
             this.label_PressureValue.AutoSize = true;
-            this.label_PressureValue.Location = new System.Drawing.Point(188, 222);
+            this.label_PressureValue.Location = new System.Drawing.Point(190, 222);
             this.label_PressureValue.Name = "label_PressureValue";
             this.label_PressureValue.Size = new System.Drawing.Size(41, 32);
             this.label_PressureValue.TabIndex = 25;
@@ -194,7 +194,7 @@
             // label_AzimuthValue
             // 
             this.label_AzimuthValue.AutoSize = true;
-            this.label_AzimuthValue.Location = new System.Drawing.Point(188, 375);
+            this.label_AzimuthValue.Location = new System.Drawing.Point(190, 375);
             this.label_AzimuthValue.Name = "label_AzimuthValue";
             this.label_AzimuthValue.Size = new System.Drawing.Size(41, 32);
             this.label_AzimuthValue.TabIndex = 27;
@@ -203,7 +203,7 @@
             // label_ButtonsValue
             // 
             this.label_ButtonsValue.AutoSize = true;
-            this.label_ButtonsValue.Location = new System.Drawing.Point(188, 422);
+            this.label_ButtonsValue.Location = new System.Drawing.Point(190, 422);
             this.label_ButtonsValue.Name = "label_ButtonsValue";
             this.label_ButtonsValue.Size = new System.Drawing.Size(41, 32);
             this.label_ButtonsValue.TabIndex = 28;
@@ -212,7 +212,7 @@
             // label_DeviceValue
             // 
             this.label_DeviceValue.AutoSize = true;
-            this.label_DeviceValue.Location = new System.Drawing.Point(192, 607);
+            this.label_DeviceValue.Location = new System.Drawing.Point(190, 607);
             this.label_DeviceValue.Name = "label_DeviceValue";
             this.label_DeviceValue.Size = new System.Drawing.Size(41, 32);
             this.label_DeviceValue.TabIndex = 29;
