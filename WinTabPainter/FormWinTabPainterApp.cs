@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WintabDN;
-
 
 
 // References:
@@ -25,8 +16,8 @@ namespace WinTabPainter
     public partial class FormWinTabPainterApp : Form
     {
 
-        private CWintabContext wintab_context = null;
-        private CWintabData wintab_data = null;
+        private WintabDN.CWintabContext wintab_context = null;
+        private WintabDN.CWintabData wintab_data = null;
 
         private BitmapDocument bitmap_doc;
 
@@ -87,9 +78,9 @@ namespace WinTabPainter
 
         }
 
-        private CWintabContext OpenTabletContext()
+        private WintabDN.CWintabContext OpenTabletContext()
         {
-            var context = CWintabInfo.GetDefaultSystemContext(ECTXOptionValues.CXO_MESSAGES);
+            var context = WintabDN.CWintabInfo.GetDefaultSystemContext(WintabDN.ECTXOptionValues.CXO_MESSAGES);
 
             if (context == null)
             {
@@ -97,7 +88,7 @@ namespace WinTabPainter
             }
 
             context.Name = "Digitizer Context";
-            context.Options |= (uint)ECTXOptionValues.CXO_SYSTEM;
+            context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
 
             this.tablet_info.Initialize();
 
@@ -117,13 +108,13 @@ namespace WinTabPainter
             context.OutExtY = -context.OutExtY;
 
             var status = context.Open();
-            this.wintab_data = new CWintabData(context);
+            this.wintab_data = new WintabDN.CWintabData(context);
             this.wintab_data.SetWTPacketEventHandler(WinTabPacketHandler);
 
             return context;
         }
 
-        private void WinTabPacketHandler(Object sender, MessageReceivedEventArgs args)
+        private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
 
             uint pktId = (uint)args.Message.WParam;
@@ -135,8 +126,8 @@ namespace WinTabPainter
                 this.pen_info.X = wintab_pkt.pkX;
                 this.pen_info.Y = wintab_pkt.pkY;
                 this.pen_info.Z = wintab_pkt.pkZ;
-                this.pen_info.Pressure = wintab_pkt.pkNormalPressure;
-                this.pen_info.PressureNormalized = pen_info.Pressure / (double)this.tablet_info.MaxPressure;
+                this.pen_info.PressureRaw = wintab_pkt.pkNormalPressure;
+                this.pen_info.PressureNormalized = pen_info.PressureRaw / (double)this.tablet_info.MaxPressure;
                 this.pen_info.Altitude = wintab_pkt.pkOrientation.orAltitude;
                 this.pen_info.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
 
@@ -145,7 +136,7 @@ namespace WinTabPainter
                 this.label_PosXValue.Text = this.pen_info.X.ToString();
                 this.label_PosYValue.Text = this.pen_info.Y.ToString();
                 this.label_PosZValue.Text = this.pen_info.Z.ToString();
-                this.label_PressureRawValue.Text = this.pen_info.Pressure.ToString();
+                this.label_PressureRawValue.Text = this.pen_info.PressureRaw.ToString();
                 this.label_PressureValue.Text = Math.Round(this.pen_info.PressureNormalized,5).ToString();
                 this.label_PressureAdjusted.Text = Math.Round(adjusted_pressure,5).ToString();
 

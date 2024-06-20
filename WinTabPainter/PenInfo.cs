@@ -12,7 +12,7 @@ namespace WinTabPainter
         public int X;
         public int Y;
         public int Z;
-        public uint Pressure;
+        public uint PressureRaw;
         public double PressureNormalized;
         public int Altitude;
         public int Azimuth;
