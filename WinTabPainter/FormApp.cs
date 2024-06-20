@@ -253,7 +253,28 @@ namespace DemoWinTabPaint1
                 this.EraseCanvas();
                 return true;
             }
+            else if (keyData == ( Keys.OemOpenBrackets) )
+            {
+                this.relative_modify_brush_size(-1);
+                return true;
+            }
+            else if (keyData == (Keys.OemCloseBrackets))
+            {
+                this.relative_modify_brush_size(1);
+                return true;
+            }
+
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        void relative_modify_brush_size(int value)
+        {
+            this.brush_size = this.brush_size + value;
+            this.brush_size = Math.Max(1, this.brush_size);
+            this.brush_size = Math.Min(100, this.brush_size);
+
+            this.label_BrushSizeValue.Text = this.brush_size.ToString();
+            this.trackBar_BrushSize.Value= this.brush_size;
         }
     }
 }
