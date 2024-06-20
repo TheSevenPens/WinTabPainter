@@ -19,10 +19,10 @@ using WintabDN;
 // https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
-namespace DemoWinTabPaint1
+namespace WinTabPainter
 {
 
-    public partial class FormApp : Form
+    public partial class FormWinTabPainterApp : Form
     {
 
         private CWintabContext wintab_context = null;
@@ -36,7 +36,7 @@ namespace DemoWinTabPaint1
         int brush_size = 5;
         TabletInfo tablet_info = new TabletInfo();
 
-        public FormApp()
+        public FormWinTabPainterApp()
         {
             InitializeComponent();
         }
@@ -154,27 +154,22 @@ namespace DemoWinTabPaint1
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
+                    double scale = 2.5;
+                    var p_screen = new Point((int)(pen_info.X / scale) - this.pictureBox_Canvas.Left, (int)(pen_info.Y / scale) - this.pictureBox_Canvas.Top);
+                    var p_client = this.PointToClient(p_screen);
+                    if (p_client.X < 0) { return; }
+                    if (p_client.Y < 0) { return; }
 
-                    using (Brush brush = new SolidBrush(Color.Black))
-                    {
-                        double scale = 2.5;
-                        var p_screen = new Point((int)(pen_info.X / scale) - this.pictureBox_Canvas.Left, (int)(pen_info.Y / scale) - this.pictureBox_Canvas.Top);
-                        var p_client = this.PointToClient(p_screen);
-                        if (p_client.X < 0) { return; }
-                        if (p_client.Y < 0) { return; }
-
-                        int max_brush_size = this.brush_size;
+                    int max_brush_size = this.brush_size;
 
 
-                        var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
-                        var rect_size = new Size((int)brush_size, (int)brush_size);
+                    var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
+                    var rect_size = new Size((int)brush_size, (int)brush_size);
 
-                        p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
-                        var rect = new Rectangle(p_client, rect_size);
+                    p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
+                    var rect = new Rectangle(p_client, rect_size);
 
-                        this.bitmap_doc.Graphics.FillEllipse(brush, rect);
-
-                    }
+                    this.bitmap_doc.FillEllipse(Color.Black, rect);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
@@ -270,7 +265,7 @@ namespace DemoWinTabPaint1
         {
             string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string filename = System.IO.Path.Combine(mydocs, "WinFormPaint.png");
-            this.bitmap_doc.Bitmap.Save(filename);
+            this.bitmap_doc.Save(filename);
         }
     }
 }

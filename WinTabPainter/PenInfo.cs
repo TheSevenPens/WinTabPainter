@@ -5,7 +5,7 @@
 // https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
-namespace DemoWinTabPaint1
+namespace WinTabPainter
 {
     struct PenInfo
     {

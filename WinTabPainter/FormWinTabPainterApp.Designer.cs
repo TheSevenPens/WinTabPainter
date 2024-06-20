@@ -1,6 +1,6 @@
-﻿namespace DemoWinTabPaint1
+﻿namespace WinTabPainter
 {
-    partial class FormApp
+    partial class FormWinTabPainterApp
     {
         /// <summary>
         /// Required designer variable.
@@ -135,7 +135,7 @@
             // 
             // button_ClearCanvas
             // 
-            this.button_ClearCanvas.Location = new System.Drawing.Point(1573, 717);
+            this.button_ClearCanvas.Location = new System.Drawing.Point(29, 852);
             this.button_ClearCanvas.Name = "button_ClearCanvas";
             this.button_ClearCanvas.Size = new System.Drawing.Size(220, 55);
             this.button_ClearCanvas.TabIndex = 20;
@@ -145,10 +145,13 @@
             // 
             // pictureBox_Canvas
             // 
+            this.pictureBox_Canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox_Canvas.Location = new System.Drawing.Point(513, 71);
             this.pictureBox_Canvas.Name = "pictureBox_Canvas";
-            this.pictureBox_Canvas.Size = new System.Drawing.Size(1280, 640);
+            this.pictureBox_Canvas.Size = new System.Drawing.Size(1043, 766);
             this.pictureBox_Canvas.TabIndex = 21;
             this.pictureBox_Canvas.TabStop = false;
             // 
@@ -313,7 +316,7 @@
             // 
             // button_Save
             // 
-            this.button_Save.Location = new System.Drawing.Point(1032, 719);
+            this.button_Save.Location = new System.Drawing.Point(29, 789);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(220, 55);
             this.button_Save.TabIndex = 39;
@@ -325,7 +328,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1805, 786);
+            this.ClientSize = new System.Drawing.Size(1568, 912);
             this.Controls.Add(this.button_Save);
             this.Controls.Add(this.label_PressureAdjusted);
             this.Controls.Add(this.label3);
@@ -354,6 +357,7 @@
             this.Controls.Add(this.label_Azimuth);
             this.Controls.Add(this.label_Device);
             this.Controls.Add(this.label_Buttons);
+            this.MinimumSize = new System.Drawing.Size(1000, 1000);
             this.Name = "FormApp";
             this.Text = "WinTab Painter";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);

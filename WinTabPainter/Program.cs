@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DemoWinTabPaint1
+namespace WinTabPainter
 {
     internal static class Program
     {
@@ -16,7 +16,7 @@ namespace DemoWinTabPaint1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormApp());
+            Application.Run(new FormWinTabPainterApp());
         }
     }
 }

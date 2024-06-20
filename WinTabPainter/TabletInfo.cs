@@ -1,6 +1,6 @@
 ﻿using WintabDN;
 
-namespace DemoWinTabPaint1
+namespace WinTabPainter
 {
     public class TabletInfo
     {
