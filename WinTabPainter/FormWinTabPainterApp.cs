@@ -254,21 +254,31 @@ namespace WinTabPainter
         }
         private void MenuFileSave_Click(object sender, EventArgs e)
         {
-            if (this.filename!=null)
+            AppSave();
+        }
+
+        private void AppSave()
+        {
+            if (this.filename != null)
             {
-                try
-                {
-                    this.bitmap_doc.Save(this.filename);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to save " + this.filename);
-                }
+                _save();
             }
             else
             {
                 AppSaveAs();
 
+            }
+        }
+
+        private void _save()
+        {
+            try
+            {
+                this.bitmap_doc.Save(this.filename);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save " + this.filename);
             }
         }
 
@@ -285,14 +295,7 @@ namespace WinTabPainter
             {
                 string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 this.filename = ofd.FileName;
-                try
-                {
-                    this.bitmap_doc.Save(this.filename);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to save " + this.filename);
-                }
+                this._save();
             }
             else
             {
