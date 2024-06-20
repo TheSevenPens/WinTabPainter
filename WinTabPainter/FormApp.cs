@@ -21,14 +21,14 @@ using WintabDN;
 
 namespace DemoWinTabPaint1
 {
+
     public partial class FormApp : Form
     {
 
         private CWintabContext wintab_context = null;
         private CWintabData wintab_data = null;
 
-        private Graphics bitmap_gfx;
-        private Bitmap bitmap_canvas;
+        private BitmapDocument bitmap_doc;
 
         PenInfo pen_info;
 
@@ -44,13 +44,11 @@ namespace DemoWinTabPaint1
         private void Form1_Load(object sender, EventArgs e)
         {
             // All actual drawing will be done to this bitmap
-            this.bitmap_canvas = new Bitmap(1000, 1000);
+            this.bitmap_doc = new BitmapDocument(1000, 1000);
 
             // Create a graphics object for the canvas bitmap and enable smoothing
             // by default for better looking stroke edges
 
-            this.bitmap_gfx = System.Drawing.Graphics.FromImage(this.bitmap_canvas);
-            this.bitmap_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             // Double-buffering to reduce flicket
             this.DoubleBuffered = true;
@@ -60,7 +58,7 @@ namespace DemoWinTabPaint1
             // changes to the bitmap will be rendered
             // whenever the picturebox is redrawn
 
-            this.pictureBox_Canvas.Image = this.bitmap_canvas;
+            this.pictureBox_Canvas.Image = this.bitmap_doc.Bitmap;
             this.EraseCanvas();
 
             this.wintab_context = OpenTabletContext();
@@ -82,15 +80,9 @@ namespace DemoWinTabPaint1
         {
             this.CloseTabletContext();
 
-
-            if (this.bitmap_gfx != null)
+            if (this.bitmap_doc != null)
             {
-                this.bitmap_gfx.Dispose();
-            }
-
-            if (this.bitmap_canvas != null)
-            {
-                this.bitmap_canvas.Dispose();
+                this.bitmap_doc.Dispose();
             }
 
         }
@@ -180,7 +172,7 @@ namespace DemoWinTabPaint1
                         p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
                         var rect = new Rectangle(p_client, rect_size);
 
-                        this.bitmap_gfx.FillEllipse(brush, rect);
+                        this.bitmap_doc.Graphics.FillEllipse(brush, rect);
 
                     }
 
@@ -209,11 +201,8 @@ namespace DemoWinTabPaint1
 
         private void EraseCanvas()
         {
-            using (var b = new SolidBrush(System.Drawing.Color.White))
-            {
-                this.bitmap_gfx.FillRectangle(b, 0, 0, this.bitmap_canvas.Width, this.bitmap_canvas.Height);
-                this.pictureBox_Canvas.Invalidate();
-            }
+            this.bitmap_doc.Erase();
+            this.pictureBox_Canvas.Invalidate();
         }
 
         private void trackBar_BrushSize_Scroll(object sender, EventArgs e)
@@ -281,7 +270,7 @@ namespace DemoWinTabPaint1
         {
             string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string filename = System.IO.Path.Combine(mydocs, "WinFormPaint.png");
-            this.bitmap_canvas.Save(filename);
+            this.bitmap_doc.Bitmap.Save(filename);
         }
     }
 }

@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapDocument.cs" />
     <Compile Include="FormApp.cs">
       <SubType>Form</SubType>
     </Compile>
