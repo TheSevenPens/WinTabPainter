@@ -276,5 +276,12 @@ namespace DemoWinTabPaint1
             this.label_BrushSizeValue.Text = this.brush_size.ToString();
             this.trackBar_BrushSize.Value= this.brush_size;
         }
+
+        private void button_Save_Click(object sender, EventArgs e)
+        {
+            string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string filename = System.IO.Path.Combine(mydocs, "WinFormPaint.png");
+            this.bitmap_canvas.Save(filename);
+        }
     }
 }

@@ -55,6 +55,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label_PressureAdjusted = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button_Save = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -310,11 +311,22 @@
             this.label3.TabIndex = 37;
             this.label3.Text = "Pressure (A)";
             // 
+            // button_Save
+            // 
+            this.button_Save.Location = new System.Drawing.Point(1032, 719);
+            this.button_Save.Name = "button_Save";
+            this.button_Save.Size = new System.Drawing.Size(220, 55);
+            this.button_Save.TabIndex = 39;
+            this.button_Save.Text = "Save";
+            this.button_Save.UseVisualStyleBackColor = true;
+            this.button_Save.Click += new System.EventHandler(this.button_Save_Click);
+            // 
             // FormApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1805, 786);
+            this.Controls.Add(this.button_Save);
             this.Controls.Add(this.label_PressureAdjusted);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
@@ -382,6 +394,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label_PressureAdjusted;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button_Save;
     }
 }
 
