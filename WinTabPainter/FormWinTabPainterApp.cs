@@ -21,6 +21,7 @@ namespace WinTabPainter
 
         private BitmapDocument bitmap_doc;
 
+        public string filename = null;
         PenInfo pen_info;
 
         double pressure_curve_q = 0.0;
@@ -251,12 +252,57 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = this.brush_size.ToString();
             this.trackBar_BrushSize.Value= this.brush_size;
         }
-
-        private void button_Save_Click(object sender, EventArgs e)
+        private void MenuFileSave_Click(object sender, EventArgs e)
         {
-            string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string filename = System.IO.Path.Combine(mydocs, "WinFormPaint.png");
-            this.bitmap_doc.Save(filename);
+            if (this.filename!=null)
+            {
+                try
+                {
+                    this.bitmap_doc.Save(this.filename);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to save " + this.filename);
+                }
+            }
+            else
+            {
+                AppSaveAs();
+
+            }
+        }
+
+        private void AppSaveAs()
+        {
+            var ofd = new SaveFileDialog();
+            ofd.FileName = this.filename ?? "Untitled.png";
+            ofd.DefaultExt = "png";
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var v = ofd.ShowDialog();
+
+            if (v == DialogResult.OK)
+            {
+                string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                this.filename = ofd.FileName;
+                try
+                {
+                    this.bitmap_doc.Save(this.filename);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to save " + this.filename);
+                }
+            }
+            else
+            {
+                //do nothing
+            }
+        }
+
+        private void MenuItem_SaveAs_Click(object sender, EventArgs e)
+        {
+            this.AppSaveAs();
         }
     }
 }
