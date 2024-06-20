@@ -246,5 +246,14 @@ namespace DemoWinTabPaint1
             return new_pressure;
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Delete))
+            {
+                this.EraseCanvas();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }
