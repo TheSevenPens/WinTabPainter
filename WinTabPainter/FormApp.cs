@@ -32,6 +32,7 @@ namespace DemoWinTabPaint1
 
         PenInfo pen_info;
 
+        double pressure_curve_q = 0.0;
         int brush_size = 5;
         TabletInfo tablet_info = new TabletInfo();
 
@@ -168,7 +169,10 @@ namespace DemoWinTabPaint1
                         if (p_client.Y < 0) { return; }
 
                         int max_brush_size = this.brush_size;
-                        var brush_size = System.Math.Max(1, pen_info.PressureNormalized * max_brush_size);
+
+                        double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.pressure_curve_q);
+
+                        var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
                         var rect_size = new Size((int)brush_size, (int)brush_size);
 
                         p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
@@ -215,5 +219,30 @@ namespace DemoWinTabPaint1
             this.brush_size = this.trackBar_BrushSize.Value;
             this.label_BrushSizeValue.Text = this.brush_size.ToString();
         }
+
+        private void trackBarPressureCurve_Scroll(object sender, EventArgs e)
+        {
+            this.pressure_curve_q = ((double)this.trackBarPressureCurve.Value) / 100.0;
+        }
+
+        private double ApplyCurve( double pressure, double q)
+        {
+            if (q < -1) { q = -1; }
+            else if ( q > 1 ) { q = 1; }
+
+            double new_pressure = pressure;
+
+            if (q>0)
+            {
+                new_pressure = Math.Pow(pressure, 1.0-q);
+            }
+            else
+            {
+                new_pressure = Math.Pow(pressure,1.0/(1.0+q));
+            }
+
+            return new_pressure;
+        }
+
     }
 }

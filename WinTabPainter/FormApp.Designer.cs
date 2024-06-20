@@ -51,8 +51,11 @@
             this.trackBar_BrushSize = new System.Windows.Forms.TrackBar();
             this.label_BrushSizeValue = new System.Windows.Forms.Label();
             this.label_BrushSize = new System.Windows.Forms.Label();
+            this.trackBarPressureCurve = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
             this.SuspendLayout();
             // 
             // label_X
@@ -121,7 +124,7 @@
             // label_Device
             // 
             this.label_Device.AutoSize = true;
-            this.label_Device.Location = new System.Drawing.Point(23, 607);
+            this.label_Device.Location = new System.Drawing.Point(23, 537);
             this.label_Device.Name = "label_Device";
             this.label_Device.Size = new System.Drawing.Size(101, 32);
             this.label_Device.TabIndex = 18;
@@ -212,7 +215,7 @@
             // label_DeviceValue
             // 
             this.label_DeviceValue.AutoSize = true;
-            this.label_DeviceValue.Location = new System.Drawing.Point(190, 607);
+            this.label_DeviceValue.Location = new System.Drawing.Point(190, 537);
             this.label_DeviceValue.Name = "label_DeviceValue";
             this.label_DeviceValue.Size = new System.Drawing.Size(41, 32);
             this.label_DeviceValue.TabIndex = 29;
@@ -266,11 +269,34 @@
             this.label_BrushSize.TabIndex = 34;
             this.label_BrushSize.Text = "Brush size";
             // 
+            // trackBarPressureCurve
+            // 
+            this.trackBarPressureCurve.AutoSize = false;
+            this.trackBarPressureCurve.Location = new System.Drawing.Point(12, 717);
+            this.trackBarPressureCurve.Maximum = 100;
+            this.trackBarPressureCurve.Minimum = -100;
+            this.trackBarPressureCurve.Name = "trackBarPressureCurve";
+            this.trackBarPressureCurve.Size = new System.Drawing.Size(424, 45);
+            this.trackBarPressureCurve.TabIndex = 35;
+            this.trackBarPressureCurve.Value = 1;
+            this.trackBarPressureCurve.Scroll += new System.EventHandler(this.trackBarPressureCurve_Scroll);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 666);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(209, 32);
+            this.label1.TabIndex = 36;
+            this.label1.Text = "Pressure Curve";
+            // 
             // FormApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1805, 786);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.trackBarPressureCurve);
             this.Controls.Add(this.label_BrushSize);
             this.Controls.Add(this.label_BrushSizeValue);
             this.Controls.Add(this.trackBar_BrushSize);
@@ -300,6 +326,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -329,6 +356,8 @@
         private System.Windows.Forms.TrackBar trackBar_BrushSize;
         private System.Windows.Forms.Label label_BrushSizeValue;
         private System.Windows.Forms.Label label_BrushSize;
+        private System.Windows.Forms.TrackBar trackBarPressureCurve;
+        private System.Windows.Forms.Label label1;
     }
 }
 
