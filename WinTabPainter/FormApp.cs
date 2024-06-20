@@ -148,11 +148,14 @@ namespace DemoWinTabPaint1
                 this.pen_info.Altitude = wintab_pkt.pkOrientation.orAltitude;
                 this.pen_info.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
 
+                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.pressure_curve_q);
+
                 this.label_PosXValue.Text = this.pen_info.X.ToString();
                 this.label_PosYValue.Text = this.pen_info.Y.ToString();
                 this.label_PosZValue.Text = this.pen_info.Z.ToString();
                 this.label_PressureRawValue.Text = this.pen_info.Pressure.ToString();
-                this.label_PressureValue.Text = this.pen_info.PressureNormalized.ToString();
+                this.label_PressureValue.Text = Math.Round(this.pen_info.PressureNormalized,5).ToString();
+                this.label_PressureAdjusted.Text = Math.Round(adjusted_pressure,5).ToString();
 
                 this.label_AltitudeValue.Text = this.pen_info.Altitude.ToString();
                 this.label_AzimuthValue.Text = this.pen_info.Azimuth.ToString();
@@ -170,7 +173,6 @@ namespace DemoWinTabPaint1
 
                         int max_brush_size = this.brush_size;
 
-                        double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.pressure_curve_q);
 
                         var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
                         var rect_size = new Size((int)brush_size, (int)brush_size);

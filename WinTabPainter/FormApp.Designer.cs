@@ -53,6 +53,8 @@
             this.label_BrushSize = new System.Windows.Forms.Label();
             this.trackBarPressureCurve = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
+            this.label_PressureAdjusted = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -90,9 +92,9 @@
             this.label_Pressure.AutoSize = true;
             this.label_Pressure.Location = new System.Drawing.Point(23, 222);
             this.label_Pressure.Name = "label_Pressure";
-            this.label_Pressure.Size = new System.Drawing.Size(127, 32);
+            this.label_Pressure.Size = new System.Drawing.Size(172, 32);
             this.label_Pressure.TabIndex = 11;
-            this.label_Pressure.Text = "Pressure";
+            this.label_Pressure.Text = "Pressure (N)";
             // 
             // label_Azimuth
             // 
@@ -286,15 +288,35 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(23, 666);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(209, 32);
+            this.label1.Size = new System.Drawing.Size(401, 32);
             this.label1.TabIndex = 36;
-            this.label1.Text = "Pressure Curve";
+            this.label1.Text = "Pressure Curve (Soft <-> Hard)";
+            // 
+            // label_PressureAdjusted
+            // 
+            this.label_PressureAdjusted.AutoSize = true;
+            this.label_PressureAdjusted.Location = new System.Drawing.Point(190, 263);
+            this.label_PressureAdjusted.Name = "label_PressureAdjusted";
+            this.label_PressureAdjusted.Size = new System.Drawing.Size(41, 32);
+            this.label_PressureAdjusted.TabIndex = 38;
+            this.label_PressureAdjusted.Text = "---";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 263);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(171, 32);
+            this.label3.TabIndex = 37;
+            this.label3.Text = "Pressure (A)";
             // 
             // FormApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1805, 786);
+            this.Controls.Add(this.label_PressureAdjusted);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBarPressureCurve);
             this.Controls.Add(this.label_BrushSize);
@@ -358,6 +380,8 @@
         private System.Windows.Forms.Label label_BrushSize;
         private System.Windows.Forms.TrackBar trackBarPressureCurve;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_PressureAdjusted;
+        private System.Windows.Forms.Label label3;
     }
 }
 
