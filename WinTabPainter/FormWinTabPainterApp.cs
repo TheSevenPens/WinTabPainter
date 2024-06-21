@@ -163,21 +163,21 @@ namespace WinTabPainter
                     if (p_client.X < 0) { return; }
                     if (p_client.Y < 0) { return; }
 
-                    this.paintsettings.smoother.Smooth(new PointD(p_client.X, p_client.Y));
+                    this.paintsettings.smoother.Smooth(p_client.ToPointD());
 
                     int max_brush_size = this.paintsettings.brush_size;
 
+                    var adjusted_brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
 
-                    var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
-                    var rect_size = new Size((int)brush_size, (int)brush_size);
+                    var dab_rect_size = new Size((int) adjusted_brush_size, (int)adjusted_brush_size);
+                    var p_dab_center = p_client.Subtract( dab_rect_size.Divide(2.0) );
 
-                    Point p_dab = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
                     if (this.paintsettings.smoother.Alpha!=0.0)
                     {
-                        var s = paintsettings.smoother.Smooth(new PointD(p_dab.X, p_dab.Y));
-                        p_dab = new Point((int)s.X, (int)s.Y);
+                        var s = paintsettings.smoother.Smooth(new PointD(p_dab_center.X, p_dab_center.Y));
+                        p_dab_center = new Point((int)s.X, (int)s.Y);
                     }
-                    var rect = new Rectangle(p_dab, rect_size);
+                    var rect = new Rectangle(p_dab_center, dab_rect_size);
 
                     this.bitmap_doc.FillEllipse(Color.Black, rect);
 

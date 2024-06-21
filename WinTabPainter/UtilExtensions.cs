@@ -18,6 +18,13 @@ namespace WinTabPainter
             return np;
         }
 
+        public static Size Divide(this Size s, double scale)
+        {
+            var ns = new Size((int)(s.Width / scale), (int)(s.Height / scale));
+            return ns;
+        }
+
+
         public static Point Subtract(this Point p1, Point p2)
         {
             var np = new Point(p1.X-p2.X, p1.Y - p2.Y);
@@ -29,6 +36,19 @@ namespace WinTabPainter
             var np = new Point(p1.X - x, p1.Y - y);
             return np;
         }
+
+        public static Point Subtract(this Point p, Size s)
+        {
+            var np = new Point(p.X - s.Width, p.Y - s.Height);
+            return np;
+        }
+
+        public static PointD ToPointD(this Point p)
+        {
+            var np = new PointD(p.X, p.Y);
+            return np;
+        }
+
 
     }
 }
