@@ -174,8 +174,8 @@ namespace WinTabPainter
 
                     if (this.paintsettings.smoother.Alpha!=0.0)
                     {
-                        var s = paintsettings.smoother.Smooth(new PointD(p_dab_center.X, p_dab_center.Y));
-                        p_dab_center = new Point((int)s.X, (int)s.Y);
+                        var smoothed_pos = paintsettings.smoother.Smooth(p_dab_center.ToPointD());
+                        p_dab_center = new Point((int)smoothed_pos.X, (int)smoothed_pos.Y);
                     }
                     var rect = new Rectangle(p_dab_center, dab_rect_size);
 
