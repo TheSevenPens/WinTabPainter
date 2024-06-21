@@ -7,7 +7,6 @@
 
 using System;
 using System.Diagnostics.Eventing.Reader;
-using WintabDN;
 
 namespace WinTabPainter
 {
@@ -25,7 +24,7 @@ namespace WinTabPainter
         public double PressureNormalized;
         public double PressureAdjusted;
 
-        public PaintData(WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
+        public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
             this.X = wintab_pkt.pkX;
             this.Y = wintab_pkt.pkY;

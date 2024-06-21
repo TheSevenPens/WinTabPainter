@@ -5,7 +5,7 @@
 // https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
-using System.Drawing;
+using SD=System.Drawing;
 
 namespace WinTabPainter
 {
@@ -30,17 +30,17 @@ namespace WinTabPainter
             this.Y = y;
         }
 
-        public PointD(Point point)
+        public PointD(SD.Point point)
         {
             this.X = point.X;
             this.Y = point.Y;
         }
 
-        public Point ToPoint()
+        public SD.Point ToPoint()
         {
             double rx = System.Math.Round(this.X);
             double ry = System.Math.Round(this.Y);
-            var p = new Point((int)rx, (int)ry);
+            var p = new SD.Point((int)rx, (int)ry);
             return p;
         }
 
