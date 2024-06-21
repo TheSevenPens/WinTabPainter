@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapDocument.cs" />
+    <Compile Include="EMASmoother.cs" />
     <Compile Include="FormWinTabPainterApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +58,7 @@
       <DependentUpon>FormWinTabPainterApp.cs</DependentUpon>
     </Compile>
     <Compile Include="PenInfo.cs" />
+    <Compile Include="PointD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabletInfo.cs" />

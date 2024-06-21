@@ -57,13 +57,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MenuItem_File = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBar_Smoothing = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).BeginInit();
             this.SuspendLayout();
             // 
             // label_X
@@ -283,7 +286,7 @@
             // trackBarPressureCurve
             // 
             this.trackBarPressureCurve.AutoSize = false;
-            this.trackBarPressureCurve.Location = new System.Drawing.Point(12, 717);
+            this.trackBarPressureCurve.Location = new System.Drawing.Point(12, 663);
             this.trackBarPressureCurve.Maximum = 100;
             this.trackBarPressureCurve.Minimum = -100;
             this.trackBarPressureCurve.Name = "trackBarPressureCurve";
@@ -295,7 +298,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 666);
+            this.label1.Location = new System.Drawing.Point(23, 612);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(401, 32);
             this.label1.TabIndex = 36;
@@ -327,7 +330,7 @@
             this.MenuItem_File});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1568, 52);
+            this.menuStrip1.Size = new System.Drawing.Size(1568, 60);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -338,35 +341,55 @@
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
-            this.MenuItem_File.Size = new System.Drawing.Size(87, 48);
+            this.MenuItem_File.Size = new System.Drawing.Size(87, 56);
             this.MenuItem_File.Text = "File";
+            // 
+            // MenuItem_Open
+            // 
+            this.MenuItem_Open.Name = "MenuItem_Open";
+            this.MenuItem_Open.Size = new System.Drawing.Size(285, 54);
+            this.MenuItem_Open.Text = "Open";
+            this.MenuItem_Open.Click += new System.EventHandler(this.MenuItem_Open_Click);
             // 
             // MenuItem_FileSave
             // 
             this.MenuItem_FileSave.Name = "MenuItem_FileSave";
-            this.MenuItem_FileSave.Size = new System.Drawing.Size(448, 54);
+            this.MenuItem_FileSave.Size = new System.Drawing.Size(285, 54);
             this.MenuItem_FileSave.Text = "Save";
             this.MenuItem_FileSave.Click += new System.EventHandler(this.MenuFileSave_Click);
             // 
             // MenuItem_SaveAs
             // 
             this.MenuItem_SaveAs.Name = "MenuItem_SaveAs";
-            this.MenuItem_SaveAs.Size = new System.Drawing.Size(448, 54);
+            this.MenuItem_SaveAs.Size = new System.Drawing.Size(285, 54);
             this.MenuItem_SaveAs.Text = "Save As";
             this.MenuItem_SaveAs.Click += new System.EventHandler(this.MenuItem_SaveAs_Click);
             // 
-            // MenuItem_Open
+            // label2
             // 
-            this.MenuItem_Open.Name = "MenuItem_Open";
-            this.MenuItem_Open.Size = new System.Drawing.Size(448, 54);
-            this.MenuItem_Open.Text = "Open";
-            this.MenuItem_Open.Click += new System.EventHandler(this.MenuItem_Open_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(23, 733);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(338, 32);
+            this.label2.TabIndex = 42;
+            this.label2.Text = "Smoothing (None<->Max)";
+            // 
+            // trackBar_Smoothing
+            // 
+            this.trackBar_Smoothing.AutoSize = false;
+            this.trackBar_Smoothing.Location = new System.Drawing.Point(12, 784);
+            this.trackBar_Smoothing.Maximum = 100;
+            this.trackBar_Smoothing.Name = "trackBar_Smoothing";
+            this.trackBar_Smoothing.Size = new System.Drawing.Size(424, 45);
+            this.trackBar_Smoothing.TabIndex = 41;
             // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1568, 912);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.trackBar_Smoothing);
             this.Controls.Add(this.label_PressureAdjusted);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
@@ -406,6 +429,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -444,6 +468,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FileSave;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SaveAs;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Open;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar trackBar_Smoothing;
     }
 }
 
