@@ -10,7 +10,7 @@ namespace WinTabPainter
     public class PaintSettings
     {
         public double pressure_curve_q = 0.0;
-        public int brush_size = 5;
+        public int brush_width = 5;
         public readonly double smoothing_min = 0.0;
         public readonly double smoothing_max = 0.99;
         public double smoothing = 0.0;
