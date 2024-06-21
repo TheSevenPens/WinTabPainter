@@ -5,6 +5,8 @@
 // https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
+using System;
+
 namespace WinTabPainter
 {
     public static class Helpers
@@ -15,6 +17,28 @@ namespace WinTabPainter
             else if (q > max) { q = max; }
             else { /* dnothing */}
             return q;
+        }
+
+        public static double ApplyCurve(double value, double q)
+        {
+            q = Helpers.ClampRange(q, -1, 1);
+
+            double new_value;
+
+            if (q > 0)
+            {
+                new_value = Math.Pow(value, 1.0 - q);
+            }
+            else if (q < 0)
+            {
+                new_value = Math.Pow(value, 1.0 / (1.0 + q));
+            }
+            else
+            {
+                new_value = value;
+            }
+
+            return new_value;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace WinTabPainter
 
             // Calcualte the normalize pressure with pressurce curve applied
 
-            this.PressureAdjusted = ApplyCurve(this.PressureNormalized, paintsettings.PressureCurveControl);
+            this.PressureAdjusted = Helpers.ApplyCurve(this.PressureNormalized, paintsettings.PressureCurveControl);
 
             if (wintab_pkt.pkNormalPressure > 0)
             {
@@ -57,26 +57,6 @@ namespace WinTabPainter
             }
         }
 
-        public static double ApplyCurve(double value, double q)
-        {
-            q = Helpers.ClampRange(q, -1, 1);
 
-            double new_value;
-
-            if (q > 0)
-            {
-                new_value = Math.Pow(value, 1.0 - q);
-            }
-            else if (q < 0) 
-            { 
-                    new_value = Math.Pow(value, 1.0 / (1.0 + q));
-            }
-            else
-            {
-                new_value = value;
-            }
-
-            return new_value;
-        }
     }
 }
