@@ -26,6 +26,9 @@ namespace WinTabPainter
 
         double pressure_curve_q = 0.0;
         int brush_size = 5;
+        readonly double smoothing_min = 0.0;
+        readonly double smoothing_max = 0.99;
+        double smoothing = 0.0;
         TabletInfo tablet_info = new TabletInfo();
 
         public FormWinTabPainterApp()
@@ -332,6 +335,19 @@ namespace WinTabPainter
             }
             this.pictureBox_Canvas.Image = this.bitmap_doc.Bitmap;
             this.pictureBox_Canvas.Invalidate();
+        }
+
+
+        private void trackBar_Smoothing_Scroll(object sender, EventArgs e)
+        {
+            this.set_smoothing(this.trackBar_Smoothing.Value / this.trackBar_Smoothing.Maximum);
+        }
+
+        public void set_smoothing(double value)
+        {
+            this.smoothing = value;
+            this.smoothing = System.Math.Min(this.smoothing, this.smoothing_max);
+            this.smoothing = System.Math.Max(this.smoothing, this.smoothing_min);
         }
     }
 }
