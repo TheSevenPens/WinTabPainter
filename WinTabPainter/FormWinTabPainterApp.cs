@@ -23,14 +23,11 @@ namespace WinTabPainter
 
         public string filename = null;
         PenInfo pen_info;
-
-        double pressure_curve_q = 0.0;
-        int brush_size = 5;
-        readonly double smoothing_min = 0.0;
-        readonly double smoothing_max = 0.99;
-        double smoothing = 0.0;
         TabletInfo tablet_info = new TabletInfo();
-        EMASmoother smoother;
+
+        public PaintSettings paintsettings = new PaintSettings(); 
+
+
 
         public FormWinTabPainterApp()
         {
@@ -71,11 +68,11 @@ namespace WinTabPainter
                 this.Top = screen.Bounds.Top + (screen.Bounds.Height/2) - (this.Height / 2);
             }
 
-            this.trackBar_BrushSize.Value = this.brush_size;
-            this.label_BrushSizeValue.Text = this.brush_size.ToString();
+            this.trackBar_BrushSize.Value = this.paintsettings.brush_size;
+            this.label_BrushSizeValue.Text = this.paintsettings.brush_size.ToString();
 
             // Default to no smoothing
-            this.smoother = new EMASmoother(0);
+            this.paintsettings.smoother = new EMASmoother(0);
             this.trackBar_Smoothing.Value = 0;
             this.set_smoothing(0);
         }
@@ -144,7 +141,7 @@ namespace WinTabPainter
                 this.pen_info.Altitude = wintab_pkt.pkOrientation.orAltitude;
                 this.pen_info.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
 
-                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.pressure_curve_q);
+                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.paintsettings.pressure_curve_q);
 
                 this.label_PosXValue.Text = this.pen_info.X.ToString();
                 this.label_PosYValue.Text = this.pen_info.Y.ToString();
@@ -164,19 +161,19 @@ namespace WinTabPainter
                     if (p_client.X < 0) { return; }
                     if (p_client.Y < 0) { return; }
 
-                    this.smoother.Smooth(new PointD(p_client.X, p_client.Y));
+                    this.paintsettings.smoother.Smooth(new PointD(p_client.X, p_client.Y));
 
 
-                    int max_brush_size = this.brush_size;
+                    int max_brush_size = this.paintsettings.brush_size;
 
 
                     var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
                     var rect_size = new Size((int)brush_size, (int)brush_size);
 
                     Point p_dab = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
-                    if (this.smoother.Alpha!=0.0)
+                    if (this.paintsettings.smoother.Alpha!=0.0)
                     {
-                        var s = smoother.Smooth(new PointD(p_dab.X, p_dab.Y));
+                        var s = paintsettings.smoother.Smooth(new PointD(p_dab.X, p_dab.Y));
                         p_dab = new Point((int)s.X, (int)s.Y);
                     }
                     var rect = new Rectangle(p_dab, rect_size);
@@ -214,13 +211,13 @@ namespace WinTabPainter
 
         private void trackBar_BrushSize_Scroll(object sender, EventArgs e)
         {
-            this.brush_size = this.trackBar_BrushSize.Value;
-            this.label_BrushSizeValue.Text = this.brush_size.ToString();
+            this.paintsettings.brush_size = this.trackBar_BrushSize.Value;
+            this.label_BrushSizeValue.Text = this.paintsettings.brush_size.ToString();
         }
 
         private void trackBarPressureCurve_Scroll(object sender, EventArgs e)
         {
-            this.pressure_curve_q = ((double)this.trackBarPressureCurve.Value) / 100.0;
+            this.paintsettings.pressure_curve_q = ((double)this.trackBarPressureCurve.Value) / 100.0;
         }
 
         private double ApplyCurve( double pressure, double q)
@@ -265,12 +262,12 @@ namespace WinTabPainter
 
         void relative_modify_brush_size(int value)
         {
-            this.brush_size = this.brush_size + value;
-            this.brush_size = Math.Max(1, this.brush_size);
-            this.brush_size = Math.Min(100, this.brush_size);
+            this.paintsettings.brush_size = this.paintsettings.brush_size + value;
+            this.paintsettings.brush_size = Math.Max(1, this.paintsettings.brush_size);
+            this.paintsettings.brush_size = Math.Min(100, this.paintsettings.brush_size);
 
-            this.label_BrushSizeValue.Text = this.brush_size.ToString();
-            this.trackBar_BrushSize.Value= this.brush_size;
+            this.label_BrushSizeValue.Text = this.paintsettings.brush_size.ToString();
+            this.trackBar_BrushSize.Value= this.paintsettings.brush_size;
         }
         private void MenuFileSave_Click(object sender, EventArgs e)
         {
@@ -359,10 +356,10 @@ namespace WinTabPainter
 
         public void set_smoothing(double value)
         {
-            this.smoothing = value;
-            this.smoothing = System.Math.Min(this.smoothing, this.smoothing_max);
-            this.smoothing = System.Math.Max(this.smoothing, this.smoothing_min);
-            this.smoother.Alpha = this.smoothing;
+            this.paintsettings.smoothing = value;
+            this.paintsettings.smoothing = System.Math.Min(this.paintsettings.smoothing, this.paintsettings.smoothing_max);
+            this.paintsettings.smoothing = System.Math.Max(this.paintsettings.smoothing, this.paintsettings.smoothing_min);
+            this.paintsettings.smoother.Alpha = this.paintsettings.smoothing;
         }
     }
 }
