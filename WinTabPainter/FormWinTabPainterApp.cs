@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Drawing;
-using System.Runtime.CompilerServices;
+using SD=System.Drawing;
 using System.Windows.Forms;
-using WintabDN;
-using static System.Windows.Forms.AxHost;
-
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -151,7 +147,7 @@ namespace WinTabPainter
                 {
                     double scale = 2.5; // to account for my screens scaling; need to abstract this away
 
-                    var p_screen = new Point(paint_data.X, paint_data.Y).Divide(scale).Subtract(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
+                    var p_screen = new SD.Point(paint_data.X, paint_data.Y).Divide(scale).Subtract(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
                     var p_client = this.PointToClient(p_screen);
 
 
@@ -162,17 +158,17 @@ namespace WinTabPainter
 
                     var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, this.paint_data.PressureAdjusted * this.paintsettings.brush_width);
 
-                    var dab_rect_size = new Size((int)adjusted_brush_width, (int)adjusted_brush_width);
+                    var dab_rect_size = new SD.Size((int)adjusted_brush_width, (int)adjusted_brush_width);
                     var dab_rect_center = p_client.Subtract(dab_rect_size.Divide(2.0));
 
                     if (this.paintsettings.smoother.Alpha != 0.0)
                     {
                         var smoothed_pos = paintsettings.smoother.Smooth(dab_rect_center.ToPointD());
-                        dab_rect_center = new Point((int)smoothed_pos.X, (int)smoothed_pos.Y);
+                        dab_rect_center = new SD.Point((int)smoothed_pos.X, (int)smoothed_pos.Y);
                     }
-                    var rect = new Rectangle(dab_rect_center, dab_rect_size);
+                    var rect = new SD.Rectangle(dab_rect_center, dab_rect_size);
 
-                    this.bitmap_doc.FillEllipse(Color.Black, rect);
+                    this.bitmap_doc.FillEllipse(SD.Color.Black, rect);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
