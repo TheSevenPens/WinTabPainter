@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 
 // References:
@@ -12,7 +14,6 @@ using System.Windows.Forms;
 
 namespace WinTabPainter
 {
-
     public partial class FormWinTabPainterApp : Form
     {
 
@@ -132,6 +133,8 @@ namespace WinTabPainter
 
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
+                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.paintsettings.pressure_curve_q);
+
                 this.pen_info = new PenInfo();
                 this.pen_info.X = wintab_pkt.pkX;
                 this.pen_info.Y = wintab_pkt.pkY;
@@ -140,29 +143,27 @@ namespace WinTabPainter
                 this.pen_info.PressureNormalized = pen_info.PressureRaw / (double)this.tablet_info.MaxPressure;
                 this.pen_info.Altitude = wintab_pkt.pkOrientation.orAltitude;
                 this.pen_info.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
-
-                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.paintsettings.pressure_curve_q);
-
                 this.label_PosXValue.Text = this.pen_info.X.ToString();
                 this.label_PosYValue.Text = this.pen_info.Y.ToString();
                 this.label_PosZValue.Text = this.pen_info.Z.ToString();
                 this.label_PressureRawValue.Text = this.pen_info.PressureRaw.ToString();
                 this.label_PressureValue.Text = Math.Round(this.pen_info.PressureNormalized,5).ToString();
                 this.label_PressureAdjusted.Text = Math.Round(adjusted_pressure,5).ToString();
-
                 this.label_AltitudeValue.Text = this.pen_info.Altitude.ToString();
                 this.label_AzimuthValue.Text = this.pen_info.Azimuth.ToString();
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
-                    double scale = 2.5;
-                    var p_screen = new Point((int)(pen_info.X / scale) - this.pictureBox_Canvas.Left, (int)(pen_info.Y / scale) - this.pictureBox_Canvas.Top);
+                    double scale = 2.5; // to account for my screens scaling; need to abstract this away
+
+                    var p_screen = new Point(pen_info.X,pen_info.Y).Divide(scale).Subtract(this.pictureBox_Canvas.Left,this.pictureBox_Canvas.Top);
                     var p_client = this.PointToClient(p_screen);
+
+
                     if (p_client.X < 0) { return; }
                     if (p_client.Y < 0) { return; }
 
                     this.paintsettings.smoother.Smooth(new PointD(p_client.X, p_client.Y));
-
 
                     int max_brush_size = this.paintsettings.brush_size;
 
