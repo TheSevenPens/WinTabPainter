@@ -7,14 +7,19 @@
 
 namespace WinTabPainter
 {
-    struct PenInfo
+    public struct PaintData
     {
+        // properties from the tablet
         public int X;
         public int Y;
         public int Z;
         public uint PressureRaw;
-        public double PressureNormalized;
         public int Altitude;
         public int Azimuth;
+
+        // calculated properties
+        public double PressureNormalized;
+        public double adjusted_pressure;
+
     }
 }
