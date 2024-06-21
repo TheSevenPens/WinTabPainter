@@ -20,7 +20,6 @@ namespace WinTabPainter
         private BitmapDocument bitmap_doc;
 
         public string filename = null;
-        PaintData paint_data;
         TabletInfo tablet_info = new TabletInfo();
 
         public PaintSettings paintsettings = new PaintSettings(); 
@@ -130,42 +129,30 @@ namespace WinTabPainter
 
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
+                // collect all the information we need to start painting
+                var paint_data = new PaintData(wintab_pkt, tablet_info, this.paintsettings);
 
-                this.paint_data = new PaintData(wintab_pkt, tablet_info, this.paintsettings);
-
-                // Update the UI based on pen data
-                this.label_PosXValue.Text = this.paint_data.X.ToString();
-                this.label_PosYValue.Text = this.paint_data.Y.ToString();
-                this.label_PosZValue.Text = this.paint_data.Z.ToString();
-                this.label_PressureRawValue.Text = this.paint_data.PressureRaw.ToString();
-                this.label_PressureValue.Text = Math.Round(this.paint_data.PressureNormalized, 5).ToString();
-                this.label_PressureAdjusted.Text = Math.Round(this.paint_data.PressureAdjusted, 5).ToString();
-                this.label_AltitudeValue.Text = this.paint_data.Altitude.ToString();
-                this.label_AzimuthValue.Text = this.paint_data.Azimuth.ToString();
+                // Update the UI based on paint data
+                UpdateUIForPainting(paint_data);
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
-                    double scale = 2.5; // to account for my screens scaling; need to abstract this away
+                    double scale = 2.5; // Seems tied to the screen scaling I am using on Windows on my specific machine. Need to remove this constant
 
-                    var p_screen = new SD.Point(paint_data.X, paint_data.Y).Divide(scale).Subtract(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
-                    var p_client = this.PointToClient(p_screen);
+                    // convert the pen position from the screen to the app's client area
+                    var penpos_screen = paint_data.Position.Divide(scale).Subtract(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
+                    var penpos_client = this.PointToClient(penpos_screen);
 
+                    // the pen is not in the client area, abandon doing anything
+                    if (penpos_client.X < 0) { return; }
+                    if (penpos_client.Y < 0) { return; }
 
-                    if (p_client.X < 0) { return; }
-                    if (p_client.Y < 0) { return; }
-
-                    this.paintsettings.smoother.Smooth(p_client.ToPointD());
-
-                    var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, this.paint_data.PressureAdjusted * this.paintsettings.brush_width);
+                    var penpos_client_smoothed = this.paintsettings.smoother.Smooth(penpos_client.ToPointD());
+                    var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, paint_data.PressureAdjusted * this.paintsettings.brush_width);
 
                     var dab_rect_size = new SD.Size((int)adjusted_brush_width, (int)adjusted_brush_width);
-                    var dab_rect_center = p_client.Subtract(dab_rect_size.Divide(2.0));
+                    var dab_rect_center = penpos_client.Subtract(dab_rect_size.Divide(2.0));
 
-                    if (this.paintsettings.smoother.Alpha != 0.0)
-                    {
-                        var smoothed_pos = paintsettings.smoother.Smooth(dab_rect_center.ToPointD());
-                        dab_rect_center = new SD.Point((int)smoothed_pos.X, (int)smoothed_pos.Y);
-                    }
                     var rect = new SD.Rectangle(dab_rect_center, dab_rect_size);
 
                     this.bitmap_doc.FillEllipse(SD.Color.Black, rect);
@@ -175,7 +162,17 @@ namespace WinTabPainter
             }
         }
 
-
+        private void UpdateUIForPainting(PaintData paint_data)
+        {
+            this.label_PosXValue.Text = paint_data.X.ToString();
+            this.label_PosYValue.Text = paint_data.Y.ToString();
+            this.label_PosZValue.Text = paint_data.Z.ToString();
+            this.label_PressureRawValue.Text = paint_data.PressureRaw.ToString();
+            this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
+            this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureAdjusted, 5).ToString();
+            this.label_AltitudeValue.Text = paint_data.Altitude.ToString();
+            this.label_AzimuthValue.Text = paint_data.Azimuth.ToString();
+        }
 
         private void CloseTabletContext()
         {

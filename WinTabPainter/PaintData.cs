@@ -7,6 +7,7 @@
 
 using System;
 using System.Diagnostics.Eventing.Reader;
+using SD = System.Drawing;
 
 namespace WinTabPainter
 {
@@ -23,6 +24,11 @@ namespace WinTabPainter
         // calculated properties
         public double PressureNormalized;
         public double PressureAdjusted;
+
+        public SD.Point Position
+        {
+            get { return new SD.Point(this.X, this.Y); }
+        }
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
