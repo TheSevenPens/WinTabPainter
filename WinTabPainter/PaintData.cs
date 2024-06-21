@@ -24,6 +24,7 @@ namespace WinTabPainter
         // calculated properties
         public double PressureNormalized;
         public double PressureAdjusted;
+        public int BrushWidthAdjusted;
 
         public SD.Point PenPosition
         {
@@ -44,7 +45,16 @@ namespace WinTabPainter
 
             // Calcualte the normalize pressure with pressurce curve applied
 
-            this.PressureAdjusted = ApplyCurve(this.PressureNormalized, paintsettings.pressure_curve_control);
+            this.PressureAdjusted = ApplyCurve(this.PressureNormalized, paintsettings.PressureCurveControl);
+
+            if (wintab_pkt.pkNormalPressure > 0)
+            {
+                this.BrushWidthAdjusted = (int) System.Math.Max(paintsettings.BrushWidthMin, this.PressureAdjusted * paintsettings.BrushWidth);
+            }
+            else
+            {
+                this.BrushWidthAdjusted = 0;
+            }
         }
 
         public static double ApplyCurve(double value, double q)
