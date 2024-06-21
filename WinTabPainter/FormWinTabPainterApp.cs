@@ -307,5 +307,28 @@ namespace WinTabPainter
         {
             this.AppSaveAs();
         }
+
+        private void MenuItem_Open_Click(object sender, EventArgs e)
+        {
+            this.AppOpen();
+
+        }
+
+        public void AppOpen()
+        {
+            var ofd = new OpenFileDialog();
+            //ofd.FileName = this.filename ?? "Untitled.png";
+            ofd.DefaultExt = "png";
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var v = ofd.ShowDialog();
+            if (v == DialogResult.OK) 
+            {
+                this.bitmap_doc.Load(ofd.FileName);
+                this.filename = ofd.FileName;
+            }
+            this.pictureBox_Canvas.Image = this.bitmap_doc.Bitmap;
+            this.pictureBox_Canvas.Invalidate();
+        }
     }
 }

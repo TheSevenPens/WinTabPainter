@@ -21,19 +21,26 @@ namespace WinTabPainter
         private Graphics Graphics { get { return this._gfx; } }
         public Bitmap Bitmap { get { return this._bmp; } }
 
-        public readonly int Width;
-        public readonly int Height;
+        int _width;
+        int _height;
+        public int Width { get { return this._width; } }
+        public int Height {  get { return this._height; } }
 
 
         public BitmapDocument(int width, int height)
         {
             this._bmp = new Bitmap(width, height);
-            this.Width = width; 
-            this.Height = height;
+            this._width= width; 
+            this._height = height;
             this._gfx = System.Drawing.Graphics.FromImage(this._bmp);
             this._gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         }
         public void Dispose()
+        {
+            dispose_resources();
+        }
+
+        private void dispose_resources()
         {
             if (this._gfx != null)
             {
@@ -45,6 +52,7 @@ namespace WinTabPainter
                 this._bmp.Dispose();
             }
         }
+
         public void Erase()
         {
             using (var b = new SolidBrush(System.Drawing.Color.White))
@@ -65,6 +73,16 @@ namespace WinTabPainter
                 this._gfx.FillEllipse(brush, rect);
 
             }
+        }
+
+        public void Load(string filename)
+        {
+            this.dispose_resources();
+            this._bmp = (Bitmap) System.Drawing.Bitmap.FromFile(filename);
+            this._width = this._bmp.Width;
+            this._height= this._bmp.Height;
+            this._gfx = System.Drawing.Graphics.FromImage(this._bmp);
+            this._gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         }
     }
 }

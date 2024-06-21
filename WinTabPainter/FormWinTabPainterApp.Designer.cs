@@ -59,6 +59,7 @@
             this.MenuItem_File = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -333,6 +334,7 @@
             // MenuItem_File
             // 
             this.MenuItem_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItem_Open,
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
@@ -352,6 +354,13 @@
             this.MenuItem_SaveAs.Size = new System.Drawing.Size(448, 54);
             this.MenuItem_SaveAs.Text = "Save As";
             this.MenuItem_SaveAs.Click += new System.EventHandler(this.MenuItem_SaveAs_Click);
+            // 
+            // MenuItem_Open
+            // 
+            this.MenuItem_Open.Name = "MenuItem_Open";
+            this.MenuItem_Open.Size = new System.Drawing.Size(448, 54);
+            this.MenuItem_Open.Text = "Open";
+            this.MenuItem_Open.Click += new System.EventHandler(this.MenuItem_Open_Click);
             // 
             // FormWinTabPainterApp
             // 
@@ -434,6 +443,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FileSave;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SaveAs;
+        private System.Windows.Forms.ToolStripMenuItem MenuItem_Open;
     }
 }
 
