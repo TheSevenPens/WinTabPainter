@@ -133,7 +133,7 @@ namespace WinTabPainter
 
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
-                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.paintsettings.pressure_curve_q);
+                double adjusted_pressure = ApplyCurve(pen_info.PressureNormalized, this.paintsettings.pressure_curve_control);
 
                 this.pen_info = new PenInfo();
                 this.pen_info.X = wintab_pkt.pkX;
@@ -143,6 +143,8 @@ namespace WinTabPainter
                 this.pen_info.PressureNormalized = pen_info.PressureRaw / (double)this.tablet_info.MaxPressure;
                 this.pen_info.Altitude = wintab_pkt.pkOrientation.orAltitude;
                 this.pen_info.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
+
+                // Update the UI based on pen data
                 this.label_PosXValue.Text = this.pen_info.X.ToString();
                 this.label_PosYValue.Text = this.pen_info.Y.ToString();
                 this.label_PosZValue.Text = this.pen_info.Z.ToString();
@@ -165,7 +167,7 @@ namespace WinTabPainter
 
                     this.paintsettings.smoother.Smooth(p_client.ToPointD());
 
-                    var adjusted_brush_width = System.Math.Max(1, adjusted_pressure * this.paintsettings.brush_width);
+                    var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, adjusted_pressure * this.paintsettings.brush_width);
 
                     var dab_rect_size = new Size((int) adjusted_brush_width, (int)adjusted_brush_width);
                     var dab_rect_center = p_client.Subtract( dab_rect_size.Divide(2.0) );
@@ -216,7 +218,7 @@ namespace WinTabPainter
 
         private void trackBarPressureCurve_Scroll(object sender, EventArgs e)
         {
-            this.paintsettings.pressure_curve_q = ((double)this.trackBarPressureCurve.Value) / 100.0;
+            this.paintsettings.pressure_curve_control = ((double)this.trackBarPressureCurve.Value) / 100.0;
         }
 
         private double ApplyCurve( double pressure, double q)
@@ -355,10 +357,10 @@ namespace WinTabPainter
 
         public void set_smoothing(double value)
         {
-            this.paintsettings.smoothing = value;
-            this.paintsettings.smoothing = System.Math.Min(this.paintsettings.smoothing, this.paintsettings.smoothing_max);
-            this.paintsettings.smoothing = System.Math.Max(this.paintsettings.smoothing, this.paintsettings.smoothing_min);
-            this.paintsettings.smoother.Alpha = this.paintsettings.smoothing;
+            this.paintsettings.smoothing_amount = value;
+            this.paintsettings.smoothing_amount = System.Math.Min(this.paintsettings.smoothing_amount, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.smoothing_amount = System.Math.Max(this.paintsettings.smoothing_amount, this.paintsettings.SMOOTHING_MIN);
+            this.paintsettings.smoother.Alpha = this.paintsettings.smoothing_amount;
         }
     }
 }
