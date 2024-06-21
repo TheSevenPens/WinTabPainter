@@ -43,8 +43,7 @@ namespace WinTabPainter
             // Calculate normalized pressure so that it is in range [0,1]
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
 
-            // Calcualte the normalize pressure with pressurce curve applied
-
+            // Calculate the normalize pressure with pressurce curve applied
             this.PressureAdjusted = Helpers.ApplyCurve(this.PressureNormalized, paintsettings.PressureCurveControl);
 
             if (wintab_pkt.pkNormalPressure > 0)
