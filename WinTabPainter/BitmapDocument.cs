@@ -75,6 +75,17 @@ namespace WinTabPainter
             }
         }
 
+        public void DrawDabCenteredAt(Color color, Point p, Size s)
+        {
+            var dab_rect_center = p.Subtract(s.Divide(2.0));
+            var rect = new Rectangle(dab_rect_center, s);
+            using (Brush brush = new SolidBrush(color))
+            {
+                this._gfx.FillEllipse(brush, rect);
+
+            }
+        }
+
         public void Load(string filename)
         {
             this.dispose_resources();

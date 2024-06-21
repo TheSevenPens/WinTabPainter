@@ -140,22 +140,19 @@ namespace WinTabPainter
                     double scale = 2.5; // Seems tied to the screen scaling I am using on Windows on my specific machine. Need to remove this constant
 
                     // convert the pen position from the screen to the app's client area
-                    var penpos_screen = paint_data.Position.Divide(scale).Subtract(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
-                    var penpos_client = this.PointToClient(penpos_screen);
+                    var canvas_topleft = new SD.Point(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
+                    var penpos_screen = paint_data.PenPosition.Divide(scale);
+                    var penpos_canvas = this.PointToClient(penpos_screen.Subtract(canvas_topleft));
 
                     // the pen is not in the client area, abandon doing anything
-                    if (penpos_client.X < 0) { return; }
-                    if (penpos_client.Y < 0) { return; }
+                    if (penpos_canvas.X < 0) { return; }
+                    if (penpos_canvas.Y < 0) { return; }
 
-                    var penpos_client_smoothed = this.paintsettings.smoother.Smooth(penpos_client.ToPointD());
+                    var penpos_client_smoothed = this.paintsettings.smoother.Smooth(penpos_canvas.ToPointD());
                     var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, paint_data.PressureAdjusted * this.paintsettings.brush_width);
 
-                    var dab_rect_size = new SD.Size((int)adjusted_brush_width, (int)adjusted_brush_width);
-                    var dab_rect_center = penpos_client.Subtract(dab_rect_size.Divide(2.0));
-
-                    var rect = new SD.Rectangle(dab_rect_center, dab_rect_size);
-
-                    this.bitmap_doc.FillEllipse(SD.Color.Black, rect);
+                    var dab_size = new SD.Size((int)adjusted_brush_width, (int)adjusted_brush_width);
+                    this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_client_smoothed.ToPoint(), dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
@@ -164,9 +161,9 @@ namespace WinTabPainter
 
         private void UpdateUIForPainting(PaintData paint_data)
         {
-            this.label_PosXValue.Text = paint_data.X.ToString();
-            this.label_PosYValue.Text = paint_data.Y.ToString();
-            this.label_PosZValue.Text = paint_data.Z.ToString();
+            this.label_PosXValue.Text = paint_data.PenX.ToString();
+            this.label_PosYValue.Text = paint_data.PenY.ToString();
+            this.label_PosZValue.Text = paint_data.PenZ.ToString();
             this.label_PressureRawValue.Text = paint_data.PressureRaw.ToString();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
             this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureAdjusted, 5).ToString();

@@ -14,9 +14,9 @@ namespace WinTabPainter
     public struct PaintData
     {
         // properties from the tablet
-        public int X;
-        public int Y;
-        public int Z;
+        public int PenX;
+        public int PenY;
+        public int PenZ;
         public uint PressureRaw;
         public int Altitude;
         public int Azimuth;
@@ -25,16 +25,16 @@ namespace WinTabPainter
         public double PressureNormalized;
         public double PressureAdjusted;
 
-        public SD.Point Position
+        public SD.Point PenPosition
         {
-            get { return new SD.Point(this.X, this.Y); }
+            get { return new SD.Point(this.PenX, this.PenY); }
         }
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
-            this.X = wintab_pkt.pkX;
-            this.Y = wintab_pkt.pkY;
-            this.Z = wintab_pkt.pkZ;
+            this.PenX = wintab_pkt.pkX;
+            this.PenY = wintab_pkt.pkY;
+            this.PenZ = wintab_pkt.pkZ;
             this.PressureRaw = wintab_pkt.pkNormalPressure;
             this.Altitude = wintab_pkt.pkOrientation.orAltitude;
             this.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
