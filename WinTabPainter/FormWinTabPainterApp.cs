@@ -30,6 +30,7 @@ namespace WinTabPainter
         readonly double smoothing_max = 0.99;
         double smoothing = 0.0;
         TabletInfo tablet_info = new TabletInfo();
+        EMASmoother smoother;
 
         public FormWinTabPainterApp()
         {
@@ -72,6 +73,11 @@ namespace WinTabPainter
 
             this.trackBar_BrushSize.Value = this.brush_size;
             this.label_BrushSizeValue.Text = this.brush_size.ToString();
+
+            // Default to no smoothing
+            this.smoother = new EMASmoother(0);
+            this.trackBar_Smoothing.Value = 0;
+            this.set_smoothing(0);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -158,14 +164,22 @@ namespace WinTabPainter
                     if (p_client.X < 0) { return; }
                     if (p_client.Y < 0) { return; }
 
+                    this.smoother.Smooth(new PointD(p_client.X, p_client.Y));
+
+
                     int max_brush_size = this.brush_size;
 
 
                     var brush_size = System.Math.Max(1, adjusted_pressure * max_brush_size);
                     var rect_size = new Size((int)brush_size, (int)brush_size);
 
-                    p_client = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
-                    var rect = new Rectangle(p_client, rect_size);
+                    Point p_dab = new Point(p_client.X - (int)(brush_size / 2), p_client.Y - (int)(brush_size / 2));
+                    if (this.smoother.Alpha!=0.0)
+                    {
+                        var s = smoother.Smooth(new PointD(p_dab.X, p_dab.Y));
+                        p_dab = new Point((int)s.X, (int)s.Y);
+                    }
+                    var rect = new Rectangle(p_dab, rect_size);
 
                     this.bitmap_doc.FillEllipse(Color.Black, rect);
 
@@ -348,6 +362,7 @@ namespace WinTabPainter
             this.smoothing = value;
             this.smoothing = System.Math.Min(this.smoothing, this.smoothing_max);
             this.smoothing = System.Math.Max(this.smoothing, this.smoothing_min);
+            this.smoother.Alpha = this.smoothing;
         }
     }
 }
