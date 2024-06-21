@@ -55,13 +55,16 @@ namespace WinTabPainter
 
             this.wintab_context = OpenTabletContext();
 
-            // bring window to first display
-            // Useful when debugging to avoid having to move the form over every time
+            // This is for debugging only
+            // brings the app window into the middle of the third monitor
+            // allieviates the hassle of dragging it over every time
 
-            if (System.Windows.Forms.SystemInformation.MonitorCount > 1)
+
+            if (System.Windows.Forms.SystemInformation.MonitorCount >= 3)
             {
-                var screen = System.Windows.Forms.Screen.AllScreens[0];
+                var screen = System.Windows.Forms.Screen.AllScreens[2];
                 this.Left = screen.Bounds.Left + (screen.Bounds.Width / 2) - (this.Width / 2);
+                this.Top = screen.Bounds.Top + (screen.Bounds.Height/2) - (this.Height / 2);
             }
 
             this.trackBar_BrushSize.Value = this.brush_size;
