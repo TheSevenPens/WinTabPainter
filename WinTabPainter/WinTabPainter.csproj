@@ -57,6 +57,7 @@
     <Compile Include="FormWinTabPainterApp.Designer.cs">
       <DependentUpon>FormWinTabPainterApp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers.cs" />
     <Compile Include="PaintSettings.cs" />
     <Compile Include="PaintData.cs" />
     <Compile Include="PointD.cs" />

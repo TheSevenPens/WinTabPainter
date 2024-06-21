@@ -134,7 +134,8 @@ namespace WinTabPainter
 
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
-                this.paint_data = CreatePaintData(wintab_pkt, tablet_info, this.paintsettings);
+
+                this.paint_data = new PaintData(wintab_pkt, tablet_info, this.paintsettings);
 
                 // Update the UI based on pen data
                 this.label_PosXValue.Text = this.paint_data.X.ToString();
@@ -142,7 +143,7 @@ namespace WinTabPainter
                 this.label_PosZValue.Text = this.paint_data.Z.ToString();
                 this.label_PressureRawValue.Text = this.paint_data.PressureRaw.ToString();
                 this.label_PressureValue.Text = Math.Round(this.paint_data.PressureNormalized, 5).ToString();
-                this.label_PressureAdjusted.Text = Math.Round(this.paint_data.adjusted_pressure, 5).ToString();
+                this.label_PressureAdjusted.Text = Math.Round(this.paint_data.PressureAdjusted, 5).ToString();
                 this.label_AltitudeValue.Text = this.paint_data.Altitude.ToString();
                 this.label_AzimuthValue.Text = this.paint_data.Azimuth.ToString();
 
@@ -159,7 +160,7 @@ namespace WinTabPainter
 
                     this.paintsettings.smoother.Smooth(p_client.ToPointD());
 
-                    var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, this.paint_data.adjusted_pressure * this.paintsettings.brush_width);
+                    var adjusted_brush_width = System.Math.Max(this.paintsettings.brush_width_min, this.paint_data.PressureAdjusted * this.paintsettings.brush_width);
 
                     var dab_rect_size = new Size((int)adjusted_brush_width, (int)adjusted_brush_width);
                     var dab_rect_center = p_client.Subtract(dab_rect_size.Divide(2.0));
@@ -178,21 +179,7 @@ namespace WinTabPainter
             }
         }
 
-        public static PaintData CreatePaintData(WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
-        {
-            var paint_data = new PaintData();
-            paint_data.X = wintab_pkt.pkX;
-            paint_data.Y = wintab_pkt.pkY;
-            paint_data.Z = wintab_pkt.pkZ;
-            paint_data.PressureRaw = wintab_pkt.pkNormalPressure;
-            paint_data.Altitude = wintab_pkt.pkOrientation.orAltitude;
-            paint_data.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
 
-            paint_data.PressureNormalized = paint_data.PressureRaw / (double)tablet_info.MaxPressure;
-            paint_data.adjusted_pressure = ApplyCurve(paint_data.PressureNormalized, paintsettings.pressure_curve_control);
-
-            return paint_data;
-        }
 
         private void CloseTabletContext()
         {
@@ -229,24 +216,7 @@ namespace WinTabPainter
             this.paintsettings.pressure_curve_control = ((double)this.trackBarPressureCurve.Value) / 100.0;
         }
 
-        private static double ApplyCurve( double pressure, double q)
-        {
-            if (q < -1) { q = -1; }
-            else if ( q > 1 ) { q = 1; }
 
-            double new_pressure = pressure;
-
-            if (q>0)
-            {
-                new_pressure = Math.Pow(pressure, 1.0-q);
-            }
-            else
-            {
-                new_pressure = Math.Pow(pressure,1.0/(1.0+q));
-            }
-
-            return new_pressure;
-        }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {

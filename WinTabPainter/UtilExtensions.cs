@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-
+﻿using System;
+using SD = System.Drawing;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -12,38 +12,38 @@ namespace WinTabPainter
 {
     public static class UtilExtensions
     {
-        public static Point Divide( this Point p, double scale)
+        public static SD.Point Divide( this SD.Point p, double scale)
         {
-            var np = new Point((int)(p.X / scale), (int)(p.Y / scale));
+            var np = new SD.Point((int)(p.X / scale), (int)(p.Y / scale));
             return np;
         }
 
-        public static Size Divide(this Size s, double scale)
+        public static SD.Size Divide(this SD.Size s, double scale)
         {
-            var ns = new Size((int)(s.Width / scale), (int)(s.Height / scale));
+            var ns = new SD.Size((int)(s.Width / scale), (int)(s.Height / scale));
             return ns;
         }
 
 
-        public static Point Subtract(this Point p1, Point p2)
+        public static SD.Point Subtract(this SD.Point p1, SD.Point p2)
         {
-            var np = new Point(p1.X-p2.X, p1.Y - p2.Y);
+            var np = new SD.Point(p1.X-p2.X, p1.Y - p2.Y);
             return np;
         }
 
-        public static Point Subtract(this Point p1, int x, int y)
+        public static SD.Point Subtract(this SD.Point p1, int x, int y)
         {
-            var np = new Point(p1.X - x, p1.Y - y);
+            var np = new SD.Point(p1.X - x, p1.Y - y);
             return np;
         }
 
-        public static Point Subtract(this Point p, Size s)
+        public static SD.Point Subtract(this SD.Point p, SD.Size s)
         {
-            var np = new Point(p.X - s.Width, p.Y - s.Height);
+            var np = new SD.Point(p.X - s.Width, p.Y - s.Height);
             return np;
         }
 
-        public static PointD ToPointD(this Point p)
+        public static PointD ToPointD(this SD.Point p)
         {
             var np = new PointD(p.X, p.Y);
             return np;
