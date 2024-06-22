@@ -210,6 +210,7 @@ namespace WinTabPainter
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+
             if (keyData == (Keys.Delete))
             {
                 this.EraseCanvas();
@@ -332,9 +333,7 @@ namespace WinTabPainter
 
         public void set_smoothing(double value)
         {
-            this.paintsettings.PositionSmoothingAmount = value;
-            this.paintsettings.PositionSmoothingAmount = System.Math.Min(this.paintsettings.PositionSmoothingAmount, this.paintsettings.SMOOTHING_MAX);
-            this.paintsettings.PositionSmoothingAmount = System.Math.Max(this.paintsettings.PositionSmoothingAmount, this.paintsettings.SMOOTHING_MIN);
+            this.paintsettings.PositionSmoothingAmount = Helpers.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
             this.paintsettings.Smoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
     }
