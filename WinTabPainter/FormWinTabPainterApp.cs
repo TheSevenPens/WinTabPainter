@@ -156,7 +156,7 @@ namespace WinTabPainter
                     var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
-                        penpos_canvas_smoothed.ToPointI(), 
+                        penpos_canvas_smoothed.ToPoint(), 
                         dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
@@ -174,8 +174,8 @@ namespace WinTabPainter
         }
         private void UpdateUIForPainting(PaintData paint_data, SD.Point penpos_canvas)
         {
-            this.label_ScreenPosValue.Text = paint_data.PenPos.ToSmallString();
-            this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
+            this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
+            this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
             this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureCurved, 5).ToString();
             this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);

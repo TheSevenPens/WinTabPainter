@@ -32,7 +32,7 @@ namespace WinTabPainter
         {
             // POSITION
             this.PenPos = new SD.Point(wintab_pkt.pkX, wintab_pkt.pkY);
-            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos.ToPointD()).ToPointWithRounding().ToSDPoint();
+            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos.ToPoint()).Round().ToPoint().ToSDPoint();
 
             // HOVER
             this.PenHover = wintab_pkt.pkZ;

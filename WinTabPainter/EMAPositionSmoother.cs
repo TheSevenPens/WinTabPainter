@@ -18,6 +18,10 @@ namespace WinTabPainter
             this.SmoothingOld = p;
         }
 
+        public Geometry.PointD Smooth(Geometry.Point value)
+        {
+            return this.Smooth(new Geometry.PointD(value.X, value.Y));
+        }
         public Geometry.PointD Smooth(Geometry.PointD value)
         {
             Geometry.PointD smoothed_new;
