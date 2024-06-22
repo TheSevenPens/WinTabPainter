@@ -301,7 +301,6 @@ namespace WinTabPainter
 
 
             var ofd = new OpenFileDialog();
-            //ofd.FileName = this.filename ?? "Untitled.png";
             ofd.DefaultExt = FileOpenDefaultExt;
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
