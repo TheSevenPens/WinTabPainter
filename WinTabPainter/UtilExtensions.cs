@@ -14,14 +14,16 @@ namespace WinTabPainter
     {
         public static SD.Point Divide( this SD.Point p, double scale)
         {
-            var np = new SD.Point((int)(p.X / scale), (int)(p.Y / scale));
-            return np;
+            var np1 = new PointD(p.X / scale, p.Y / scale);
+            var np2 = np1.ToPoint();
+            return np2;
         }
 
         public static SD.Size Divide(this SD.Size s, double scale)
         {
-            var ns = new SD.Size((int)(s.Width / scale), (int)(s.Height / scale));
-            return ns;
+            var ns1 = new SizeD(s.Width / scale, s.Height / scale);
+            var ns2 = ns1.ToSize();
+            return ns2;
         }
 
 
