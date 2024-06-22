@@ -121,7 +121,7 @@ namespace WinTabPainter
             return context;
         }
 
-        public bool IsInsideCanvas(SD.Point p)
+        public bool IsPointInsideCanvas(SD.Point p)
         {
             if (p.X < 0) { return false; }
             if (p.Y < 0) { return false; }
@@ -150,7 +150,7 @@ namespace WinTabPainter
                 this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
 
                 if ((wintab_pkt.pkNormalPressure > 0) 
-                    && (this.IsInsideCanvas(penpos_canvas)))
+                    && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
                     var penpos_canvas_smoothed = this.paintsettings.Smoother.Smooth(penpos_canvas.ToPointD());
                     var dab_size = new SD.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
