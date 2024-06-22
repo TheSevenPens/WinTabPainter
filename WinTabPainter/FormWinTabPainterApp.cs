@@ -137,27 +137,26 @@ namespace WinTabPainter
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
+                    // The pen's position on the screen 
+                    var penpos_screen = paint_data.PenPosition;
 
                     // convert the pen position from the screen to the app's client area
-                    var canvas_topleft = new SD.Point(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
+                    var canvas_topleft = this.pictureBox_Canvas.GetTopLeft();
 
                     // scale the pen position to (apparently) adjust for the OS scaling on my monitor
                     // need to do this in a more general way
-
-                    double scale = 2.5; 
-                    var penpos_screen = paint_data.PenPosition.Divide(scale);
-
+                    double scale = 2.5;
                     // Convert the screen coordinates to the client coordinates
-                    var penpos_canvas = this.PointToClient(penpos_screen.Subtract(canvas_topleft));
+                    var penpos_canvas = this.PointToClient(penpos_screen.Divide(scale).Subtract(canvas_topleft));
 
                     // the pen is not in the client area, abandon doing anything
                     if (penpos_canvas.X < 0) { return; }
                     if (penpos_canvas.Y < 0) { return; }
 
-                    var penpos_client_smoothed = this.paintsettings.Smoother.Smooth(penpos_canvas.ToPointD());
+                    var penpos_canvas_smoothed = this.paintsettings.Smoother.Smooth(penpos_canvas.ToPointD());
 
                     var dab_size = new SD.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
-                    this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_client_smoothed.ToPoint(), dab_size);
+                    this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_canvas_smoothed.ToPoint(), dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
