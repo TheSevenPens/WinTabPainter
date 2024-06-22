@@ -2,7 +2,7 @@
 
 namespace WinTabPainter
 {
-    public static class Helpers
+    public static class HelperMethods
     {
         public static double ClampRange(double value, double min, double max)
         {
@@ -14,7 +14,7 @@ namespace WinTabPainter
 
         public static double ApplyCurve(double value, double q)
         {
-            q = Helpers.ClampRange(q, -1, 1);
+            q = HelperMethods.ClampRange(q, -1, 1);
 
             double new_value;
 

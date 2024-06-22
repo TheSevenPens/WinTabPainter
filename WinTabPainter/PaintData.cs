@@ -30,7 +30,7 @@ namespace WinTabPainter
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
 
             // Calculate the normalize pressure with pressurce curve applied
-            this.PressureAdjusted = Helpers.ApplyCurve(this.PressureNormalized, paintsettings.PressureCurveControl);
+            this.PressureAdjusted = HelperMethods.ApplyCurve(this.PressureNormalized, paintsettings.PressureCurveControl);
 
             // Calculate the brush width taking into account the pen pressure
             if (wintab_pkt.pkNormalPressure > 0)

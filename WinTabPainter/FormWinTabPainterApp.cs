@@ -326,7 +326,7 @@ namespace WinTabPainter
 
         public void set_position_smoothing(double value)
         {
-            this.paintsettings.PositionSmoothingAmount = Helpers.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.PositionSmoothingAmount = HelperMethods.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
             this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
     }
