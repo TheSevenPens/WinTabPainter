@@ -79,7 +79,7 @@
             // label_Pressure
             // 
             this.label_Pressure.AutoSize = true;
-            this.label_Pressure.Location = new System.Drawing.Point(23, 305);
+            this.label_Pressure.Location = new System.Drawing.Point(23, 254);
             this.label_Pressure.Name = "label_Pressure";
             this.label_Pressure.Size = new System.Drawing.Size(172, 32);
             this.label_Pressure.TabIndex = 11;
@@ -88,25 +88,25 @@
             // label_Azimuth
             // 
             this.label_Azimuth.AutoSize = true;
-            this.label_Azimuth.Location = new System.Drawing.Point(23, 435);
+            this.label_Azimuth.Location = new System.Drawing.Point(23, 398);
             this.label_Azimuth.Name = "label_Azimuth";
-            this.label_Azimuth.Size = new System.Drawing.Size(117, 32);
+            this.label_Azimuth.Size = new System.Drawing.Size(156, 32);
             this.label_Azimuth.TabIndex = 14;
-            this.label_Azimuth.Text = "Azimuth";
+            this.label_Azimuth.Text = "TiltAzimuth";
             // 
             // label_Altitude
             // 
             this.label_Altitude.AutoSize = true;
-            this.label_Altitude.Location = new System.Drawing.Point(23, 391);
+            this.label_Altitude.Location = new System.Drawing.Point(23, 350);
             this.label_Altitude.Name = "label_Altitude";
-            this.label_Altitude.Size = new System.Drawing.Size(111, 32);
+            this.label_Altitude.Size = new System.Drawing.Size(150, 32);
             this.label_Altitude.TabIndex = 13;
-            this.label_Altitude.Text = "Altitude";
+            this.label_Altitude.Text = "TiltAltitude";
             // 
             // label_Buttons
             // 
             this.label_Buttons.AutoSize = true;
-            this.label_Buttons.Location = new System.Drawing.Point(23, 482);
+            this.label_Buttons.Location = new System.Drawing.Point(23, 446);
             this.label_Buttons.Name = "label_Buttons";
             this.label_Buttons.Size = new System.Drawing.Size(111, 32);
             this.label_Buttons.TabIndex = 16;
@@ -115,7 +115,7 @@
             // label_Device
             // 
             this.label_Device.AutoSize = true;
-            this.label_Device.Location = new System.Drawing.Point(23, 537);
+            this.label_Device.Location = new System.Drawing.Point(23, 494);
             this.label_Device.Name = "label_Device";
             this.label_Device.Size = new System.Drawing.Size(101, 32);
             this.label_Device.TabIndex = 18;
@@ -139,14 +139,14 @@
             this.pictureBox_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox_Canvas.Location = new System.Drawing.Point(513, 134);
             this.pictureBox_Canvas.Name = "pictureBox_Canvas";
-            this.pictureBox_Canvas.Size = new System.Drawing.Size(1261, 766);
+            this.pictureBox_Canvas.Size = new System.Drawing.Size(1261, 756);
             this.pictureBox_Canvas.TabIndex = 21;
             this.pictureBox_Canvas.TabStop = false;
             // 
             // label_AltitudeValue
             // 
             this.label_AltitudeValue.AutoSize = true;
-            this.label_AltitudeValue.Location = new System.Drawing.Point(190, 391);
+            this.label_AltitudeValue.Location = new System.Drawing.Point(199, 350);
             this.label_AltitudeValue.Name = "label_AltitudeValue";
             this.label_AltitudeValue.Size = new System.Drawing.Size(41, 32);
             this.label_AltitudeValue.TabIndex = 26;
@@ -155,7 +155,7 @@
             // label_ScreenPosValue
             // 
             this.label_ScreenPosValue.AutoSize = true;
-            this.label_ScreenPosValue.Location = new System.Drawing.Point(190, 110);
+            this.label_ScreenPosValue.Location = new System.Drawing.Point(199, 110);
             this.label_ScreenPosValue.Name = "label_ScreenPosValue";
             this.label_ScreenPosValue.Size = new System.Drawing.Size(41, 32);
             this.label_ScreenPosValue.TabIndex = 22;
@@ -164,7 +164,7 @@
             // label_PressureValue
             // 
             this.label_PressureValue.AutoSize = true;
-            this.label_PressureValue.Location = new System.Drawing.Point(190, 305);
+            this.label_PressureValue.Location = new System.Drawing.Point(199, 254);
             this.label_PressureValue.Name = "label_PressureValue";
             this.label_PressureValue.Size = new System.Drawing.Size(41, 32);
             this.label_PressureValue.TabIndex = 25;
@@ -173,7 +173,7 @@
             // label_AzimuthValue
             // 
             this.label_AzimuthValue.AutoSize = true;
-            this.label_AzimuthValue.Location = new System.Drawing.Point(190, 435);
+            this.label_AzimuthValue.Location = new System.Drawing.Point(199, 398);
             this.label_AzimuthValue.Name = "label_AzimuthValue";
             this.label_AzimuthValue.Size = new System.Drawing.Size(41, 32);
             this.label_AzimuthValue.TabIndex = 27;
@@ -182,7 +182,7 @@
             // label_ButtonsValue
             // 
             this.label_ButtonsValue.AutoSize = true;
-            this.label_ButtonsValue.Location = new System.Drawing.Point(190, 482);
+            this.label_ButtonsValue.Location = new System.Drawing.Point(199, 446);
             this.label_ButtonsValue.Name = "label_ButtonsValue";
             this.label_ButtonsValue.Size = new System.Drawing.Size(41, 32);
             this.label_ButtonsValue.TabIndex = 28;
@@ -191,7 +191,7 @@
             // label_DeviceValue
             // 
             this.label_DeviceValue.AutoSize = true;
-            this.label_DeviceValue.Location = new System.Drawing.Point(190, 537);
+            this.label_DeviceValue.Location = new System.Drawing.Point(199, 494);
             this.label_DeviceValue.Name = "label_DeviceValue";
             this.label_DeviceValue.Size = new System.Drawing.Size(41, 32);
             this.label_DeviceValue.TabIndex = 29;
@@ -200,7 +200,7 @@
             // label_PressureRawValue
             // 
             this.label_PressureRawValue.AutoSize = true;
-            this.label_PressureRawValue.Location = new System.Drawing.Point(190, 262);
+            this.label_PressureRawValue.Location = new System.Drawing.Point(199, 206);
             this.label_PressureRawValue.Name = "label_PressureRawValue";
             this.label_PressureRawValue.Size = new System.Drawing.Size(41, 32);
             this.label_PressureRawValue.TabIndex = 31;
@@ -209,7 +209,7 @@
             // label_PressureRaw
             // 
             this.label_PressureRaw.AutoSize = true;
-            this.label_PressureRaw.Location = new System.Drawing.Point(23, 262);
+            this.label_PressureRaw.Location = new System.Drawing.Point(23, 206);
             this.label_PressureRaw.Name = "label_PressureRaw";
             this.label_PressureRaw.Size = new System.Drawing.Size(127, 32);
             this.label_PressureRaw.TabIndex = 30;
@@ -269,7 +269,7 @@
             // label_PressureAdjusted
             // 
             this.label_PressureAdjusted.AutoSize = true;
-            this.label_PressureAdjusted.Location = new System.Drawing.Point(190, 341);
+            this.label_PressureAdjusted.Location = new System.Drawing.Point(199, 302);
             this.label_PressureAdjusted.Name = "label_PressureAdjusted";
             this.label_PressureAdjusted.Size = new System.Drawing.Size(41, 32);
             this.label_PressureAdjusted.TabIndex = 38;
@@ -278,7 +278,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 341);
+            this.label3.Location = new System.Drawing.Point(23, 302);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(171, 32);
             this.label3.TabIndex = 37;
@@ -292,7 +292,7 @@
             this.MenuItem_File});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 60);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -303,7 +303,7 @@
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
-            this.MenuItem_File.Size = new System.Drawing.Size(87, 56);
+            this.MenuItem_File.Size = new System.Drawing.Size(87, 45);
             this.MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -349,7 +349,7 @@
             // label_CanvasPos
             // 
             this.label_CanvasPos.AutoSize = true;
-            this.label_CanvasPos.Location = new System.Drawing.Point(190, 159);
+            this.label_CanvasPos.Location = new System.Drawing.Point(199, 158);
             this.label_CanvasPos.Name = "label_CanvasPos";
             this.label_CanvasPos.Size = new System.Drawing.Size(41, 32);
             this.label_CanvasPos.TabIndex = 44;
@@ -358,7 +358,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(23, 159);
+            this.label5.Location = new System.Drawing.Point(23, 158);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(159, 32);
             this.label5.TabIndex = 43;
@@ -368,7 +368,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1786, 912);
+            this.ClientSize = new System.Drawing.Size(1786, 945);
             this.Controls.Add(this.label_CanvasPos);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);

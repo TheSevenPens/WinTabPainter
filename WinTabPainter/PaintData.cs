@@ -17,8 +17,8 @@ namespace WinTabPainter
         public SD.Point PenPosScreen;
         public int PenZ;
         public uint PressureRaw;
-        public int Altitude;
-        public int Azimuth;
+        public double TiltAltitude;
+        public double TiltAzimuth;
 
         // calculated properties
         public double PressureNormalized;
@@ -30,8 +30,8 @@ namespace WinTabPainter
             this.PenPosScreen = new SD.Point(wintab_pkt.pkX, wintab_pkt.pkY);
             this.PenZ = wintab_pkt.pkZ;
             this.PressureRaw = wintab_pkt.pkNormalPressure;
-            this.Altitude = wintab_pkt.pkOrientation.orAltitude;
-            this.Azimuth = wintab_pkt.pkOrientation.orAzimuth;
+            this.TiltAltitude = wintab_pkt.pkOrientation.orAltitude / 10.0;
+            this.TiltAzimuth = wintab_pkt.pkOrientation.orAzimuth / 10.0;
 
             // Calculate normalized pressure so that it is in range [0,1]
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
@@ -50,6 +50,10 @@ namespace WinTabPainter
             }
         }
 
+        public double DegreesToRadians(double degrees)
+        {
+            return degrees * (System.Math.PI / 180.0);
+        }
 
     }
 }
