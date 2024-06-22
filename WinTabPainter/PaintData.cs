@@ -16,6 +16,7 @@ namespace WinTabPainter
 
         // calculated properties
         public double PressureNormalized;
+        public double PressureSmoothed;
         public double PressureCurved;
         public int BrushWidthAdjusted;
 
@@ -29,11 +30,10 @@ namespace WinTabPainter
 
 
             // Calculate normalized pressure so that it is in range [0,1]
-            this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
-
             // Calculate the normalize pressure with pressurce curve applied
-
-            this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureNormalized);
+            this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
+            this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
+            this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
 
             var penpos_canvas_smoothed = paintsettings.PositionSmoother.Smooth(this.PenPosScreen.ToPointD());
             this.PenPosScreenSmoothed = penpos_canvas_smoothed.ToPointWithRounding().ToSDPoint();

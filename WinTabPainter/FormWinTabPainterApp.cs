@@ -75,7 +75,7 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
 
             // Default to no smoothing
-            this.paintsettings.PositionSmoother = new EMASmoother(0);
+            this.paintsettings.PositionSmoother = new EMAPositionSmoother(0);
             this.paintsettings.PressureSmoother = new EMASmoother(0);
             this.trackBar_Smoothing.Value = 0;
             this.set_position_smoothing(0);
