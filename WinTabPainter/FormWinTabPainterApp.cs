@@ -66,7 +66,7 @@ namespace WinTabPainter
 
             if (System.Windows.Forms.SystemInformation.MonitorCount >= 3)
             {
-                var screen = System.Windows.Forms.Screen.AllScreens[1];
+                var screen = System.Windows.Forms.Screen.AllScreens[2];
                 this.Left = screen.Bounds.Left + (screen.Bounds.Width / 2) - (this.Width / 2);
                 this.Top = screen.Bounds.Top + (screen.Bounds.Height/2) - (this.Height / 2);
             }
@@ -153,7 +153,6 @@ namespace WinTabPainter
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
 
-                    //var pressure_smoothed = this.paintsettings.PressureSmoother.Smooth(paint_data.PressureCurved);
                     var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
