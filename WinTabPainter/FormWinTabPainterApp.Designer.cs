@@ -304,7 +304,7 @@
             this.trackBar_Smoothing.Name = "trackBar_Smoothing";
             this.trackBar_Smoothing.Size = new System.Drawing.Size(424, 45);
             this.trackBar_Smoothing.TabIndex = 41;
-            this.trackBar_Smoothing.Scroll += new System.EventHandler(this.trackBar_Smoothing_Scroll);
+            this.trackBar_Smoothing.Scroll += new System.EventHandler(this.trackBar_PositionSmoothing_Scroll);
             // 
             // label_CanvasPos
             // 

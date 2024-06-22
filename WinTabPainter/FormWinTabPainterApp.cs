@@ -71,9 +71,9 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
 
             // Default to no smoothing
-            this.paintsettings.Smoother = new EMASmoother(0);
+            this.paintsettings.PositionSmoother = new EMASmoother(0);
             this.trackBar_Smoothing.Value = 0;
-            this.set_smoothing(0);
+            this.set_position_smoothing(0);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -154,7 +154,7 @@ namespace WinTabPainter
                 if ((wintab_pkt.pkNormalPressure > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
-                    var penpos_canvas_smoothed = this.paintsettings.Smoother.Smooth(penpos_canvas.ToPointD());
+                    var penpos_canvas_smoothed = this.paintsettings.PositionSmoother.Smooth(penpos_canvas.ToPointD());
                     var dab_size = new SD.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_canvas_smoothed.ToSDPointWithRounding(), dab_size);
 
@@ -326,15 +326,15 @@ namespace WinTabPainter
         }
 
 
-        private void trackBar_Smoothing_Scroll(object sender, EventArgs e)
+        private void trackBar_PositionSmoothing_Scroll(object sender, EventArgs e)
         {
-            this.set_smoothing(this.trackBar_Smoothing.Value / this.trackBar_Smoothing.Maximum);
+            this.set_position_smoothing(this.trackBar_Smoothing.Value / this.trackBar_Smoothing.Maximum);
         }
 
-        public void set_smoothing(double value)
+        public void set_position_smoothing(double value)
         {
             this.paintsettings.PositionSmoothingAmount = Helpers.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
-            this.paintsettings.Smoother.Alpha = this.paintsettings.PositionSmoothingAmount;
+            this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
     }
 }
