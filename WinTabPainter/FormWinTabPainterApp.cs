@@ -143,6 +143,7 @@ namespace WinTabPainter
                 // and convert that to coordinates of the bitmap document canvas
                 double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
                 var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPosScreen, scale);
+                var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosScreenSmoothed, scale);
 
                 // Update the UI based 
                 UpdateUIForPainting(paint_data, penpos_canvas);
@@ -150,14 +151,12 @@ namespace WinTabPainter
                 if ((wintab_pkt.pkNormalPressure > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
-                    //var penpos_canvas_smoothed = this.paintsettings.PositionSmoother.Smooth(penpos_canvas.ToPointD());
-                    var penpos_canvas_smoothed = this.paintsettings.PositionSmoother.Smooth(penpos_canvas.ToPointD());
 
                     //var pressure_smoothed = this.paintsettings.PressureSmoother.Smooth(paint_data.PressureCurved);
                     var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
                         SD.Color.Black,
-                        penpos_canvas_smoothed.ToPointWithRounding(), 
+                        penpos_canvas_smoothed.ToPointI(), 
                         dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
