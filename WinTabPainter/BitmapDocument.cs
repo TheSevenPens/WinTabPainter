@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using SD=System.Drawing;
 
 namespace WinTabPainter
@@ -35,6 +36,10 @@ namespace WinTabPainter
 
         SD.Color DefaultPageColor = System.Drawing.Color.White;
 
+        public Geometry.SizeI Size
+        {
+            get { return new Geometry.SizeI(this._width,this._height); }
+        }
         public BitmapDocument(int width, int height)
         {
             this._bmp = new SD.Bitmap(width, height);
@@ -74,10 +79,10 @@ namespace WinTabPainter
             this._bmp.Save(filename);
         }
 
-        public void DrawDabCenteredAt(SD.Color color, SD.Point p, SD.Size s)
+        public void DrawDabCenteredAt(SD.Color color, SD.Point p, Geometry.SizeI s)
         {
-            var dab_rect_center = p.Subtract(s.Divide(2.0).ToSDSizeWithRounding());
-            var rect = new SD.Rectangle(dab_rect_center, s);
+            var dab_rect_center = p.Subtract(s.Divide(2.0).ToSDSizeWithRounding() );
+            var rect = new SD.Rectangle(dab_rect_center, s.ToSDSize() );
             using (SD.Brush brush = new SD.SolidBrush(color))
             {
                 this._gfx.FillEllipse(brush, rect);
