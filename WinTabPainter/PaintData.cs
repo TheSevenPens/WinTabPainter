@@ -6,19 +6,26 @@ namespace WinTabPainter
 {
     public struct PaintData
     {
-        // properties from the tablet
+        // POSITION
         public SD.Point PenPos;
         public SD.Point PenPosSmoothed;
+
+        // HOVER
         public int PenHover;
-        public uint PressureRaw;
+
+        //TILT
         public double TiltAltitude;
         public double TiltAzimuth;
 
-        // calculated properties
+
+        // PRESSURE
+        public uint PressureRaw;
         public double PressureNormalized;
         public double PressureSmoothed;
         public double PressureCurved;
         public double PressureEffective;
+
+        // BRUSH
         public int BrushWidthAdjusted;
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
