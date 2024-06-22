@@ -43,9 +43,9 @@ namespace WinTabPainter
             return np;
         }
 
-        public static Geometry.PointI ToPointI(this SD.Point p)
+        public static Geometry.Point ToPointI(this SD.Point p)
         {
-            var np = new Geometry.PointI(p.X, p.Y);
+            var np = new Geometry.Point(p.X, p.Y);
             return np;
         }
         public static string ToSmallString(this SD.Point p)

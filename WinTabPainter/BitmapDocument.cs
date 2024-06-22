@@ -36,9 +36,9 @@ namespace WinTabPainter
 
         SD.Color DefaultPageColor = System.Drawing.Color.White;
 
-        public Geometry.SizeI Size
+        public Geometry.Size Size
         {
-            get { return new Geometry.SizeI(this._width,this._height); }
+            get { return new Geometry.Size(this._width,this._height); }
         }
         public BitmapDocument(int width, int height)
         {
@@ -79,7 +79,7 @@ namespace WinTabPainter
             this._bmp.Save(filename);
         }
 
-        public void DrawDabCenteredAt(SD.Color color, Geometry.PointI p, Geometry.SizeI s)
+        public void DrawDabCenteredAt(SD.Color color, Geometry.Point p, Geometry.Size s)
         {
             var z = s.Divide(2.0).ToSizeWithRounding();
             var dab_rect_center = p.Subtract(z);

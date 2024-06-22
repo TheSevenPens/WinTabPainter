@@ -2,41 +2,41 @@
 
 namespace WinTabPainter.Geometry
 {
-    public struct PointI
+    public struct Point
     {
         public int X;
         public int Y;
 
-        public static PointI Empty
+        public static Point Empty
         {
             get
             {
-                return new PointI(0, 0);
+                return new Point(0, 0);
             }
         }
 
-        public PointI(int x, int y)
+        public Point(int x, int y)
         {
             this.X = x;
             this.Y = y;
         }
-        public PointI Add(int dx, int dy)
+        public Point Add(int dx, int dy)
         {
-            return new PointI(this.X + dx, this.Y + dy);
+            return new Point(this.X + dx, this.Y + dy);
         }
-        public PointI Subtract(int dx, int dy)
+        public Point Subtract(int dx, int dy)
         {
-            return new PointI(this.X - dx, this.Y - dy);
-        }
-
-        public PointI Subtract(Geometry.SizeI s)
-        {
-            return new PointI(this.X - s.Width, this.Y - s.Height);
+            return new Point(this.X - dx, this.Y - dy);
         }
 
-        public PointI Subtract(Geometry.PointI p)
+        public Point Subtract(Geometry.Size s)
         {
-            return new PointI(this.X - p.X, this.Y - p.Y);
+            return new Point(this.X - s.Width, this.Y - s.Height);
+        }
+
+        public Point Subtract(Geometry.Point p)
+        {
+            return new Point(this.X - p.X, this.Y - p.Y);
         }
 
         public PointD Divide(double scale)

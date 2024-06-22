@@ -3,12 +3,12 @@ using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry
 {
-    public struct SizeI
+    public struct Size
     {
         public int Width;
         public int Height;
 
-        public SizeI(int w, int h)
+        public Size(int w, int h)
         {
             this.Width = w;
             this.Height = h;

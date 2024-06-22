@@ -27,11 +27,11 @@ namespace WinTabPainter.Geometry
             return s;
         }
 
-        public Geometry.SizeI ToSizeWithRounding()
+        public Geometry.Size ToSizeWithRounding()
         {
             double w = System.Math.Round(this.Width);
             double h = System.Math.Round(this.Height);
-            var s = new Geometry.SizeI((int)w, (int)h);
+            var s = new Geometry.Size((int)w, (int)h);
             return s;
         }
     }
