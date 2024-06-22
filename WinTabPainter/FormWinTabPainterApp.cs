@@ -121,6 +121,14 @@ namespace WinTabPainter
             return context;
         }
 
+        public bool IsInsideCanvas(SD.Point p)
+        {
+            if (p.X < 0) { return false; }
+            if (p.Y < 0) { return false; }
+            if (p.X >= this.pictureBox_Canvas.Width) { return false; }
+            if (p.Y >= this.pictureBox_Canvas.Height) { return false; }
+            return true;
+        }
         private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
 
@@ -141,14 +149,10 @@ namespace WinTabPainter
                 var penpos_canvas = this.PointToClient(paint_data.PenPosScreen.Divide(scale).ToSDPointWithRounding().Subtract(this.pictureBox_Canvas.Location));
                 this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
 
-                if (wintab_pkt.pkNormalPressure > 0)
+                if ((wintab_pkt.pkNormalPressure > 0) 
+                    && (this.IsInsideCanvas(penpos_canvas)))
                 {
-                    // the pen is not in the client area, abandon doing anything
-                    if (penpos_canvas.X < 0) { return; }
-                    if (penpos_canvas.Y < 0) { return; }
-
                     var penpos_canvas_smoothed = this.paintsettings.Smoother.Smooth(penpos_canvas.ToPointD());
-
                     var dab_size = new SD.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_canvas_smoothed.ToSDPointWithRounding(), dab_size);
 
