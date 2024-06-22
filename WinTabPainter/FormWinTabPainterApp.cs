@@ -128,6 +128,7 @@ namespace WinTabPainter
             if (p.Y >= this.pictureBox_Canvas.Height) { return false; }
             return true;
         }
+
         private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
 
@@ -145,8 +146,8 @@ namespace WinTabPainter
                 var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos, scale);
                 var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed, scale);
 
-                // Update the UI based 
-                UpdateUIForPainting(paint_data, penpos_canvas);
+                // Update the UI 
+                UpdateUIWithPaintData(paint_data, penpos_canvas);
 
                 var clr_black = new ColorARGB(255, 0, 0, 0);
                 if ((paint_data.PressureRaw > 0) 
@@ -172,7 +173,7 @@ namespace WinTabPainter
             var penpos_canvas = this.PointToClient(new SD.Point(px, py)).ToPoint();
             return penpos_canvas;
         }
-        private void UpdateUIForPainting(PaintData paint_data, Geometry.Point penpos_canvas)
+        private void UpdateUIWithPaintData(PaintData paint_data, Geometry.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
