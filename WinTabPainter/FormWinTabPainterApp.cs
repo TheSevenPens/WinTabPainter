@@ -146,8 +146,13 @@ namespace WinTabPainter
                     // scale the pen position to (apparently) adjust for the OS scaling on my monitor
                     // need to do this in a more general way
                     double scale = 2.5;
-                    // Convert the screen coordinates to the client coordinates
-                    var penpos_canvas = this.PointToClient(penpos_screen.Divide(scale).ToSDPointWithRounding().Subtract(canvas_topleft));
+                    var p1 = penpos_screen.Divide(scale);
+                    var p2 = p1.ToSDPointWithRounding();
+                    var p3 = p2.Subtract(canvas_topleft);
+                    var penpos_canvas = this.PointToClient(p3);
+
+                    string dbug_msg = string.Format("{0} {1} {2} {3} {4}", penpos_screen.ToSmallString(), p1.ToSmallString(), p2.ToSmallString(), p3.ToSmallString(), penpos_canvas.ToSmallString());
+                    this.label_Debug.Text = dbug_msg;
 
                     // the pen is not in the client area, abandon doing anything
                     if (penpos_canvas.X < 0) { return; }

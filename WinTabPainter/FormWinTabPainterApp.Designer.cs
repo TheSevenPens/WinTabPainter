@@ -62,6 +62,7 @@
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBar_Smoothing = new System.Windows.Forms.TrackBar();
+            this.label_Debug = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -159,7 +160,7 @@
             this.pictureBox_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox_Canvas.Location = new System.Drawing.Point(513, 134);
             this.pictureBox_Canvas.Name = "pictureBox_Canvas";
-            this.pictureBox_Canvas.Size = new System.Drawing.Size(1043, 766);
+            this.pictureBox_Canvas.Size = new System.Drawing.Size(1261, 766);
             this.pictureBox_Canvas.TabIndex = 21;
             this.pictureBox_Canvas.TabStop = false;
             // 
@@ -330,7 +331,7 @@
             this.MenuItem_File});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1568, 60);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -341,7 +342,7 @@
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
-            this.MenuItem_File.Size = new System.Drawing.Size(87, 56);
+            this.MenuItem_File.Size = new System.Drawing.Size(87, 45);
             this.MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -384,11 +385,21 @@
             this.trackBar_Smoothing.TabIndex = 41;
             this.trackBar_Smoothing.Scroll += new System.EventHandler(this.trackBar_Smoothing_Scroll);
             // 
+            // label_Debug
+            // 
+            this.label_Debug.AutoSize = true;
+            this.label_Debug.Location = new System.Drawing.Point(1211, 83);
+            this.label_Debug.Name = "label_Debug";
+            this.label_Debug.Size = new System.Drawing.Size(127, 32);
+            this.label_Debug.TabIndex = 43;
+            this.label_Debug.Text = "Pressure";
+            // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1568, 912);
+            this.ClientSize = new System.Drawing.Size(1786, 912);
+            this.Controls.Add(this.label_Debug);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.trackBar_Smoothing);
             this.Controls.Add(this.label_PressureAdjusted);
@@ -471,6 +482,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Open;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBar_Smoothing;
+        private System.Windows.Forms.Label label_Debug;
     }
 }
 

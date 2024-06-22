@@ -56,5 +56,9 @@ namespace WinTabPainter
             return p;
         }
 
+        public static string ToSmallString(this SD.Point p)
+        {
+            return string.Format("({0}x{1})", p.X, p.Y);
+        }
     }
 }

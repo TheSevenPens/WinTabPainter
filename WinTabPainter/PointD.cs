@@ -34,5 +34,10 @@ namespace WinTabPainter.Geometry
             var p = new SD.Point((int)rx, (int)ry);
             return p;
         }
+
+        public string ToSmallString()
+        {
+            return string.Format("({0}x{1})", this.X, this.Y);
+        }
     }
 }
