@@ -30,13 +30,7 @@ namespace WinTabPainter.Geometry
             this.Y = y;
         }
 
-        public PointD(SD.Point point)
-        {
-            this.X = point.X;
-            this.Y = point.Y;
-        }
-
-        public SD.Point ToPoint()
+        public SD.Point ToSDPoint()
         {
             double rx = System.Math.Round(this.X);
             double ry = System.Math.Round(this.Y);
@@ -61,7 +55,7 @@ namespace WinTabPainter.Geometry
             this.Height = h;
         }
 
-        public SD.Size ToSize()
+        public SD.Size ToSDSize()
         {
             double rx = System.Math.Round(this.Width);
             double ry = System.Math.Round(this.Height);

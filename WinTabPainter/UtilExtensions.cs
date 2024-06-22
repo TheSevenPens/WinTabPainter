@@ -12,17 +12,16 @@ namespace WinTabPainter
 {
     public static class UtilExtensions
     {
-        public static SD.Point Divide( this SD.Point p, double scale)
+        public static Geometry.PointD Divide( this SD.Point p, double scale)
         {
             var np1 = new Geometry.PointD(p.X / scale, p.Y / scale);
-            var np2 = np1.ToPoint();
-            return np2;
+            return np1;
         }
 
         public static SD.Size Divide(this SD.Size s, double scale)
         {
             var ns1 = new Geometry.SizeD(s.Width / scale, s.Height / scale);
-            var ns2 = ns1.ToSize();
+            var ns2 = ns1.ToSDSize();
             return ns2;
         }
 

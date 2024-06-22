@@ -147,7 +147,7 @@ namespace WinTabPainter
                     // need to do this in a more general way
                     double scale = 2.5;
                     // Convert the screen coordinates to the client coordinates
-                    var penpos_canvas = this.PointToClient(penpos_screen.Divide(scale).Subtract(canvas_topleft));
+                    var penpos_canvas = this.PointToClient(penpos_screen.Divide(scale).ToSDPoint().Subtract(canvas_topleft));
 
                     // the pen is not in the client area, abandon doing anything
                     if (penpos_canvas.X < 0) { return; }
@@ -156,7 +156,7 @@ namespace WinTabPainter
                     var penpos_canvas_smoothed = this.paintsettings.Smoother.Smooth(penpos_canvas.ToPointD());
 
                     var dab_size = new SD.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
-                    this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_canvas_smoothed.ToPoint(), dab_size);
+                    this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_canvas_smoothed.ToSDPoint(), dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
