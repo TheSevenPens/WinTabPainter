@@ -4,6 +4,25 @@ using SD=System.Drawing;
 
 namespace WinTabPainter
 {
+    public struct ColorARGB
+    {
+        public readonly ushort Alpha;
+        public readonly ushort Red;
+        public readonly ushort Green;
+        public readonly ushort Blue;
+        public ColorARGB(ushort alpha, ushort red, ushort green, ushort blue)
+        {
+            this.Alpha = alpha;
+            this.Red = red;
+            this.Green = green;
+            this.Blue = blue;
+        }
+
+        public SD.Color ToSDColor()
+        {
+            return SD.Color.FromArgb(this.Alpha, this.Red, this.Green, this.Blue);
+        }
+    }
     public class BitmapDocument : IDisposable
     {
         // BitmapDocument class intended to encapsulate
@@ -79,12 +98,12 @@ namespace WinTabPainter
             this._bmp.Save(filename);
         }
 
-        public void DrawDabCenteredAt(SD.Color color, Geometry.Point p, Geometry.Size s)
+        public void DrawDabCenteredAt(ColorARGB color, Geometry.Point p, Geometry.Size s)
         {
             var halfsize = s.Divide(2.0).ToSizeWithRounding();
             var dab_rect_center = p.Subtract(halfsize);
             var rect = new SD.Rectangle(dab_rect_center.ToSDPoint(), s.ToSDSize() );
-            using (SD.Brush brush = new SD.SolidBrush(color))
+            using (SD.Brush brush = new SD.SolidBrush(color.ToSDColor()))
             {
                 this._gfx.FillEllipse(brush, rect);
             }

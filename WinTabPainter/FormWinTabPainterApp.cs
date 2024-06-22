@@ -148,6 +148,7 @@ namespace WinTabPainter
                 // Update the UI based 
                 UpdateUIForPainting(paint_data, penpos_canvas);
 
+                var clr_black = new ColorARGB(255, 0, 0, 0);
                 if ((wintab_pkt.pkNormalPressure > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
@@ -155,7 +156,7 @@ namespace WinTabPainter
                     //var pressure_smoothed = this.paintsettings.PressureSmoother.Smooth(paint_data.PressureCurved);
                     var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
-                        SD.Color.Black,
+                        clr_black,
                         penpos_canvas_smoothed.ToPointI(), 
                         dab_size);
 
