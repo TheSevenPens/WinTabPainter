@@ -52,6 +52,7 @@
     <Compile Include="BitmapDocument.cs" />
     <Compile Include="ColorARGB.cs" />
     <Compile Include="EMAPositionSmoother.cs" />
+    <Compile Include="EMASmoother.cs" />
     <Compile Include="FormWinTabPainterApp.cs">
       <SubType>Form</SubType>
     </Compile>
