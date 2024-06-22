@@ -27,6 +27,7 @@ namespace WinTabPainter
         string FileSaveDefaultFilename = "Untitled.png";
         string FileSaveDefaultExt = "png";
         string FileOpenDefaultExt = "png";
+        string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         public FormWinTabPainterApp()
         {
@@ -101,15 +102,7 @@ namespace WinTabPainter
 
             this.tablet_info.Initialize();
 
-            if (tablet_info.DeviceName!= null)
-            {
-                this.label_DeviceValue.Text = this.tablet_info.DeviceName;
-            }
-            else
-            {
-                this.label_DeviceValue.Text = "UNKNOWN";
-            }
-
+            this.label_DeviceValue.Text = this.tablet_info.DeviceName ?? DefaultTabletDeviceName;
 
             // In Wintab, the tablet origin is lower left.  Move origin to upper left
             // so that it coincides with screen origin.
