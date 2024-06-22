@@ -120,7 +120,7 @@ namespace WinTabPainter
             return context;
         }
 
-        public bool IsPointInsideCanvas(SD.Point p)
+        public bool IsPointInsideCanvas(Geometry.Point p)
         {
             if (p.X < 0) { return false; }
             if (p.Y < 0) { return false; }
@@ -156,7 +156,7 @@ namespace WinTabPainter
                     var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
-                        penpos_canvas_smoothed.ToPoint(), 
+                        penpos_canvas_smoothed, 
                         dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
@@ -164,15 +164,15 @@ namespace WinTabPainter
             }
         }
 
-        public SD.Point Screen_loc_to_canvas_loc( SD.Point screen_loc, double scale)
+        public Geometry.Point Screen_loc_to_canvas_loc( Geometry.Point screen_loc, double scale)
         {
             var canv_loc = this.pictureBox_Canvas.Location;
             var px = (int)((screen_loc.X / scale) - canv_loc.X);
             var py = (int)((screen_loc.Y / scale) - canv_loc.Y);
-            var penpos_canvas = this.PointToClient(new SD.Point(px, py));
+            var penpos_canvas = this.PointToClient(new SD.Point(px, py)).ToPoint();
             return penpos_canvas;
         }
-        private void UpdateUIForPainting(PaintData paint_data, SD.Point penpos_canvas)
+        private void UpdateUIForPainting(PaintData paint_data, Geometry.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();

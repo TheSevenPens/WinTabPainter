@@ -50,7 +50,7 @@ namespace WinTabPainter.Geometry
             return p;
         }
 
-        public string ToSmallString()
+        public string ToStringXY()
         {
             return string.Format("({0}x{1})", this.X, this.Y);
         }

@@ -7,8 +7,8 @@ namespace WinTabPainter
     public struct PaintData
     {
         // POSITION
-        public SD.Point PenPos;
-        public SD.Point PenPosSmoothed;
+        public Geometry.Point PenPos;
+        public Geometry.Point PenPosSmoothed;
 
         // HOVER
         public int PenHover;
@@ -31,8 +31,8 @@ namespace WinTabPainter
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
             // POSITION
-            this.PenPos = new SD.Point(wintab_pkt.pkX, wintab_pkt.pkY);
-            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos.ToPoint()).Round().ToPoint().ToSDPoint();
+            this.PenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
+            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos).Round().ToPoint();
 
             // HOVER
             this.PenHover = wintab_pkt.pkZ;
