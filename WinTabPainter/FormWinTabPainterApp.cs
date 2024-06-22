@@ -34,7 +34,7 @@ namespace WinTabPainter
         private void Form1_Load(object sender, EventArgs e)
         {
             // All actual drawing will be done to this bitmap
-            this.bitmap_doc = new BitmapDocument(1000, 1000);
+            this.bitmap_doc = new BitmapDocument(500, 500);
 
             // Create a graphics object for the canvas bitmap and enable smoothing
             // by default for better looking stroke edges
@@ -135,17 +135,14 @@ namespace WinTabPainter
                 // Update the UI based on paint data
                 UpdateUIForPainting(paint_data);
 
+                // scale the pen position to (apparently) adjust for the OS scaling on my monitor
+                // need to do this in a more general way
+                double scale = 2.5;
+                var penpos_canvas = this.PointToClient(paint_data.PenPosScreen.Divide(scale).ToSDPointWithRounding().Subtract(this.pictureBox_Canvas.Location));
+                this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
+
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
-
-                    // convert the pen position from the screen to the app's client area
-                    var canvas_topleft = this.pictureBox_Canvas.Location;
-
-                    // scale the pen position to (apparently) adjust for the OS scaling on my monitor
-                    // need to do this in a more general way
-                    double scale = 2.5;
-                    var penpos_canvas = this.PointToClient(paint_data.PenPosScreen.Divide(scale).ToSDPointWithRounding().Subtract(canvas_topleft));
-
                     // the pen is not in the client area, abandon doing anything
                     if (penpos_canvas.X < 0) { return; }
                     if (penpos_canvas.Y < 0) { return; }
@@ -162,14 +159,14 @@ namespace WinTabPainter
 
         private void UpdateUIForPainting(PaintData paint_data)
         {
-            this.label_PosXValue.Text = paint_data.PenPosScreen.X.ToString();
-            this.label_PosYValue.Text = paint_data.PenPosScreen.Y.ToString();
-            this.label_PosZValue.Text = paint_data.PenZ.ToString();
+            this.label_ScreenPosValue.Text = paint_data.PenPosScreen.ToSmallString();
             this.label_PressureRawValue.Text = paint_data.PressureRaw.ToString();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
             this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureAdjusted, 5).ToString();
             this.label_AltitudeValue.Text = paint_data.Altitude.ToString();
             this.label_AzimuthValue.Text = paint_data.Azimuth.ToString();
+
+
         }
 
         private void CloseTabletContext()

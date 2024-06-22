@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label_X = new System.Windows.Forms.Label();
-            this.label_Y = new System.Windows.Forms.Label();
-            this.label_Z = new System.Windows.Forms.Label();
+            this.label_ScreenPos = new System.Windows.Forms.Label();
             this.label_Pressure = new System.Windows.Forms.Label();
             this.label_Azimuth = new System.Windows.Forms.Label();
             this.label_Altitude = new System.Windows.Forms.Label();
@@ -39,9 +37,7 @@
             this.button_ClearCanvas = new System.Windows.Forms.Button();
             this.pictureBox_Canvas = new System.Windows.Forms.PictureBox();
             this.label_AltitudeValue = new System.Windows.Forms.Label();
-            this.label_PosXValue = new System.Windows.Forms.Label();
-            this.label_PosYValue = new System.Windows.Forms.Label();
-            this.label_PosZValue = new System.Windows.Forms.Label();
+            this.label_ScreenPosValue = new System.Windows.Forms.Label();
             this.label_PressureValue = new System.Windows.Forms.Label();
             this.label_AzimuthValue = new System.Windows.Forms.Label();
             this.label_ButtonsValue = new System.Windows.Forms.Label();
@@ -62,6 +58,8 @@
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBar_Smoothing = new System.Windows.Forms.TrackBar();
+            this.label_CanvasPos = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -69,32 +67,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).BeginInit();
             this.SuspendLayout();
             // 
-            // label_X
+            // label_ScreenPos
             // 
-            this.label_X.AutoSize = true;
-            this.label_X.Location = new System.Drawing.Point(23, 110);
-            this.label_X.Name = "label_X";
-            this.label_X.Size = new System.Drawing.Size(33, 32);
-            this.label_X.TabIndex = 8;
-            this.label_X.Text = "X";
-            // 
-            // label_Y
-            // 
-            this.label_Y.AutoSize = true;
-            this.label_Y.Location = new System.Drawing.Point(23, 154);
-            this.label_Y.Name = "label_Y";
-            this.label_Y.Size = new System.Drawing.Size(33, 32);
-            this.label_Y.TabIndex = 9;
-            this.label_Y.Text = "Y";
-            // 
-            // label_Z
-            // 
-            this.label_Z.AutoSize = true;
-            this.label_Z.Location = new System.Drawing.Point(23, 198);
-            this.label_Z.Name = "label_Z";
-            this.label_Z.Size = new System.Drawing.Size(31, 32);
-            this.label_Z.TabIndex = 10;
-            this.label_Z.Text = "Z";
+            this.label_ScreenPos.AutoSize = true;
+            this.label_ScreenPos.Location = new System.Drawing.Point(23, 110);
+            this.label_ScreenPos.Name = "label_ScreenPos";
+            this.label_ScreenPos.Size = new System.Drawing.Size(153, 32);
+            this.label_ScreenPos.TabIndex = 8;
+            this.label_ScreenPos.Text = "ScreenPos";
             // 
             // label_Pressure
             // 
@@ -172,32 +152,14 @@
             this.label_AltitudeValue.TabIndex = 26;
             this.label_AltitudeValue.Text = "---";
             // 
-            // label_PosXValue
+            // label_ScreenPosValue
             // 
-            this.label_PosXValue.AutoSize = true;
-            this.label_PosXValue.Location = new System.Drawing.Point(190, 110);
-            this.label_PosXValue.Name = "label_PosXValue";
-            this.label_PosXValue.Size = new System.Drawing.Size(41, 32);
-            this.label_PosXValue.TabIndex = 22;
-            this.label_PosXValue.Text = "---";
-            // 
-            // label_PosYValue
-            // 
-            this.label_PosYValue.AutoSize = true;
-            this.label_PosYValue.Location = new System.Drawing.Point(190, 154);
-            this.label_PosYValue.Name = "label_PosYValue";
-            this.label_PosYValue.Size = new System.Drawing.Size(41, 32);
-            this.label_PosYValue.TabIndex = 23;
-            this.label_PosYValue.Text = "---";
-            // 
-            // label_PosZValue
-            // 
-            this.label_PosZValue.AutoSize = true;
-            this.label_PosZValue.Location = new System.Drawing.Point(190, 198);
-            this.label_PosZValue.Name = "label_PosZValue";
-            this.label_PosZValue.Size = new System.Drawing.Size(41, 32);
-            this.label_PosZValue.TabIndex = 24;
-            this.label_PosZValue.Text = "---";
+            this.label_ScreenPosValue.AutoSize = true;
+            this.label_ScreenPosValue.Location = new System.Drawing.Point(190, 110);
+            this.label_ScreenPosValue.Name = "label_ScreenPosValue";
+            this.label_ScreenPosValue.Size = new System.Drawing.Size(41, 32);
+            this.label_ScreenPosValue.TabIndex = 22;
+            this.label_ScreenPosValue.Text = "---";
             // 
             // label_PressureValue
             // 
@@ -330,7 +292,7 @@
             this.MenuItem_File});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 60);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -341,7 +303,7 @@
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
-            this.MenuItem_File.Size = new System.Drawing.Size(87, 45);
+            this.MenuItem_File.Size = new System.Drawing.Size(87, 56);
             this.MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -384,11 +346,31 @@
             this.trackBar_Smoothing.TabIndex = 41;
             this.trackBar_Smoothing.Scroll += new System.EventHandler(this.trackBar_Smoothing_Scroll);
             // 
+            // label_CanvasPos
+            // 
+            this.label_CanvasPos.AutoSize = true;
+            this.label_CanvasPos.Location = new System.Drawing.Point(190, 159);
+            this.label_CanvasPos.Name = "label_CanvasPos";
+            this.label_CanvasPos.Size = new System.Drawing.Size(41, 32);
+            this.label_CanvasPos.TabIndex = 44;
+            this.label_CanvasPos.Text = "---";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(23, 159);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(159, 32);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "CanvasPos";
+            // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1786, 912);
+            this.Controls.Add(this.label_CanvasPos);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.trackBar_Smoothing);
             this.Controls.Add(this.label_PressureAdjusted);
@@ -402,18 +384,14 @@
             this.Controls.Add(this.label_PressureRaw);
             this.Controls.Add(this.label_DeviceValue);
             this.Controls.Add(this.label_AltitudeValue);
-            this.Controls.Add(this.label_PosXValue);
-            this.Controls.Add(this.label_PosYValue);
-            this.Controls.Add(this.label_PosZValue);
+            this.Controls.Add(this.label_ScreenPosValue);
             this.Controls.Add(this.label_PressureValue);
             this.Controls.Add(this.label_AzimuthValue);
             this.Controls.Add(this.label_ButtonsValue);
             this.Controls.Add(this.pictureBox_Canvas);
             this.Controls.Add(this.button_ClearCanvas);
             this.Controls.Add(this.label_Altitude);
-            this.Controls.Add(this.label_X);
-            this.Controls.Add(this.label_Y);
-            this.Controls.Add(this.label_Z);
+            this.Controls.Add(this.label_ScreenPos);
             this.Controls.Add(this.label_Pressure);
             this.Controls.Add(this.label_Azimuth);
             this.Controls.Add(this.label_Device);
@@ -437,9 +415,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label_X;
-        private System.Windows.Forms.Label label_Y;
-        private System.Windows.Forms.Label label_Z;
+        private System.Windows.Forms.Label label_ScreenPos;
         private System.Windows.Forms.Label label_Pressure;
         private System.Windows.Forms.Label label_Azimuth;
         private System.Windows.Forms.Label label_Altitude;
@@ -448,9 +424,7 @@
         private System.Windows.Forms.Button button_ClearCanvas;
         private System.Windows.Forms.PictureBox pictureBox_Canvas;
         private System.Windows.Forms.Label label_AltitudeValue;
-        private System.Windows.Forms.Label label_PosXValue;
-        private System.Windows.Forms.Label label_PosYValue;
-        private System.Windows.Forms.Label label_PosZValue;
+        private System.Windows.Forms.Label label_ScreenPosValue;
         private System.Windows.Forms.Label label_PressureValue;
         private System.Windows.Forms.Label label_AzimuthValue;
         private System.Windows.Forms.Label label_ButtonsValue;
@@ -471,6 +445,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Open;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBar_Smoothing;
+        private System.Windows.Forms.Label label_CanvasPos;
+        private System.Windows.Forms.Label label5;
     }
 }
 
