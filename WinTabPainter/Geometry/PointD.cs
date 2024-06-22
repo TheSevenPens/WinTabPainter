@@ -38,6 +38,14 @@ namespace WinTabPainter.Geometry
             return p;
         }
 
+        public Geometry.PointI ToPointWithRounding()
+        {
+            double rx = System.Math.Round(this.X);
+            double ry = System.Math.Round(this.Y);
+            var p = new Geometry.PointI((int)rx, (int)ry);
+            return p;
+        }
+
         public string ToSmallString()
         {
             return string.Format("({0}x{1})", this.X, this.Y);
@@ -67,6 +75,16 @@ namespace WinTabPainter.Geometry
         {
             return new PointI(this.X + dx, this.Y + dy);
         }
+        public PointI Subtract(int dx, int dy)
+        {
+            return new PointI(this.X - dx, this.Y - dy);
+        }
+
+        public PointI Subtract(Geometry.SizeI s)
+        {
+            return new PointI(this.X - s.Width, this.Y - s.Height);
+        }
+
 
         public PointD Divide(double scale)
         {

@@ -26,6 +26,14 @@ namespace WinTabPainter.Geometry
             var s = new SD.Size((int)w, (int)h);
             return s;
         }
+
+        public Geometry.SizeI ToSizeWithRounding()
+        {
+            double w = System.Math.Round(this.Width);
+            double h = System.Math.Round(this.Height);
+            var s = new Geometry.SizeI((int)w, (int)h);
+            return s;
+        }
     }
 
 }

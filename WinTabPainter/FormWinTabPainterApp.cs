@@ -151,7 +151,10 @@ namespace WinTabPainter
                 {
                     var penpos_canvas_smoothed = this.paintsettings.PositionSmoother.Smooth(penpos_canvas.ToPointD());
                     var dab_size = new Geometry.SizeI(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
-                    this.bitmap_doc.DrawDabCenteredAt(SD.Color.Black, penpos_canvas_smoothed.ToSDPointWithRounding(), dab_size);
+                    this.bitmap_doc.DrawDabCenteredAt(
+                        SD.Color.Black,
+                        penpos_canvas_smoothed.ToPointWithRounding(), 
+                        dab_size);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
