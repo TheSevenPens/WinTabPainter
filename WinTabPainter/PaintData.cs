@@ -23,23 +23,28 @@ namespace WinTabPainter
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
+            // POSITION
             this.PenPos = new SD.Point(wintab_pkt.pkX, wintab_pkt.pkY);
+            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos.ToPointD()).ToPointWithRounding().ToSDPoint();
+
+            // HOVER
             this.PenHover = wintab_pkt.pkZ;
-            this.PressureRaw = wintab_pkt.pkNormalPressure;
+
+            // TILT
             this.TiltAltitude = wintab_pkt.pkOrientation.orAltitude / 10.0;
             this.TiltAzimuth = wintab_pkt.pkOrientation.orAzimuth / 10.0;
 
-            // Process te pressure
+            // PRESSURE
             // STEP 1 - normalized pressure so that it is in range [0,1]
             // STEP 2 - Smooth it
             // STEP 3 - Apply the pressure curve
+            this.PressureRaw = wintab_pkt.pkNormalPressure;
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
             this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
             this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
             this.PressureEffective = this.PressureCurved;
 
-            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos.ToPointD()).ToPointWithRounding().ToSDPoint();
-
+            // BRUSH SIZE
             // Calculate the brush width taking into account the pen pressure
             if (this.PressureRaw > 0)
             {
@@ -50,11 +55,5 @@ namespace WinTabPainter
                 this.BrushWidthAdjusted = 0;
             }
         }
-
-        public double DegreesToRadians(double degrees)
-        {
-            return degrees * (System.Math.PI / 180.0);
-        }
-
     }
 }
