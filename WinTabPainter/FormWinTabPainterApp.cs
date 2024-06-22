@@ -137,11 +137,17 @@ namespace WinTabPainter
 
                 if (wintab_pkt.pkNormalPressure > 0)
                 {
-                    double scale = 2.5; // Seems tied to the screen scaling I am using on Windows on my specific machine. Need to remove this constant
 
                     // convert the pen position from the screen to the app's client area
                     var canvas_topleft = new SD.Point(this.pictureBox_Canvas.Left, this.pictureBox_Canvas.Top);
+
+                    // scale the pen position to (apparently) adjust for the OS scaling on my monitor
+                    // need to do this in a more general way
+
+                    double scale = 2.5; 
                     var penpos_screen = paint_data.PenPosition.Divide(scale);
+
+                    // Convert the screen coordinates to the client coordinates
                     var penpos_canvas = this.PointToClient(penpos_screen.Subtract(canvas_topleft));
 
                     // the pen is not in the client area, abandon doing anything
