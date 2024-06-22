@@ -75,6 +75,7 @@ namespace WinTabPainter
 
             // Default to no smoothing
             this.paintsettings.PositionSmoother = new EMASmoother(0);
+            this.paintsettings.PressureSmoother = new EMASmoother(0);
             this.trackBar_Smoothing.Value = 0;
             this.set_position_smoothing(0);
         }
@@ -329,10 +330,24 @@ namespace WinTabPainter
             this.set_position_smoothing(this.trackBar_Smoothing.Value / this.trackBar_Smoothing.Maximum);
         }
 
+
+
+        private void trackBar_PressureSmoothing_Scroll(object sender, EventArgs e)
+        {
+            this.set_pressure_smoothing(this.trackBar_PressureSmoothing.Value / this.trackBar_PressureSmoothing.Maximum);
+        }
+
         public void set_position_smoothing(double value)
         {
             this.paintsettings.PositionSmoothingAmount = HelperMethods.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
             this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
+
+        public void set_pressure_smoothing(double value)
+        {
+            this.paintsettings.PressureSmoothingAmount = HelperMethods.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.PressureSmoother.Alpha = this.paintsettings.PressureSmoothingAmount;
+        }
+
     }
 }

@@ -11,9 +11,11 @@
 
         // smoothing settings
         public double PositionSmoothingAmount = 0.0;
+        public double PressureSmoothingAmount = 0.0;
         public readonly double SMOOTHING_MIN = 0.0;
         public readonly double SMOOTHING_MAX = 0.99;
         public EMASmoother PositionSmoother;
+        public EMASmoother PressureSmoother;
 
     }
 }

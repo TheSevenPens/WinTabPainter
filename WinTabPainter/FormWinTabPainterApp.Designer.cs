@@ -56,11 +56,14 @@
             this.trackBar_Smoothing = new System.Windows.Forms.TrackBar();
             this.label_CanvasPos = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_PressureSmoothing)).BeginInit();
             this.SuspendLayout();
             // 
             // label_ScreenPos
@@ -208,7 +211,7 @@
             // trackBarPressureCurve
             // 
             this.trackBarPressureCurve.AutoSize = false;
-            this.trackBarPressureCurve.Location = new System.Drawing.Point(12, 663);
+            this.trackBarPressureCurve.Location = new System.Drawing.Point(12, 528);
             this.trackBarPressureCurve.Maximum = 100;
             this.trackBarPressureCurve.Minimum = -100;
             this.trackBarPressureCurve.Name = "trackBarPressureCurve";
@@ -220,7 +223,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 612);
+            this.label1.Location = new System.Drawing.Point(23, 477);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(387, 32);
             this.label1.TabIndex = 36;
@@ -290,7 +293,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(23, 733);
+            this.label2.Location = new System.Drawing.Point(23, 598);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(448, 32);
             this.label2.TabIndex = 42;
@@ -299,7 +302,7 @@
             // trackBar_Smoothing
             // 
             this.trackBar_Smoothing.AutoSize = false;
-            this.trackBar_Smoothing.Location = new System.Drawing.Point(12, 784);
+            this.trackBar_Smoothing.Location = new System.Drawing.Point(12, 649);
             this.trackBar_Smoothing.Maximum = 100;
             this.trackBar_Smoothing.Name = "trackBar_Smoothing";
             this.trackBar_Smoothing.Size = new System.Drawing.Size(424, 45);
@@ -324,11 +327,32 @@
             this.label5.TabIndex = 43;
             this.label5.Text = "CanvasPos";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(23, 728);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(458, 32);
+            this.label4.TabIndex = 46;
+            this.label4.Text = "Pressure Smoothing (None<->Max)";
+            // 
+            // trackBar_PressureSmoothing
+            // 
+            this.trackBar_PressureSmoothing.AutoSize = false;
+            this.trackBar_PressureSmoothing.Location = new System.Drawing.Point(12, 779);
+            this.trackBar_PressureSmoothing.Maximum = 100;
+            this.trackBar_PressureSmoothing.Name = "trackBar_PressureSmoothing";
+            this.trackBar_PressureSmoothing.Size = new System.Drawing.Size(424, 45);
+            this.trackBar_PressureSmoothing.TabIndex = 45;
+            this.trackBar_PressureSmoothing.Scroll += new System.EventHandler(this.trackBar_PressureSmoothing_Scroll);
+            // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1786, 945);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.trackBar_PressureSmoothing);
             this.Controls.Add(this.label_CanvasPos);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
@@ -365,6 +389,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_PressureSmoothing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -399,6 +424,8 @@
         private System.Windows.Forms.TrackBar trackBar_Smoothing;
         private System.Windows.Forms.Label label_CanvasPos;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar trackBar_PressureSmoothing;
     }
 }
 
