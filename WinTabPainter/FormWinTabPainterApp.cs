@@ -22,9 +22,11 @@ namespace WinTabPainter
         public string filename = null;
         TabletInfo tablet_info = new TabletInfo();
 
-        public PaintSettings paintsettings = new PaintSettings(); 
+        public PaintSettings paintsettings = new PaintSettings();
 
-
+        string FileSaveDefaultFilename = "Untitled.png";
+        string FileSaveDefaultExt = "png";
+        string FileOpenDefaultExt = "png";
 
         public FormWinTabPainterApp()
         {
@@ -268,9 +270,10 @@ namespace WinTabPainter
 
         private void AppSaveAs()
         {
+
             var ofd = new SaveFileDialog();
-            ofd.FileName = this.filename ?? "Untitled.png";
-            ofd.DefaultExt = "png";
+            ofd.FileName = this.filename ?? FileSaveDefaultFilename;
+            ofd.DefaultExt = FileSaveDefaultExt;
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             var v = ofd.ShowDialog();
@@ -300,19 +303,25 @@ namespace WinTabPainter
 
         public void AppOpen()
         {
+
+
             var ofd = new OpenFileDialog();
             //ofd.FileName = this.filename ?? "Untitled.png";
-            ofd.DefaultExt = "png";
+            ofd.DefaultExt = FileOpenDefaultExt;
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             var v = ofd.ShowDialog();
-            if (v == DialogResult.OK) 
+            if (v == DialogResult.OK)
             {
                 this.bitmap_doc.Load(ofd.FileName);
                 this.filename = ofd.FileName;
+                this.pictureBox_Canvas.Image = this.bitmap_doc.Bitmap;
+                this.pictureBox_Canvas.Invalidate();
             }
-            this.pictureBox_Canvas.Image = this.bitmap_doc.Bitmap;
-            this.pictureBox_Canvas.Invalidate();
+            else 
+            {
+                // do nothing
+            }
         }
 
 
