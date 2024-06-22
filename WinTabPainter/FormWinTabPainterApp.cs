@@ -29,6 +29,8 @@ namespace WinTabPainter
         string FileOpenDefaultExt = "png";
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
+
+
         public FormWinTabPainterApp()
         {
             InitializeComponent();
@@ -197,10 +199,8 @@ namespace WinTabPainter
 
         private void trackBarPressureCurve_Scroll(object sender, EventArgs e)
         {
-            this.paintsettings.PressureCurveControl = ((double)this.trackBarPressureCurve.Value) / 100.0;
+            this.paintsettings.pressure_curve.SetBendAmount(((double)this.trackBarPressureCurve.Value) / 100.0);
         }
-
-
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
