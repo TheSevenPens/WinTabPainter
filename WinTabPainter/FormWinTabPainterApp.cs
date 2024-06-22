@@ -146,9 +146,6 @@ namespace WinTabPainter
                     double scale = 2.5;
                     var penpos_canvas = this.PointToClient(paint_data.PenPosScreen.Divide(scale).ToSDPointWithRounding().Subtract(canvas_topleft));
 
-                    //string dbug_msg = string.Format("{0} {1} {2} {3} {4}", penpos_screen.ToSmallString(), p1.ToSmallString(), p2.ToSmallString(), p3.ToSmallString(), penpos_canvas.ToSmallString());
-                    //this.label_Debug.Text = dbug_msg;
-
                     // the pen is not in the client area, abandon doing anything
                     if (penpos_canvas.X < 0) { return; }
                     if (penpos_canvas.Y < 0) { return; }
