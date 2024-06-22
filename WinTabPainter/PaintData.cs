@@ -7,9 +7,9 @@ namespace WinTabPainter
     public struct PaintData
     {
         // properties from the tablet
-        public SD.Point PenPosScreen;
-        public SD.Point PenPosScreenSmoothed;
-        public int PenZ;
+        public SD.Point PenPos;
+        public SD.Point PenPosSmoothed;
+        public int PenHover;
         public uint PressureRaw;
         public double TiltAltitude;
         public double TiltAzimuth;
@@ -18,30 +18,32 @@ namespace WinTabPainter
         public double PressureNormalized;
         public double PressureSmoothed;
         public double PressureCurved;
+        public double PressureEffective;
         public int BrushWidthAdjusted;
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
-            this.PenPosScreen = new SD.Point(wintab_pkt.pkX, wintab_pkt.pkY);
-            this.PenZ = wintab_pkt.pkZ;
+            this.PenPos = new SD.Point(wintab_pkt.pkX, wintab_pkt.pkY);
+            this.PenHover = wintab_pkt.pkZ;
             this.PressureRaw = wintab_pkt.pkNormalPressure;
             this.TiltAltitude = wintab_pkt.pkOrientation.orAltitude / 10.0;
             this.TiltAzimuth = wintab_pkt.pkOrientation.orAzimuth / 10.0;
 
-
-            // Calculate normalized pressure so that it is in range [0,1]
-            // Calculate the normalize pressure with pressurce curve applied
+            // Process te pressure
+            // STEP 1 - normalized pressure so that it is in range [0,1]
+            // STEP 2 - Smooth it
+            // STEP 3 - Apply the pressure curve
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
             this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
             this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
+            this.PressureEffective = this.PressureCurved;
 
-            var penpos_canvas_smoothed = paintsettings.PositionSmoother.Smooth(this.PenPosScreen.ToPointD());
-            this.PenPosScreenSmoothed = penpos_canvas_smoothed.ToPointWithRounding().ToSDPoint();
+            this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos.ToPointD()).ToPointWithRounding().ToSDPoint();
 
             // Calculate the brush width taking into account the pen pressure
-            if (wintab_pkt.pkNormalPressure > 0)
+            if (this.PressureRaw > 0)
             {
-                this.BrushWidthAdjusted = (int) System.Math.Max(paintsettings.BrushWidthMin, this.PressureCurved * paintsettings.BrushWidth);
+                this.BrushWidthAdjusted = (int) System.Math.Max(paintsettings.BrushWidthMin, this.PressureEffective * paintsettings.BrushWidth);
             }
             else
             {

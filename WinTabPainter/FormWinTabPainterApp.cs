@@ -142,8 +142,8 @@ namespace WinTabPainter
                 // Take the position of the pen - which is pixel units on the screen
                 // and convert that to coordinates of the bitmap document canvas
                 double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
-                var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPosScreen, scale);
-                var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosScreenSmoothed, scale);
+                var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos, scale);
+                var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed, scale);
 
                 // Update the UI based 
                 UpdateUIForPainting(paint_data, penpos_canvas);
@@ -174,7 +174,7 @@ namespace WinTabPainter
         }
         private void UpdateUIForPainting(PaintData paint_data, SD.Point penpos_canvas)
         {
-            this.label_ScreenPosValue.Text = paint_data.PenPosScreen.ToSmallString();
+            this.label_ScreenPosValue.Text = paint_data.PenPos.ToSmallString();
             this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
             this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureCurved, 5).ToString();
