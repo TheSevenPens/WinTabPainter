@@ -21,7 +21,7 @@ namespace WinTabPainter
         public static SD.Size Divide(this SD.Size s, double scale)
         {
             var ns1 = new Geometry.SizeD(s.Width / scale, s.Height / scale);
-            var ns2 = ns1.ToSDSize();
+            var ns2 = ns1.ToSDSizeWithRounding();
             return ns2;
         }
 
