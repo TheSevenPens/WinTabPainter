@@ -149,7 +149,7 @@ namespace WinTabPainter
                 UpdateUIForPainting(paint_data, penpos_canvas);
 
                 var clr_black = new ColorARGB(255, 0, 0, 0);
-                if ((wintab_pkt.pkNormalPressure > 0) 
+                if ((paint_data.PressureRaw > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
 
