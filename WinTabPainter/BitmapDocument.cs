@@ -81,7 +81,7 @@ namespace WinTabPainter
 
         public void DrawDabCenteredAt(ColorARGB color, Geometry.Point p, Geometry.Size s)
         {
-            var halfsize = s.Divide(2.0).ToSizeWithRounding();
+            var halfsize = s.Divide(2.0).Round().ToSize();
             var dab_rect_center = p.Subtract(halfsize);
             var rect = new SD.Rectangle(dab_rect_center.ToSDPoint(), s.ToSDSize() );
             using (SD.Brush brush = new SD.SolidBrush(color.ToSDColor()))

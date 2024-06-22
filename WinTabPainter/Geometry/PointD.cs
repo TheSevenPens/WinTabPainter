@@ -49,13 +49,6 @@ namespace WinTabPainter.Geometry
             return p;
         }
 
-        public Geometry.Point ToPointWithRounding()
-        {
-            var p0 = this.Round();
-            var p1 = p0.ToPoint();
-            return p1;
-        }
-
         public string ToStringXY()
         {
             return string.Format("({0}x{1})", this.X, this.Y);
