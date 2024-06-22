@@ -8,6 +8,7 @@ namespace WinTabPainter
     {
         // properties from the tablet
         public SD.Point PenPosScreen;
+        public SD.Point PenPosScreenSmoothed;
         public int PenZ;
         public uint PressureRaw;
         public double TiltAltitude;
@@ -15,7 +16,7 @@ namespace WinTabPainter
 
         // calculated properties
         public double PressureNormalized;
-        public double PressureAdjusted;
+        public double PressureCurved;
         public int BrushWidthAdjusted;
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
@@ -26,17 +27,21 @@ namespace WinTabPainter
             this.TiltAltitude = wintab_pkt.pkOrientation.orAltitude / 10.0;
             this.TiltAzimuth = wintab_pkt.pkOrientation.orAzimuth / 10.0;
 
+
             // Calculate normalized pressure so that it is in range [0,1]
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
 
             // Calculate the normalize pressure with pressurce curve applied
 
-            this.PressureAdjusted = paintsettings.pressure_curve.ApplyCurve(this.PressureNormalized);
+            this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureNormalized);
+
+            var penpos_canvas_smoothed = paintsettings.PositionSmoother.Smooth(this.PenPosScreen.ToPointD());
+            this.PenPosScreenSmoothed = penpos_canvas_smoothed.ToPointWithRounding().ToSDPoint();
 
             // Calculate the brush width taking into account the pen pressure
             if (wintab_pkt.pkNormalPressure > 0)
             {
-                this.BrushWidthAdjusted = (int) System.Math.Max(paintsettings.BrushWidthMin, this.PressureAdjusted * paintsettings.BrushWidth);
+                this.BrushWidthAdjusted = (int) System.Math.Max(paintsettings.BrushWidthMin, this.PressureCurved * paintsettings.BrushWidth);
             }
             else
             {

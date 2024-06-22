@@ -1,6 +1,7 @@
 ﻿using System;
 using SD=System.Drawing;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -141,10 +142,7 @@ namespace WinTabPainter
                 // Take the position of the pen - which is pixel units on the screen
                 // and convert that to coordinates of the bitmap document canvas
                 double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
-                var canv_loc = this.pictureBox_Canvas.Location;
-                var px = (int) ( (paint_data.PenPosScreen.X / scale) - canv_loc.X);
-                var py = (int) ( (paint_data.PenPosScreen.Y / scale) - canv_loc.Y);
-                var penpos_canvas = this.PointToClient(new SD.Point(px,py));
+                var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPosScreen, scale);
 
                 // Update the UI based 
                 UpdateUIForPainting(paint_data, penpos_canvas);
@@ -152,7 +150,10 @@ namespace WinTabPainter
                 if ((wintab_pkt.pkNormalPressure > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
+                    //var penpos_canvas_smoothed = this.paintsettings.PositionSmoother.Smooth(penpos_canvas.ToPointD());
                     var penpos_canvas_smoothed = this.paintsettings.PositionSmoother.Smooth(penpos_canvas.ToPointD());
+
+                    //var pressure_smoothed = this.paintsettings.PressureSmoother.Smooth(paint_data.PressureCurved);
                     var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
                         SD.Color.Black,
@@ -164,12 +165,20 @@ namespace WinTabPainter
             }
         }
 
+        public SD.Point Screen_loc_to_canvas_loc( SD.Point screen_loc, double scale)
+        {
+            var canv_loc = this.pictureBox_Canvas.Location;
+            var px = (int)((screen_loc.X / scale) - canv_loc.X);
+            var py = (int)((screen_loc.Y / scale) - canv_loc.Y);
+            var penpos_canvas = this.PointToClient(new SD.Point(px, py));
+            return penpos_canvas;
+        }
         private void UpdateUIForPainting(PaintData paint_data, SD.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PenPosScreen.ToSmallString();
             this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
-            this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureAdjusted, 5).ToString();
+            this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureCurved, 5).ToString();
             this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
         }
 
