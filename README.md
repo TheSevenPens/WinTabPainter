@@ -12,7 +12,8 @@ Key points
 
 - Built on .NET framework
 - Uses WintabDotNet
-
+- UI Framework. It uses WinForms which is not ideal. In the future, I'd liek to port it to WinUI 3
+  
 Issues 
 =======
 
