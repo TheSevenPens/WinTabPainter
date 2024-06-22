@@ -33,6 +33,7 @@ namespace WinTabPainter
         public int Width { get { return this._width; } }
         public int Height {  get { return this._height; } }
 
+        SD.Color DefaultPageColor = System.Drawing.Color.White;
 
         public BitmapDocument(int width, int height)
         {
@@ -62,7 +63,7 @@ namespace WinTabPainter
 
         public void Erase()
         {
-            using (var b = new SD.SolidBrush(System.Drawing.Color.White))
+            using (var b = new SD.SolidBrush(this.DefaultPageColor))
             {
                 this._gfx.FillRectangle(b, 0, 0, this._bmp.Width, this._bmp.Height);
             }
