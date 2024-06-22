@@ -7,7 +7,7 @@
 
 using SD=System.Drawing;
 
-namespace WinTabPainter
+namespace WinTabPainter.Geometry
 {
     public struct PointD
     {

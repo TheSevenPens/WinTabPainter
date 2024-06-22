@@ -14,14 +14,14 @@ namespace WinTabPainter
     {
         public static SD.Point Divide( this SD.Point p, double scale)
         {
-            var np1 = new PointD(p.X / scale, p.Y / scale);
+            var np1 = new Geometry.PointD(p.X / scale, p.Y / scale);
             var np2 = np1.ToPoint();
             return np2;
         }
 
         public static SD.Size Divide(this SD.Size s, double scale)
         {
-            var ns1 = new SizeD(s.Width / scale, s.Height / scale);
+            var ns1 = new Geometry.SizeD(s.Width / scale, s.Height / scale);
             var ns2 = ns1.ToSize();
             return ns2;
         }
@@ -45,9 +45,9 @@ namespace WinTabPainter
             return np;
         }
 
-        public static PointD ToPointD(this SD.Point p)
+        public static Geometry.PointD ToPointD(this SD.Point p)
         {
-            var np = new PointD(p.X, p.Y);
+            var np = new Geometry.PointD(p.X, p.Y);
             return np;
         }
 
