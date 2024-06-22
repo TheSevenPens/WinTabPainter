@@ -1,28 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using SD=System.Drawing;
+using SD = System.Drawing;
 
 namespace WinTabPainter
 {
-    public struct ColorARGB
-    {
-        public readonly ushort Alpha;
-        public readonly ushort Red;
-        public readonly ushort Green;
-        public readonly ushort Blue;
-        public ColorARGB(ushort alpha, ushort red, ushort green, ushort blue)
-        {
-            this.Alpha = alpha;
-            this.Red = red;
-            this.Green = green;
-            this.Blue = blue;
-        }
-
-        public SD.Color ToSDColor()
-        {
-            return SD.Color.FromArgb(this.Alpha, this.Red, this.Green, this.Blue);
-        }
-    }
     public class BitmapDocument : IDisposable
     {
         // BitmapDocument class intended to encapsulate
@@ -53,7 +34,7 @@ namespace WinTabPainter
         public int Width { get { return this._width; } }
         public int Height {  get { return this._height; } }
 
-        SD.Color DefaultPageColor = System.Drawing.Color.White;
+        ColorARGB DefaultPageColor = new ColorARGB(255,255,255,255);
 
         public Geometry.Size Size
         {
@@ -87,7 +68,7 @@ namespace WinTabPainter
 
         public void Erase()
         {
-            using (var b = new SD.SolidBrush(this.DefaultPageColor))
+            using (var b = new SD.SolidBrush(this.DefaultPageColor.ToSDColor()))
             {
                 this._gfx.FillRectangle(b, 0, 0, this._bmp.Width, this._bmp.Height);
             }
