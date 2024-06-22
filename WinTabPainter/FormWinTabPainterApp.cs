@@ -137,11 +137,13 @@ namespace WinTabPainter
                 // collect all the information we need to start painting
                 var paint_data = new PaintData(wintab_pkt, tablet_info, this.paintsettings);
 
-
-                // scale the pen position to (apparently) adjust for the OS scaling on my monitor
-                // need to do this in a more general way
-                double scale = 2.5;
-                var penpos_canvas = this.PointToClient(paint_data.PenPosScreen.Divide(scale).ToSDPointWithRounding().Subtract(this.pictureBox_Canvas.Location));
+                // Take the position of the pen - which is pixel units on the screen
+                // and convert that to coordinates of the bitmap document canvas
+                double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
+                var canv_loc = this.pictureBox_Canvas.Location;
+                var px = (int) ( (paint_data.PenPosScreen.X / scale) - canv_loc.X);
+                var py = (int) ( (paint_data.PenPosScreen.Y / scale) - canv_loc.Y);
+                var penpos_canvas = this.PointToClient(new SD.Point(px,py));
 
                 // Update the UI based 
                 UpdateUIForPainting(paint_data, penpos_canvas);

@@ -34,6 +34,10 @@ namespace WinTabPainter.Geometry
             return new PointI(this.X - s.Width, this.Y - s.Height);
         }
 
+        public PointI Subtract(Geometry.PointI p)
+        {
+            return new PointI(this.X - p.X, this.Y - p.Y);
+        }
 
         public PointD Divide(double scale)
         {

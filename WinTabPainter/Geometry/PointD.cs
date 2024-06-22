@@ -25,17 +25,14 @@ namespace WinTabPainter.Geometry
             return new PointD(this.X + dx, this.Y + dy);
         }
 
+        public PointD Subtract(PointI p)
+        {
+            return new PointD(this.X + p.X, this.Y + p.Y);
+        }
+
         public PointD Divide(double scale)
         {
             return new PointD(this.X/ scale, this.Y/ scale);
-        }
-
-        public SD.Point ToSDPointWithRounding()
-        {
-            double rx = System.Math.Round(this.X);
-            double ry = System.Math.Round(this.Y);
-            var p = new SD.Point((int)rx, (int)ry);
-            return p;
         }
 
         public Geometry.PointI ToPointWithRounding()
