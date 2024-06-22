@@ -42,14 +42,23 @@ namespace WinTabPainter
             this.TiltAzimuth = wintab_pkt.pkOrientation.orAzimuth / 10.0;
 
             // PRESSURE
-            // STEP 1 - normalized pressure so that it is in range [0,1]
-            // STEP 2 - Smooth it
-            // STEP 3 - Apply the pressure curve
             this.PressureRaw = wintab_pkt.pkNormalPressure;
             this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
-            this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
-            this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
-            this.PressureEffective = this.PressureCurved;
+
+            bool smooth_before_curve = false;
+
+            if (smooth_before_curve)
+            {
+                this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
+                this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
+                this.PressureEffective = this.PressureCurved;
+            }
+            else
+            {
+                this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureNormalized);
+                this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureCurved);
+                this.PressureEffective = this.PressureSmoothed;
+            }
 
             // BRUSH SIZE
             // Calculate the brush width taking into account the pen pressure
