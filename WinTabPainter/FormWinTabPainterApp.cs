@@ -60,7 +60,7 @@ namespace WinTabPainter
 
             if (System.Windows.Forms.SystemInformation.MonitorCount >= 3)
             {
-                var screen = System.Windows.Forms.Screen.AllScreens[2];
+                var screen = System.Windows.Forms.Screen.AllScreens[1];
                 this.Left = screen.Bounds.Left + (screen.Bounds.Width / 2) - (this.Width / 2);
                 this.Top = screen.Bounds.Top + (screen.Bounds.Height/2) - (this.Height / 2);
             }
@@ -141,7 +141,7 @@ namespace WinTabPainter
                     var penpos_screen = paint_data.PenPosition;
 
                     // convert the pen position from the screen to the app's client area
-                    var canvas_topleft = this.pictureBox_Canvas.GetTopLeft();
+                    var canvas_topleft = this.pictureBox_Canvas.Location;
 
                     // scale the pen position to (apparently) adjust for the OS scaling on my monitor
                     // need to do this in a more general way

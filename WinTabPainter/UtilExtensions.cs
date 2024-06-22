@@ -50,12 +50,6 @@ namespace WinTabPainter
             return np;
         }
 
-        public static SD.Point GetTopLeft(this System.Windows.Forms.Control control)
-        {
-            var p = new SD.Point( control.Left, control.Top);
-            return p;
-        }
-
         public static string ToSmallString(this SD.Point p)
         {
             return string.Format("({0}x{1})", p.X, p.Y);
