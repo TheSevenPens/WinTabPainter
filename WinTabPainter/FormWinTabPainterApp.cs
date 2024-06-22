@@ -142,14 +142,14 @@ namespace WinTabPainter
                 // collect all the information we need to start painting
                 var paint_data = new PaintData(wintab_pkt, tablet_info, this.paintsettings);
 
-                // Update the UI based on paint data
-                UpdateUIForPainting(paint_data);
 
                 // scale the pen position to (apparently) adjust for the OS scaling on my monitor
                 // need to do this in a more general way
                 double scale = 2.5;
                 var penpos_canvas = this.PointToClient(paint_data.PenPosScreen.Divide(scale).ToSDPointWithRounding().Subtract(this.pictureBox_Canvas.Location));
-                this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
+
+                // Update the UI based 
+                UpdateUIForPainting(paint_data, penpos_canvas);
 
                 if ((wintab_pkt.pkNormalPressure > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
@@ -163,9 +163,10 @@ namespace WinTabPainter
             }
         }
 
-        private void UpdateUIForPainting(PaintData paint_data)
+        private void UpdateUIForPainting(PaintData paint_data, SD.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PenPosScreen.ToSmallString();
+            this.label_CanvasPos.Text = penpos_canvas.ToSmallString();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
             this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureAdjusted, 5).ToString();
             this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
