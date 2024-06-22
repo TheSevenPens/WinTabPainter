@@ -22,4 +22,4 @@ want it to paint correctly you'll need to make a code change
 
 - It relies on the WinTab API
 
-  
+- WinForms and Windows screen scaling have some weird interactions with how things are rendered. 
