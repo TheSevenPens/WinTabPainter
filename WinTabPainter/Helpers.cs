@@ -11,12 +11,12 @@ namespace WinTabPainter
 {
     public static class Helpers
     {
-        public static double ClampRange(double q, double min, double max)
+        public static double ClampRange(double value, double min, double max)
         {
-            if (q < min) { q = min; }
-            else if (q > max) { q = max; }
+            if (value < min) { value = min; }
+            else if (value > max) { value = max; }
             else { /* dnothing */}
-            return q;
+            return value;
         }
 
         public static double ApplyCurve(double value, double q)

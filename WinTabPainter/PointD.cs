@@ -4,8 +4,6 @@ namespace WinTabPainter.Geometry
 {
     public struct PointD
     {
-        // simple point struct with x,y of datatype double
-
         public double X;
         public double Y;
 
@@ -25,6 +23,11 @@ namespace WinTabPainter.Geometry
         public PointD Add(int dx, int dy)
         {
             return new PointD(this.X + dx, this.Y + dy);
+        }
+
+        public PointD Divide(double scale)
+        {
+            return new PointD(this.X/ scale, this.Y/ scale);
         }
 
         public SD.Point ToSDPointWithRounding()

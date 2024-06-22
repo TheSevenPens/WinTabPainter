@@ -14,6 +14,11 @@ namespace WinTabPainter.Geometry
             this.Height = h;
         }
 
+        public SizeD Divide(double scale)
+        {
+            return new SizeD( this.Width/ scale, this.Height / scale );
+        }
+
         public SD.Size ToSDSizeWithRounding()
         {
             double rx = System.Math.Round(this.Width);

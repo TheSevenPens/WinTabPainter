@@ -65,7 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SizeD.cs" />
     <Compile Include="TabletInfo.cs" />
-    <Compile Include="UtilExtensions.cs" />
+    <Compile Include="HelperExtensions.cs" />
     <EmbeddedResource Include="FormWinTabPainterApp.resx">
       <DependentUpon>FormWinTabPainterApp.cs</DependentUpon>
     </EmbeddedResource>

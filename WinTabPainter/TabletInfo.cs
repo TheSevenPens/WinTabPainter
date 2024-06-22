@@ -5,14 +5,14 @@
         public WintabDN.WintabAxis XAxis;
         public WintabDN.WintabAxis YAxis;
         public int MaxPressure = -1;
-        public string Device;
+        public string DeviceName;
 
         public void Initialize()
         {
             this.XAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.EAxisDimension.AXIS_X);
             this.YAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.EAxisDimension.AXIS_Y);
             this.MaxPressure = WintabDN.CWintabInfo.GetMaxPressure();
-            this.Device = WintabDN.CWintabInfo.GetDeviceInfo();
+            this.DeviceName = WintabDN.CWintabInfo.GetDeviceInfo();
         }
     }
 }

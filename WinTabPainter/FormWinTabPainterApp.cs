@@ -99,9 +99,9 @@ namespace WinTabPainter
 
             this.tablet_info.Initialize();
 
-            if (tablet_info.Device!= null)
+            if (tablet_info.DeviceName!= null)
             {
-                this.label_DeviceValue.Text = this.tablet_info.Device;
+                this.label_DeviceValue.Text = this.tablet_info.DeviceName;
             }
             else
             {

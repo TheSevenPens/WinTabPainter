@@ -1,30 +1,23 @@
 ﻿using System;
 using SD = System.Drawing;
 
-// References:
-// https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
-// https://github.com/DennisWacom/InkPlatform/tree/master/WintabDN
-// https://developer-docs.wacom.com/docs/icbt/windows/wintab/wintab-basics/
-// https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
-// https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
-
 namespace WinTabPainter
 {
-    public static class UtilExtensions
+    public static class HelperExtensions
     {
         public static Geometry.PointD Divide( this SD.Point p, double scale)
         {
-            var np1 = new Geometry.PointD(p.X / scale, p.Y / scale);
-            return np1;
+            var p0 = p.ToPointD();
+            var p1 = p0.Divide(scale);
+            return p1;
         }
 
-        public static SD.Size Divide(this SD.Size s, double scale)
+        public static Geometry.SizeD Divide(this SD.Size s, double scale)
         {
-            var ns1 = new Geometry.SizeD(s.Width / scale, s.Height / scale);
-            var ns2 = ns1.ToSDSizeWithRounding();
-            return ns2;
+            var s0 = new Geometry.SizeD(s.Width, s.Height);
+            var s1 = s0.Divide(scale);
+            return s1;
         }
-
 
         public static SD.Point Subtract(this SD.Point p1, SD.Point p2)
         {
@@ -49,7 +42,6 @@ namespace WinTabPainter
             var np = new Geometry.PointD(p.X, p.Y);
             return np;
         }
-
         public static string ToSmallString(this SD.Point p)
         {
             return string.Format("({0}x{1})", p.X, p.Y);
