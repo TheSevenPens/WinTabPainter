@@ -5,7 +5,23 @@ namespace WinTabPainter
 {
     public class BitmapDocument : IDisposable
     {
+        // BitmapDocument class intended to encapsulate
+        // the logic behind maintaining a bitmap we are painting on
+        //
+        // Currently uses System.Drawing to implement drawing primitives
+        // but this is considered an implementation detail. Ideally
+        // it should use something that isn't tied up into Windows GDI
+        // and something that could be used in other UI frameworks
+        // besides winforms.
+        // 
+        // Public members reflect the current implementation in its usage of
+        // members that use System.Drawing.Bitmap class and Sytem.Drawing.Point
+        // and System.Drawing.Rectangle types. Ideally most of these should hide that
+        // implementation and use the app's own Geometry primitives
+        //
+        // There is only a single "layer" in the current implemenation
 
+        
         private SD.Graphics _gfx;
         private SD.Bitmap _bmp;
 
