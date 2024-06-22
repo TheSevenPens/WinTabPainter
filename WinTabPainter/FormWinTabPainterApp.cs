@@ -164,13 +164,9 @@ namespace WinTabPainter
         private void UpdateUIForPainting(PaintData paint_data)
         {
             this.label_ScreenPosValue.Text = paint_data.PenPosScreen.ToSmallString();
-            this.label_PressureRawValue.Text = paint_data.PressureRaw.ToString();
             this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
             this.label_PressureAdjusted.Text = Math.Round(paint_data.PressureAdjusted, 5).ToString();
-            this.label_AltitudeValue.Text = paint_data.TiltAltitude.ToString();
-            this.label_AzimuthValue.Text = paint_data.TiltAzimuth.ToString();
-
-
+            this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
         }
 
         private void CloseTabletContext()
