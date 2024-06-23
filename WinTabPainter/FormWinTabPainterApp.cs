@@ -281,17 +281,17 @@ namespace WinTabPainter
         private void AppSaveAs()
         {
 
-            var ofd = new SaveFileDialog();
-            ofd.FileName = this.filename ?? FileSaveDefaultFilename;
-            ofd.DefaultExt = FileSaveDefaultExt;
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var sfd = new SaveFileDialog();
+            sfd.FileName = this.filename ?? FileSaveDefaultFilename;
+            sfd.DefaultExt = FileSaveDefaultExt;
+            sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            var v = ofd.ShowDialog();
+            var v = sfd.ShowDialog();
 
             if (v == DialogResult.OK)
             {
                 string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                this.filename = ofd.FileName;
+                this.filename = sfd.FileName;
                 this._save();
             }
             else
