@@ -16,8 +16,15 @@ namespace WinTabPainter
         public double PressureSmoothingAmount = 0.0;
         public readonly double SMOOTHING_MIN = 0.0;
         public readonly double SMOOTHING_MAX = 0.99;
-        public EMAPositionSmoother PositionSmoother;
-        public EMASmoother PressureSmoother;
+        public readonly EMAPositionSmoother PositionSmoother;
+        public readonly EMASmoother PressureSmoother;
+
+        public PaintSettings()
+        {
+            this.PositionSmoother = new Geometry.EMAPositionSmoother(0);
+            this.PressureSmoother = new Geometry.EMASmoother(0);
+        }
+
 
     }
 }

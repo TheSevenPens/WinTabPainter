@@ -75,10 +75,12 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
 
             // Default to no smoothing
-            this.paintsettings.PositionSmoother = new Geometry.EMAPositionSmoother(0);
-            this.paintsettings.PressureSmoother = new Geometry.EMASmoother(0);
-            this.trackBar_Smoothing.Value = 0;
+            this.trackBar_PositionSmoothing.Value = 0;
             this.set_position_smoothing(0);
+
+            this.trackBar_PressureSmoothing.Value = 0;
+            this.set_pressure_smoothing(0);
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -335,7 +337,7 @@ namespace WinTabPainter
 
         private void trackBar_PositionSmoothing_Scroll(object sender, EventArgs e)
         {
-            this.set_position_smoothing(this.trackBar_Smoothing.Value / this.trackBar_Smoothing.Maximum);
+            this.set_position_smoothing(this.trackBar_PositionSmoothing.Value / this.trackBar_PositionSmoothing.Maximum);
         }
 
 

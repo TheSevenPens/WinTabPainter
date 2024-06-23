@@ -53,7 +53,7 @@
             this.MenuItem_FileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
-            this.trackBar_Smoothing = new System.Windows.Forms.TrackBar();
+            this.trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             this.label_CanvasPos = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -62,7 +62,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_PositionSmoothing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_PressureSmoothing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -301,13 +301,13 @@
             // 
             // trackBar_Smoothing
             // 
-            this.trackBar_Smoothing.AutoSize = false;
-            this.trackBar_Smoothing.Location = new System.Drawing.Point(12, 649);
-            this.trackBar_Smoothing.Maximum = 100;
-            this.trackBar_Smoothing.Name = "trackBar_Smoothing";
-            this.trackBar_Smoothing.Size = new System.Drawing.Size(424, 45);
-            this.trackBar_Smoothing.TabIndex = 41;
-            this.trackBar_Smoothing.Scroll += new System.EventHandler(this.trackBar_PositionSmoothing_Scroll);
+            this.trackBar_PositionSmoothing.AutoSize = false;
+            this.trackBar_PositionSmoothing.Location = new System.Drawing.Point(12, 649);
+            this.trackBar_PositionSmoothing.Maximum = 100;
+            this.trackBar_PositionSmoothing.Name = "trackBar_Smoothing";
+            this.trackBar_PositionSmoothing.Size = new System.Drawing.Size(424, 45);
+            this.trackBar_PositionSmoothing.TabIndex = 41;
+            this.trackBar_PositionSmoothing.Scroll += new System.EventHandler(this.trackBar_PositionSmoothing_Scroll);
             // 
             // label_CanvasPos
             // 
@@ -356,7 +356,7 @@
             this.Controls.Add(this.label_CanvasPos);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.trackBar_Smoothing);
+            this.Controls.Add(this.trackBar_PositionSmoothing);
             this.Controls.Add(this.label_PressureAdjusted);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
@@ -388,7 +388,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Smoothing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_PositionSmoothing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_PressureSmoothing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -421,7 +421,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SaveAs;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Open;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TrackBar trackBar_Smoothing;
+        private System.Windows.Forms.TrackBar trackBar_PositionSmoothing;
         private System.Windows.Forms.Label label_CanvasPos;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
