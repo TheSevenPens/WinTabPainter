@@ -43,7 +43,7 @@ namespace WinTabPainter
 
             // PRESSURE
             this.PressureRaw = wintab_pkt.pkNormalPressure;
-            this.PressureNormalized = this.PressureRaw / (double)tablet_info.MaxPressure;
+            this.PressureNormalized = this.PressureRaw / (double) tablet_info.MaxPressure;
 
             bool smooth_before_curve = false;
 

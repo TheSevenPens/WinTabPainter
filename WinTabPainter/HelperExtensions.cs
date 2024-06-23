@@ -1,4 +1,5 @@
 ﻿using System;
+using WinTabPainter.Geometry;
 using SD = System.Drawing;
 
 namespace WinTabPainter
@@ -51,6 +52,16 @@ namespace WinTabPainter
         public static string ToStringXY(this SD.Point p)
         {
             return string.Format("({0}x{1})", p.X, p.Y);
+        }
+
+        public static PointD Smooth(this PointD p, EMAPositionSmoother smoother)
+        {
+            return smoother.Smooth(p);
+        }
+
+        public static double Smooth(this double v, Geometry.EMASmoother smoother)
+        {
+            return smoother.Smooth(v);
         }
     }
 }

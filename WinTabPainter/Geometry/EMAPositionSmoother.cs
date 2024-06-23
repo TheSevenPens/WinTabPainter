@@ -22,6 +22,7 @@ namespace WinTabPainter.Geometry
         {
             return Smooth(new PointD(value.X, value.Y));
         }
+
         public PointD Smooth(PointD value)
         {
             PointD smoothed_new;
