@@ -154,11 +154,10 @@ namespace WinTabPainter
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
 
-                    var dab_size = new Geometry.Size(paint_data.BrushWidthAdjusted, paint_data.BrushWidthAdjusted);
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
-                        penpos_canvas_smoothed, 
-                        dab_size);
+                        penpos_canvas_smoothed,
+                        paint_data.BrushWidthAdjusted);
 
                     this.pictureBox_Canvas.Invalidate();
                 }
