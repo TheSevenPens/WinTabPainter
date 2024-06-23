@@ -1,4 +1,6 @@
-﻿namespace WinTabPainter
+﻿using WinTabPainter.Geometry;
+
+namespace WinTabPainter
 {
     public class PaintSettings
     {
