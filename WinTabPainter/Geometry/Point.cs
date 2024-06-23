@@ -44,16 +44,19 @@ namespace WinTabPainter.Geometry
             return new PointD(this.X / scale, this.Y / scale);
         }
 
+        public string ToStringXY()
+        {
+            return string.Format("({0}x{1})", this.X, this.Y);
+        }
+
+        public static implicit operator SD.Point(Point s) => s.ToSDPoint();
+
         public SD.Point ToSDPoint()
         {
             var p = new SD.Point(this.X, this.Y);
             return p;
         }
 
-        public string ToStringXY()
-        {
-            return string.Format("({0}x{1})", this.X, this.Y);
-        }
     }
 
 }

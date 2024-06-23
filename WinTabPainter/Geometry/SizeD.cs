@@ -33,13 +33,6 @@ namespace WinTabPainter.Geometry
             return s;
         }
 
-
-        public Geometry.Size ToSizeWithRounding()
-        {
-            var s0 = this.Round();
-            var s1 = s0.ToSize();
-            return s1;
-        }
     }
 
 }

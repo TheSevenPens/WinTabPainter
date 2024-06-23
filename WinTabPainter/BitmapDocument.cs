@@ -68,7 +68,7 @@ namespace WinTabPainter
 
         public void Erase()
         {
-            using (var b = new SD.SolidBrush(this.DefaultPageColor.ToSDColor()))
+            using (var b = new SD.SolidBrush(this.DefaultPageColor))
             {
                 this._gfx.FillRectangle(b, 0, 0, this._bmp.Width, this._bmp.Height);
             }
@@ -84,8 +84,8 @@ namespace WinTabPainter
             int half_width = System.Math.Max(1,width / 2);
             var halfsize = new Geometry.Size(half_width, half_width);
             var dab_rect_center = p.Subtract(halfsize);
-            var rect = new SD.Rectangle(dab_rect_center.ToSDPoint(), halfsize.ToSDSize() );
-            using (SD.Brush brush = new SD.SolidBrush(color.ToSDColor()))
+            var rect = new SD.Rectangle(dab_rect_center, halfsize );
+            using (SD.Brush brush = new SD.SolidBrush(color))
             {
                 this._gfx.FillEllipse(brush, rect);
             }

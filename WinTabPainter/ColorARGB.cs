@@ -20,5 +20,7 @@ namespace WinTabPainter
         {
             return SD.Color.FromArgb(this.Alpha, this.Red, this.Green, this.Blue);
         }
+
+        public static implicit operator SD.Color(ColorARGB c) => c.ToSDColor();
     }
 }
