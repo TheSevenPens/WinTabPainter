@@ -2,40 +2,66 @@
 {
     public class EMASmoother
     {
-        public double Alpha;
-        private double? SmoothingOld;
+
+        private double _alpha;
+
+        public double Alpha 
+        { 
+            get => this._alpha; 
+            set => this._alpha = this._clamp_alpha(value); 
+        }
+
+        private double? _old_smoothed_pos;
+
 
         public EMASmoother(double alpha)
         {
-            Alpha = alpha;
-            SmoothingOld = null;
+            this.Alpha = alpha;
+            this._old_smoothed_pos = null;
         }
 
-        public void SetOldSmoothed(double p)
+        private void _set_alpha(double aalpha)
         {
-            SmoothingOld = p;
+
+        }
+
+
+
+        public void SetOldSmoothed(double value)
+        {
+            _old_smoothed_pos = value;
         }
 
         public double Smooth(double value)
         {
-            double smoothed_new;
-            if (SmoothingOld.HasValue)
+            double new_smoothed_value;
+            if (_old_smoothed_pos.HasValue)
             {
-                smoothed_new = lerp(SmoothingOld.Value, value, Alpha);
+                new_smoothed_value = lerp(_old_smoothed_pos.Value, value, Alpha);
             }
             else
             {
-                smoothed_new = value;
+                new_smoothed_value = value;
             }
 
-            SmoothingOld = smoothed_new;
-            return smoothed_new;
+            _old_smoothed_pos = new_smoothed_value;
+            return new_smoothed_value;
         }
 
         private static double lerp(double oldval, double newval, double alpha)
         {
             double v = alpha * oldval + (1 - alpha) * newval;
             return v;
+        }
+
+        private double _clamp_alpha(double value)
+        {
+            double min = 0.0;
+            double max = 1.0;
+            if (value < min) { value = min; }
+            else if (value > max) { value = max; }
+            else { /* dnothing */}
+            return value;
         }
     }
 }
