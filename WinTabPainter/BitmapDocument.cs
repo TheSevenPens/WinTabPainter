@@ -26,6 +26,7 @@ namespace WinTabPainter
         private SD.Graphics _gfx;
         private SD.Bitmap _bmp;
 
+        private SD.SolidBrush paint_brush;
         private SD.Graphics Graphics { get { return this._gfx; } }
         public SD.Bitmap Bitmap { get { return this._bmp; } }
 
@@ -47,6 +48,7 @@ namespace WinTabPainter
             this._height = height;
             this._gfx = System.Drawing.Graphics.FromImage(this._bmp);
             this._gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            this.paint_brush = new SD.SolidBrush(System.Drawing.Color.Black);
         }
         public void Dispose()
         {
@@ -55,14 +57,22 @@ namespace WinTabPainter
 
         private void dispose_resources()
         {
+            if (this.paint_brush != null)
+            {
+                this.paint_brush.Dispose();
+                this.paint_brush = null;
+            }
+
             if (this._gfx != null)
             {
                 this._gfx.Dispose();
+                this._gfx = null;
             }
 
             if (this._bmp != null)
             {
                 this._bmp.Dispose();
+                this._bmp = null;   
             }
         }
 
@@ -85,10 +95,17 @@ namespace WinTabPainter
             var halfsize = new Geometry.Size(half_width, half_width);
             var dab_rect_center = p.Subtract(halfsize);
             var rect = new SD.Rectangle(dab_rect_center, halfsize );
-            using (SD.Brush brush = new SD.SolidBrush(color))
-            {
-                this._gfx.FillEllipse(brush, rect);
-            }
+            // TODO: Currently ignores the brush color
+            this._gfx.FillEllipse(this.paint_brush, rect);
+        }
+
+
+        public SD.Brush GetBrushForColor(ColorARGB color)
+        {
+
+            var new_brush = new SD.SolidBrush(color);
+
+            return new_brush;
         }
 
         public void Load(string filename)
