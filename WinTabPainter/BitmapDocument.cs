@@ -92,10 +92,10 @@ namespace WinTabPainter
         }
         public void Dispose()
         {
-            dispose_resources();
+            dispose_all_resources();
         }
 
-        private void dispose_resources()
+        private void dispose_all_resources()
         {
             if (this.paint_brush != null)
             {
@@ -103,6 +103,11 @@ namespace WinTabPainter
                 this.paint_brush = null;
             }
 
+            dispose_bitmap_resources();
+        }
+
+        private void dispose_bitmap_resources()
+        {
             if (this.background_layer != null)
             {
                 this.background_layer.Dispose();
@@ -144,7 +149,7 @@ namespace WinTabPainter
 
         public void Load(string filename)
         {
-            this.dispose_resources();
+            this.dispose_bitmap_resources();
             var bmp = (SD.Bitmap)System.Drawing.Bitmap.FromFile(filename);
             this.background_layer = new BitmapLayer(bmp);
             this._width = background_layer.Width;
