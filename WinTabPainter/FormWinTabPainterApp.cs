@@ -18,12 +18,12 @@ namespace WinTabPainter
         private WintabDN.CWintabContext wintab_context = null;
         private WintabDN.CWintabData wintab_data = null;
 
-        private BitmapDocument bitmap_doc;
+        private Painting.BitmapDocument bitmap_doc;
 
         public string filename = null;
         TabletInfo tablet_info = new TabletInfo();
 
-        public PaintSettings paintsettings = new PaintSettings();
+        public Painting.PaintSettings paintsettings = new Painting.PaintSettings();
 
         string FileSaveDefaultFilename = "Untitled.png";
         string FileSaveDefaultExt = "png";
@@ -40,7 +40,7 @@ namespace WinTabPainter
         private void Form1_Load(object sender, EventArgs e)
         {
             // All actual drawing will be done to this bitmap
-            this.bitmap_doc = new BitmapDocument(500, 500);
+            this.bitmap_doc = new Painting.BitmapDocument(500, 500);
 
             // Create a graphics object for the canvas bitmap and enable smoothing
             // by default for better looking stroke edges
@@ -154,7 +154,7 @@ namespace WinTabPainter
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
                 // collect all the information we need to start painting
-                var paint_data = new PaintData(wintab_pkt, tablet_info, this.paintsettings);
+                var paint_data = new Painting.PaintData(wintab_pkt, tablet_info, this.paintsettings);
 
                 // Take the position of the pen - which is pixel units on the screen
                 // and convert that to coordinates of the bitmap document canvas
@@ -165,7 +165,7 @@ namespace WinTabPainter
                 // Update the UI 
                 UpdateUIWithPaintData(paint_data, penpos_canvas);
 
-                var clr_black = new ColorARGB(255, 0, 0, 0);
+                var clr_black = new Painting.ColorARGB(255, 0, 0, 0);
                 if ((paint_data.PressureRaw > 0) 
                     && (this.IsPointInsideCanvas(penpos_canvas)))
                 {
@@ -188,7 +188,7 @@ namespace WinTabPainter
             var penpos_canvas = this.PointToClient(new SD.Point(px, py)).ToPoint();
             return penpos_canvas;
         }
-        private void UpdateUIWithPaintData(PaintData paint_data, Geometry.Point penpos_canvas)
+        private void UpdateUIWithPaintData(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();

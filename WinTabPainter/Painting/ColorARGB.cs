@@ -1,6 +1,6 @@
 ﻿using SD = System.Drawing;
 
-namespace WinTabPainter
+namespace WinTabPainter.Painting
 {
     public struct ColorARGB
     {

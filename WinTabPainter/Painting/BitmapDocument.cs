@@ -2,54 +2,8 @@
 using System.Drawing;
 using SD = System.Drawing;
 
-namespace WinTabPainter
+namespace WinTabPainter.Painting
 {
-
-    public class BitmapLayer : IDisposable
-    {
-        internal SD.Graphics Graphics;
-        internal SD.Bitmap Bitmap;
-
-        readonly Geometry.Size Size;
-        public int Width => this.Size.Width;
-        public int Height => this.Size.Height;
-        public BitmapLayer(Geometry.Size size)
-        {
-            this.Size = size;
-            this.Bitmap = new SD.Bitmap(this.Width, this.Height);
-            this.Graphics = System.Drawing.Graphics.FromImage(this.Bitmap);
-            this.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-        }
-
-        public BitmapLayer(SD.Bitmap bmp)
-        {
-            this.Size = new Geometry.Size(bmp.Width,bmp.Height);
-            this.Bitmap = bmp;
-            this.Graphics = System.Drawing.Graphics.FromImage(this.Bitmap);
-            this.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-        }
-
-
-        public void Dispose()
-        {
-            this.dispose_respources();
-        }
-        public void dispose_respources()
-        {
-            if (this.Graphics != null)
-            {
-                this.Graphics.Dispose();
-                this.Graphics = null;
-            }
-
-            if (this.Bitmap != null)
-            {
-                this.Bitmap.Dispose();
-                this.Bitmap = null;
-            }
-
-        }
-    }
     public class BitmapDocument : IDisposable
     {
         // BitmapDocument class intended to encapsulate
@@ -77,7 +31,7 @@ namespace WinTabPainter
         public int Width => this._width;
         public int Height => this._height;
 
-        ColorARGB DefaultPageColor = new ColorARGB(255,255,255,255);
+        Painting.ColorARGB DefaultPageColor = new Painting.ColorARGB(255,255,255,255);
 
         public Geometry.Size Size
         {
@@ -128,7 +82,7 @@ namespace WinTabPainter
             this.background_layer.Bitmap.Save(filename);
         }
 
-        public void DrawDabCenteredAt(ColorARGB color, Geometry.Point p, int width)
+        public void DrawDabCenteredAt(Painting.ColorARGB color, Geometry.Point p, int width)
         {
             int half_width = System.Math.Max(1,width / 2);
             var halfsize = new Geometry.Size(half_width, half_width);
@@ -139,7 +93,7 @@ namespace WinTabPainter
         }
 
 
-        public SD.Brush GetBrushForColor(ColorARGB color)
+        public SD.Brush GetBrushForColor(Painting.ColorARGB color)
         {
 
             var new_brush = new SD.SolidBrush(color);

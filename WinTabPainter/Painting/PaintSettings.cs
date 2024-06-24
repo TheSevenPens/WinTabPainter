@@ -1,6 +1,6 @@
 ﻿using WinTabPainter.Geometry;
 
-namespace WinTabPainter
+namespace WinTabPainter.Painting
 {
     public class PaintSettings
     {
@@ -9,7 +9,7 @@ namespace WinTabPainter
         public int BrushWidthMin = 1;
 
         // pressure settings
-        public SimpleCurve pressure_curve = new SimpleCurve();
+        public Numerics.SimpleCurve pressure_curve = new Numerics.SimpleCurve();
 
         // smoothing settings
         public double PositionSmoothingAmount = 0.0;
