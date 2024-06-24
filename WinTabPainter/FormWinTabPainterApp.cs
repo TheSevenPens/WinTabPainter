@@ -185,7 +185,7 @@ namespace WinTabPainter
                 this.bitmap_doc.DrawDabCenteredAt(
                     clr_black,
                     pos_smoothed,
-                    paint_data.BrushWidthAdjusted);
+                    paint_data.BrushWidthEffective);
 
                 this.pictureBox_Canvas.Invalidate();
             }

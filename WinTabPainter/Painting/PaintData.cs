@@ -29,7 +29,7 @@ namespace WinTabPainter.Painting
         public double PressureEffective;
 
         // BRUSH
-        public int BrushWidthAdjusted;
+        public int BrushWidthEffective;
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
@@ -73,11 +73,11 @@ namespace WinTabPainter.Painting
             {
                 double effective_width = this.PressureEffective * paintsettings.BrushWidth;
                 effective_width = HelperMethods.ClampRangeDouble(effective_width, paintsettings.BrushWidthMin, 100);
-                this.BrushWidthAdjusted = (int) effective_width;
+                this.BrushWidthEffective = (int) effective_width;
             }
             else
             {
-                this.BrushWidthAdjusted = 0;
+                this.BrushWidthEffective = 0;
             }
         }
     }
