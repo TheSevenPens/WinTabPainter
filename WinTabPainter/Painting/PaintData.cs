@@ -71,7 +71,9 @@ namespace WinTabPainter.Painting
             // Calculate the brush width taking into account the pen pressure
             if (this.PressureRaw > 0)
             {
-                this.BrushWidthAdjusted = (int) System.Math.Max(paintsettings.BrushWidthMin, this.PressureEffective * paintsettings.BrushWidth);
+                double effective_width = this.PressureEffective * paintsettings.BrushWidth;
+                effective_width = HelperMethods.ClampRangeDouble(effective_width, paintsettings.BrushWidthMin, 100);
+                this.BrushWidthAdjusted = (int) effective_width;
             }
             else
             {
