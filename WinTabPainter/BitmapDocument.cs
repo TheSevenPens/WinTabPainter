@@ -23,12 +23,12 @@ namespace WinTabPainter
         // There is only a single "layer" in the current implemenation
 
         
-        private SD.Graphics _gfx;
-        private SD.Bitmap _bmp;
+        private SD.Graphics _canvas_gfx;
+        private SD.Bitmap _canvas_bmp;
 
         private SD.SolidBrush paint_brush;
-        private SD.Graphics Graphics { get { return this._gfx; } }
-        public SD.Bitmap Bitmap { get { return this._bmp; } }
+        private SD.Graphics Graphics { get { return this._canvas_gfx; } }
+        public SD.Bitmap Bitmap { get { return this._canvas_bmp; } }
 
         int _width;
         int _height;
@@ -43,12 +43,14 @@ namespace WinTabPainter
         }
         public BitmapDocument(int width, int height)
         {
-            this._bmp = new SD.Bitmap(width, height);
+            this._canvas_bmp = new SD.Bitmap(width, height);
+            this._canvas_gfx = System.Drawing.Graphics.FromImage(this._canvas_bmp);
+            this._canvas_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
             this._width= width; 
             this._height = height;
-            this._gfx = System.Drawing.Graphics.FromImage(this._bmp);
-            this._gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.paint_brush = new SD.SolidBrush(System.Drawing.Color.Black);
+            this.paint_brush = new SD.SolidBrush(SD.Color.Black);
         }
         public void Dispose()
         {
@@ -63,16 +65,16 @@ namespace WinTabPainter
                 this.paint_brush = null;
             }
 
-            if (this._gfx != null)
+            if (this._canvas_gfx != null)
             {
-                this._gfx.Dispose();
-                this._gfx = null;
+                this._canvas_gfx.Dispose();
+                this._canvas_gfx = null;
             }
 
-            if (this._bmp != null)
+            if (this._canvas_bmp != null)
             {
-                this._bmp.Dispose();
-                this._bmp = null;   
+                this._canvas_bmp.Dispose();
+                this._canvas_bmp = null;   
             }
         }
 
@@ -80,13 +82,13 @@ namespace WinTabPainter
         {
             using (var b = new SD.SolidBrush(this.DefaultPageColor))
             {
-                this._gfx.FillRectangle(b, 0, 0, this._bmp.Width, this._bmp.Height);
+                this._canvas_gfx.FillRectangle(b, 0, 0, this._canvas_bmp.Width, this._canvas_bmp.Height);
             }
         }
 
         public void Save(string filename)
         {
-            this._bmp.Save(filename);
+            this._canvas_bmp.Save(filename);
         }
 
         public void DrawDabCenteredAt(ColorARGB color, Geometry.Point p, int width)
@@ -96,7 +98,7 @@ namespace WinTabPainter
             var dab_rect_center = p.Subtract(halfsize);
             var rect = new SD.Rectangle(dab_rect_center, halfsize );
             // TODO: Currently ignores the brush color
-            this._gfx.FillEllipse(this.paint_brush, rect);
+            this._canvas_gfx.FillEllipse(this.paint_brush, rect);
         }
 
 
@@ -111,11 +113,11 @@ namespace WinTabPainter
         public void Load(string filename)
         {
             this.dispose_resources();
-            this._bmp = (SD.Bitmap) System.Drawing.Bitmap.FromFile(filename);
-            this._width = this._bmp.Width;
-            this._height= this._bmp.Height;
-            this._gfx = System.Drawing.Graphics.FromImage(this._bmp);
-            this._gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            this._canvas_bmp = (SD.Bitmap) System.Drawing.Bitmap.FromFile(filename);
+            this._width = this._canvas_bmp.Width;
+            this._height= this._canvas_bmp.Height;
+            this._canvas_gfx = System.Drawing.Graphics.FromImage(this._canvas_bmp);
+            this._canvas_gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         }
     }
 }
