@@ -18,7 +18,7 @@ namespace WinTabPainter.Numerics
             this._old_smoothed_pos = null;
         }
 
-        public void SetOldSmoothed(Geometry.PointD p)
+        public void SetOldSmoothedValue(Geometry.PointD p)
         {
             this._old_smoothed_pos = p;
         }

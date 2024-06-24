@@ -11,13 +11,13 @@
             set => this._alpha = this._clamp_alpha(value); 
         }
 
-        private double? _old_smoothed_pos;
+        private double? _old_smoothed_value;
 
 
         public EMASmoother(double alpha)
         {
             this.Alpha = alpha;
-            this._old_smoothed_pos = null;
+            this._old_smoothed_value = null;
         }
 
         private void _set_alpha(double aalpha)
@@ -27,24 +27,24 @@
 
 
 
-        public void SetOldSmoothed(double value)
+        public void SetOldSmoothedValue(double value)
         {
-            _old_smoothed_pos = value;
+            _old_smoothed_value = value;
         }
 
         public double Smooth(double value)
         {
             double new_smoothed_value;
-            if (_old_smoothed_pos.HasValue)
+            if (_old_smoothed_value.HasValue)
             {
-                new_smoothed_value = lerp(_old_smoothed_pos.Value, value, Alpha);
+                new_smoothed_value = lerp(_old_smoothed_value.Value, value, Alpha);
             }
             else
             {
                 new_smoothed_value = value;
             }
 
-            _old_smoothed_pos = new_smoothed_value;
+            _old_smoothed_value = new_smoothed_value;
             return new_smoothed_value;
         }
 
