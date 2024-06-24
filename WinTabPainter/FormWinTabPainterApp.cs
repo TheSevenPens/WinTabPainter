@@ -54,7 +54,7 @@ namespace WinTabPainter
             // changes to the bitmap will be rendered
             // whenever the picturebox is redrawn
 
-            this.pictureBox_Canvas.Image = this.bitmap_doc.RenderedDocumentBitmap;
+            this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
             this.EraseCanvas();
 
             this.wintab_context = OpenTabletContext();
@@ -339,7 +339,7 @@ namespace WinTabPainter
             {
                 this.bitmap_doc.Load(ofd.FileName);
                 this.filename = ofd.FileName;
-                this.pictureBox_Canvas.Image = this.bitmap_doc.RenderedDocumentBitmap;
+                this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
                 this.pictureBox_Canvas.Invalidate();
             }
             else 
