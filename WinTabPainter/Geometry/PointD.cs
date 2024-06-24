@@ -7,33 +7,18 @@ namespace WinTabPainter.Geometry
         public double X;
         public double Y;
 
-        public static PointD Empty
-        {
-            get
-            {
-                return new PointD(0, 0);
-            }
-        }
+        public static PointD Empty => new PointD(0, 0);
 
         public PointD(double x, double y)
         {
             this.X = x;
             this.Y = y;
         }
-        public PointD Add(double dx, double dy)
-        {
-            return new PointD(this.X + dx, this.Y + dy);
-        }
+        public PointD Add(double dx, double dy) => new PointD(this.X + dx, this.Y + dy);
 
-        public PointD Subtract(Point p)
-        {
-            return new PointD(this.X + p.X, this.Y + p.Y);
-        }
+        public PointD Subtract(Point p) => new PointD(this.X + p.X, this.Y + p.Y);
 
-        public PointD Divide(double scale)
-        {
-            return new PointD(this.X/ scale, this.Y/ scale);
-        }
+        public PointD Divide(double scale) => new PointD(this.X / scale, this.Y / scale);
 
         public Geometry.PointD Round()
         {
@@ -49,10 +34,7 @@ namespace WinTabPainter.Geometry
             return p;
         }
 
-        public string ToStringXY()
-        {
-            return string.Format("({0}x{1})", this.X, this.Y);
-        }
+        public string ToStringXY() => string.Format("({0}x{1})", this.X, this.Y);
     }
 
 }
