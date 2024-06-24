@@ -51,8 +51,8 @@
   <ItemGroup>
     <Compile Include="BitmapDocument.cs" />
     <Compile Include="ColorARGB.cs" />
-    <Compile Include="Geometry\EMAPositionSmoother.cs" />
-    <Compile Include="Geometry\EMASmoother.cs" />
+    <Compile Include="Numerics\EMAPositionSmoother.cs" />
+    <Compile Include="Numerics\EMASmoother.cs" />
     <Compile Include="FormWinTabPainterApp.cs">
       <SubType>Form</SubType>
     </Compile>

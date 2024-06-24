@@ -54,12 +54,12 @@ namespace WinTabPainter
             return string.Format("({0}x{1})", p.X, p.Y);
         }
 
-        public static PointD Smooth(this PointD p, EMAPositionSmoother smoother)
+        public static PointD Smooth(this PointD p, Numerics.EMAPositionSmoother smoother)
         {
             return smoother.Smooth(p);
         }
 
-        public static double Smooth(this double v, Geometry.EMASmoother smoother)
+        public static double Smooth(this double v, Numerics.EMASmoother smoother)
         {
             return smoother.Smooth(v);
         }
