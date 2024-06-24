@@ -2,6 +2,8 @@
 using SD=System.Drawing;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
+using WinTabPainter.Painting;
+using WinTabPainter.Geometry;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -30,7 +32,7 @@ namespace WinTabPainter
         string FileOpenDefaultExt = "png";
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
-
+        ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
 
         public FormWinTabPainterApp()
         {
@@ -167,21 +169,25 @@ namespace WinTabPainter
                 var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos, scale);
                 var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed, scale);
 
-                // Update the UI 
-                UpdateUIWithPaintData(paint_data, penpos_canvas);
+                HandlePainting(penpos_canvas, penpos_canvas_smoothed, paint_data);
+            }
+        }
 
-                var clr_black = new Painting.ColorARGB(255, 0, 0, 0);
-                if ((paint_data.PressureRaw > 0) 
-                    && (this.IsPointInsideCanvas(penpos_canvas)))
-                {
+        private void HandlePainting(Point pos, Point pos_smoothed, PaintData paint_data)
+        {
+            // Update the UI 
+            UpdateUIWithPaintData(paint_data, pos);
 
-                    this.bitmap_doc.DrawDabCenteredAt(
-                        clr_black,
-                        penpos_canvas_smoothed,
-                        paint_data.BrushWidthAdjusted);
+            if ((paint_data.PressureRaw > 0)
+                && (this.IsPointInsideCanvas(pos)))
+            {
 
-                    this.pictureBox_Canvas.Invalidate();
-                }
+                this.bitmap_doc.DrawDabCenteredAt(
+                    clr_black,
+                    pos_smoothed,
+                    paint_data.BrushWidthAdjusted);
+
+                this.pictureBox_Canvas.Invalidate();
             }
         }
 
@@ -261,10 +267,10 @@ namespace WinTabPainter
 
         void relative_modify_brush_size(int value)
         {
-            this.paintsettings.BrushWidth = this.paintsettings.BrushWidth + value;
-            this.paintsettings.BrushWidth = Math.Max(1, this.paintsettings.BrushWidth);
-            this.paintsettings.BrushWidth = Math.Min(100, this.paintsettings.BrushWidth);
+            var w = this.paintsettings.BrushWidth + value;
+            w = HelperMethods.ClampRangeInt(w, this.paintsettings.BrushWidthMin, 100);
 
+            this.paintsettings.BrushWidth = w;
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
             this.trackBar_BrushSize.Value= this.paintsettings.BrushWidth;
         }
@@ -358,8 +364,6 @@ namespace WinTabPainter
         {
             this.set_position_smoothing(this.trackBar_PositionSmoothing.Value / this.trackBar_PositionSmoothing.Maximum);
         }
-
-
 
         private void trackBar_PressureSmoothing_Scroll(object sender, EventArgs e)
         {
