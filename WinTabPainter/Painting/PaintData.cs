@@ -6,6 +6,9 @@ namespace WinTabPainter.Painting
 {
     public struct PaintData
     {
+        // TIME
+        public uint Time;
+
         // POSITION
         public Geometry.Point PenPos;
         public Geometry.Point PenPosSmoothed;
@@ -30,6 +33,10 @@ namespace WinTabPainter.Painting
 
         public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
         {
+
+            // TIME
+            this.Time = wintab_pkt.pkTime;
+
             // POSITION
             this.PenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
             this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos).Round().ToPoint();
