@@ -16,6 +16,9 @@ namespace WinTabPainter.Geometry
 
         public SizeD Divide(double scale) => new SizeD(this.Width / scale, this.Height / scale);
 
+        public SizeD Multiply(double scale) => new SizeD(this.Width * scale, this.Height * scale);
+
+
         public Geometry.SizeD Round()
         {
             double w = System.Math.Round(this.Width);

@@ -20,6 +20,8 @@ namespace WinTabPainter.Geometry
 
         public PointD Divide(double scale) => new PointD(this.X / scale, this.Y / scale);
 
+        public PointD Multiply (double scale) => new PointD(this.X * scale, this.Y * scale);
+
         public Geometry.PointD Round()
         {
             double rx = System.Math.Round(this.X);
