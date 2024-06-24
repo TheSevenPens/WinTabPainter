@@ -20,13 +20,6 @@
             this._old_smoothed_value = null;
         }
 
-        private void _set_alpha(double aalpha)
-        {
-
-        }
-
-
-
         public void SetOldSmoothedValue(double value)
         {
             _old_smoothed_value = value;
