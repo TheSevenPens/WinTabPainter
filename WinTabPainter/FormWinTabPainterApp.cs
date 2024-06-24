@@ -59,6 +59,18 @@ namespace WinTabPainter
 
             this.wintab_context = OpenTabletContext();
 
+            DEBUG_CenterWindow();
+
+            this.trackBar_BrushSize.Value = this.paintsettings.BrushWidth;
+            this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
+
+            // Default to no smoothing
+            this.AppSetPositionSmoothing(0);
+            this.AppSetPressureSmoothing(0);
+        }
+
+        private void DEBUG_CenterWindow()
+        {
             // This is for debugging only
             // brings the app window into the middle of the third monitor
             // allieviates the hassle of dragging it over every time
@@ -68,15 +80,8 @@ namespace WinTabPainter
             {
                 var screen = System.Windows.Forms.Screen.AllScreens[2];
                 this.Left = screen.Bounds.Left + (screen.Bounds.Width / 2) - (this.Width / 2);
-                this.Top = screen.Bounds.Top + (screen.Bounds.Height/2) - (this.Height / 2);
+                this.Top = screen.Bounds.Top + (screen.Bounds.Height / 2) - (this.Height / 2);
             }
-
-            this.trackBar_BrushSize.Value = this.paintsettings.BrushWidth;
-            this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
-
-            // Default to no smoothing
-            this.AppSetPositionSmoothing(0);
-            this.AppSetPressureSmoothing(0);
         }
 
         public void AppSetPositionSmoothing(double value)
