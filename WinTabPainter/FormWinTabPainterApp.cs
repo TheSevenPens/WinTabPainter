@@ -382,5 +382,10 @@ namespace WinTabPainter
             this.paintsettings.PressureSmoother.Alpha = this.paintsettings.PressureSmoothingAmount;
         }
 
+        private void showShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormShortcuts();
+            form.ShowDialog();
+        }
     }
 }

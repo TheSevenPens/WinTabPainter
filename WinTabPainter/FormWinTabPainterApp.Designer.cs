@@ -58,6 +58,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -252,10 +254,11 @@
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItem_File});
+            this.MenuItem_File,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 60);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 52);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -266,27 +269,27 @@
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
-            this.MenuItem_File.Size = new System.Drawing.Size(87, 56);
+            this.MenuItem_File.Size = new System.Drawing.Size(87, 48);
             this.MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
             // 
             this.MenuItem_Open.Name = "MenuItem_Open";
-            this.MenuItem_Open.Size = new System.Drawing.Size(285, 54);
+            this.MenuItem_Open.Size = new System.Drawing.Size(448, 54);
             this.MenuItem_Open.Text = "Open";
             this.MenuItem_Open.Click += new System.EventHandler(this.MenuItem_Open_Click);
             // 
             // MenuItem_FileSave
             // 
             this.MenuItem_FileSave.Name = "MenuItem_FileSave";
-            this.MenuItem_FileSave.Size = new System.Drawing.Size(285, 54);
+            this.MenuItem_FileSave.Size = new System.Drawing.Size(448, 54);
             this.MenuItem_FileSave.Text = "Save";
             this.MenuItem_FileSave.Click += new System.EventHandler(this.MenuFileSave_Click);
             // 
             // MenuItem_SaveAs
             // 
             this.MenuItem_SaveAs.Name = "MenuItem_SaveAs";
-            this.MenuItem_SaveAs.Size = new System.Drawing.Size(285, 54);
+            this.MenuItem_SaveAs.Size = new System.Drawing.Size(448, 54);
             this.MenuItem_SaveAs.Text = "Save As";
             this.MenuItem_SaveAs.Click += new System.EventHandler(this.MenuItem_SaveAs_Click);
             // 
@@ -299,12 +302,12 @@
             this.label2.TabIndex = 42;
             this.label2.Text = "Position Smoothing (None<->Max)";
             // 
-            // trackBar_Smoothing
+            // trackBar_PositionSmoothing
             // 
             this.trackBar_PositionSmoothing.AutoSize = false;
             this.trackBar_PositionSmoothing.Location = new System.Drawing.Point(12, 649);
             this.trackBar_PositionSmoothing.Maximum = 100;
-            this.trackBar_PositionSmoothing.Name = "trackBar_Smoothing";
+            this.trackBar_PositionSmoothing.Name = "trackBar_PositionSmoothing";
             this.trackBar_PositionSmoothing.Size = new System.Drawing.Size(424, 45);
             this.trackBar_PositionSmoothing.TabIndex = 41;
             this.trackBar_PositionSmoothing.Scroll += new System.EventHandler(this.trackBar_PositionSmoothing_Scroll);
@@ -345,6 +348,21 @@
             this.trackBar_PressureSmoothing.Size = new System.Drawing.Size(424, 45);
             this.trackBar_PressureSmoothing.TabIndex = 45;
             this.trackBar_PressureSmoothing.Scroll += new System.EventHandler(this.trackBar_PressureSmoothing_Scroll);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showShortcutsToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(104, 48);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // showShortcutsToolStripMenuItem
+            // 
+            this.showShortcutsToolStripMenuItem.Name = "showShortcutsToolStripMenuItem";
+            this.showShortcutsToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            this.showShortcutsToolStripMenuItem.Text = "Show Shortcuts";
+            this.showShortcutsToolStripMenuItem.Click += new System.EventHandler(this.showShortcutsToolStripMenuItem_Click);
             // 
             // FormWinTabPainterApp
             // 
@@ -426,6 +444,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar trackBar_PressureSmoothing;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showShortcutsToolStripMenuItem;
     }
 }
 

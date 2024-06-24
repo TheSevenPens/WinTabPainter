@@ -31,26 +31,26 @@ namespace WinTabPainter.Painting
         // BRUSH
         public int BrushWidthEffective;
 
-        public PaintData(WintabDN.WintabPacket wintab_pkt, TabletInfo tablet_info, PaintSettings paintsettings)
+        public PaintData(WintabDN.WintabPacket pkt, TabletInfo tablet, PaintSettings paintsettings)
         {
 
             // TIME
-            this.Time = wintab_pkt.pkTime;
+            this.Time = pkt.pkTime;
 
             // POSITION
-            this.PenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
+            this.PenPos = new Geometry.Point(pkt.pkX, pkt.pkY);
             this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos).Round().ToPoint();
 
             // HOVER
-            this.PenHover = wintab_pkt.pkZ;
+            this.PenHover = pkt.pkZ;
 
             // TILT
-            this.TiltAltitude = wintab_pkt.pkOrientation.orAltitude / 10.0;
-            this.TiltAzimuth = wintab_pkt.pkOrientation.orAzimuth / 10.0;
+            this.TiltAltitude = pkt.pkOrientation.orAltitude / 10.0;
+            this.TiltAzimuth = pkt.pkOrientation.orAzimuth / 10.0;
 
             // PRESSURE
-            this.PressureRaw = wintab_pkt.pkNormalPressure;
-            this.PressureNormalized = this.PressureRaw / (double) tablet_info.MaxPressure;
+            this.PressureRaw = pkt.pkNormalPressure;
+            this.PressureNormalized = this.PressureRaw / (double) tablet.MaxPressure;
 
             bool smooth_before_curve = false;
 

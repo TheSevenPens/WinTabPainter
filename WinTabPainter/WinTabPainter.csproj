@@ -49,6 +49,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormShortcuts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShortcuts.Designer.cs">
+      <DependentUpon>FormShortcuts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Painting\BitmapDocument.cs" />
     <Compile Include="Painting\BitmapLayer.cs" />
     <Compile Include="Painting\ColorARGB.cs" />
@@ -72,6 +78,9 @@
     <Compile Include="Numerics\SimpleCurve.cs" />
     <Compile Include="TabletInfo.cs" />
     <Compile Include="HelperExtensions.cs" />
+    <EmbeddedResource Include="FormShortcuts.resx">
+      <DependentUpon>FormShortcuts.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormWinTabPainterApp.resx">
       <DependentUpon>FormWinTabPainterApp.cs</DependentUpon>
     </EmbeddedResource>
