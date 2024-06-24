@@ -75,12 +75,26 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
 
             // Default to no smoothing
-            this.trackBar_PositionSmoothing.Value = 0;
-            this.set_position_smoothing(0);
+            this.AppSetPositionSmoothing(0);
+            this.AppSetPressureSmoothing(0);
+        }
 
-            this.trackBar_PressureSmoothing.Value = 0;
-            this.set_pressure_smoothing(0);
+        public void AppSetPositionSmoothing(double value)
+        {
+            value = HelperMethods.ClampRangeDouble(-1, 0, -1);
+            this.set_position_smoothing(value);
 
+            int scrollval = HelperMethods.ClampRangeInt((int)(100 * value), -100, 100);
+            this.trackBar_PositionSmoothing.Value = scrollval;
+        }
+
+        public void AppSetPressureSmoothing(double value)
+        {
+            value = HelperMethods.ClampRangeDouble(-1, 0, -1);
+            this.set_pressure_smoothing(value);
+
+            int scrollval = HelperMethods.ClampRangeInt((int)(100 * value), -100, 100);
+            this.trackBar_PressureSmoothing.Value = scrollval;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -349,13 +363,13 @@ namespace WinTabPainter
 
         public void set_position_smoothing(double value)
         {
-            this.paintsettings.PositionSmoothingAmount = HelperMethods.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.PositionSmoothingAmount = HelperMethods.ClampRangeDouble(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
             this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
 
         public void set_pressure_smoothing(double value)
         {
-            this.paintsettings.PressureSmoothingAmount = HelperMethods.ClampRange(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.PressureSmoothingAmount = HelperMethods.ClampRangeDouble(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
             this.paintsettings.PressureSmoother.Alpha = this.paintsettings.PressureSmoothingAmount;
         }
 

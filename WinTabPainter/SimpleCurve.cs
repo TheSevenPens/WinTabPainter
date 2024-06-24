@@ -13,7 +13,7 @@ namespace WinTabPainter
 
         public void SetBendAmount(double amt)
         {
-            this.ParamBendAmount = HelperMethods.ClampRange(amt, -1, 1);
+            this.ParamBendAmount = HelperMethods.ClampRangeDouble(amt, -1, 1);
 
         }
 
