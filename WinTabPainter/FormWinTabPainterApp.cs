@@ -402,8 +402,21 @@ namespace WinTabPainter
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var form = new FormCurve();
-            form.ShowDialog(this);
+        }
+
+        private void pressureCurveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormCurve(this.paintsettings.pressure_curve.BendAmount);
+            var r = form.ShowDialog(this);
+            if (r == DialogResult.OK) 
+            {
+
+                this.paintsettings.pressure_curve.BendAmount = form.CurveAmount;
+                int v = HelperMethods.ClampRangeInt((int)(form.CurveAmount * 100), -100, 100);
+                this.trackBarPressureCurve.Value = v;
+
+            }
+
         }
     }
 }

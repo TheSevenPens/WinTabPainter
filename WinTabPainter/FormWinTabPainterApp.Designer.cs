@@ -51,18 +51,19 @@
             this.MenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_FileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             this.label_CanvasPos = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressureCurveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -249,10 +250,11 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_File,
             this.imageToolStripMenuItem,
+            this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 52);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -287,6 +289,21 @@
             this.MenuItem_SaveAs.Text = "Save As";
             this.MenuItem_SaveAs.Click += new System.EventHandler(this.MenuItem_SaveAs_Click);
             // 
+            // imageToolStripMenuItem
+            // 
+            this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearToolStripMenuItem});
+            this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
+            this.imageToolStripMenuItem.Text = "Image";
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(251, 54);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -302,6 +319,13 @@
             this.showShortcutsToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
             this.showShortcutsToolStripMenuItem.Text = "Show Shortcuts";
             this.showShortcutsToolStripMenuItem.Click += new System.EventHandler(this.showShortcutsToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // label2
             // 
@@ -359,44 +383,26 @@
             this.trackBar_PressureSmoothing.TabIndex = 45;
             this.trackBar_PressureSmoothing.Scroll += new System.EventHandler(this.trackBar_PressureSmoothing_Scroll);
             // 
-            // aboutToolStripMenuItem
+            // settingsToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pressureCurveToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 48);
+            this.settingsToolStripMenuItem.Text = "Settings";
             // 
-            // imageToolStripMenuItem
+            // pressureCurveToolStripMenuItem
             // 
-            this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearToolStripMenuItem});
-            this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            this.imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
-            this.imageToolStripMenuItem.Text = "Image";
-            // 
-            // clearToolStripMenuItem
-            // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
-            this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(46, 842);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(299, 67);
-            this.button1.TabIndex = 47;
-            this.button1.Text = "test curve form";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
+            this.pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            this.pressureCurveToolStripMenuItem.Text = "Pressure Curve";
+            this.pressureCurveToolStripMenuItem.Click += new System.EventHandler(this.pressureCurveToolStripMenuItem_Click);
             // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1786, 945);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.trackBar_PressureSmoothing);
             this.Controls.Add(this.label_CanvasPos);
@@ -475,7 +481,8 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pressureCurveToolStripMenuItem;
     }
 }
 

@@ -14,9 +14,11 @@ namespace WinTabPainter
 {
     public partial class FormCurve : Form
     {
-        public FormCurve()
+        public FormCurve(double amt)
         {
             InitializeComponent();
+            this.curve = new SimpleCurve();
+            this.curve.BendAmount = amt;
         }
 
         BitmapLayer bitmaplayer;
@@ -26,7 +28,11 @@ namespace WinTabPainter
         SD.SolidBrush brush;
         int num_points = 300;
 
-        double CurveAmount => this.curve.BendAmount;
+        public double CurveAmount
+        {
+            get => this.curve.BendAmount;
+        } 
+
         private void button_Close_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -39,10 +45,8 @@ namespace WinTabPainter
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
-
+            this.labelAmount.Text = this.curve.BendAmount.ToString();
             this.pen = new SD.Pen(SD.Color.CornflowerBlue,5);
-            this.curve = new SimpleCurve();
-            this.curve.BendAmount= 0.85;
 
             this.render_curve();
 
@@ -123,8 +127,9 @@ namespace WinTabPainter
 
         private void button_OK_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+
             this.Close();
+            this.DialogResult = DialogResult.OK;
         }
     }
 }
