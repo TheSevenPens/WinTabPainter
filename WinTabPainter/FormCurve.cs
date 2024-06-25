@@ -39,11 +39,11 @@ namespace WinTabPainter
             this.points = new SD.PointF[this.pictureBox_Curve.Width];
 
             this.curve = new SimpleCurve();
-            this.curve.SetBendAmount(0.90);
+            this.curve.BendAmount= 0.99;
 
             this.render_curve();
 
-            var slider_value = (int)HelperMethods.ClampRangeDouble(this.curve.GetBendAmount() * 100.0, -100, 100);
+            var slider_value = (int)HelperMethods.ClampRangeDouble(this.curve.BendAmount * 100.0, -100, 100);
             this.trackBar_Amount.Value = slider_value;
 
 
@@ -109,7 +109,7 @@ namespace WinTabPainter
             double v = get_bend_amount_from_trackbar();
 
             this.labelAmount.Text = v.ToString();
-            this.curve.SetBendAmount(v);
+            this.curve.BendAmount= v;
         }
 
         private double get_bend_amount_from_trackbar()

@@ -240,7 +240,7 @@ namespace WinTabPainter
 
         private void trackBarPressureCurve_Scroll(object sender, EventArgs e)
         {
-            this.paintsettings.pressure_curve.SetBendAmount(((double)this.trackBarPressureCurve.Value) / 100.0);
+            this.paintsettings.pressure_curve.BendAmount = (((double)this.trackBarPressureCurve.Value) / 100.0);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

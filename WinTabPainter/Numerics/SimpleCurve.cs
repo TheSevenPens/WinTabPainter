@@ -4,24 +4,16 @@ namespace WinTabPainter.Numerics
 {
     public class SimpleCurve
     {
-        double BendAmount;
+
+        double amt;
+        public double BendAmount { 
+            get => this.amt; 
+            set => this.amt = HelperMethods.ClampRangeDouble(value, -1.0, 1.0); }
+
         public SimpleCurve()
         {
-            this.SetBendAmount(0.0);
             this.BendAmount = 0.0;
         }
-
-        public void SetBendAmount(double amt)
-        {
-            this.BendAmount = HelperMethods.ClampRangeDouble(amt, -1, 1);
-
-        }
-
-        public double GetBendAmount()
-        {
-            return this.BendAmount;
-        }
-
 
         public double ApplyCurve(double value)
         {
