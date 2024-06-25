@@ -28,23 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button_Close = new System.Windows.Forms.Button();
+            this.button_Cancel = new System.Windows.Forms.Button();
             this.pictureBox_Curve = new System.Windows.Forms.PictureBox();
             this.trackBar_Amount = new System.Windows.Forms.TrackBar();
             this.labelAmount = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button_OK = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Curve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Amount)).BeginInit();
             this.SuspendLayout();
             // 
-            // button_Close
+            // button_Cancel
             // 
-            this.button_Close.Location = new System.Drawing.Point(456, 708);
-            this.button_Close.Name = "button_Close";
-            this.button_Close.Size = new System.Drawing.Size(148, 75);
-            this.button_Close.TabIndex = 0;
-            this.button_Close.Text = "close";
-            this.button_Close.UseVisualStyleBackColor = true;
-            this.button_Close.Click += new System.EventHandler(this.button_Close_Click);
+            this.button_Cancel.Location = new System.Drawing.Point(409, 939);
+            this.button_Cancel.Name = "button_Cancel";
+            this.button_Cancel.Size = new System.Drawing.Size(148, 75);
+            this.button_Cancel.TabIndex = 0;
+            this.button_Cancel.Text = "Cancel";
+            this.button_Cancel.UseVisualStyleBackColor = true;
+            this.button_Cancel.Click += new System.EventHandler(this.button_Close_Click);
             // 
             // pictureBox_Curve
             // 
@@ -69,21 +73,62 @@
             // labelAmount
             // 
             this.labelAmount.AutoSize = true;
-            this.labelAmount.Location = new System.Drawing.Point(63, 708);
+            this.labelAmount.Location = new System.Drawing.Point(244, 730);
             this.labelAmount.Name = "labelAmount";
             this.labelAmount.Size = new System.Drawing.Size(74, 32);
             this.labelAmount.TabIndex = 3;
             this.labelAmount.Text = "NNN";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(450, 552);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(90, 32);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Softer";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(47, 552);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 32);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Harder";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(47, 730);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(133, 32);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Softness:";
+            // 
+            // button_OK
+            // 
+            this.button_OK.Location = new System.Drawing.Point(230, 939);
+            this.button_OK.Name = "button_OK";
+            this.button_OK.Size = new System.Drawing.Size(148, 75);
+            this.button_OK.TabIndex = 7;
+            this.button_OK.Text = "OK";
+            this.button_OK.UseVisualStyleBackColor = true;
+            this.button_OK.Click += new System.EventHandler(this.button_OK_Click);
+            // 
             // FormCurve
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 835);
+            this.ClientSize = new System.Drawing.Size(586, 1035);
+            this.Controls.Add(this.button_OK);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.labelAmount);
             this.Controls.Add(this.trackBar_Amount);
             this.Controls.Add(this.pictureBox_Curve);
-            this.Controls.Add(this.button_Close);
+            this.Controls.Add(this.button_Cancel);
             this.Name = "FormCurve";
             this.Text = "Curve Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCurve_FormClosed);
@@ -97,9 +142,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_Close;
+        private System.Windows.Forms.Button button_Cancel;
         private System.Windows.Forms.PictureBox pictureBox_Curve;
         private System.Windows.Forms.TrackBar trackBar_Amount;
         private System.Windows.Forms.Label labelAmount;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button_OK;
     }
 }

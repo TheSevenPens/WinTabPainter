@@ -25,6 +25,8 @@ namespace WinTabPainter
         SimpleCurve curve;
         SD.SolidBrush brush;
         int num_points = 300;
+
+        double CurveAmount => this.curve.BendAmount;
         private void button_Close_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -38,6 +40,7 @@ namespace WinTabPainter
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
 
+            this.pen = new SD.Pen(SD.Color.CornflowerBlue,5);
             this.curve = new SimpleCurve();
             this.curve.BendAmount= 0.85;
 
@@ -53,7 +56,6 @@ namespace WinTabPainter
         {
             int i_max = num_points - 1;
 
-            this.pen = new SD.Pen(SD.Color.Black);
 
 
             for (int i = 0; i <= i_max; i++)
@@ -62,7 +64,7 @@ namespace WinTabPainter
                 double y = curve.ApplyCurve(x);
 
                 double x_coord = HelperMethods.ClampRangeDouble(x * i_max, 0, i_max);
-                double y_coord = HelperMethods.ClampRangeDouble(y * i_max, 0, i_max);
+                double y_coord = i_max - HelperMethods.ClampRangeDouble(y * i_max, 0, i_max);
 
                 var p = new SD.PointF( (float) x_coord, (float) y_coord);
                 this.points[i] = p;
@@ -117,6 +119,12 @@ namespace WinTabPainter
             double v = this.trackBar_Amount.Value / (double)100;
             v = HelperMethods.ClampRangeDouble(v, -1, 1);
             return v;
+        }
+
+        private void button_OK_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }
