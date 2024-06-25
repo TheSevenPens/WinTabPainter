@@ -17,6 +17,12 @@ namespace WinTabPainter.Numerics
 
         }
 
+        public double GetBendAmount()
+        {
+            return this.BendAmount;
+        }
+
+
         public double ApplyCurve(double value)
         {
 
