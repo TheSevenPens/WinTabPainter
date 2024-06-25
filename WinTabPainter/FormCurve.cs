@@ -39,7 +39,7 @@ namespace WinTabPainter
             this.points = new SD.PointF[this.pictureBox_Curve.Width];
 
             this.curve = new SimpleCurve();
-            this.curve.BendAmount= 0.99;
+            this.curve.BendAmount= 1;
 
             this.render_curve();
 
@@ -72,7 +72,7 @@ namespace WinTabPainter
             }
 
             this.bitmaplayer.Graphics.FillRectangle(this.brush, new SD.Rectangle(0, 0, this.bitmaplayer.Width, this.bitmaplayer.Height));
-            this.bitmaplayer.Graphics.DrawCurve(this.pen, this.points);
+            this.bitmaplayer.Graphics.DrawLines(this.pen, this.points);
             this.pictureBox_Curve.Invalidate();
 
         }
