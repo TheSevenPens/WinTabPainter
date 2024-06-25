@@ -26,5 +26,14 @@ namespace WinTabPainter
         {
             System.Diagnostics.Process.Start(this.linkLabel_GitHubRepo.Text);
         }
+
+        private void FormAbout_Load(object sender, EventArgs e)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("WinTabPainter is a Windows application to ");
+            sb.AppendLine("serve as a testbed to explore concepts with");
+            sb.AppendLine("drawing tablets");
+            this.textBox1.Text = sb.ToString();
+        }
     }
 }
