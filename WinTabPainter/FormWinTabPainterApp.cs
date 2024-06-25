@@ -387,5 +387,11 @@ namespace WinTabPainter
             var form = new FormShortcuts();
             form.ShowDialog();
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormAbout();
+            form.ShowDialog();
+        }
     }
 }
