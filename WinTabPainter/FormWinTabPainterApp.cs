@@ -238,10 +238,7 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
         }
 
-        private void trackBarPressureCurve_Scroll(object sender, EventArgs e)
-        {
-            this.paintsettings.pressure_curve.BendAmount = (((double)this.trackBarPressureCurve.Value) / 100.0);
-        }
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -412,9 +409,6 @@ namespace WinTabPainter
             {
 
                 this.paintsettings.pressure_curve.BendAmount = form.CurveAmount;
-                int v = HelperMethods.ClampRangeInt((int)(form.CurveAmount * 100), -100, 100);
-                this.trackBarPressureCurve.Value = v;
-
             }
 
         }

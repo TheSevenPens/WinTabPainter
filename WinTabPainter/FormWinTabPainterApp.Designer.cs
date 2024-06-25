@@ -42,8 +42,6 @@
             this.trackBar_BrushSize = new System.Windows.Forms.TrackBar();
             this.label_BrushSizeValue = new System.Windows.Forms.Label();
             this.label_BrushSize = new System.Windows.Forms.Label();
-            this.trackBarPressureCurve = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
             this.label_PressureAdjusted = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -66,7 +64,6 @@
             this.pressureCurveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_PositionSmoothing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_PressureSmoothing)).BeginInit();
@@ -204,27 +201,6 @@
             this.label_BrushSize.TabIndex = 34;
             this.label_BrushSize.Text = "Brush size";
             // 
-            // trackBarPressureCurve
-            // 
-            this.trackBarPressureCurve.AutoSize = false;
-            this.trackBarPressureCurve.Location = new System.Drawing.Point(12, 528);
-            this.trackBarPressureCurve.Maximum = 100;
-            this.trackBarPressureCurve.Minimum = -100;
-            this.trackBarPressureCurve.Name = "trackBarPressureCurve";
-            this.trackBarPressureCurve.Size = new System.Drawing.Size(424, 45);
-            this.trackBarPressureCurve.TabIndex = 35;
-            this.trackBarPressureCurve.Value = 1;
-            this.trackBarPressureCurve.Scroll += new System.EventHandler(this.trackBarPressureCurve_Scroll);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 477);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(387, 32);
-            this.label1.TabIndex = 36;
-            this.label1.Text = "Pressure Curve (Hard<->Soft)";
-            // 
             // label_PressureAdjusted
             // 
             this.label_PressureAdjusted.AutoSize = true;
@@ -254,7 +230,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 52);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -411,8 +387,6 @@
             this.Controls.Add(this.trackBar_PositionSmoothing);
             this.Controls.Add(this.label_PressureAdjusted);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.trackBarPressureCurve);
             this.Controls.Add(this.label_BrushSize);
             this.Controls.Add(this.label_BrushSizeValue);
             this.Controls.Add(this.trackBar_BrushSize);
@@ -436,7 +410,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_PositionSmoothing)).EndInit();
@@ -461,8 +434,6 @@
         private System.Windows.Forms.TrackBar trackBar_BrushSize;
         private System.Windows.Forms.Label label_BrushSizeValue;
         private System.Windows.Forms.Label label_BrushSize;
-        private System.Windows.Forms.TrackBar trackBarPressureCurve;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label_PressureAdjusted;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.MenuStrip menuStrip1;
