@@ -55,6 +55,12 @@
     <Compile Include="FormAbout.Designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCurve.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCurve.Designer.cs">
+      <DependentUpon>FormCurve.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormShortcuts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     <Compile Include="HelperExtensions.cs" />
     <EmbeddedResource Include="FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCurve.resx">
+      <DependentUpon>FormCurve.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormShortcuts.resx">
       <DependentUpon>FormShortcuts.cs</DependentUpon>

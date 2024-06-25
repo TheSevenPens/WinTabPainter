@@ -393,5 +393,11 @@ namespace WinTabPainter
             var form = new FormAbout();
             form.ShowDialog();
         }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.EraseCanvas();
+
+        }
     }
 }

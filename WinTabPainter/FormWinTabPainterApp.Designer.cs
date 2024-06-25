@@ -33,7 +33,6 @@
             this.label_Tilt = new System.Windows.Forms.Label();
             this.label_Buttons = new System.Windows.Forms.Label();
             this.label_Device = new System.Windows.Forms.Label();
-            this.button_ClearCanvas = new System.Windows.Forms.Button();
             this.pictureBox_Canvas = new System.Windows.Forms.PictureBox();
             this.label_TiltValue = new System.Windows.Forms.Label();
             this.label_ScreenPosValue = new System.Windows.Forms.Label();
@@ -61,6 +60,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPressureCurve)).BeginInit();
@@ -113,16 +114,6 @@
             this.label_Device.Size = new System.Drawing.Size(101, 32);
             this.label_Device.TabIndex = 18;
             this.label_Device.Text = "Device";
-            // 
-            // button_ClearCanvas
-            // 
-            this.button_ClearCanvas.Location = new System.Drawing.Point(29, 852);
-            this.button_ClearCanvas.Name = "button_ClearCanvas";
-            this.button_ClearCanvas.Size = new System.Drawing.Size(220, 55);
-            this.button_ClearCanvas.TabIndex = 20;
-            this.button_ClearCanvas.Text = "Clear";
-            this.button_ClearCanvas.UseVisualStyleBackColor = true;
-            this.button_ClearCanvas.Click += new System.EventHandler(this.button_Clear_Click);
             // 
             // pictureBox_Canvas
             // 
@@ -256,10 +247,11 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_File,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.imageToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 52);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -373,6 +365,21 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // imageToolStripMenuItem
+            // 
+            this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearToolStripMenuItem});
+            this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
+            this.imageToolStripMenuItem.Text = "Image";
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -397,7 +404,6 @@
             this.Controls.Add(this.label_PressureValue);
             this.Controls.Add(this.label_ButtonsValue);
             this.Controls.Add(this.pictureBox_Canvas);
-            this.Controls.Add(this.button_ClearCanvas);
             this.Controls.Add(this.label_Tilt);
             this.Controls.Add(this.label_ScreenPos);
             this.Controls.Add(this.label_Pressure);
@@ -428,7 +434,6 @@
         private System.Windows.Forms.Label label_Tilt;
         private System.Windows.Forms.Label label_Buttons;
         private System.Windows.Forms.Label label_Device;
-        private System.Windows.Forms.Button button_ClearCanvas;
         private System.Windows.Forms.PictureBox pictureBox_Canvas;
         private System.Windows.Forms.Label label_TiltValue;
         private System.Windows.Forms.Label label_ScreenPosValue;
@@ -456,6 +461,8 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showShortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem imageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
     }
 }
 
