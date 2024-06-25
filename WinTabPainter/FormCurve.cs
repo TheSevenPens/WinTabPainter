@@ -24,7 +24,7 @@ namespace WinTabPainter
         SD.PointF[] points;
         SimpleCurve curve;
         SD.SolidBrush brush;
-
+        int num_points = 300;
         private void button_Close_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -32,14 +32,14 @@ namespace WinTabPainter
 
         private void FormCurve_Load(object sender, EventArgs e)
         {
-            var s = new Geometry.Size(this.pictureBox_Curve.Width, this.pictureBox_Curve.Height);
+            var s = new Geometry.Size(num_points, num_points);
             this.bitmaplayer = new BitmapLayer(s);
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
-            this.points = new SD.PointF[this.pictureBox_Curve.Width];
+            this.points = new SD.PointF[num_points];
 
             this.curve = new SimpleCurve();
-            this.curve.BendAmount= 1;
+            this.curve.BendAmount= 0.85;
 
             this.render_curve();
 
@@ -51,7 +51,7 @@ namespace WinTabPainter
 
         private void render_curve()
         {
-            int i_max = this.bitmaplayer.Width - 1;
+            int i_max = num_points - 1;
 
             this.pen = new SD.Pen(SD.Color.Black);
 
