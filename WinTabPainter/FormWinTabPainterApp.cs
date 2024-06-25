@@ -399,5 +399,11 @@ namespace WinTabPainter
             this.EraseCanvas();
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var form = new FormCurve();
+            form.ShowDialog(this);
+        }
     }
 }
