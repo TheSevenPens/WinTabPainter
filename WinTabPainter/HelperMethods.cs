@@ -13,7 +13,7 @@ namespace WinTabPainter
             return value;
         }
 
-        public static int ClampRangeInt(int value, Numerics.ValueRange<int> range)
+        public static int ClampRangeInt(int value, Numerics.ValueRangeInt range)
         {
             return ClampRangeInt(value, range.Lower, range.Upper);
         }
@@ -25,7 +25,7 @@ namespace WinTabPainter
             return value;
         }
 
-        public static double ClampRangeDouble(double value, Numerics.ValueRange<double> range)
+        public static double ClampRangeDouble(double value, Numerics.ValueRangeDouble range)
         {
             return ClampRangeDouble(value, range.Lower, range.Upper);
         }

@@ -98,12 +98,12 @@ namespace WinTabPainter
 
         public void AppSetPositionSmoothing(double value)
         {
-            var range = new Numerics.ValueRange<double>(0, 1);
+            var range = new Numerics.ValueRangeDouble(0, 1);
 
             value = HelperMethods.ClampRangeDouble(value, range);
             this.set_position_smoothing(value);
 
-            var trackbar_range = new Numerics.ValueRange<int>(-100, 100);
+            var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
 
             int scrollval = HelperMethods.ClampRangeInt((int)(100 * value), trackbar_range);
             this.trackBar_PositionSmoothing.Value = scrollval;
@@ -111,12 +111,12 @@ namespace WinTabPainter
 
         public void AppSetPressureSmoothing(double value)
         {
-            var range = new Numerics.ValueRange<double>(0, 1);
+            var range = new Numerics.ValueRangeDouble(0, 1);
 
             value = HelperMethods.ClampRangeDouble(value, range);
             this.set_pressure_smoothing(value);
 
-            var trackbar_range = new Numerics.ValueRange<int>(-100, 100);
+            var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
 
             int scrollval = HelperMethods.ClampRangeInt((int)(100 * value), trackbar_range);
             this.trackBar_PressureSmoothing.Value = scrollval;
@@ -289,7 +289,7 @@ namespace WinTabPainter
         {
             var w = this.paintsettings.BrushWidth + value;
 
-            var brushsize_range = new Numerics.ValueRange<int>(this.paintsettings.BrushWidthMin, 100);
+            var brushsize_range = new Numerics.ValueRangeInt(this.paintsettings.BrushWidthMin, 100);
 
             w = HelperMethods.ClampRangeInt(w, brushsize_range);
 

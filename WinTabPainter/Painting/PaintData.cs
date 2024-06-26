@@ -72,7 +72,7 @@ namespace WinTabPainter.Painting
             if (this.PressureRaw > 0)
             {
                 double effective_width = this.PressureEffective * paintsettings.BrushWidth;
-                var range = new Numerics.ValueRange<double>(paintsettings.BrushWidthMin, 100);
+                var range = new Numerics.ValueRangeDouble(paintsettings.BrushWidthMin, 100);
                 effective_width = HelperMethods.ClampRangeDouble(effective_width, range);
                 this.BrushWidthEffective = (int) effective_width;
             }
