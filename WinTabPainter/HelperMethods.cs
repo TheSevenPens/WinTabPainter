@@ -25,10 +25,5 @@ namespace WinTabPainter
             return value;
         }
 
-        public static double ClampRangeDouble(double value, Numerics.ValueRangeDouble range)
-        {
-            return ClampRangeDouble(value, range.Lower, range.Upper);
-        }
-
     }
 }

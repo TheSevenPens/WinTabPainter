@@ -105,7 +105,7 @@ namespace WinTabPainter
 
             var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
 
-            int scrollval = HelperMethods.ClampRangeInt((int)(100 * value), trackbar_range);
+            int scrollval = trackbar_range.Clamp((int)(100 * value));
             this.trackBar_PositionSmoothing.Value = scrollval;
         }
 
@@ -118,7 +118,7 @@ namespace WinTabPainter
 
             var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
 
-            int scrollval = HelperMethods.ClampRangeInt((int)(100 * value), trackbar_range);
+            int scrollval = trackbar_range.Clamp((int)(100 * value));
             this.trackBar_PressureSmoothing.Value = scrollval;
         }
 
@@ -291,9 +291,7 @@ namespace WinTabPainter
 
             var brushsize_range = new Numerics.ValueRangeInt(this.paintsettings.BrushWidthMin, 100);
 
-            w = HelperMethods.ClampRangeInt(w, brushsize_range);
-
-            this.paintsettings.BrushWidth = w;
+            this.paintsettings.BrushWidth = brushsize_range.Clamp(w);
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
             this.trackBar_BrushSize.Value= this.paintsettings.BrushWidth;
         }

@@ -14,7 +14,7 @@
 
         public int Width => this.Upper - this.Lower;
 
-        public double Clamp(int value) { return HelperMethods.ClampRangeInt(value, this.Lower, this.Upper); }
+        public int Clamp(int value) { return HelperMethods.ClampRangeInt(value, this.Lower, this.Upper); }
 
     }
 
