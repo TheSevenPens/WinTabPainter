@@ -15,7 +15,7 @@
             return t;
         }
 
-        public static double remap( ValueRangeDouble from_range, ValueRangeDouble to_range , double value)
+        public static double remap( RangeD from_range, RangeD to_range , double value)
         {
             double t = inverse_lerp(from_range.Lower, from_range.Upper, value);
             double to_value = lerp(to_range.Lower, to_range.Upper, t);

@@ -68,8 +68,8 @@
       <DependentUpon>FormShortcuts.cs</DependentUpon>
     </Compile>
     <Compile Include="Numerics\Interpolation.cs" />
-    <Compile Include="Numerics\ValueRangeDouble.cs" />
-    <Compile Include="Numerics\ValueRangeInt.cs" />
+    <Compile Include="Numerics\RangeD.cs" />
+    <Compile Include="Numerics\Range.cs" />
     <Compile Include="Painting\BitmapDocument.cs" />
     <Compile Include="Painting\BitmapLayer.cs" />
     <Compile Include="Painting\ColorARGB.cs" />

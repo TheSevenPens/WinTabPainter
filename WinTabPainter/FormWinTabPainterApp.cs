@@ -33,7 +33,7 @@ namespace WinTabPainter
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
-        Numerics.ValueRangeInt SMOOTHING_TRACKBAR_RANGE = new Numerics.ValueRangeInt(-100, 100);
+        Numerics.Range SMOOTHING_TRACKBAR_RANGE = new Numerics.Range(-100, 100);
 
         public FormWinTabPainterApp()
         {

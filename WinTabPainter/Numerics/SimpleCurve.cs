@@ -7,7 +7,7 @@ namespace WinTabPainter.Numerics
 
         double amt;
 
-        private static ValueRangeDouble range = new ValueRangeDouble(-1.0,1.0);
+        private static RangeD range = new RangeD(-1.0,1.0);
         public double BendAmount { 
             get => this.amt; 
             set => this.amt = range.Clamp(value); }

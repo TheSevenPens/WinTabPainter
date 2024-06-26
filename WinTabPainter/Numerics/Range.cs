@@ -1,12 +1,12 @@
 ﻿namespace WinTabPainter.Numerics
 {
-    public struct ValueRangeInt
+    public struct Range
     {
 
         public readonly int Lower;
         public readonly int Upper;
 
-        public ValueRangeInt(int lower, int upper)
+        public Range(int lower, int upper)
         {
             this.Lower = lower;
             this.Upper = upper;
