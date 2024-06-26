@@ -13,6 +13,9 @@
         }
 
         public int Width => this.Upper - this.Lower;
+
+        public double Clamp(int value) { return HelperMethods.ClampRangeInt(value, this.Lower, this.Upper); }
+
     }
 
     public struct ValueRangeDouble
@@ -28,5 +31,7 @@
         }
 
         public double Width => this.Upper - this.Lower;
+
+        public double Clamp(double value) { return HelperMethods.ClampRangeDouble(value, this.Lower, this.Upper); }
     }
 }

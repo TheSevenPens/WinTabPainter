@@ -10,7 +10,7 @@ namespace WinTabPainter.Numerics
         private static ValueRangeDouble range = new ValueRangeDouble(-1.0,1.0);
         public double BendAmount { 
             get => this.amt; 
-            set => this.amt = HelperMethods.ClampRangeDouble(value, range); }
+            set => this.amt = range.Clamp(value); }
 
         public SimpleCurve()
         {

@@ -100,7 +100,7 @@ namespace WinTabPainter
         {
             var range = new Numerics.ValueRangeDouble(0, 1);
 
-            value = HelperMethods.ClampRangeDouble(value, range);
+            value = range.Clamp(value);
             this.set_position_smoothing(value);
 
             var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
@@ -113,7 +113,7 @@ namespace WinTabPainter
         {
             var range = new Numerics.ValueRangeDouble(0, 1);
 
-            value = HelperMethods.ClampRangeDouble(value, range);
+            value = range.Clamp(value);
             this.set_pressure_smoothing(value);
 
             var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
@@ -395,13 +395,15 @@ namespace WinTabPainter
 
         public void set_position_smoothing(double value)
         {
-            this.paintsettings.PositionSmoothingAmount = HelperMethods.ClampRangeDouble(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            var range = new Numerics.ValueRangeDouble(this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.PositionSmoothingAmount = range.Clamp(value);
             this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
 
         public void set_pressure_smoothing(double value)
         {
-            this.paintsettings.PressureSmoothingAmount = HelperMethods.ClampRangeDouble(value, this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            var range = new Numerics.ValueRangeDouble(this.paintsettings.SMOOTHING_MIN, this.paintsettings.SMOOTHING_MAX);
+            this.paintsettings.PressureSmoothingAmount = range.Clamp(value);
             this.paintsettings.PressureSmoother.Alpha = this.paintsettings.PressureSmoothingAmount;
         }
 

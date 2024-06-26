@@ -51,7 +51,7 @@ namespace WinTabPainter
             this.render_curve();
 
             var curve_slide_range = new Numerics.ValueRangeDouble(-100.0, 100.0);
-            var slider_value = (int)HelperMethods.ClampRangeDouble(this.curve.BendAmount * 100.0, curve_slide_range);
+            var slider_value = (int)curve_slide_range.Clamp(this.curve.BendAmount * 100.0);
             this.trackBar_Amount.Value = slider_value;
 
 
@@ -70,8 +70,8 @@ namespace WinTabPainter
                 double x = i / (double)i_max;
                 double y = curve.ApplyCurve(x);
 
-                double x_coord = HelperMethods.ClampRangeDouble(x * i_max, x_coord_range);
-                double y_coord = i_max - HelperMethods.ClampRangeDouble(y * i_max, y_coord_range);
+                double x_coord = x_coord_range.Clamp(x * i_max );
+                double y_coord = i_max - y_coord_range.Clamp(y * i_max);
 
                 var p = new SD.PointF( (float) x_coord, (float) y_coord);
                 this.points[i] = p;
@@ -125,7 +125,7 @@ namespace WinTabPainter
         {
             var range = new Numerics.ValueRangeDouble(-1, 1);
             double v = this.trackBar_Amount.Value / (double)100;
-            v = HelperMethods.ClampRangeDouble(v, range);
+            v = range.Clamp(v);
             return v;
         }
 
