@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label_ScreenPos = new System.Windows.Forms.Label();
-            this.label_Pressure = new System.Windows.Forms.Label();
+            this.label_PressureNormalized = new System.Windows.Forms.Label();
             this.label_Tilt = new System.Windows.Forms.Label();
             this.label_Buttons = new System.Windows.Forms.Label();
             this.label_Device = new System.Windows.Forms.Label();
@@ -42,8 +42,8 @@
             this.trackBar_BrushSize = new System.Windows.Forms.TrackBar();
             this.label_BrushSizeValue = new System.Windows.Forms.Label();
             this.label_BrushSize = new System.Windows.Forms.Label();
-            this.label_PressureAdjusted = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.label_PressureEffective = new System.Windows.Forms.Label();
+            this.label_pressure_effective = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MenuItem_File = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +51,8 @@
             this.MenuItem_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pressureCurveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,8 +62,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pressureCurveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_BrushSize)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -78,14 +78,14 @@
             this.label_ScreenPos.TabIndex = 8;
             this.label_ScreenPos.Text = "ScreenPos";
             // 
-            // label_Pressure
+            // label_PressureNormalized
             // 
-            this.label_Pressure.AutoSize = true;
-            this.label_Pressure.Location = new System.Drawing.Point(23, 210);
-            this.label_Pressure.Name = "label_Pressure";
-            this.label_Pressure.Size = new System.Drawing.Size(172, 32);
-            this.label_Pressure.TabIndex = 11;
-            this.label_Pressure.Text = "Pressure (N)";
+            this.label_PressureNormalized.AutoSize = true;
+            this.label_PressureNormalized.Location = new System.Drawing.Point(23, 210);
+            this.label_PressureNormalized.Name = "label_PressureNormalized";
+            this.label_PressureNormalized.Size = new System.Drawing.Size(172, 32);
+            this.label_PressureNormalized.TabIndex = 11;
+            this.label_PressureNormalized.Text = "Pressure (N)";
             // 
             // label_Tilt
             // 
@@ -201,23 +201,23 @@
             this.label_BrushSize.TabIndex = 34;
             this.label_BrushSize.Text = "Brush size";
             // 
-            // label_PressureAdjusted
+            // label_PressureEffective
             // 
-            this.label_PressureAdjusted.AutoSize = true;
-            this.label_PressureAdjusted.Location = new System.Drawing.Point(199, 260);
-            this.label_PressureAdjusted.Name = "label_PressureAdjusted";
-            this.label_PressureAdjusted.Size = new System.Drawing.Size(41, 32);
-            this.label_PressureAdjusted.TabIndex = 38;
-            this.label_PressureAdjusted.Text = "---";
+            this.label_PressureEffective.AutoSize = true;
+            this.label_PressureEffective.Location = new System.Drawing.Point(199, 260);
+            this.label_PressureEffective.Name = "label_PressureEffective";
+            this.label_PressureEffective.Size = new System.Drawing.Size(41, 32);
+            this.label_PressureEffective.TabIndex = 38;
+            this.label_PressureEffective.Text = "---";
             // 
-            // label3
+            // label_pressure_effective
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 260);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(171, 32);
-            this.label3.TabIndex = 37;
-            this.label3.Text = "Pressure (A)";
+            this.label_pressure_effective.AutoSize = true;
+            this.label_pressure_effective.Location = new System.Drawing.Point(23, 260);
+            this.label_pressure_effective.Name = "label_pressure_effective";
+            this.label_pressure_effective.Size = new System.Drawing.Size(171, 32);
+            this.label_pressure_effective.TabIndex = 37;
+            this.label_pressure_effective.Text = "Pressure (E)";
             // 
             // menuStrip1
             // 
@@ -230,7 +230,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1786, 49);
+            this.menuStrip1.Size = new System.Drawing.Size(1786, 60);
             this.menuStrip1.TabIndex = 40;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -241,7 +241,7 @@
             this.MenuItem_FileSave,
             this.MenuItem_SaveAs});
             this.MenuItem_File.Name = "MenuItem_File";
-            this.MenuItem_File.Size = new System.Drawing.Size(87, 48);
+            this.MenuItem_File.Size = new System.Drawing.Size(87, 56);
             this.MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -270,7 +270,7 @@
             this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearToolStripMenuItem});
             this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            this.imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(125, 56);
             this.imageToolStripMenuItem.Text = "Image";
             // 
             // clearToolStripMenuItem
@@ -280,26 +280,41 @@
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pressureCurveToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 56);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // pressureCurveToolStripMenuItem
+            // 
+            this.pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
+            this.pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(380, 54);
+            this.pressureCurveToolStripMenuItem.Text = "Pressure Curve";
+            this.pressureCurveToolStripMenuItem.Click += new System.EventHandler(this.pressureCurveToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showShortcutsToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(104, 48);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(104, 56);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // showShortcutsToolStripMenuItem
             // 
             this.showShortcutsToolStripMenuItem.Name = "showShortcutsToolStripMenuItem";
-            this.showShortcutsToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            this.showShortcutsToolStripMenuItem.Size = new System.Drawing.Size(390, 54);
             this.showShortcutsToolStripMenuItem.Text = "Show Shortcuts";
             this.showShortcutsToolStripMenuItem.Click += new System.EventHandler(this.showShortcutsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(390, 54);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -359,21 +374,6 @@
             this.trackBar_PressureSmoothing.TabIndex = 45;
             this.trackBar_PressureSmoothing.Scroll += new System.EventHandler(this.trackBar_PressureSmoothing_Scroll);
             // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pressureCurveToolStripMenuItem});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 48);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            // 
-            // pressureCurveToolStripMenuItem
-            // 
-            this.pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            this.pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
-            this.pressureCurveToolStripMenuItem.Text = "Pressure Curve";
-            this.pressureCurveToolStripMenuItem.Click += new System.EventHandler(this.pressureCurveToolStripMenuItem_Click);
-            // 
             // FormWinTabPainterApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -385,8 +385,8 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.trackBar_PositionSmoothing);
-            this.Controls.Add(this.label_PressureAdjusted);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label_PressureEffective);
+            this.Controls.Add(this.label_pressure_effective);
             this.Controls.Add(this.label_BrushSize);
             this.Controls.Add(this.label_BrushSizeValue);
             this.Controls.Add(this.trackBar_BrushSize);
@@ -398,7 +398,7 @@
             this.Controls.Add(this.pictureBox_Canvas);
             this.Controls.Add(this.label_Tilt);
             this.Controls.Add(this.label_ScreenPos);
-            this.Controls.Add(this.label_Pressure);
+            this.Controls.Add(this.label_PressureNormalized);
             this.Controls.Add(this.label_Device);
             this.Controls.Add(this.label_Buttons);
             this.Controls.Add(this.menuStrip1);
@@ -421,7 +421,7 @@
 
         #endregion
         private System.Windows.Forms.Label label_ScreenPos;
-        private System.Windows.Forms.Label label_Pressure;
+        private System.Windows.Forms.Label label_PressureNormalized;
         private System.Windows.Forms.Label label_Tilt;
         private System.Windows.Forms.Label label_Buttons;
         private System.Windows.Forms.Label label_Device;
@@ -434,8 +434,8 @@
         private System.Windows.Forms.TrackBar trackBar_BrushSize;
         private System.Windows.Forms.Label label_BrushSizeValue;
         private System.Windows.Forms.Label label_BrushSize;
-        private System.Windows.Forms.Label label_PressureAdjusted;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label_PressureEffective;
+        private System.Windows.Forms.Label label_pressure_effective;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_File;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FileSave;

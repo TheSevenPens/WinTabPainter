@@ -5,7 +5,7 @@ namespace WinTabPainter.Painting
     public class PaintSettings
     {
         // brush settings
-        public int BrushWidth = 5;
+        public int BrushWidth = 25;
         public static readonly Numerics.ValueRangeInt BRUSHSIZE_RANGE = new Numerics.ValueRangeInt(1, 100);
 
         // pressure settings
