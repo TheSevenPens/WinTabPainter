@@ -8,7 +8,7 @@
         public double Alpha 
         { 
             get => this._alpha; 
-            set => this._alpha = this._clamp_alpha(value); 
+            set => this._alpha = this.ClampAlpha(value); 
         }
 
         private double? _old_smoothed_value;
@@ -41,7 +41,7 @@
             _old_smoothed_value = new_smoothed_value;
             return new_smoothed_value;
         }
-        private double _clamp_alpha(double value)
+        public double ClampAlpha(double value)
         {
             double min = 0.0;
             double max = 1.0;
