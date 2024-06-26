@@ -61,7 +61,7 @@ namespace WinTabPainter
 
             this.wintab_context = OpenTabletContext();
 
-            DEBUG_CenterWindow();
+            Recenter_on_prev_monitor();
 
             this.trackBar_BrushSize.Value = this.paintsettings.BrushWidth;
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
@@ -71,9 +71,8 @@ namespace WinTabPainter
             this.AppSetPressureSmoothing(0);
         }
 
-        private void DEBUG_CenterWindow()
+        private void Recenter_on_prev_monitor()
         {
-            // This is for debugging only
             // brings the app window into the middle of the third monitor
             // allieviates the hassle of dragging it over every time
 
