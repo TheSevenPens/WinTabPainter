@@ -180,6 +180,7 @@
             this.trackBar_BrushSize.Name = "trackBar_BrushSize";
             this.trackBar_BrushSize.Size = new System.Drawing.Size(424, 45);
             this.trackBar_BrushSize.TabIndex = 32;
+            this.trackBar_BrushSize.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar_BrushSize.Value = 1;
             this.trackBar_BrushSize.Scroll += new System.EventHandler(this.trackBar_BrushSize_Scroll);
             // 
@@ -335,6 +336,7 @@
             this.trackBar_PositionSmoothing.Name = "trackBar_PositionSmoothing";
             this.trackBar_PositionSmoothing.Size = new System.Drawing.Size(424, 45);
             this.trackBar_PositionSmoothing.TabIndex = 41;
+            this.trackBar_PositionSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar_PositionSmoothing.Scroll += new System.EventHandler(this.trackBar_PositionSmoothing_Scroll);
             // 
             // label_CanvasPos
@@ -372,6 +374,7 @@
             this.trackBar_PressureSmoothing.Name = "trackBar_PressureSmoothing";
             this.trackBar_PressureSmoothing.Size = new System.Drawing.Size(424, 45);
             this.trackBar_PressureSmoothing.TabIndex = 45;
+            this.trackBar_PressureSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar_PressureSmoothing.Scroll += new System.EventHandler(this.trackBar_PressureSmoothing_Scroll);
             // 
             // FormWinTabPainterApp
