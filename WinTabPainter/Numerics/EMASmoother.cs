@@ -30,7 +30,8 @@
             double new_smoothed_value;
             if (_old_smoothed_value.HasValue)
             {
-                new_smoothed_value = lerp(_old_smoothed_value.Value, value, Alpha);
+
+                new_smoothed_value = Interpolation.lerp(_old_smoothed_value.Value, value, this.Alpha);
             }
             else
             {
@@ -40,13 +41,6 @@
             _old_smoothed_value = new_smoothed_value;
             return new_smoothed_value;
         }
-
-        private static double lerp(double oldval, double newval, double alpha)
-        {
-            double v = alpha * oldval + (1 - alpha) * newval;
-            return v;
-        }
-
         private double _clamp_alpha(double value)
         {
             double min = 0.0;
@@ -57,4 +51,23 @@
             return value;
         }
     }
+
+    public static class Interpolation
+    {
+
+        public static double lerp(double a, double b, double t)
+        {
+            double v = ((1.0 - t) * a) + (t*b);
+            return v;
+        }
+
+        public static double inverse_lerp(double a, double b, double v)
+        {
+            double t = (v-a)/(b-a);
+            return t;
+        }
+
+    }
+
+
 }
