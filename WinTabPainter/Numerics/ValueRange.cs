@@ -14,8 +14,15 @@
 
         public int Width => this.Upper - this.Lower;
 
-        public int Clamp(int value) { return HelperMethods.ClampRangeInt(value, this.Lower, this.Upper); }
+        public int Clamp(int value) { return this.ClampRangeInt(value, this.Lower, this.Upper); }
 
+        private int ClampRangeInt(int value, int min, int max)
+        {
+            if (value < min) { value = min; }
+            else if (value > max) { value = max; }
+            else { /* dnothing */}
+            return value;
+        }
     }
 
     public struct ValueRangeDouble
@@ -32,6 +39,14 @@
 
         public double Width => this.Upper - this.Lower;
 
-        public double Clamp(double value) { return HelperMethods.ClampRangeDouble(value, this.Lower, this.Upper); }
+        public double Clamp(double value) { return this.ClampRangeDouble(value, this.Lower, this.Upper); }
+
+        private double ClampRangeDouble(double value, double min, double max)
+        {
+            if (value < min) { value = min; }
+            else if (value > max) { value = max; }
+            else { /* dnothing */}
+            return value;
+        }
     }
 }
