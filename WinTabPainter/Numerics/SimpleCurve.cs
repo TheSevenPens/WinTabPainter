@@ -2,13 +2,27 @@
 
 namespace WinTabPainter.Numerics
 {
+    public struct ValueRange<T>
+    {
+
+        public readonly T Lower;
+        public readonly T Upper;
+
+        public ValueRange(T lower, T upper)
+        {
+            this.Lower = lower;
+            this.Upper = upper;
+        }
+    }
     public class SimpleCurve
     {
 
         double amt;
+
+        private static ValueRange<double> range = new ValueRange<double>(-1.0,1.0);
         public double BendAmount { 
             get => this.amt; 
-            set => this.amt = HelperMethods.ClampRangeDouble(value, -1.0, 1.0); }
+            set => this.amt = HelperMethods.ClampRangeDouble(value, range); }
 
         public SimpleCurve()
         {
