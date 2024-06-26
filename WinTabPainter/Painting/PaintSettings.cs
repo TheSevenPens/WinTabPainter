@@ -14,10 +14,10 @@ namespace WinTabPainter.Painting
         // smoothing settings
         public double PositionSmoothingAmount = 0.0;
         public double PressureSmoothingAmount = 0.0;
-        public readonly double SMOOTHING_MIN = 0.0;
-        public readonly double SMOOTHING_MAX = 0.99;
         public readonly Numerics.EMAPositionSmoother PositionSmoother;
         public readonly Numerics.EMASmoother PressureSmoother;
+
+        public static readonly Numerics.ValueRangeDouble SMOOTHING_RANGE = new Numerics.ValueRangeDouble(0.0, 0.99);
 
         public PaintSettings()
         {
