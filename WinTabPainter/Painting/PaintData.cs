@@ -52,20 +52,9 @@ namespace WinTabPainter.Painting
             this.PressureRaw = pkt.pkNormalPressure;
             this.PressureNormalized = this.PressureRaw / (double) tablet.MaxPressure;
 
-            bool smooth_before_curve = false;
-
-            if (smooth_before_curve)
-            {
-                this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
-                this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
-                this.PressureEffective = this.PressureCurved;
-            }
-            else
-            {
-                this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureNormalized);
-                this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureCurved);
-                this.PressureEffective = this.PressureSmoothed;
-            }
+            this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
+            this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
+            this.PressureEffective = this.PressureCurved;
 
             // BRUSH SIZE
             // Calculate the brush width taking into account the pen pressure
