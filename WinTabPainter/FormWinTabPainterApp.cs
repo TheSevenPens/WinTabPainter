@@ -33,6 +33,7 @@ namespace WinTabPainter
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
+        Numerics.ValueRangeInt SMOOTHING_TRACKBAR_RANGE = new Numerics.ValueRangeInt(-100, 100);
 
         public FormWinTabPainterApp()
         {
@@ -98,28 +99,16 @@ namespace WinTabPainter
 
         public void AppSetPositionSmoothing(double value)
         {
-            var range = new Numerics.ValueRangeDouble(0, 1);
-
-            value = range.Clamp(value);
+            value = PaintSettings.SMOOTHING_RANGE.Clamp(value);
             this.set_position_smoothing(value);
-
-            var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
-
-            int scrollval = trackbar_range.Clamp((int)(100 * value));
-            this.trackBar_PositionSmoothing.Value = scrollval;
+            this.trackBar_PositionSmoothing.Value = this.SMOOTHING_TRACKBAR_RANGE.Clamp((int)(100 * value));
         }
 
         public void AppSetPressureSmoothing(double value)
         {
-            var range = new Numerics.ValueRangeDouble(0, 1);
-
-            value = range.Clamp(value);
+            value = PaintSettings.SMOOTHING_RANGE.Clamp(value);
             this.set_pressure_smoothing(value);
-
-            var trackbar_range = new Numerics.ValueRangeInt(-100, 100);
-
-            int scrollval = trackbar_range.Clamp((int)(100 * value));
-            this.trackBar_PressureSmoothing.Value = scrollval;
+            this.trackBar_PressureSmoothing.Value = this.SMOOTHING_TRACKBAR_RANGE.Clamp((int)(100 * value));
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -289,9 +278,7 @@ namespace WinTabPainter
         {
             var w = this.paintsettings.BrushWidth + value;
 
-            var brushsize_range = new Numerics.ValueRangeInt(this.paintsettings.BrushWidthMin, 100);
-
-            this.paintsettings.BrushWidth = brushsize_range.Clamp(w);
+            this.paintsettings.BrushWidth = PaintSettings.BRUSHSIZE_RANGE.Clamp(w);
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
             this.trackBar_BrushSize.Value= this.paintsettings.BrushWidth;
         }
@@ -393,13 +380,13 @@ namespace WinTabPainter
 
         public void set_position_smoothing(double value)
         {
-            this.paintsettings.PositionSmoothingAmount = PaintSettings.SMOOTHING_RANGE.Clamp(value);
+            this.paintsettings.PositionSmoothingAmount = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
             this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
         }
 
         public void set_pressure_smoothing(double value)
         {
-            this.paintsettings.PressureSmoothingAmount = PaintSettings.SMOOTHING_RANGE.Clamp(value);
+            this.paintsettings.PressureSmoothingAmount = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
             this.paintsettings.PressureSmoother.Alpha = this.paintsettings.PressureSmoothingAmount;
         }
 

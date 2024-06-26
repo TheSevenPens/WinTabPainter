@@ -6,7 +6,7 @@ namespace WinTabPainter.Painting
     {
         // brush settings
         public int BrushWidth = 5;
-        public int BrushWidthMin = 1;
+        public static readonly Numerics.ValueRangeInt BRUSHSIZE_RANGE = new Numerics.ValueRangeInt(1, 100);
 
         // pressure settings
         public Numerics.SimpleCurve pressure_curve = new Numerics.SimpleCurve();
@@ -17,7 +17,8 @@ namespace WinTabPainter.Painting
         public readonly Numerics.EMAPositionSmoother PositionSmoother;
         public readonly Numerics.EMASmoother PressureSmoother;
 
-        public static readonly Numerics.ValueRangeDouble SMOOTHING_RANGE = new Numerics.ValueRangeDouble(0.0, 0.99);
+        public static readonly Numerics.ValueRangeDouble SMOOTHING_RANGE = new Numerics.ValueRangeDouble(0, 1);
+        public static readonly Numerics.ValueRangeDouble SMOOTHING_RANGE_LIMITED = new Numerics.ValueRangeDouble(0.0, 0.99);
 
         public PaintSettings()
         {
