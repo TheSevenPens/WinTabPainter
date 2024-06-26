@@ -77,13 +77,24 @@ namespace WinTabPainter
             // brings the app window into the middle of the third monitor
             // allieviates the hassle of dragging it over every time
 
+            var devicename = (string) Properties.Settings.Default["Monitor"];
 
-            if (System.Windows.Forms.SystemInformation.MonitorCount >= 3)
+            if ((devicename.Length>0) )
             {
-                var screen = System.Windows.Forms.Screen.AllScreens[2];
-                this.Left = screen.Bounds.Left + (screen.Bounds.Width / 2) - (this.Width / 2);
-                this.Top = screen.Bounds.Top + (screen.Bounds.Height / 2) - (this.Height / 2);
+                foreach (var s in System.Windows.Forms.Screen.AllScreens)
+                {
+                    if (s.DeviceName == devicename)
+                    {
+                        this.Left = s.Bounds.Left + (s.Bounds.Width / 2) - (this.Width / 2);
+                        this.Top = s.Bounds.Top + (s.Bounds.Height / 2) - (this.Height / 2);
+                    }
+                }
             }
+            else
+            {
+                // do nothing
+            }
+
         }
 
         public void AppSetPositionSmoothing(double value)
@@ -112,6 +123,11 @@ namespace WinTabPainter
             {
                 this.bitmap_doc.Dispose();
             }
+
+            var s = Screen.FromControl(this);
+
+            Properties.Settings.Default["Monitor"]= s.DeviceName;
+            Properties.Settings.Default.Save();
 
         }
 
