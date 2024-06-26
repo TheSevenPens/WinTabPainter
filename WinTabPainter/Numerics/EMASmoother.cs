@@ -52,22 +52,5 @@
         }
     }
 
-    public static class Interpolation
-    {
-
-        public static double lerp(double a, double b, double t)
-        {
-            double v = ((1.0 - t) * a) + (t*b);
-            return v;
-        }
-
-        public static double inverse_lerp(double a, double b, double v)
-        {
-            double t = (v-a)/(b-a);
-            return t;
-        }
-
-    }
-
 
 }
