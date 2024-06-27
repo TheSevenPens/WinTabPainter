@@ -45,14 +45,5 @@ namespace WinTabPainter.Numerics
             _old_smoothed_pos = smoothed_new;
             return smoothed_new;
         }
-
-        private static Geometry.PointD lerp(Geometry.PointD oldval, Geometry.PointD newval, double smoothing_amount)
-        {
-            double new_smoothed_x = Interpolation.Lerp(oldval.X, newval.X, 1.0-smoothing_amount);
-            double new_smoothed_y = Interpolation.Lerp(oldval.Y, newval.Y, 1.0-smoothing_amount);
-            var p = new Geometry.PointD(new_smoothed_x, new_smoothed_y);
-            return p;
-        }
-
     }
 }
