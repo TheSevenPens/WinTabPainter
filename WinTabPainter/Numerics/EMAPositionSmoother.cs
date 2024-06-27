@@ -25,10 +25,10 @@ namespace WinTabPainter.Numerics
 
         public Geometry.PointD Smooth(Geometry.Point value)
         {
-            return this.Smooth(new Geometry.PointD(value.X, value.Y));
+            return this.GetNextSmoothed(new Geometry.PointD(value.X, value.Y));
         }
 
-        public Geometry.PointD Smooth(Geometry.PointD p)
+        public Geometry.PointD GetNextSmoothed(Geometry.PointD p)
         {
             Geometry.PointD new_sm_pos;
             if (_old_sm_pos.HasValue)

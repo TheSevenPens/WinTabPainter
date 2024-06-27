@@ -52,7 +52,7 @@ namespace WinTabPainter.Painting
             this.PressureRaw = pkt.pkNormalPressure;
             this.PressureNormalized = this.PressureRaw / (double) tablet.MaxPressure;
 
-            this.PressureSmoothed = paintsettings.PressureSmoother.Smooth(this.PressureNormalized);
+            this.PressureSmoothed = paintsettings.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
             this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
             this.PressureEffective = this.PressureCurved;
 

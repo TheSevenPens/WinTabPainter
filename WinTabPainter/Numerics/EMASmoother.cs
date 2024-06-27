@@ -25,7 +25,7 @@
             _old_sm_val = value;
         }
 
-        public double Smooth(double value)
+        public double GetNextSmoothed(double value)
         {
             double new_sm_val;
             if (_old_sm_val.HasValue)

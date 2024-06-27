@@ -19,12 +19,12 @@ namespace WinTabPainter
 
         public static PointD Smooth(this PointD p, Numerics.EMAPositionSmoother smoother)
         {
-            return smoother.Smooth(p);
+            return smoother.GetNextSmoothed(p);
         }
 
         public static double Smooth(this double v, Numerics.EMASmoother smoother)
         {
-            return smoother.Smooth(v);
+            return smoother.GetNextSmoothed(v);
         }
     }
 }
