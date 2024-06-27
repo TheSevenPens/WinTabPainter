@@ -10,17 +10,17 @@ namespace WinTabPainter.Numerics
             get => this._amount;
             set => this._amount = EMASmoother.ClampSmoothingAmount(value);
         }
-        private Geometry.PointD? _old_smoothed_pos;
+        private Geometry.PointD? _old_sm_pos;
 
         public EMAPositionSmoother(double amount)
         {
             this.SmoothingAmount = amount;
-            this._old_smoothed_pos = null;
+            this._old_sm_pos = null;
         }
 
         public void SetOldSmoothedValue(Geometry.PointD p)
         {
-            this._old_smoothed_pos = p;
+            this._old_sm_pos = p;
         }
 
         public Geometry.PointD Smooth(Geometry.Point value)
@@ -28,22 +28,22 @@ namespace WinTabPainter.Numerics
             return this.Smooth(new Geometry.PointD(value.X, value.Y));
         }
 
-        public Geometry.PointD Smooth(Geometry.PointD value)
+        public Geometry.PointD Smooth(Geometry.PointD p)
         {
-            Geometry.PointD smoothed_new;
-            if (_old_smoothed_pos.HasValue)
+            Geometry.PointD new_sm_pos;
+            if (_old_sm_pos.HasValue)
             {
-                double new_smoothed_x = Interpolation.Lerp(_old_smoothed_pos.Value.X, value.X, 1.0 - this.SmoothingAmount);
-                double new_smoothed_y = Interpolation.Lerp(_old_smoothed_pos.Value.Y, value.Y, 1.0 - this.SmoothingAmount);
-                smoothed_new = new Geometry.PointD(new_smoothed_x, new_smoothed_y);
+                double new_sm_x = Interpolation.Lerp(_old_sm_pos.Value.X, p.X, 1.0 - this.SmoothingAmount);
+                double new_sm_y = Interpolation.Lerp(_old_sm_pos.Value.Y, p.Y, 1.0 - this.SmoothingAmount);
+                new_sm_pos = new Geometry.PointD(new_sm_x, new_sm_y);
             }
             else
             {
-                smoothed_new = value;
+                new_sm_pos = p;
             }
 
-            _old_smoothed_pos = smoothed_new;
-            return smoothed_new;
+            _old_sm_pos = new_sm_pos;
+            return new_sm_pos;
         }
     }
 }

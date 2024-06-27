@@ -11,35 +11,35 @@
             set => this._amount = EMASmoother.ClampSmoothingAmount(value); 
         }
 
-        private double? _old_smoothed_value;
+        private double? _old_sm_val;
 
 
         public EMASmoother(double alpha)
         {
             this.SmoothingAmount = alpha;
-            this._old_smoothed_value = null;
+            this._old_sm_val = null;
         }
 
         public void SetOldSmoothedValue(double value)
         {
-            _old_smoothed_value = value;
+            _old_sm_val = value;
         }
 
         public double Smooth(double value)
         {
-            double new_smoothed_value;
-            if (_old_smoothed_value.HasValue)
+            double new_sm_val;
+            if (_old_sm_val.HasValue)
             {
 
-                new_smoothed_value = Interpolation.Lerp(_old_smoothed_value.Value, value, 1.0-this.SmoothingAmount);
+                new_sm_val = Interpolation.Lerp(_old_sm_val.Value, value, 1.0-this.SmoothingAmount);
             }
             else
             {
-                new_smoothed_value = value;
+                new_sm_val = value;
             }
 
-            _old_smoothed_value = new_smoothed_value;
-            return new_smoothed_value;
+            _old_sm_val = new_sm_val;
+            return new_sm_val;
         }
         public static double ClampSmoothingAmount(double value)
         {
