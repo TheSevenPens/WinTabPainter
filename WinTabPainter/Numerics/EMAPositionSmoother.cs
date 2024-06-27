@@ -4,17 +4,17 @@ namespace WinTabPainter.Numerics
 {
     public class EMAPositionSmoother
     {
-        private double _alpha;
-        public double Alpha
+        private double _amount;
+        public double SmoothingAmount
         {
-            get => this._alpha;
-            set => this._alpha = this._clamp_alpha(value);
+            get => this._amount;
+            set => this._amount = this._clamp_alpha(value);
         }
         private Geometry.PointD? _old_smoothed_pos;
 
-        public EMAPositionSmoother(double alpha)
+        public EMAPositionSmoother(double amount)
         {
-            this.Alpha = alpha;
+            this.SmoothingAmount = amount;
             this._old_smoothed_pos = null;
         }
 
@@ -33,7 +33,7 @@ namespace WinTabPainter.Numerics
             Geometry.PointD smoothed_new;
             if (_old_smoothed_pos.HasValue)
             {
-                smoothed_new = lerp(_old_smoothed_pos.Value, value, Alpha);
+                smoothed_new = lerp(_old_smoothed_pos.Value, value, SmoothingAmount);
             }
             else
             {
@@ -44,10 +44,10 @@ namespace WinTabPainter.Numerics
             return smoothed_new;
         }
 
-        private static Geometry.PointD lerp(Geometry.PointD oldval, Geometry.PointD newval, double alpha)
+        private static Geometry.PointD lerp(Geometry.PointD oldval, Geometry.PointD newval, double smoothing_amount)
         {
-            double newx = alpha * oldval.X + (1 - alpha) * newval.X;
-            double newy = alpha * oldval.Y + (1 - alpha) * newval.Y;
+            double newx = smoothing_amount * oldval.X + (1 - smoothing_amount) * newval.X;
+            double newy = smoothing_amount * oldval.Y + (1 - smoothing_amount) * newval.Y;
             var p = new Geometry.PointD(newx, newy);
             return p;
         }

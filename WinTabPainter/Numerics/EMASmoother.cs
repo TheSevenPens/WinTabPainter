@@ -3,12 +3,12 @@
     public class EMASmoother
     {
 
-        private double _alpha;
+        private double _amount;
 
-        public double Alpha 
+        public double SmoothingAmount 
         { 
-            get => this._alpha; 
-            set => this._alpha = this.ClampAlpha(value); 
+            get => this._amount; 
+            set => this._amount = this.ClampSmoothingAmount(value); 
         }
 
         private double? _old_smoothed_value;
@@ -16,7 +16,7 @@
 
         public EMASmoother(double alpha)
         {
-            this.Alpha = alpha;
+            this.SmoothingAmount = alpha;
             this._old_smoothed_value = null;
         }
 
@@ -31,7 +31,7 @@
             if (_old_smoothed_value.HasValue)
             {
 
-                new_smoothed_value = Interpolation.lerp(_old_smoothed_value.Value, value, this.Alpha);
+                new_smoothed_value = Interpolation.lerp(_old_smoothed_value.Value, value, this.SmoothingAmount);
             }
             else
             {
@@ -41,7 +41,7 @@
             _old_smoothed_value = new_smoothed_value;
             return new_smoothed_value;
         }
-        public double ClampAlpha(double value)
+        public double ClampSmoothingAmount(double value)
         {
             double min = 0.0;
             double max = 1.0;

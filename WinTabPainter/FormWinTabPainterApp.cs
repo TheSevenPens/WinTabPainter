@@ -381,13 +381,13 @@ namespace WinTabPainter
         public void set_position_smoothing(double value)
         {
             this.paintsettings.PositionSmoothingAmount = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
-            this.paintsettings.PositionSmoother.Alpha = this.paintsettings.PositionSmoothingAmount;
+            this.paintsettings.PositionSmoother.SmoothingAmount = this.paintsettings.PositionSmoothingAmount;
         }
 
         public void set_pressure_smoothing(double value)
         {
             this.paintsettings.PressureSmoothingAmount = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
-            this.paintsettings.PressureSmoother.Alpha = this.paintsettings.PressureSmoothingAmount;
+            this.paintsettings.PressureSmoother.SmoothingAmount = this.paintsettings.PressureSmoothingAmount;
         }
 
         private void showShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
