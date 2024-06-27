@@ -31,7 +31,7 @@
             if (_old_smoothed_value.HasValue)
             {
 
-                new_smoothed_value = Interpolation.lerp(_old_smoothed_value.Value, value, this.SmoothingAmount);
+                new_smoothed_value = Interpolation.lerp(_old_smoothed_value.Value, value, 1.0-this.SmoothingAmount);
             }
             else
             {
