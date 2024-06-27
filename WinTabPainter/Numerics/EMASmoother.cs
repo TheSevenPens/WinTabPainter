@@ -8,7 +8,7 @@
         public double SmoothingAmount 
         { 
             get => this._amount; 
-            set => this._amount = this.ClampSmoothingAmount(value); 
+            set => this._amount = EMASmoother.ClampSmoothingAmount(value); 
         }
 
         private double? _old_smoothed_value;
@@ -41,7 +41,7 @@
             _old_smoothed_value = new_smoothed_value;
             return new_smoothed_value;
         }
-        public double ClampSmoothingAmount(double value)
+        public static double ClampSmoothingAmount(double value)
         {
             double min = 0.0;
             double max = 1.0;

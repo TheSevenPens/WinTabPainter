@@ -8,7 +8,7 @@ namespace WinTabPainter.Numerics
         public double SmoothingAmount
         {
             get => this._amount;
-            set => this._amount = this._clamp_alpha(value);
+            set => this._amount = EMASmoother.ClampSmoothingAmount(value);
         }
         private Geometry.PointD? _old_smoothed_pos;
 
@@ -52,14 +52,5 @@ namespace WinTabPainter.Numerics
             return p;
         }
 
-        private double _clamp_alpha(double value)
-        {
-            double min = 0.0;
-            double max = 1.0;
-            if (value < min) { value = min; }
-            else if (value > max) { value = max; }
-            else { /* dnothing */}
-            return value;
-        }
     }
 }
