@@ -33,8 +33,8 @@ namespace WinTabPainter.Numerics
             Geometry.PointD smoothed_new;
             if (_old_smoothed_pos.HasValue)
             {
-                double new_smoothed_x = Interpolation.lerp(_old_smoothed_pos.Value.X, value.X, 1.0 - this.SmoothingAmount);
-                double new_smoothed_y = Interpolation.lerp(_old_smoothed_pos.Value.Y, value.Y, 1.0 - this.SmoothingAmount);
+                double new_smoothed_x = Interpolation.Lerp(_old_smoothed_pos.Value.X, value.X, 1.0 - this.SmoothingAmount);
+                double new_smoothed_y = Interpolation.Lerp(_old_smoothed_pos.Value.Y, value.Y, 1.0 - this.SmoothingAmount);
                 smoothed_new = new Geometry.PointD(new_smoothed_x, new_smoothed_y);
             }
             else
@@ -48,8 +48,8 @@ namespace WinTabPainter.Numerics
 
         private static Geometry.PointD lerp(Geometry.PointD oldval, Geometry.PointD newval, double smoothing_amount)
         {
-            double new_smoothed_x = Interpolation.lerp(oldval.X, newval.X, 1.0-smoothing_amount);
-            double new_smoothed_y = Interpolation.lerp(oldval.Y, newval.Y, 1.0-smoothing_amount);
+            double new_smoothed_x = Interpolation.Lerp(oldval.X, newval.X, 1.0-smoothing_amount);
+            double new_smoothed_y = Interpolation.Lerp(oldval.Y, newval.Y, 1.0-smoothing_amount);
             var p = new Geometry.PointD(new_smoothed_x, new_smoothed_y);
             return p;
         }
