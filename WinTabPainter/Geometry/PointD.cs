@@ -37,4 +37,8 @@ public struct PointD
     }
 
     public string ToStringXY() => string.Format("({0}x{1})", this.X, this.Y);
+
+    public static bool operator ==(PointD lhs, PointD rhs) => lhs.Equals(rhs);
+
+    public static bool operator !=(PointD lhs, PointD rhs) => !(lhs == rhs);
 }

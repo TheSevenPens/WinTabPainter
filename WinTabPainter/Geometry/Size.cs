@@ -24,4 +24,8 @@ public struct Size
         var s = new SD.Size(this.Width, this.Height);
         return s;
     }
+
+    public static bool operator ==(Size lhs, Size rhs) => lhs.Equals(rhs);
+
+    public static bool operator !=(Size lhs, Size rhs) => !(lhs == rhs);
 }

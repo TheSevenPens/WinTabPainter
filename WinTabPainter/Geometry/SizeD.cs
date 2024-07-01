@@ -33,4 +33,7 @@ public struct SizeD
         return s;
     }
 
+    public static bool operator ==(SizeD lhs, SizeD rhs) => lhs.Equals(rhs);
+
+    public static bool operator !=(SizeD lhs, SizeD rhs) => !(lhs == rhs);
 }
