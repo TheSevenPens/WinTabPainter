@@ -28,128 +28,132 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button_Cancel = new System.Windows.Forms.Button();
-            this.pictureBox_Curve = new System.Windows.Forms.PictureBox();
-            this.trackBar_Amount = new System.Windows.Forms.TrackBar();
-            this.labelAmount = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.button_OK = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Curve)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Amount)).BeginInit();
-            this.SuspendLayout();
+            button_Cancel = new System.Windows.Forms.Button();
+            pictureBox_Curve = new System.Windows.Forms.PictureBox();
+            trackBar_Amount = new System.Windows.Forms.TrackBar();
+            labelAmount = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            button_OK = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Amount).BeginInit();
+            SuspendLayout();
             // 
             // button_Cancel
             // 
-            this.button_Cancel.Location = new System.Drawing.Point(409, 737);
-            this.button_Cancel.Name = "button_Cancel";
-            this.button_Cancel.Size = new System.Drawing.Size(148, 75);
-            this.button_Cancel.TabIndex = 0;
-            this.button_Cancel.Text = "Cancel";
-            this.button_Cancel.UseVisualStyleBackColor = true;
-            this.button_Cancel.Click += new System.EventHandler(this.button_Close_Click);
+            button_Cancel.Location = new System.Drawing.Point(440, 874);
+            button_Cancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button_Cancel.Name = "button_Cancel";
+            button_Cancel.Size = new System.Drawing.Size(157, 69);
+            button_Cancel.TabIndex = 0;
+            button_Cancel.Text = "Cancel";
+            button_Cancel.UseVisualStyleBackColor = true;
+            button_Cancel.Click += button_Close_Click;
             // 
             // pictureBox_Curve
             // 
-            this.pictureBox_Curve.Location = new System.Drawing.Point(42, 32);
-            this.pictureBox_Curve.Name = "pictureBox_Curve";
-            this.pictureBox_Curve.Size = new System.Drawing.Size(500, 500);
-            this.pictureBox_Curve.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox_Curve.TabIndex = 1;
-            this.pictureBox_Curve.TabStop = false;
+            pictureBox_Curve.Location = new System.Drawing.Point(26, 36);
+            pictureBox_Curve.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            pictureBox_Curve.Name = "pictureBox_Curve";
+            pictureBox_Curve.Size = new System.Drawing.Size(550, 389);
+            pictureBox_Curve.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            pictureBox_Curve.TabIndex = 1;
+            pictureBox_Curve.TabStop = false;
             // 
             // trackBar_Amount
             // 
-            this.trackBar_Amount.Location = new System.Drawing.Point(42, 597);
-            this.trackBar_Amount.Maximum = 100;
-            this.trackBar_Amount.Minimum = -100;
-            this.trackBar_Amount.Name = "trackBar_Amount";
-            this.trackBar_Amount.Size = new System.Drawing.Size(500, 114);
-            this.trackBar_Amount.TabIndex = 2;
-            this.trackBar_Amount.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar_Amount.Value = 100;
-            this.trackBar_Amount.Scroll += new System.EventHandler(this.trackBar_Amount_Scroll);
+            trackBar_Amount.Location = new System.Drawing.Point(41, 677);
+            trackBar_Amount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            trackBar_Amount.Maximum = 100;
+            trackBar_Amount.Minimum = -100;
+            trackBar_Amount.Name = "trackBar_Amount";
+            trackBar_Amount.Size = new System.Drawing.Size(531, 114);
+            trackBar_Amount.TabIndex = 2;
+            trackBar_Amount.TickStyle = System.Windows.Forms.TickStyle.None;
+            trackBar_Amount.Value = 100;
+            trackBar_Amount.Scroll += trackBar_Amount_Scroll;
             // 
             // labelAmount
             // 
-            this.labelAmount.AutoSize = true;
-            this.labelAmount.Location = new System.Drawing.Point(244, 684);
-            this.labelAmount.Name = "labelAmount";
-            this.labelAmount.Size = new System.Drawing.Size(74, 32);
-            this.labelAmount.TabIndex = 3;
-            this.labelAmount.Text = "NNN";
+            labelAmount.AutoSize = true;
+            labelAmount.Location = new System.Drawing.Point(259, 803);
+            labelAmount.Name = "labelAmount";
+            labelAmount.Size = new System.Drawing.Size(84, 41);
+            labelAmount.TabIndex = 3;
+            labelAmount.Text = "NNN";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(450, 552);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 32);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Softer";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(474, 617);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(97, 41);
+            label1.TabIndex = 4;
+            label1.Text = "Softer";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(47, 552);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 32);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Harder";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(46, 617);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(108, 41);
+            label2.TabIndex = 5;
+            label2.Text = "Harder";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(47, 684);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(133, 32);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Softness:";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(50, 803);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(137, 41);
+            label3.TabIndex = 6;
+            label3.Text = "Softness:";
             // 
             // button_OK
             // 
-            this.button_OK.Location = new System.Drawing.Point(230, 737);
-            this.button_OK.Name = "button_OK";
-            this.button_OK.Size = new System.Drawing.Size(148, 75);
-            this.button_OK.TabIndex = 7;
-            this.button_OK.Text = "OK";
-            this.button_OK.UseVisualStyleBackColor = true;
-            this.button_OK.Click += new System.EventHandler(this.button_OK_Click);
+            button_OK.Location = new System.Drawing.Point(249, 874);
+            button_OK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button_OK.Name = "button_OK";
+            button_OK.Size = new System.Drawing.Size(157, 69);
+            button_OK.TabIndex = 7;
+            button_OK.Text = "OK";
+            button_OK.UseVisualStyleBackColor = true;
+            button_OK.Click += button_OK_Click;
             // 
             // FormCurve
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 851);
-            this.Controls.Add(this.button_OK);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.labelAmount);
-            this.Controls.Add(this.trackBar_Amount);
-            this.Controls.Add(this.pictureBox_Curve);
-            this.Controls.Add(this.button_Cancel);
-            this.Name = "FormCurve";
-            this.Text = "Curve Editor";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCurve_FormClosed);
-            this.Load += new System.EventHandler(this.FormCurve_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Curve)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Amount)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(630, 965);
+            Controls.Add(button_OK);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(labelAmount);
+            Controls.Add(trackBar_Amount);
+            Controls.Add(pictureBox_Curve);
+            Controls.Add(button_Cancel);
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Name = "FormCurve";
+            Text = "Curve Editor";
+            FormClosed += FormCurve_FormClosed;
+            Load += FormCurve_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Amount).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.PictureBox pictureBox_Curve;
         private System.Windows.Forms.TrackBar trackBar_Amount;
         private System.Windows.Forms.Label labelAmount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button_OK;
+        protected System.Windows.Forms.PictureBox pictureBox_Curve;
     }
 }

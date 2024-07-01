@@ -18,6 +18,7 @@ namespace WinTabPainter
         SD.PointF[] points;
         Numerics.SimpleCurve curve;
         SD.SolidBrush brush;
+        int padding = 25;
         int num_points = 300;
 
         public double CurveAmount
@@ -32,7 +33,7 @@ namespace WinTabPainter
 
         private void FormCurve_Load(object sender, System.EventArgs e)
         {
-            var s = new Geometry.Size(num_points, num_points);
+            var s = new Geometry.Size(num_points + 2 * this.padding, num_points+2*this.padding);
             this.bitmaplayer = new Painting.BitmapLayer(s);
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
@@ -65,8 +66,10 @@ namespace WinTabPainter
                 double x_coord = x_coord_range.Clamp(x * i_max );
                 double y_coord = i_max - y_coord_range.Clamp(y * i_max);
 
-                var p = new SD.PointF( (float) x_coord, (float) y_coord);
-                this.points[i] = p;
+                var p = new Geometry.PointD(x_coord, y_coord);
+                var p2 = p.Add(this.padding, this.padding);
+                var p3 = new SD.PointF( (float) p2.X, (float) p2.Y );
+                this.points[i] = p3;
 
 
 
