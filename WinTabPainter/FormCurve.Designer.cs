@@ -56,7 +56,7 @@
             pictureBox_Curve.Location = new System.Drawing.Point(26, 36);
             pictureBox_Curve.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             pictureBox_Curve.Name = "pictureBox_Curve";
-            pictureBox_Curve.Size = new System.Drawing.Size(550, 389);
+            pictureBox_Curve.Size = new System.Drawing.Size(550, 550);
             pictureBox_Curve.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             pictureBox_Curve.TabIndex = 1;
             pictureBox_Curve.TabStop = false;

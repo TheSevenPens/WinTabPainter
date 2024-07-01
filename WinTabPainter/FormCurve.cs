@@ -14,7 +14,8 @@ namespace WinTabPainter
         }
 
         Painting.BitmapLayer bitmaplayer;
-        SD.Pen pen;
+        SD.Pen curve_pen;
+        SD.Pen frame_pen;
         SD.PointF[] points;
         Numerics.SimpleCurve curve;
         SD.SolidBrush brush;
@@ -39,7 +40,8 @@ namespace WinTabPainter
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
             this.labelAmount.Text = this.curve.BendAmount.ToString();
-            this.pen = new SD.Pen(SD.Color.CornflowerBlue,5);
+            this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue,5);
+            this.frame_pen = new SD.Pen(SD.Color.Gray, 1);
 
             this.render_curve();
 
@@ -74,9 +76,11 @@ namespace WinTabPainter
 
 
             }
-
+            var inner_rect = new SD.Rectangle(this.padding, this.padding, this.bitmaplayer.Width - (2 * this.padding), this.bitmaplayer.Height - (2 * this.padding));
             this.bitmaplayer.Graphics.FillRectangle(this.brush, new SD.Rectangle(0, 0, this.bitmaplayer.Width, this.bitmaplayer.Height));
-            this.bitmaplayer.Graphics.DrawLines(this.pen, this.points);
+
+            this.bitmaplayer.Graphics.DrawRectangle(this.frame_pen, inner_rect);
+            this.bitmaplayer.Graphics.DrawLines(this.curve_pen, this.points);
             this.pictureBox_Curve.Invalidate();
 
         }
@@ -89,11 +93,18 @@ namespace WinTabPainter
                 this.bitmaplayer = null;
             }
 
-            if (this.pen != null)
+            if (this.curve_pen != null)
             {
-                this.pen.Dispose();
-                this.pen = null;
+                this.curve_pen.Dispose();
+                this.curve_pen = null;
             }
+
+            if (this.frame_pen!= null)
+            {
+                this.frame_pen.Dispose();
+                this.frame_pen = null;
+            }
+
 
             if (this.brush!=null)
             {
