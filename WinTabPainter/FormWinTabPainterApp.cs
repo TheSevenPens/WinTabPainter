@@ -182,8 +182,8 @@ namespace WinTabPainter
 
         private void HandlePainting( PaintData paint_data)
         {
-            var pos = paint_data.CanvasPos;
-            var pos_smoothed = paint_data.CanvasPosSmoothed;
+            var pos = paint_data.PosCanvas;
+            var pos_smoothed = paint_data.PosCanvasSmoothed;
 
             // Update the UI 
             UpdateUIWithPaintData(paint_data, pos);
@@ -192,7 +192,7 @@ namespace WinTabPainter
                 && (this.bitmap_doc.Contains(pos))) 
             {
                 bool need_to_draw = (this.old_paintdata.Status == PaintDataStatus.INVALID)
-                    || (this.old_paintdata.CanvasPosSmoothed != paint_data.CanvasPosSmoothed)
+                    || (this.old_paintdata.PosCanvasSmoothed != paint_data.PosCanvasSmoothed)
                     || (this.old_paintdata.PressureEffective != paint_data.PressureEffective);
 
                 if (need_to_draw)
@@ -216,7 +216,7 @@ namespace WinTabPainter
         }
         private void UpdateUIWithPaintData(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
         {
-            this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
+            this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.label_PressureValue.Text =
                 string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));

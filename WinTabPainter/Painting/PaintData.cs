@@ -19,10 +19,10 @@ public struct PaintData
     public readonly uint Time;
 
     // POSITION
-    public readonly Geometry.Point PenPos;
-    public readonly Geometry.Point PenPosSmoothed;
-    public readonly Geometry.Point CanvasPos;
-    public readonly Geometry.Point CanvasPosSmoothed;
+    public readonly Geometry.Point PosScreen;
+    public readonly Geometry.Point PosScreenSmoothed;
+    public readonly Geometry.Point PosCanvas;
+    public readonly Geometry.Point PosCanvasSmoothed;
 
     // HOVER
     public readonly int PenHover;
@@ -57,10 +57,10 @@ public struct PaintData
         this.Time = pkt.pkTime;
 
         // POSITION
-        this.PenPos = new Geometry.Point(pkt.pkX, pkt.pkY);
-        this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos).Round().ToPoint();
-        this.CanvasPos = to_canv(this.PenPos);
-        this.CanvasPosSmoothed = to_canv(this.PenPosSmoothed);
+        this.PosScreen = new Geometry.Point(pkt.pkX, pkt.pkY);
+        this.PosScreenSmoothed = paintsettings.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
+        this.PosCanvas = to_canv(this.PosScreen);
+        this.PosCanvasSmoothed = to_canv(this.PosScreenSmoothed);
 
         // HOVER
         this.PenHover = pkt.pkZ;
