@@ -221,8 +221,8 @@ namespace WinTabPainter
         {
             this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
-            this.label_PressureValue.Text = Math.Round(paint_data.PressureNormalized, 5).ToString();
-            this.label_PressureEffective.Text = Math.Round(paint_data.PressureEffective, 5).ToString();
+            this.label_PressureValue.Text =
+                string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));                
             this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
         }
 
