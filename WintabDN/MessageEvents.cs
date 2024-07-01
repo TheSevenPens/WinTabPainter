@@ -87,6 +87,12 @@ namespace WintabDN
             }
         }
 
+
+        public static void ClearMessageEvents()
+        {
+            MessageEvents.MessageReceived -= null;
+        }
+
         private static void EnsureInitialized()
         {
             lock (_lock)
