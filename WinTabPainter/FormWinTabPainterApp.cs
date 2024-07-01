@@ -185,6 +185,17 @@ namespace WinTabPainter
             var pos = paint_data.PosCanvas;
             var pos_smoothed = paint_data.PosCanvasSmoothed;
 
+            double dist_from_last_canv_pos;
+
+            if (old_paintdata.Status == PaintDataStatus.INVALID)
+            {
+                dist_from_last_canv_pos = 0;
+            }
+            else
+            {
+                dist_from_last_canv_pos = paint_data.PosCanvasSmoothed.DistanceTo(old_paintdata.PosCanvasSmoothed);
+            }
+
             // Update the UI 
             UpdateUIWithPaintData(paint_data, pos);
 
@@ -197,6 +208,7 @@ namespace WinTabPainter
 
                 if (need_to_draw)
                 {
+
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
                         pos_smoothed,
