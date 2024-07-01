@@ -180,6 +180,8 @@ namespace WintabDN
         /// </summary>
         public HCTX pkContext;                      // PK_CONTEXT
 
+        public UInt32 SPACING;                     // SevenPens - when migrating to .NET 8 I had to add this initial space to get the properties aligned
+
         /// <summary>
         /// Specifies various status and error conditions. These conditions can be 
         /// combined by using the bitwise OR opera-tor. The pkStatus field can be any
