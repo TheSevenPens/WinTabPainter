@@ -77,9 +77,9 @@ namespace WinTabPainter
             // brings the app window into the middle of the third monitor
             // allieviates the hassle of dragging it over every time
 
-            var devicename = (string) Properties.Settings.Default["Monitor"];
+            var devicename = (string)Properties.Settings.Default["Monitor"];
 
-            if ((devicename.Length>0) )
+            if ((devicename.Length > 0))
             {
                 foreach (var s in System.Windows.Forms.Screen.AllScreens)
                 {
@@ -122,7 +122,7 @@ namespace WinTabPainter
 
             var s = Screen.FromControl(this);
 
-            Properties.Settings.Default["Monitor"]= s.DeviceName;
+            Properties.Settings.Default["Monitor"] = s.DeviceName;
             Properties.Settings.Default.Save();
 
         }
@@ -166,11 +166,11 @@ namespace WinTabPainter
 
         private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
-            if (this.wintab_data == null) 
+            if (this.wintab_data == null)
             {
                 // this case can happen when you use the pen to close the window
                 // by clicking x in the upper right of the window
-                return; 
+                return;
             }
 
             uint pktId = (uint)args.Message.WParam;
@@ -209,7 +209,7 @@ namespace WinTabPainter
             }
         }
 
-        public Geometry.Point Screen_loc_to_canvas_loc( Geometry.Point screen_loc, double scale)
+        public Geometry.Point Screen_loc_to_canvas_loc(Geometry.Point screen_loc, double scale)
         {
             var canv_loc = this.pictureBox_Canvas.Location;
             var px = (int)((screen_loc.X / scale) - canv_loc.X);
@@ -222,7 +222,7 @@ namespace WinTabPainter
             this.label_ScreenPosValue.Text = paint_data.PenPos.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.label_PressureValue.Text =
-                string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));                
+                string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));
             this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
         }
 
@@ -267,7 +267,7 @@ namespace WinTabPainter
                 this.EraseCanvas();
                 return true;
             }
-            else if (keyData == ( Keys.OemOpenBrackets) )
+            else if (keyData == (Keys.OemOpenBrackets))
             {
                 this.relative_modify_brush_size(-1);
                 return true;
@@ -287,7 +287,7 @@ namespace WinTabPainter
 
             this.paintsettings.BrushWidth = PaintSettings.BRUSHSIZE_RANGE.Clamp(w);
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
-            this.trackBar_BrushSize.Value= this.paintsettings.BrushWidth;
+            this.trackBar_BrushSize.Value = this.paintsettings.BrushWidth;
         }
         private void MenuFileSave_Click(object sender, EventArgs e)
         {
@@ -368,7 +368,7 @@ namespace WinTabPainter
                 this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
                 this.pictureBox_Canvas.Invalidate();
             }
-            else 
+            else
             {
                 // do nothing
             }
@@ -423,12 +423,13 @@ namespace WinTabPainter
         {
             var form = new FormCurve(this.paintsettings.pressure_curve.BendAmount);
             var r = form.ShowDialog(this);
-            if (r == DialogResult.OK) 
+            if (r == DialogResult.OK)
             {
 
                 this.paintsettings.pressure_curve.BendAmount = form.CurveAmount;
             }
 
         }
+
     }
 }

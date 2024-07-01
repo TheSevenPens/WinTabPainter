@@ -81,9 +81,9 @@
             label_PressureNormalized.AutoSize = true;
             label_PressureNormalized.Location = new System.Drawing.Point(24, 278);
             label_PressureNormalized.Name = "label_PressureNormalized";
-            label_PressureNormalized.Size = new System.Drawing.Size(178, 41);
+            label_PressureNormalized.Size = new System.Drawing.Size(130, 41);
             label_PressureNormalized.TabIndex = 11;
-            label_PressureNormalized.Text = "Pressure (N)";
+            label_PressureNormalized.Text = "Pressure";
             // 
             // label_Tilt
             // 
