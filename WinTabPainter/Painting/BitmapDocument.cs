@@ -1,10 +1,8 @@
-﻿using System;
-using System.Drawing;
-using SD = System.Drawing;
+﻿using SD = System.Drawing;
 
 namespace WinTabPainter.Painting;
 
-public class BitmapDocument : IDisposable
+public class BitmapDocument : System.IDisposable
 {
     // BitmapDocument class intended to encapsulate
     // the logic behind maintaining a bitmap we are painting on

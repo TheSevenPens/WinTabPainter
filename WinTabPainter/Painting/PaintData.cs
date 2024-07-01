@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.Eventing.Reader;
-using SD = System.Drawing;
+﻿using SD = System.Drawing;
 
 namespace WinTabPainter.Painting;
 

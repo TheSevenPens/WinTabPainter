@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using SD = System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SD = System.Drawing;
 using System.Windows.Forms;
-using WinTabPainter.Painting;
-using WinTabPainter.Numerics;
+
 
 namespace WinTabPainter
 {
@@ -17,14 +9,14 @@ namespace WinTabPainter
         public FormCurve(double amt)
         {
             InitializeComponent();
-            this.curve = new SimpleCurve();
+            this.curve = new Numerics.SimpleCurve();
             this.curve.BendAmount = amt;
         }
 
-        BitmapLayer bitmaplayer;
+        Painting.BitmapLayer bitmaplayer;
         SD.Pen pen;
         SD.PointF[] points;
-        SimpleCurve curve;
+        Numerics.SimpleCurve curve;
         SD.SolidBrush brush;
         int num_points = 300;
 
@@ -33,15 +25,15 @@ namespace WinTabPainter
             get => this.curve.BendAmount;
         } 
 
-        private void button_Close_Click(object sender, EventArgs e)
+        private void button_Close_Click(object sender, System.EventArgs e)
         {
             this.Close();
         }
 
-        private void FormCurve_Load(object sender, EventArgs e)
+        private void FormCurve_Load(object sender, System.EventArgs e)
         {
             var s = new Geometry.Size(num_points, num_points);
-            this.bitmaplayer = new BitmapLayer(s);
+            this.bitmaplayer = new Painting.BitmapLayer(s);
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
@@ -107,7 +99,7 @@ namespace WinTabPainter
             }
         }
 
-        private void trackBar_Amount_Scroll(object sender, EventArgs e)
+        private void trackBar_Amount_Scroll(object sender, System.EventArgs e)
         {
             update_bend_amount_label();
             this.render_curve();
@@ -129,7 +121,7 @@ namespace WinTabPainter
             return v;
         }
 
-        private void button_OK_Click(object sender, EventArgs e)
+        private void button_OK_Click(object sender, System.EventArgs e)
         {
 
             this.Close();

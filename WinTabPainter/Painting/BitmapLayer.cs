@@ -1,9 +1,8 @@
-﻿using System;
-using SD = System.Drawing;
+﻿using SD = System.Drawing;
 
 namespace WinTabPainter.Painting;
 
-public class BitmapLayer : IDisposable
+public class BitmapLayer : System.IDisposable
 {
     internal SD.Graphics Graphics;
     internal SD.Bitmap Bitmap;
