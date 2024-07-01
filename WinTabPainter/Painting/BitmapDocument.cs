@@ -84,14 +84,13 @@ namespace WinTabPainter.Painting
 
         public void DrawDabCenteredAt(Painting.ColorARGB color, Geometry.Point p, int width)
         {
-            int half_width = System.Math.Max(1,width / 2);
+            int half_width = System.Math.Max(1, width / 2);
             var halfsize = new Geometry.Size(half_width, half_width);
-            var dab_rect_center = p.Subtract(halfsize);
-            var rect = new SD.Rectangle(dab_rect_center, halfsize );
-            // TODO: Currently ignores the brush color
-            this.background_layer.Graphics.FillEllipse(this.paint_brush, rect);
-        }
+            var fullsize = new Geometry.Size(width, width);
 
+            var r1 = new SD.Rectangle(p.Subtract(halfsize), fullsize);
+            this.background_layer.Graphics.FillEllipse(this.paint_brush, r1);
+        }
 
         public SD.Brush GetBrushForColor(Painting.ColorARGB color)
         {
