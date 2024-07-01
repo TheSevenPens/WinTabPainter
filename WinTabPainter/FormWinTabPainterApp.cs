@@ -65,7 +65,7 @@ namespace WinTabPainter
 
             this.wintab_context = OpenTabletContext();
 
-            Recenter_on_prev_monitor();
+            Reposition_app();
 
             this.trackBar_BrushSize.Value = this.paintsettings.BrushWidth;
             this.label_BrushSizeValue.Text = this.paintsettings.BrushWidth.ToString();
@@ -75,27 +75,27 @@ namespace WinTabPainter
             this.AppSetPressureSmoothing(0);
         }
 
-        private void Recenter_on_prev_monitor()
+        private void Reposition_app()
         {
-            // brings the app window into the middle of the third monitor
-            // allieviates the hassle of dragging it over every time
 
-            var devicename = (string)Properties.Settings.Default["Monitor"];
+            var monitorname = (string)Properties.Settings.Default["Monitor"];
 
-            if ((devicename.Length > 0))
+            // if no value, do nothing
+            if (monitorname.Length == 0)
             {
-                foreach (var s in System.Windows.Forms.Screen.AllScreens)
-                {
-                    if (s.DeviceName == devicename)
-                    {
-                        this.Left = s.Bounds.Left + (s.Bounds.Width / 2) - (this.Width / 2);
-                        this.Top = s.Bounds.Top + (s.Bounds.Height / 2) - (this.Height / 2);
-                    }
-                }
+                return;
             }
-            else
+
+            // find the screen with the same name
+            foreach (var s in System.Windows.Forms.Screen.AllScreens)
             {
-                // do nothing
+                if (s.DeviceName == monitorname)
+                {
+                    // place this app on that screen
+                    this.Left = s.Bounds.Left + (s.Bounds.Width / 2) - (this.Width / 2);
+                    this.Top = s.Bounds.Top + (s.Bounds.Height / 2) - (this.Height / 2);
+                    break;
+                }
             }
 
         }
