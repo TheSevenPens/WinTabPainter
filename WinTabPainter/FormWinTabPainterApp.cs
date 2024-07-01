@@ -182,19 +182,18 @@ namespace WinTabPainter
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
                 // collect all the information we need to start painting
-                var paint_data = new Painting.PaintData(wintab_pkt, tablet_info, this.paintsettings);
-
-                var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos);
-                var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed);
-
-                HandlePainting(penpos_canvas, penpos_canvas_smoothed, paint_data);
-
+                var paint_data = new Painting.PaintData(wintab_pkt, tablet_info, this.paintsettings, Screen_loc_to_canvas_loc);
+                HandlePainting(paint_data);
                 this.old_paintdata = paint_data;
             }
         }
 
-        private void HandlePainting(Point pos, Point pos_smoothed, PaintData paint_data)
+
+        private void HandlePainting( PaintData paint_data)
         {
+            var pos = paint_data.CanvasPos;
+            var pos_smoothed = paint_data.CanvasPosSmoothed;
+
             // Update the UI 
             UpdateUIWithPaintData(paint_data, pos);
 

@@ -21,6 +21,8 @@ public struct PaintData
     // POSITION
     public readonly Geometry.Point PenPos;
     public readonly Geometry.Point PenPosSmoothed;
+    public readonly Geometry.Point CanvasPos;
+    public readonly Geometry.Point CanvasPosSmoothed;
 
     // HOVER
     public readonly int PenHover;
@@ -46,7 +48,7 @@ public struct PaintData
     }
 
 
-    public PaintData(WintabDN.WintabPacket pkt, TabletInfo tablet, PaintSettings paintsettings)
+    public PaintData(WintabDN.WintabPacket pkt, TabletInfo tablet, PaintSettings paintsettings, System.Func<Geometry.Point,Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;
@@ -57,6 +59,8 @@ public struct PaintData
         // POSITION
         this.PenPos = new Geometry.Point(pkt.pkX, pkt.pkY);
         this.PenPosSmoothed = paintsettings.PositionSmoother.Smooth(this.PenPos).Round().ToPoint();
+        this.CanvasPos = to_canv(this.PenPos);
+        this.CanvasPosSmoothed = to_canv(this.PenPosSmoothed);
 
         // HOVER
         this.PenHover = pkt.pkZ;
