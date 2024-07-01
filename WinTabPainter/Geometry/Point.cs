@@ -4,8 +4,8 @@ namespace WinTabPainter.Geometry
 {
     public struct Point
     {
-        public int X;
-        public int Y;
+        public readonly int X;
+        public readonly int Y;
 
         public static Point Empty => new Point(0, 0);
 
@@ -36,6 +36,40 @@ namespace WinTabPainter.Geometry
     }
 
 
+    public struct Rect
+    {
+        public readonly int X;
+        public readonly int Y;
+
+        public readonly int Width;
+        public readonly int Height;
+
+
+        public static Rect Empty => new Rect(0, 0,0,0);
+
+        public Rect(int x, int y, int w, int h)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Width = w;
+            this.Height = h;
+        }
+
+        public Point Position => new Point(this.X,this.Y);
+
+        public Size Size => new Size(this.Width, this.Height);
+
+        public string ToStringXYWH() => string.Format("{0}x{1},{2}x{3}", this.X, this.Y, this.Width, this.Height);
+
+        public static implicit operator SD.Rectangle(Rect s) => s.ToSDRect();
+
+        public SD.Rectangle ToSDRect()
+        {
+            var p = new SD.Rectangle(this.X, this.Y, this.Width, this.Height);
+            return p;
+        }
+
+    }
 
 
 }

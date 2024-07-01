@@ -4,8 +4,8 @@ namespace WinTabPainter.Geometry
 {
     public struct PointD
     {
-        public double X;
-        public double Y;
+        public readonly double X;
+        public readonly double Y;
 
         public static PointD Empty => new PointD(0, 0);
 

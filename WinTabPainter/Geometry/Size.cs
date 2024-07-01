@@ -5,8 +5,8 @@ namespace WinTabPainter.Geometry
 {
     public struct Size
     {
-        public int Width;
-        public int Height;
+        public readonly int Width;
+        public readonly int Height;
 
         public Size(int w, int h)
         {

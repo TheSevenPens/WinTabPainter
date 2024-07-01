@@ -166,6 +166,12 @@ namespace WinTabPainter
 
         private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
+            if (this.wintab_data == null) 
+            {
+                // this case can happen when you use the pen to close the window
+                // by clicking x in the upper right of the window
+                return; 
+            }
 
             uint pktId = (uint)args.Message.WParam;
             var wintab_pkt = this.wintab_data.GetDataPacket((uint)args.Message.LParam, pktId);
@@ -222,6 +228,9 @@ namespace WinTabPainter
 
         private void CloseTabletContext()
         {
+            this.wintab_data.ClearWTPacketEventHandler();
+            this.wintab_data = null;
+
             if (this.wintab_context == null)
             {
                 return;
@@ -229,8 +238,6 @@ namespace WinTabPainter
 
             this.wintab_context.Close();
             this.wintab_context = null;
-            this.wintab_data.ClearWTPacketEventHandler();
-            this.wintab_data = null;
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
