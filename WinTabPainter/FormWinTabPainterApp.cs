@@ -191,13 +191,19 @@ namespace WinTabPainter
             if ((paint_data.PressureRaw > 0)
                 && (this.bitmap_doc.Contains(pos))) 
             {
+                bool need_to_draw = (this.old_paintdata.Status == PaintDataStatus.INVALID)
+                    || (this.old_paintdata.CanvasPosSmoothed != paint_data.CanvasPosSmoothed)
+                    || (this.old_paintdata.PressureEffective != paint_data.PressureEffective);
 
-                this.bitmap_doc.DrawDabCenteredAt(
-                    clr_black,
-                    pos_smoothed,
-                    paint_data.BrushWidthEffective);
+                if (need_to_draw)
+                {
+                    this.bitmap_doc.DrawDabCenteredAt(
+                        clr_black,
+                        pos_smoothed,
+                        paint_data.BrushWidthEffective);
 
-                this.pictureBox_Canvas.Invalidate();
+                    this.pictureBox_Canvas.Invalidate();
+                }
             }
         }
 

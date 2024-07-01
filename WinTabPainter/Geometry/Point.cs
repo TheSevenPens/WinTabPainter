@@ -33,5 +33,8 @@ public struct Point
         return p;
     }
 
+    public static bool operator ==(Point lhs, Point rhs) => lhs.Equals(rhs);
+
+    public static bool operator !=(Point lhs, Point rhs) => !(lhs == rhs);
 }
 
