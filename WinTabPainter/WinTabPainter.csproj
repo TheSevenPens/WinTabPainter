@@ -44,9 +44,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WintabDotNet, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WacomSolutionPartner.WintabDotNet.1.2.2\lib\net40\WintabDotNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormAbout.cs">
@@ -115,7 +112,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -131,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MIT-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WintabDN\WintabDN.csproj">
+      <Project>{73eae30a-60b9-43a5-ad81-9b05873e405c}</Project>
+      <Name>WintabDN</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

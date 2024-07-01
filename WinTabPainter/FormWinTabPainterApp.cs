@@ -229,6 +229,7 @@ namespace WinTabPainter
 
             this.wintab_context.Close();
             this.wintab_context = null;
+            this.wintab_context.
             this.wintab_data.ClearWTPacketEventHandler();
             this.wintab_data = null;
         }

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTabPainter", "WinTabPainter\WinTabPainter.csproj", "{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WintabDN", "WintabDN\WintabDN.csproj", "{73EAE30A-60B9-43A5-AD81-9B05873E405C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73EAE30A-60B9-43A5-AD81-9B05873E405C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAE30A-60B9-43A5-AD81-9B05873E405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EAE30A-60B9-43A5-AD81-9B05873E405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73EAE30A-60B9-43A5-AD81-9B05873E405C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
