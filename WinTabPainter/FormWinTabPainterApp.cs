@@ -43,7 +43,7 @@ namespace WinTabPainter
         private void Form1_Load(object sender, EventArgs e)
         {
             // All actual drawing will be done to this bitmap
-            this.bitmap_doc = new Painting.BitmapDocument(1000, 1000);
+            this.bitmap_doc = new Painting.BitmapDocument(1500, 1500);
 
             // Create a graphics object for the canvas bitmap and enable smoothing
             // by default for better looking stroke edges
