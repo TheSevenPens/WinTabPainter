@@ -1,4 +1,5 @@
-﻿using SD = System.Drawing;
+﻿using System;
+using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry;
 
@@ -36,5 +37,12 @@ public struct Point
     public static bool operator ==(Point lhs, Point rhs) => lhs.Equals(rhs);
 
     public static bool operator !=(Point lhs, Point rhs) => !(lhs == rhs);
+
+    public double DistanceTo(Point p)
+    {
+        var dx = p.X - this.X;
+        var dy = p.Y - this.Y;
+        return Math.Sqrt((dx * dx) + (dy * dy));
+    }
 }
 
