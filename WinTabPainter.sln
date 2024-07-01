@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTabPainter", "WinTabPainter\WinTabPainter.csproj", "{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinTabPainter", "WinTabPainter\WinTabPainter.csproj", "{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WintabDN", "WintabDN\WintabDN.csproj", "{73EAE30A-60B9-43A5-AD81-9B05873E405C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WintabDN", "WintabDN\WintabDN.csproj", "{73EAE30A-60B9-43A5-AD81-9B05873E405C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
