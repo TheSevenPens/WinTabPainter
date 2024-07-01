@@ -43,7 +43,7 @@ namespace WinTabPainter
         private void Form1_Load(object sender, EventArgs e)
         {
             // All actual drawing will be done to this bitmap
-            this.bitmap_doc = new Painting.BitmapDocument(500, 500);
+            this.bitmap_doc = new Painting.BitmapDocument(1000, 1000);
 
             // Create a graphics object for the canvas bitmap and enable smoothing
             // by default for better looking stroke edges
@@ -181,12 +181,8 @@ namespace WinTabPainter
                 // collect all the information we need to start painting
                 var paint_data = new Painting.PaintData(wintab_pkt, tablet_info, this.paintsettings);
 
-                // Take the position of the pen - which is pixel units on the screen
-                // and convert that to coordinates of the bitmap document canvas
-                //double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
-                double scale = 1.0; // hardcoded to deal with windows scaling. Need to find a more general way
-                var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos, scale);
-                var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed, scale);
+                var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos);
+                var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed);
 
                 HandlePainting(penpos_canvas, penpos_canvas_smoothed, paint_data);
             }
@@ -210,12 +206,13 @@ namespace WinTabPainter
             }
         }
 
-        public Geometry.Point Screen_loc_to_canvas_loc(Geometry.Point screen_loc, double scale)
+        public Geometry.Point Screen_loc_to_canvas_loc(Geometry.Point screen_loc)
         {
             var canv_loc = this.pictureBox_Canvas.Location;
-            var px = (int)((screen_loc.X / scale) - canv_loc.X);
-            var py = (int)((screen_loc.Y / scale) - canv_loc.Y);
-            var penpos_canvas = this.PointToClient(new SD.Point(px, py)).ToPoint();
+            var px = (int)(screen_loc.X  - canv_loc.X);
+            var py = (int)(screen_loc.Y  - canv_loc.Y);
+            var p2 = new Geometry.Point(px, py);
+            var penpos_canvas = this.PointToClient(p2).ToPoint();
             return penpos_canvas;
         }
         private void UpdateUIWithPaintData(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
