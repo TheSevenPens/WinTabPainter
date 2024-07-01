@@ -69,9 +69,12 @@ public class BitmapDocument : System.IDisposable
 
     public void Erase()
     {
-        using (var b = new SD.SolidBrush(this.DefaultPageColor))
+        using (var p = new SD.Pen(SD.Color.Red))
         {
-            this.background_layer.Graphics.FillRectangle(b, 0, 0, this.background_layer.Width, this.background_layer.Height);
+            using (var b = new SD.SolidBrush(this.DefaultPageColor))
+            {
+                this.background_layer.Graphics.DrawLine(p, new SD.Point(100, 100), new SD.Point(200, 200));
+            }
         }
     }
 

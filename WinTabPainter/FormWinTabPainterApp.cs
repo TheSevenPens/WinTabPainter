@@ -183,7 +183,8 @@ namespace WinTabPainter
 
                 // Take the position of the pen - which is pixel units on the screen
                 // and convert that to coordinates of the bitmap document canvas
-                double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
+                //double scale = 2.5; // hardcoded to deal with windows scaling. Need to find a more general way
+                double scale = 1.0; // hardcoded to deal with windows scaling. Need to find a more general way
                 var penpos_canvas = this.Screen_loc_to_canvas_loc(paint_data.PenPos, scale);
                 var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed, scale);
 
