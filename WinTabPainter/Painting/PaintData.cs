@@ -12,33 +12,33 @@ public enum PaintDataStatus
 public struct PaintData
 {
     // STATUS
-    PaintDataStatus Status;
-    
+    public readonly PaintDataStatus Status;
+
 
     // TIME
-    public uint Time;
+    public readonly uint Time;
 
     // POSITION
-    public Geometry.Point PenPos;
-    public Geometry.Point PenPosSmoothed;
+    public readonly Geometry.Point PenPos;
+    public readonly Geometry.Point PenPosSmoothed;
 
     // HOVER
-    public int PenHover;
+    public readonly int PenHover;
 
     //TILT
-    public double TiltAltitude;
-    public double TiltAzimuth;
+    public readonly double TiltAltitude;
+    public readonly double TiltAzimuth;
 
 
     // PRESSURE
-    public uint PressureRaw;
-    public double PressureNormalized;
-    public double PressureSmoothed;
-    public double PressureCurved;
-    public double PressureEffective;
+    public readonly uint PressureRaw;
+    public readonly double PressureNormalized;
+    public readonly double PressureSmoothed;
+    public readonly double PressureCurved;
+    public readonly double PressureEffective;
 
     // BRUSH
-    public int BrushWidthEffective;
+    public readonly int BrushWidthEffective;
 
     public PaintData()
     {
