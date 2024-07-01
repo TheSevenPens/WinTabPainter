@@ -2,8 +2,19 @@
 
 namespace WinTabPainter.Painting;
 
+public enum PaintDataStatus
+{ 
+    INVALID,
+    VALID
+}
+
+
 public struct PaintData
 {
+    // STATUS
+    PaintDataStatus Status;
+    
+
     // TIME
     public uint Time;
 
@@ -29,8 +40,16 @@ public struct PaintData
     // BRUSH
     public int BrushWidthEffective;
 
+    public PaintData()
+    {
+        this.Status = PaintDataStatus.INVALID;
+    }
+
+
     public PaintData(WintabDN.WintabPacket pkt, TabletInfo tablet, PaintSettings paintsettings)
     {
+        // STATUS
+        this.Status = PaintDataStatus.VALID;
 
         // TIME
         this.Time = pkt.pkTime;

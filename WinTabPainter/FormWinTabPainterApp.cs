@@ -35,6 +35,7 @@ namespace WinTabPainter
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
         Numerics.Range SMOOTHING_TRACKBAR_RANGE = new Numerics.Range(-100, 100);
 
+        Painting.PaintData old_paintdata;
         public FormWinTabPainterApp()
         {
             InitializeComponent();
@@ -42,6 +43,8 @@ namespace WinTabPainter
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.old_paintdata = new Painting.PaintData();
+
             // All actual drawing will be done to this bitmap
             this.bitmap_doc = new Painting.BitmapDocument(1500, 1500);
 
@@ -185,6 +188,8 @@ namespace WinTabPainter
                 var penpos_canvas_smoothed = this.Screen_loc_to_canvas_loc(paint_data.PenPosSmoothed);
 
                 HandlePainting(penpos_canvas, penpos_canvas_smoothed, paint_data);
+
+                this.old_paintdata = paint_data;
             }
         }
 
