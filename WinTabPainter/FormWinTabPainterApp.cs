@@ -208,11 +208,9 @@ namespace WinTabPainter
 
         public Geometry.Point Screen_loc_to_canvas_loc(Geometry.Point screen_loc)
         {
-            var canv_loc = this.pictureBox_Canvas.Location;
-            var px = (int)(screen_loc.X  - canv_loc.X);
-            var py = (int)(screen_loc.Y  - canv_loc.Y);
-            var p2 = new Geometry.Point(px, py);
-            var penpos_canvas = this.PointToClient(p2).ToPoint();
+            var canv_loc = this.pictureBox_Canvas.Location.ToPoint();
+            var p3 = screen_loc.Subtract(canv_loc);
+            var penpos_canvas = this.PointToClient(p3).ToPoint();
             return penpos_canvas;
         }
         private void UpdateUIWithPaintData(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
