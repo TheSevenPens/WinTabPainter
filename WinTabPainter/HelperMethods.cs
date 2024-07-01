@@ -1,12 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace WinTabPainter
+namespace WinTabPainter;
+
+
+public static class HelperMethods
 {
 
-    public static class HelperMethods
-    {
 
 
-
-    }
 }
