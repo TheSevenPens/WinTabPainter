@@ -158,15 +158,6 @@ namespace WinTabPainter
             return context;
         }
 
-        public bool IsPointInsideCanvas(Geometry.Point p)
-        {
-            if (p.X < 0) { return false; }
-            if (p.Y < 0) { return false; }
-            if (p.X >= this.pictureBox_Canvas.Width) { return false; }
-            if (p.Y >= this.pictureBox_Canvas.Height) { return false; }
-            return true;
-        }
-
         private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
             if (this.wintab_data == null)
@@ -198,7 +189,7 @@ namespace WinTabPainter
             UpdateUIWithPaintData(paint_data, pos);
 
             if ((paint_data.PressureRaw > 0)
-                && (this.IsPointInsideCanvas(pos)))
+                && (this.bitmap_doc.Contains(pos))) 
             {
 
                 this.bitmap_doc.DrawDabCenteredAt(

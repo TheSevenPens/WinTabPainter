@@ -106,4 +106,13 @@ public class BitmapDocument : System.IDisposable
         this._width = background_layer.Width;
         this._height = background_layer.Height;
     }
+
+    public bool Contains(Geometry.Point p)
+    {
+        if (p.X < 0) { return false; }
+        if (p.Y < 0) { return false; }
+        if (p.X >= this.Width) { return false; }
+        if (p.Y >= this.Height) { return false; }
+        return true;
+    }
 }
