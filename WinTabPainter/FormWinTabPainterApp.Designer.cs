@@ -293,9 +293,9 @@
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(24, 791);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(488, 41);
+            label2.Size = new System.Drawing.Size(476, 41);
             label2.TabIndex = 42;
-            label2.Text = "Position Smoothing (None<->Max)";
+            label2.Text = "Position Smoothing (None ↔ Max)";
             // 
             // trackBar_PositionSmoothing
             // 
@@ -332,9 +332,9 @@
             label4.AutoSize = true;
             label4.Location = new System.Drawing.Point(24, 963);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(494, 41);
+            label4.Size = new System.Drawing.Size(482, 41);
             label4.TabIndex = 46;
-            label4.Text = "Pressure Smoothing (None<->Max)";
+            label4.Text = "Pressure Smoothing (None ↔ Max)";
             // 
             // trackBar_PressureSmoothing
             // 
