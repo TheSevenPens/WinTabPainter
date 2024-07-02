@@ -96,10 +96,15 @@ namespace WintabDN
         /// <summary>
         /// Returns the default system context or digitizer , with useful context overrides.
         /// </summary>
+        /// <param name="cat">EWTICategoryIndex.WTI_DEFCONTEXT for digitizer context. EWTICategoryIndex.WTI_DEFSYSCTX for system context</param>
         /// <param name="options_I">caller's options; OR'd into context options</param>
         /// <returns>A 
         public static CWintabContext GetDefaultContext(EWTICategoryIndex cat, ECTXOptionValues options_I = 0)
         {
+            // SevenPens: In the original code this is made up of two separate methods that
+            // do almost the exact same thing. I've merged them and added the cat parameter
+            // indicates to indicate which kind of context to build
+
             // EWTICategoryIndex.WTI_DEFSYSCTX = System context
             // EWTICategoryIndex.WTI_DEFCONTEXT = Digitizer context
 
@@ -108,20 +113,12 @@ namespace WintabDN
                 throw new System.ArgumentOutOfRangeException(nameof(cat));
             }
 
-            CWintabContext context = GetDefaultContext(cat);
+            var context = GetDefaultContext(cat);
 
             if ( context == null)
             {
                 return context;
             }
-
-            // TODO: Add system-specific context tweaks.
-
-            // Send all possible data bits (not including extended data).
-            // This is redundant with CWintabContext initialization, which
-            // also inits with PK_PKTBITS_ALL.
-            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty // CHECKED
-            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; // CHECKED
 
             // Add caller's options.
             context.Options |= (uint)options_I; // CHECKED
@@ -132,13 +129,19 @@ namespace WintabDN
                 context.Options |= (uint)ECTXOptionValues.CXO_MESSAGES;
             }
 
+            // Send all possible data bits (not including extended data).
+            // This is redundant with CWintabContext initialization, which
+            // also inits with PK_PKTBITS_ALL.
+            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty // CHECKED
+            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; // CHECKED
+
             // Set the context data bits.
             context.PktData = PACKETDATA; // CHECKED
             context.PktMode = PACKETMODE; // CHECKED
             context.MoveMask = PACKETDATA; // CHECKED
             context.BtnUpMask = context.BtnDnMask; // CHECKED
 
-
+            // Name the context
             context.Name = cat == EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
 
             return context;
