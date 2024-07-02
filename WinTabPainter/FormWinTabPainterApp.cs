@@ -182,9 +182,6 @@ namespace WinTabPainter
 
         private void HandlePainting( PaintData paint_data)
         {
-            var pos = paint_data.PosCanvas;
-            var pos_smoothed = paint_data.PosCanvasSmoothed;
-
             double dist_from_last_canv_pos;
 
             if (old_paintdata.Status == PaintDataStatus.INVALID)
@@ -197,10 +194,10 @@ namespace WinTabPainter
             }
 
             // Update the UI 
-            UpdateUIWithPaintData(paint_data, pos);
+            UpdateUIWithPaintData(paint_data, paint_data.PosCanvas);
 
             if ((paint_data.PressureRaw > 0)
-                && (this.bitmap_doc.Contains(pos))) 
+                && (this.bitmap_doc.Contains(paint_data.PosCanvas))) 
             {
                 bool need_to_draw = (this.old_paintdata.Status == PaintDataStatus.INVALID)
                     || (this.old_paintdata.PosCanvasSmoothed != paint_data.PosCanvasSmoothed)
@@ -211,7 +208,7 @@ namespace WinTabPainter
 
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
-                        pos_smoothed,
+                        paint_data.PosCanvasSmoothed,
                         paint_data.BrushWidthEffective);
 
                     this.pictureBox_Canvas.Invalidate();
