@@ -132,7 +132,11 @@ namespace WinTabPainter
 
         private WintabDN.CWintabContext OpenTabletContext()
         {
-            var context = WintabDN.CWintabInfo.GetDefaultContext(WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX, WintabDN.ECTXOptionValues.CXO_MESSAGES);
+            // WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX - System context
+            // WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT - Digitizer context
+            var context_type = WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX;
+            var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
+            var context = WintabDN.CWintabInfo.GetDefaultContext(context_type, options);
 
             if (context == null)
             {
