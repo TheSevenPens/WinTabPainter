@@ -91,68 +91,55 @@ namespace WintabDN
         /// </summary>
         /// <param name="options_I">caller's options; OR'd into context options</param>
         /// <returns>A valid context object or null on error.</returns>
-        public static CWintabContext GetDefaultDigitizingContext(ECTXOptionValues options_I = 0)
-        {
-            // Send all possible data bits (not including extended data).
-            // This is redundant with CWintabContext initialization, which
-            // also inits with PK_PKTBITS_ALL.
-            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty
-            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS;
-
-            CWintabContext context = GetDefaultContext(EWTICategoryIndex.WTI_DEFCONTEXT);
-
-            if ( context != null )
-            {
-                // Add digitizer-specific context tweaks.
-                context.PktMode = 0;        // all data in absolute mode (set EWintabPacketBit bit(s) for relative mode)
-                context.SysMode = false;    // system cursor tracks in absolute mode (zero)
-
-                // Add caller's options.
-                context.Options |= (uint)options_I;
-
-                // Set the context data bits.
-                context.PktData = PACKETDATA;
-                context.PktMode = PACKETMODE;
-                context.MoveMask = PACKETDATA;
-                context.BtnUpMask = context.BtnDnMask;
-            }
-
-            return context;
-        }
-
 
 
         /// <summary>
-        /// Returns the default system context, with useful context overrides.
+        /// Returns the default system context or digitizer , with useful context overrides.
         /// </summary>
         /// <param name="options_I">caller's options; OR'd into context options</param>
-        /// <returns>A valid context object or null on error.</returns>
-        public static CWintabContext GetDefaultSystemContext(ECTXOptionValues options_I = 0)
+        /// <returns>A 
+        public static CWintabContext GetDefaultContext(EWTICategoryIndex cat, ECTXOptionValues options_I = 0)
         {
+            // EWTICategoryIndex.WTI_DEFSYSCTX = System context
+            // EWTICategoryIndex.WTI_DEFCONTEXT = Digitizer context
+
+            if ( cat != EWTICategoryIndex.WTI_DEFSYSCTX && cat != EWTICategoryIndex.WTI_DEFCONTEXT)
+            {
+                throw new System.ArgumentOutOfRangeException(nameof(cat));
+            }
+
+            CWintabContext context = GetDefaultContext(cat);
+
+            if ( context == null)
+            {
+                return context;
+            }
+
+            // TODO: Add system-specific context tweaks.
+
             // Send all possible data bits (not including extended data).
             // This is redundant with CWintabContext initialization, which
             // also inits with PK_PKTBITS_ALL.
-            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty
-            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS;
+            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty // CHECKED
+            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; // CHECKED
 
-            CWintabContext context = GetDefaultContext(EWTICategoryIndex.WTI_DEFSYSCTX);
+            // Add caller's options.
+            context.Options |= (uint)options_I; // CHECKED
 
-            if (context != null)
+            if (cat == EWTICategoryIndex.WTI_DEFSYSCTX)
             {
-                // TODO: Add system-specific context tweaks.
-
-                // Add caller's options.
-                context.Options |= (uint)options_I;
-
                 // Make sure we get data packet messages.
-                context.Options |= (uint) ECTXOptionValues.CXO_MESSAGES;
-
-                // Set the context data bits.
-                context.PktData = PACKETDATA;
-                context.PktMode = PACKETMODE;
-                context.MoveMask = PACKETDATA;
-                context.BtnUpMask = context.BtnDnMask;
+                context.Options |= (uint)ECTXOptionValues.CXO_MESSAGES;
             }
+
+            // Set the context data bits.
+            context.PktData = PACKETDATA; // CHECKED
+            context.PktMode = PACKETMODE; // CHECKED
+            context.MoveMask = PACKETDATA; // CHECKED
+            context.BtnUpMask = context.BtnDnMask; // CHECKED
+
+
+            context.Name = cat == EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
 
             return context;
         }

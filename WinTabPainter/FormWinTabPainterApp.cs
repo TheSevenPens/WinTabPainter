@@ -132,14 +132,13 @@ namespace WinTabPainter
 
         private WintabDN.CWintabContext OpenTabletContext()
         {
-            var context = WintabDN.CWintabInfo.GetDefaultSystemContext(WintabDN.ECTXOptionValues.CXO_MESSAGES);
+            var context = WintabDN.CWintabInfo.GetDefaultContext(WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX, WintabDN.ECTXOptionValues.CXO_MESSAGES);
 
             if (context == null)
             {
                 System.Windows.Forms.MessageBox.Show("Failed to get digitizing context");
             }
 
-            context.Name = "Digitizer Context";
             context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
 
             this.tablet_info.Initialize();
