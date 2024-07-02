@@ -87,13 +87,6 @@ namespace WintabDN
         }
 
         /// <summary>
-        /// Returns the default digitizing context, with useful context overrides. 
-        /// </summary>
-        /// <param name="options_I">caller's options; OR'd into context options</param>
-        /// <returns>A valid context object or null on error.</returns>
-
-
-        /// <summary>
         /// Returns the default system context or digitizer , with useful context overrides.
         /// </summary>
         /// <param name="cat">EWTICategoryIndex.WTI_DEFCONTEXT for digitizer context. EWTICategoryIndex.WTI_DEFSYSCTX for system context</param>
