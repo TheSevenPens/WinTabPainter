@@ -27,12 +27,12 @@ namespace MyApp
                     //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
                     foreach (var pkt in pkts)
                     {
-                        var button_info = new WinTabUtils.PenButtonInfo(pkt.pkButtons);
+                        var button_info = new WinTabUtils.PenButtonPressChange(pkt.pkButtons);
 
-                        if (button_info.PressChange != 0)
+                        if (button_info.Change != 0)
                         {
 
-                            Console.WriteLine("XY={0},{1}, SP={2}, NP={3}, Z={4} , B={5}, B2={6}", pkt.pkX, pkt.pkY, pkt.SPACING, pkt.pkNormalPressure, pkt.pkZ, button_info, button_info.PressChange);
+                            Console.WriteLine("XY={0},{1}, SP={2}, NP={3}, Z={4} , B={5}, B2={6}", pkt.pkX, pkt.pkY, pkt.SPACING, pkt.pkNormalPressure, pkt.pkZ, button_info, button_info.Change);
                         }
                         //Console.WriteLine("({0},{1} | {2}", pkt.pkX, pkt.pkY, pkt.pkButtons);
                     }
