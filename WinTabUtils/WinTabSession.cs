@@ -45,7 +45,7 @@ public class WinTabSession
         this.Data = new WintabDN.CWintabData(this.Context);
 
 
-        TabletInfo.Initialize();
+        this.TabletInfo.Initialize();
 
     }
 
