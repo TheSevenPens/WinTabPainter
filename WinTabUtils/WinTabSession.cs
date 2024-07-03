@@ -7,6 +7,7 @@ public class WinTabSession
     public WintabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
+    public System.Action<WintabDN.WintabPacket> PacketHandler = null;
     public WinTabSession()
     {
         this.TabletInfo = new TabletInfo();
@@ -47,6 +48,35 @@ public class WinTabSession
 
         this.TabletInfo.Initialize();
 
+        // HANDLER
+        if (this.PacketHandler != null)
+        {
+            this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
+        }
+
+
+
+    }
+
+    private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
+    {
+        if (this.Data == null)
+        {
+            // this situation can occur when the pen itself was used to close the windows form
+            // do nothing in this case
+            return;
+        }
+
+        uint pktId = (uint)args.Message.WParam;
+        var wintab_pkt = this.Data.GetDataPacket((uint)args.Message.LParam, pktId);
+
+        if (wintab_pkt.pkContext == this.Context.HCtx)
+        {
+            if (this.PacketHandler != null)
+            {
+                this.PacketHandler(wintab_pkt);
+            }
+        }
     }
 
     public void Close()

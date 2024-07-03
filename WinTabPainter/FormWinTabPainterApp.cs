@@ -60,8 +60,8 @@ namespace WinTabPainter
             this.EraseCanvas();
 
             this.tabsession = new WinTabUtils.WinTabSession();
+            this.tabsession.PacketHandler = this.PacketHandler;
             this.tabsession.Open(WinTabUtils.TabletContextType.System);
-            this.tabsession.Data.SetWTPacketEventHandler(WinTabPacketHandler);
 
             Reposition_app();
 
@@ -128,28 +128,13 @@ namespace WinTabPainter
 
         }
 
-
-        private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
+        private void PacketHandler(WintabDN.WintabPacket wintab_pkt)
         {
-            if (this.tabsession.Data == null)
-            {
-                // this case can happen when you use the pen to close the window
-                // by clicking x in the upper right of the window
-                return;
-            }
-
-            uint pktId = (uint)args.Message.WParam;
-            var wintab_pkt = this.tabsession.Data.GetDataPacket((uint)args.Message.LParam, pktId);          
-
-            if (wintab_pkt.pkContext == this.tabsession.Context.HCtx)
-            {
-                // collect all the information we need to start painting
-                var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, this.paintsettings, Screen_loc_to_canvas_loc);
-                HandlePainting(paint_data);
-                this.old_paintdata = paint_data;
-            }
+            // collect all the information we need to start painting
+            var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, this.paintsettings, Screen_loc_to_canvas_loc);
+            HandlePainting(paint_data);
+            this.old_paintdata = paint_data;
         }
-
 
         private void HandlePainting( PaintData paint_data)
         {

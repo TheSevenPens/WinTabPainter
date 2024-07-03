@@ -13,8 +13,8 @@ namespace MyApp
         {
             ConsoleWindow.QuickEditMode(false);
             session = new WinTabUtils.WinTabSession();
+            session.PacketHandler = PacketHandler;
             session.Open(WinTabUtils.TabletContextType.System);
-            session.Data.SetWTPacketEventHandler(WinTabPacketHandler);
 
             while (true)
             {
@@ -54,6 +54,11 @@ namespace MyApp
                 Console.WriteLine("Packet");
                 // collect all the information we need to start painting
             }
+        }
+
+        private static void PacketHandler( WintabDN.WintabPacket pkt)
+        {
+            Console.WriteLine("Packet");
         }
 
     }
