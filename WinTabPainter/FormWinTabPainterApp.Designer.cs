@@ -60,6 +60,8 @@
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
+            scaledSlider1 = new ScaledSlider();
+            scaledSlider2 = new ScaledSlider();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -348,11 +350,27 @@
             trackBar_PressureSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
             trackBar_PressureSmoothing.Scroll += trackBar_PressureSmoothing_Scroll;
             // 
+            // scaledSlider1
+            // 
+            scaledSlider1.Location = new System.Drawing.Point(24, 1110);
+            scaledSlider1.Name = "scaledSlider1";
+            scaledSlider1.Size = new System.Drawing.Size(487, 83);
+            scaledSlider1.TabIndex = 47;
+            // 
+            // scaledSlider2
+            // 
+            scaledSlider2.Location = new System.Drawing.Point(0, 0);
+            scaledSlider2.Name = "scaledSlider2";
+            scaledSlider2.Size = new System.Drawing.Size(1752, 198);
+            scaledSlider2.TabIndex = 48;
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(scaledSlider2);
+            Controls.Add(scaledSlider1);
             Controls.Add(label4);
             Controls.Add(trackBar_PressureSmoothing);
             Controls.Add(label_CanvasPos);
@@ -424,6 +442,8 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pressureCurveToolStripMenuItem;
+        private ScaledSlider scaledSlider1;
+        private ScaledSlider scaledSlider2;
     }
 }
 
