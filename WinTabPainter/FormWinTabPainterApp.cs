@@ -131,7 +131,7 @@ namespace WinTabPainter
         private void PacketHandler(WintabDN.WintabPacket wintab_pkt)
         {
             // collect all the information we need to start painting
-            var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, this.paintsettings, Screen_loc_to_canvas_loc);
+            var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession, this.paintsettings, Screen_loc_to_canvas_loc);
             HandlePainting(paint_data);
             this.old_paintdata = paint_data;
         }

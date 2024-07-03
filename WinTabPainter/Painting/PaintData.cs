@@ -48,7 +48,7 @@ public struct PaintData
     }
 
 
-    public PaintData(WintabDN.WintabPacket pkt, WinTabUtils.TabletInfo tablet, PaintSettings paintsettings, System.Func<Geometry.Point,Geometry.Point> to_canv)
+    public PaintData(WintabDN.WintabPacket pkt, WinTabUtils.TabletSession session, PaintSettings paintsettings, System.Func<Geometry.Point,Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;
@@ -71,7 +71,7 @@ public struct PaintData
 
         // PRESSURE
         this.PressureRaw = pkt.pkNormalPressure;
-        this.PressureNormalized = this.PressureRaw / (double) tablet.MaxPressure;
+        this.PressureNormalized = this.PressureRaw / (double) session.TabletInfo.MaxPressure;
 
         this.PressureSmoothed = paintsettings.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
         this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
