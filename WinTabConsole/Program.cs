@@ -8,11 +8,11 @@ namespace MyApp
 
     internal class Program
     {
-        static WinTabUtils.WinTabSession session;
+        static WinTabUtils.TabletSession session;
         static void Main(string[] args)
         {
             ConsoleWindow.QuickEditMode(false);
-            session = new WinTabUtils.WinTabSession();
+            session = new WinTabUtils.TabletSession();
             session.PacketHandler = PacketHandler;
             session.Open(WinTabUtils.TabletContextType.System);
 

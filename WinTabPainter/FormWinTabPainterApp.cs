@@ -17,7 +17,7 @@ namespace WinTabPainter
     public partial class FormWinTabPainterApp : Form
     {
 
-        private WinTabUtils.WinTabSession tabsession;
+        private WinTabUtils.TabletSession tabsession;
         public Painting.PaintSettings paintsettings = new Painting.PaintSettings();
         Painting.PaintData old_paintdata;
 
@@ -59,7 +59,7 @@ namespace WinTabPainter
             this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
             this.EraseCanvas();
 
-            this.tabsession = new WinTabUtils.WinTabSession();
+            this.tabsession = new WinTabUtils.TabletSession();
             this.tabsession.PacketHandler = this.PacketHandler;
             this.tabsession.Open(WinTabUtils.TabletContextType.System);
 

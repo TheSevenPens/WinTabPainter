@@ -1,6 +1,6 @@
 ﻿namespace WinTabUtils;
 
-public class WinTabSession
+public class TabletSession
 {
 
     public WintabDN.CWintabContext Context = null;
@@ -8,7 +8,7 @@ public class WinTabSession
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WintabDN.WintabPacket> PacketHandler = null;
-    public WinTabSession()
+    public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
     }
