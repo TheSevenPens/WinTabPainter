@@ -51,9 +51,13 @@ public static class ConsoleWindow
 
         NativeFunctions.GetConsoleMode(consoleHandle, out consoleMode);
         if (Enable)
+        {
             consoleMode |= ((uint)NativeFunctions.ConsoleMode.ENABLE_QUICK_EDIT_MODE);
+        }
         else
+        {
             consoleMode &= ~((uint)NativeFunctions.ConsoleMode.ENABLE_QUICK_EDIT_MODE);
+        }
 
         consoleMode |= ((uint)NativeFunctions.ConsoleMode.ENABLE_EXTENDED_FLAGS);
 

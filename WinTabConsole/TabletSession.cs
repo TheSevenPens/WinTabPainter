@@ -22,7 +22,9 @@
     {
         // WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX - System context
         // WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT - Digitizer context
+        //var context_type = WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT;
         var context_type = WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX;
+
         var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
         var context = WintabDN.CWintabInfo.GetDefaultContext(context_type, options);
 

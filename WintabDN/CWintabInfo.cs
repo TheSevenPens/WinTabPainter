@@ -114,7 +114,7 @@ namespace WintabDN
             }
 
             // Add caller's options.
-            context.Options |= (uint)options_I; // CHECKED
+            context.Options |= (uint)options_I; 
 
             if (cat == EWTICategoryIndex.WTI_DEFSYSCTX)
             {
@@ -125,14 +125,14 @@ namespace WintabDN
             // Send all possible data bits (not including extended data).
             // This is redundant with CWintabContext initialization, which
             // also inits with PK_PKTBITS_ALL.
-            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty // CHECKED
-            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; // CHECKED
+            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty 
+            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; 
 
             // Set the context data bits.
-            context.PktData = PACKETDATA; // CHECKED
-            context.PktMode = PACKETMODE; // CHECKED
-            context.MoveMask = PACKETDATA; // CHECKED
-            context.BtnUpMask = context.BtnDnMask; // CHECKED
+            context.PktData = PACKETDATA; 
+            context.PktMode = PACKETMODE; 
+            context.MoveMask = PACKETDATA; 
+            context.BtnUpMask = context.BtnDnMask; 
 
             // Name the context
             context.Name = cat == EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
