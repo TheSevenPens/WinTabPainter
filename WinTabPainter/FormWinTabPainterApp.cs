@@ -60,7 +60,7 @@ namespace WinTabPainter
             this.EraseCanvas();
 
             this.tabsession = new WinTabUtils.WinTabSession();
-            this.tabsession.Start();
+            this.tabsession.Open(WinTabUtils.TabletContextType.System);
             this.tabsession.Data.SetWTPacketEventHandler(WinTabPacketHandler);
 
             Reposition_app();
@@ -114,7 +114,7 @@ namespace WinTabPainter
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.tabsession.Stop();
+            this.tabsession.Close();
 
             if (this.bitmap_doc != null)
             {

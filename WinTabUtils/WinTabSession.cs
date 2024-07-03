@@ -1,27 +1,37 @@
 ﻿namespace WinTabUtils;
 
+public enum TabletContextType
+{
+    Digitizer,
+    System
+}
+
 public class WinTabSession
 {
 
     public WintabDN.CWintabContext Context = null;
     public WintabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
+    public TabletContextType ContextType;
     public WinTabSession()
     {
         this.TabletInfo = new TabletInfo();
     }
 
-    public void Start()
-    {
-        this.Context = this.OpenTabletContext();
-    }
-
-    private WintabDN.CWintabContext OpenTabletContext()
+    public void Open(TabletContextType ct)
     {
         // WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX - System context
         // WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT - Digitizer context
-        //var context_type = WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT;
-        var context_type = WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX;
+        // var context_type = WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT;
+        // WintabDN.EWTICategoryIndex context_type = WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX;
+
+        WintabDN.EWTICategoryIndex context_type = ct switch
+        {
+            TabletContextType.System => WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX,
+            TabletContextType.Digitizer => WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT,
+            _ => throw new System.ArgumentOutOfRangeException()
+        };
+
 
         var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
         var context = WintabDN.CWintabInfo.GetDefaultContext(context_type, options);
@@ -44,28 +54,21 @@ public class WinTabSession
         var status = context.Open();
         this.Data = new WintabDN.CWintabData(context);
 
-        return context;
+        this.Context= context;
     }
 
-
-
-    public void Stop()
+    public void Close()
     {
-        this.CloseTabletContext();
-    }
-    private void CloseTabletContext()
-    {
-        this.Data.ClearWTPacketEventHandler();
-        this.Data = null;
-
-        if (this.Context == null)
+        if (this.Data != null)
         {
-            return;
+            this.Data.ClearWTPacketEventHandler();
+            this.Data = null;
         }
 
-        this.Context.Close();
-        this.Context = null;
+        if (this.Context != null)
+        {
+            this.Context.Close();
+            this.Context = null;
+        }
     }
-
-
 }

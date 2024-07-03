@@ -15,7 +15,7 @@ namespace MyApp
             System.Console.WriteLine("START WINTAB CONSOLE");
             session = new WinTabUtils.WinTabSession();
             System.Console.WriteLine("STARTING");
-            session.Start();
+            session.Open(WinTabUtils.TabletContextType.System);
             session.Data.SetWTPacketEventHandler(WinTabPacketHandler);
 
             while (true)
@@ -41,7 +41,7 @@ namespace MyApp
                 }
 
             }
-            session.Stop();
+            session.Close();
 
         }
 
