@@ -128,10 +128,28 @@ namespace WinTabPainter
 
         }
 
+        string buttonstatetoletter(WinTabUtils.PenButtonState state)
+        {
+            if (state == WinTabUtils.PenButtonState.NotPressed)
+            {
+                return "U";
+            }
+            else
+            {
+                return "D";
+            }
+        }
         private void PacketHandler(WintabDN.WintabPacket wintab_pkt)
         {
+
+
             // collect all the information we need to start painting
             var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession, this.paintsettings, Screen_loc_to_canvas_loc);
+            this.label_ButtonsValue.Text =
+                buttonstatetoletter( this.tabsession.TabletInfo.TipState)+
+                buttonstatetoletter(this.tabsession.TabletInfo.LowerButtonState)+
+                buttonstatetoletter(this.tabsession.TabletInfo.UpperButtonState)
+                ;
             HandlePainting(paint_data);
             this.old_paintdata = paint_data;
         }

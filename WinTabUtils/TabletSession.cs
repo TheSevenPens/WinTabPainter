@@ -74,6 +74,24 @@ public class TabletSession
         uint pktId = (uint)args.Message.WParam;
         var wintab_pkt = this.Data.GetDataPacket((uint)args.Message.LParam, pktId);
 
+        var buttonchange = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+        if (buttonchange.Change!= PenButtonPressChangeType.NoChange)
+        {
+            if (buttonchange.ButtonId == PenButtonIdentifier.LowerButton)
+            {
+                this.TabletInfo.LowerButtonState = buttonchange.Change== PenButtonPressChangeType.Pressed ? PenButtonState.Pressed : PenButtonState.NotPressed;
+            }
+            else if (buttonchange.ButtonId == PenButtonIdentifier.UpperButton)
+            {
+                this.TabletInfo.UpperButtonState = buttonchange.Change == PenButtonPressChangeType.Pressed ? PenButtonState.Pressed : PenButtonState.NotPressed;
+            }
+            else if (buttonchange.ButtonId == PenButtonIdentifier.Tip)
+            {
+                this.TabletInfo.TipState = buttonchange.Change == PenButtonPressChangeType.Pressed ? PenButtonState.Pressed : PenButtonState.NotPressed;
+            }
+
+        }
+
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
             if (this.PacketHandler != null)
