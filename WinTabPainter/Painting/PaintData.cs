@@ -42,6 +42,9 @@ public struct PaintData
     // BRUSH
     public readonly int BrushWidthEffective;
 
+    // BUTTONS
+    public readonly WinTabUtils.PenButtonPressChange ButtonPressChange;
+
     public PaintData()
     {
         this.Status = PaintDataStatus.INVALID;
@@ -89,5 +92,8 @@ public struct PaintData
         {
             this.BrushWidthEffective = 0;
         }
+
+        // BUTTONS
+        this.ButtonPressChange = new WinTabUtils.PenButtonPressChange(pkt.pkButtons);
     }
 }
