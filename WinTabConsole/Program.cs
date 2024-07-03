@@ -27,7 +27,7 @@ namespace MyApp
                     //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
                     foreach (var pkt in pkts)
                     {
-                        var button_info = new WinTabUtils.ButtonInfo(pkt.pkButtons);
+                        var button_info = new WinTabUtils.PenButtonInfo(pkt.pkButtons);
 
                         if (button_info.PressStatus != 0)
                         {

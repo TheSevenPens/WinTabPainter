@@ -1,13 +1,13 @@
 ﻿namespace WinTabUtils;
 
-public struct ButtonInfo
+public struct PenButtonInfo
 {
     public readonly UInt32 PacketButtons;
     public readonly UInt16 Id;
-    public readonly ButtonPressStatus PressStatus;
-    public readonly ButtonType Type;
+    public readonly PenButtonStatus PressStatus;
+    public readonly PenButtonType Type;
 
-    public ButtonInfo(UInt32 pkt_button)
+    public PenButtonInfo(UInt32 pkt_button)
     {
         this.PacketButtons = pkt_button;
         this.Id = (UInt16)((pkt_button & 0x0000FFFF) >> 0);
@@ -15,15 +15,15 @@ public struct ButtonInfo
 
         if (press_status == 0)
         {
-            this.PressStatus = ButtonPressStatus.NoPress;
+            this.PressStatus = PenButtonStatus.NoChange;
         }
         else if (press_status == 1)
         {
-            this.PressStatus = ButtonPressStatus.Up;
+            this.PressStatus = PenButtonStatus.Released;
         }
         else if (press_status == 2)
         {
-            this.PressStatus = ButtonPressStatus.Down;
+            this.PressStatus = PenButtonStatus.Pressed;
         }
         else
         {
@@ -32,15 +32,15 @@ public struct ButtonInfo
 
         if (this.Id == 0)
         {
-            this.Type = ButtonType.Tip;
+            this.Type = PenButtonType.Tip;
         }
         else if (this.Id == 1)
         {
-            this.Type = ButtonType.LowerButton;
+            this.Type = PenButtonType.LowerButton;
         }
         else if (this.Id == 2)
         {
-            this.Type = ButtonType.UpperButton;
+            this.Type = PenButtonType.UpperButton;
         }
         else
         {

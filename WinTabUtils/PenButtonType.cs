@@ -1,6 +1,6 @@
 ﻿namespace WinTabUtils;
 
-public enum ButtonType
+public enum PenButtonType
 {
     Tip,
     LowerButton,
