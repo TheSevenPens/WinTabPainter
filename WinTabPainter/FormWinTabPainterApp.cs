@@ -114,7 +114,7 @@ namespace WinTabPainter
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.CloseTabletContext();
+            this.tabsession.Stop();
 
             if (this.bitmap_doc != null)
             {
@@ -201,20 +201,6 @@ namespace WinTabPainter
             this.label_PressureValue.Text =
                 string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));
             this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
-        }
-
-        private void CloseTabletContext()
-        {
-            this.tabsession.Data.ClearWTPacketEventHandler();
-            this.tabsession.Data = null;
-
-            if (this.tabsession.Context == null)
-            {
-                return;
-            }
-
-            this.tabsession.Context.Close();
-            this.tabsession.Context = null;
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
