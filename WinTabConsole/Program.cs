@@ -8,17 +8,20 @@ namespace MyApp
 
     internal class Program
     {
+        static WinTabUtils.WinTabSession session;
         static void Main(string[] args)
         {
             ConsoleWindow.QuickEditMode(false);
             System.Console.WriteLine("START WINTAB CONSOLE");
-            var session = new WinTabUtils.TabletSession();
+            session = new WinTabUtils.WinTabSession();
             System.Console.WriteLine("STARTING");
             session.Start();
+            session.Data.SetWTPacketEventHandler(WinTabPacketHandler);
+
             while (true)
             {
                 uint num_pkts_received = 0;
-                var pkts = session.wintab_data.GetDataPackets(50, true, ref num_pkts_received);
+                var pkts = session.Data.GetDataPackets(50, true, ref num_pkts_received);
                 if (num_pkts_received != 0)
                 {
                     //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
@@ -33,7 +36,7 @@ namespace MyApp
                         }
                         //Console.WriteLine("({0},{1} | {2}", pkt.pkX, pkt.pkY, pkt.pkButtons);
                     }
-                    session.wintab_data.FlushDataPackets(50);
+                    session.Data.FlushDataPackets(50);
 
                 }
 
@@ -41,5 +44,19 @@ namespace MyApp
             session.Stop();
 
         }
+
+        private static void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
+        {
+
+            uint pktId = (uint)args.Message.WParam;
+            var wintab_pkt = session.Data.GetDataPacket((uint)args.Message.LParam, pktId);
+
+            if (wintab_pkt.pkContext == session.Context.HCtx)
+            {
+                Console.WriteLine("Packet");
+                // collect all the information we need to start painting
+            }
+        }
+
     }
 }

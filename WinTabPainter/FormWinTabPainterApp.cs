@@ -17,16 +17,13 @@ namespace WinTabPainter
     public partial class FormWinTabPainterApp : Form
     {
 
-        private WintabDN.CWintabContext wintab_context = null;
-        private WintabDN.CWintabData wintab_data = null;
+        private WinTabUtils.WinTabSession tabsession;
+        public Painting.PaintSettings paintsettings = new Painting.PaintSettings();
+        Painting.PaintData old_paintdata;
 
         private Painting.BitmapDocument bitmap_doc;
 
         public string filename = null;
-        TabletInfo tablet_info = new TabletInfo();
-
-        public Painting.PaintSettings paintsettings = new Painting.PaintSettings();
-
         string FileSaveDefaultFilename = "Untitled.png";
         string FileSaveDefaultExt = "png";
         string FileOpenDefaultExt = "png";
@@ -35,7 +32,6 @@ namespace WinTabPainter
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
         Numerics.Range SMOOTHING_TRACKBAR_RANGE = new Numerics.Range(-100, 100);
 
-        Painting.PaintData old_paintdata;
         public FormWinTabPainterApp()
         {
             InitializeComponent();
@@ -63,7 +59,9 @@ namespace WinTabPainter
             this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
             this.EraseCanvas();
 
-            this.wintab_context = OpenTabletContext();
+            this.tabsession = new WinTabUtils.WinTabSession();
+            this.tabsession.Start();
+            this.tabsession.Data.SetWTPacketEventHandler(WinTabPacketHandler);
 
             Reposition_app();
 
@@ -130,40 +128,10 @@ namespace WinTabPainter
 
         }
 
-        private WintabDN.CWintabContext OpenTabletContext()
-        {
-            // WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX - System context
-            // WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT - Digitizer context
-            var context_type = WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX;
-            var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
-            var context = WintabDN.CWintabInfo.GetDefaultContext(context_type, options);
-
-            if (context == null)
-            {
-                System.Windows.Forms.MessageBox.Show("Failed to get digitizing context");
-            }
-
-            context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
-
-            this.tablet_info.Initialize();
-
-            this.label_DeviceValue.Text = this.tablet_info.DeviceName ?? DefaultTabletDeviceName;
-
-            // In Wintab, the tablet origin is lower left.  Move origin to upper left
-            // so that it coincides with screen origin.
-
-            context.OutExtY = -context.OutExtY;
-
-            var status = context.Open();
-            this.wintab_data = new WintabDN.CWintabData(context);
-            this.wintab_data.SetWTPacketEventHandler(WinTabPacketHandler);
-
-            return context;
-        }
 
         private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
         {
-            if (this.wintab_data == null)
+            if (this.tabsession.Data == null)
             {
                 // this case can happen when you use the pen to close the window
                 // by clicking x in the upper right of the window
@@ -171,12 +139,12 @@ namespace WinTabPainter
             }
 
             uint pktId = (uint)args.Message.WParam;
-            var wintab_pkt = this.wintab_data.GetDataPacket((uint)args.Message.LParam, pktId);          
+            var wintab_pkt = this.tabsession.Data.GetDataPacket((uint)args.Message.LParam, pktId);          
 
-            if (wintab_pkt.pkContext == wintab_context.HCtx)
+            if (wintab_pkt.pkContext == this.tabsession.Context.HCtx)
             {
                 // collect all the information we need to start painting
-                var paint_data = new Painting.PaintData(wintab_pkt, tablet_info, this.paintsettings, Screen_loc_to_canvas_loc);
+                var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, this.paintsettings, Screen_loc_to_canvas_loc);
                 HandlePainting(paint_data);
                 this.old_paintdata = paint_data;
             }
@@ -237,16 +205,16 @@ namespace WinTabPainter
 
         private void CloseTabletContext()
         {
-            this.wintab_data.ClearWTPacketEventHandler();
-            this.wintab_data = null;
+            this.tabsession.Data.ClearWTPacketEventHandler();
+            this.tabsession.Data = null;
 
-            if (this.wintab_context == null)
+            if (this.tabsession.Context == null)
             {
                 return;
             }
 
-            this.wintab_context.Close();
-            this.wintab_context = null;
+            this.tabsession.Context.Close();
+            this.tabsession.Context = null;
         }
 
         private void button_Clear_Click(object sender, EventArgs e)

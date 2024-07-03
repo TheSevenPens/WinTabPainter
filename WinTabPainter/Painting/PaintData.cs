@@ -48,7 +48,7 @@ public struct PaintData
     }
 
 
-    public PaintData(WintabDN.WintabPacket pkt, TabletInfo tablet, PaintSettings paintsettings, System.Func<Geometry.Point,Geometry.Point> to_canv)
+    public PaintData(WintabDN.WintabPacket pkt, WinTabUtils.TabletInfo tablet, PaintSettings paintsettings, System.Func<Geometry.Point,Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;
