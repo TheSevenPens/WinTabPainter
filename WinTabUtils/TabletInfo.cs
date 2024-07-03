@@ -1,4 +1,5 @@
-﻿public class TabletInfo
+﻿namespace WinTabUtils;
+public class TabletInfo
 {
     public WintabDN.WintabAxis XAxis;
     public WintabDN.WintabAxis YAxis;

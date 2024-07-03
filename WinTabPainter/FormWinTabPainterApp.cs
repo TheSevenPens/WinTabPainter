@@ -171,44 +171,8 @@ namespace WinTabPainter
             }
 
             uint pktId = (uint)args.Message.WParam;
-            var wintab_pkt = this.wintab_data.GetDataPacket((uint)args.Message.LParam, pktId);
+            var wintab_pkt = this.wintab_data.GetDataPacket((uint)args.Message.LParam, pktId);          
 
-            
-            if (wintab_pkt.pkButtons != 0)
-            {
-                if (wintab_pkt.pkButtons == 1 || wintab_pkt.pkButtons == 2)
-                {
-                    this.label_ButtonsValue.Text = wintab_pkt.pkButtons.ToString();
-                    // 1 = lower
-                    // 2 = higher
-                }
-                else
-                {
-                    throw new Exception("BUTTON " + wintab_pkt.pkButtons.ToString());
-                }
-            }
-            else
-            {
-                this.label_ButtonsValue.Text = "";
-
-            }
-
-            if (wintab_pkt.pkButtons2 != 0) 
-            {
-                if (wintab_pkt.pkButtons2 == 2)
-                {
-                    // down
-                }
-                else if (wintab_pkt.pkButtons2 == 1)
-                {
-                    // up
-                }
-                else
-                {
-                    throw new Exception("BUTTON2 " + wintab_pkt.pkButtons2.ToString());
-                }
-
-            }
             if (wintab_pkt.pkContext == wintab_context.HCtx)
             {
                 // collect all the information we need to start painting
