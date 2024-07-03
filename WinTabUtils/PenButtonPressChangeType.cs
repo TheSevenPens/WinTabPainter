@@ -1,6 +1,6 @@
 ﻿namespace WinTabUtils;
 
-public enum PenButtonStatus
+public enum PenButtonPressChangeType
 {
     NoChange,
     Pressed,
