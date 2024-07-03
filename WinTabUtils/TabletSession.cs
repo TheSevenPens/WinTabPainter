@@ -1,4 +1,6 @@
-﻿namespace WinTabUtils;
+﻿using WintabDN;
+
+namespace WinTabUtils;
 
 public class TabletSession
 {
@@ -16,17 +18,10 @@ public class TabletSession
     public void Open(TabletContextType context_type)
     {
         // convert the context type to something wintab understands
-
-        WintabDN.EWTICategoryIndex wt_context_type = context_type switch
-        {
-            TabletContextType.System => WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX,
-            TabletContextType.Digitizer => WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT,
-            _ => throw new System.ArgumentOutOfRangeException()
-        };
+        var wt_context_type = context_type_to_index(context_type);
 
         // CREATE CONTEXT
         var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
-
         this.Context = WintabDN.CWintabInfo.GetDefaultContext(wt_context_type, options);
 
         if (this.Context == null)
@@ -36,9 +31,8 @@ public class TabletSession
 
         this.Context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
 
-
         // Move origin from lower-left to upper left to it matches screen origin
-        this.Context.OutExtY = -this.Context.OutExtY; 
+        this.Context.OutExtY = -this.Context.OutExtY;
         var status = this.Context.Open();
 
         // CREATE DATA
@@ -56,6 +50,16 @@ public class TabletSession
 
 
 
+    }
+
+    private static EWTICategoryIndex context_type_to_index(TabletContextType context_type)
+    {
+        return context_type switch
+        {
+            TabletContextType.System => WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX,
+            TabletContextType.Digitizer => WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT,
+            _ => throw new System.ArgumentOutOfRangeException()
+        };
     }
 
     private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
