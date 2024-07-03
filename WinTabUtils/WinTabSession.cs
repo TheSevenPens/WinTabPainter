@@ -12,43 +12,41 @@ public class WinTabSession
         this.TabletInfo = new TabletInfo();
     }
 
-    public void Open(TabletContextType ct)
+    public void Open(TabletContextType context_type)
     {
-        // WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX - System context
-        // WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT - Digitizer context
-        // var context_type = WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT;
-        // WintabDN.EWTICategoryIndex context_type = WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX;
+        // convert the context type to something wintab understands
 
-        WintabDN.EWTICategoryIndex context_type = ct switch
+        WintabDN.EWTICategoryIndex wt_context_type = context_type switch
         {
             TabletContextType.System => WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX,
             TabletContextType.Digitizer => WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
 
-
+        // CREATE CONTEXT
         var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
-        var context = WintabDN.CWintabInfo.GetDefaultContext(context_type, options);
 
-        if (context == null)
+        this.Context = WintabDN.CWintabInfo.GetDefaultContext(wt_context_type, options);
+
+        if (this.Context == null)
         {
-            System.Windows.Forms.MessageBox.Show("Failed to get digitizing context");
+            throw new System.ApplicationException("Failed to get digitizing context");
         }
 
-        context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
+        this.Context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
+
+
+        // Move origin from lower-left to upper left to it matches screen origin
+        this.Context.OutExtY = -this.Context.OutExtY; 
+        var status = this.Context.Open();
+
+        // CREATE DATA
+
+        this.Data = new WintabDN.CWintabData(this.Context);
+
 
         TabletInfo.Initialize();
 
-
-        // In Wintab, the tablet origin is lower left.  Move origin to upper left
-        // so that it coincides with screen origin.
-
-        context.OutExtY = -context.OutExtY;
-
-        var status = context.Open();
-        this.Data = new WintabDN.CWintabData(context);
-
-        this.Context= context;
     }
 
     public void Close()
