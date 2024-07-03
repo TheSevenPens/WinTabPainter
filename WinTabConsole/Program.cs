@@ -12,9 +12,7 @@ namespace MyApp
         static void Main(string[] args)
         {
             ConsoleWindow.QuickEditMode(false);
-            System.Console.WriteLine("START WINTAB CONSOLE");
             session = new WinTabUtils.WinTabSession();
-            System.Console.WriteLine("STARTING");
             session.Open(WinTabUtils.TabletContextType.System);
             session.Data.SetWTPacketEventHandler(WinTabPacketHandler);
 
