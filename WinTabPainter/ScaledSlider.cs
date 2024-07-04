@@ -12,11 +12,83 @@ namespace WinTabPainter
 {
     public partial class ScaledSlider : UserControl
     {
+        [
+        Category("Slider"),
+        Description("RawMin")
+        ]
+        public int RawMin
+        {
+            get => this.trackBar_Raw.Minimum;
+            set
+            {
+                this.trackBar_Raw.Minimum = value;
+                this.raw_range = new Numerics.Range(this.RawMin, this.RawMax);
+            }
+        }
+
+        [
+        Category("Slider"),
+        Description("RawMax")
+        ]
+        public int RawMax
+        {
+            get => this.trackBar_Raw.Maximum;
+            set
+            {
+                this.trackBar_Raw.Maximum = this.raw_range.Clamp(value);
+                this.raw_range = new Numerics.Range(this.RawMin, this.RawMax);
+
+            }
+        }
+
+        [
+        Category("Slider"),
+        Description("RawValue")
+        ]
+        public int RawValue
+        {
+            get => this.trackBar_Raw.Value;
+            set
+            {
+                this.trackBar_Raw.Value = this.raw_range.Clamp(value);
+            }
+        }
+
+        Numerics.Range raw_range;
+        System.Func<int, string> raw_val_to_scaled_string;
+        System.Func<string, int?> scaled_string_to_raw_value;
+
         public ScaledSlider()
         {
             InitializeComponent();
+            this.raw_range = new Numerics.Range(this.RawMin, this.RawMax);
+            this.raw_val_to_scaled_string = this.RawToScaledString;
+            this.scaled_string_to_raw_value = this.ScaledStringToRaw;
             this.UpdateNumberFromSlider();
         }
+
+        public string RawToScaledString(int raw)
+        {
+            double v = raw / (double)100;
+            return v.ToString();
+        }
+
+        public int? ScaledStringToRaw(string s)
+        {
+            double res;
+            bool suc = double.TryParse(s, out res);
+            if (suc)
+            {
+                double r = res * 100;
+                return (int)r;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
 
         private void textBox_Value_TextChanged(object sender, EventArgs e)
         {
@@ -30,7 +102,11 @@ namespace WinTabPainter
 
         private void UpdateNumberFromSlider()
         {
-            this.textBox_Value.Text = this.trackBar_Raw.Value.ToString();
+            if (this.raw_val_to_scaled_string != null)
+            {
+                string s = this.raw_val_to_scaled_string(this.RawValue);
+                this.textBoxScaleValue.Text = s;
+            }
         }
 
         private void textBox_Value_KeyDown(object sender, KeyEventArgs e)
@@ -43,20 +119,29 @@ namespace WinTabPainter
 
         private void textbox_to_trackbar()
         {
-            int value = 0;
-            bool suc = int.TryParse(this.textBox_Value.Text, out value);
-            if (suc)
+            if (this.scaled_string_to_raw_value != null)
             {
-                var r = new Numerics.Range(this.trackBar_Raw.Minimum, this.trackBar_Raw.Maximum);
-                var clamped_value = r.Clamp(value);
-                this.trackBar_Raw.Value = r.Clamp(clamped_value);
-                this.textBox_Value.Text = clamped_value.ToString();
+                int? v = this.scaled_string_to_raw_value(this.textBoxScaleValue.Text);
+                if (v.HasValue)
+                {
+                    int v2 = this.raw_range.Clamp(v.Value);
+                    this.RawValue = v2;
+                    this.UpdateNumberFromSlider();
+                }
+                else
+                {
+                    // do nothing
+                }
+
             }
-            else
+
+        }
+
+        private void textBoxScaleValue_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
             {
-                this.textBox_Value.Text = this.trackBar_Raw.Value.ToString();
-                // coudl not parse value
-                // do nothing
+                textbox_to_trackbar();
             }
         }
     }
