@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 using WinTabPainter.Painting;
 using WinTabPainter.Geometry;
+using System.Drawing;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -16,6 +17,7 @@ namespace WinTabPainter
 {
     public partial class FormWinTabPainterApp : Form
     {
+
 
         private WinTabUtils.TabletSession tabsession;
         public Painting.PaintSettings paintsettings = new Painting.PaintSettings();
@@ -335,14 +337,22 @@ namespace WinTabPainter
 
         public void set_position_smoothing(double value)
         {
-            this.paintsettings.PositionSmoothingAmount = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
-            this.paintsettings.PositionSmoother.SmoothingAmount = this.paintsettings.PositionSmoothingAmount;
+            value = this.adjust_smoothing_value(value);
+            this.paintsettings.PositionSmoother.SmoothingAmount = value;
         }
 
         public void set_pressure_smoothing(double value)
         {
-            this.paintsettings.PressureSmoothingAmount = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
-            this.paintsettings.PressureSmoother.SmoothingAmount = this.paintsettings.PressureSmoothingAmount;
+            value = this.adjust_smoothing_value(value);
+            this.paintsettings.PressureSmoother.SmoothingAmount = value;
+        }
+
+
+        public double adjust_smoothing_value(double value)
+        {
+            // adjust the actual smoothing value 
+            double new_value = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(value);
+            return new_value;
         }
 
         private void showShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
