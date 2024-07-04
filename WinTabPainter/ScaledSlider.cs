@@ -12,6 +12,7 @@ namespace WinTabPainter
 {
     public partial class ScaledSlider : UserControl
     {
+
         [
         Category("Slider"),
         Description("RawMin")
