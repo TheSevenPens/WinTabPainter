@@ -51,6 +51,7 @@ namespace WinTabPainter
             set
             {
                 this.trackBar_Raw.Value = this.raw_range.Clamp(value);
+                this.UpdateNumberFromSlider();
             }
         }
 

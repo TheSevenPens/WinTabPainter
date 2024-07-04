@@ -110,6 +110,7 @@ namespace WinTabPainter
             value = PaintSettings.SMOOTHING_RANGE.Clamp(value);
             this.set_pressure_smoothing(value);
             this.trackBar_PressureSmoothing.Value = this.SMOOTHING_TRACKBAR_RANGE.Clamp((int)(100 * value));
+            this.scaledSlider_PressureSmoothing.RawValue = (int)(100 * value);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -349,6 +350,7 @@ namespace WinTabPainter
         private void trackBar_PressureSmoothing_Scroll(object sender, EventArgs e)
         {
             this.set_pressure_smoothing(this.trackBar_PressureSmoothing.Value / this.trackBar_PressureSmoothing.Maximum);
+            this.scaledSlider_PressureSmoothing.RawValue = this.trackBar_PressureSmoothing.Value;
         }
 
         public void set_position_smoothing(double value)

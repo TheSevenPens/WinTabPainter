@@ -60,7 +60,7 @@
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
-            scaledSlider1 = new ScaledSlider();
+            scaledSlider_PressureSmoothing = new ScaledSlider();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -349,22 +349,22 @@
             trackBar_PressureSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
             trackBar_PressureSmoothing.Scroll += trackBar_PressureSmoothing_Scroll;
             // 
-            // scaledSlider1
+            // scaledSlider_PressureSmoothing
             // 
-            scaledSlider1.Location = new System.Drawing.Point(36, 924);
-            scaledSlider1.Name = "scaledSlider1";
-            scaledSlider1.RawMax = 100;
-            scaledSlider1.RawMin = -100;
-            scaledSlider1.RawValue = 0;
-            scaledSlider1.Size = new System.Drawing.Size(487, 154);
-            scaledSlider1.TabIndex = 47;
+            scaledSlider_PressureSmoothing.Location = new System.Drawing.Point(36, 924);
+            scaledSlider_PressureSmoothing.Name = "scaledSlider_PressureSmoothing";
+            scaledSlider_PressureSmoothing.RawMax = 100;
+            scaledSlider_PressureSmoothing.RawMin = 0;
+            scaledSlider_PressureSmoothing.RawValue = 0;
+            scaledSlider_PressureSmoothing.Size = new System.Drawing.Size(487, 80);
+            scaledSlider_PressureSmoothing.TabIndex = 47;
             // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
-            Controls.Add(scaledSlider1);
+            Controls.Add(scaledSlider_PressureSmoothing);
             Controls.Add(label4);
             Controls.Add(trackBar_PressureSmoothing);
             Controls.Add(label_CanvasPos);
@@ -436,7 +436,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pressureCurveToolStripMenuItem;
-        private ScaledSlider scaledSlider1;
+        private ScaledSlider scaledSlider_PressureSmoothing;
     }
 }
 
