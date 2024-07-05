@@ -134,7 +134,11 @@ namespace WinTabPainter
 
         }
 
-        char [] button_status = new char[3] { 'U', 'U', 'U' };
+        char [] button_status = new char[3] {
+            get_press_change_as_letter(PenButtonPressChangeType.Released),
+            get_press_change_as_letter(PenButtonPressChangeType.Released),
+            get_press_change_as_letter(PenButtonPressChangeType.Released)};
+
         private void PacketHandler(WintabDN.WintabPacket wintab_pkt)
         {
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
