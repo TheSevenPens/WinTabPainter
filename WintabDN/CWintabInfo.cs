@@ -24,8 +24,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
+
+
 namespace WintabDN
 {
+
     /// <summary>
     /// Class to access Wintab interface data.
     /// </summary>
@@ -42,14 +45,7 @@ namespace WintabDN
             IntPtr buf = IntPtr.Zero;
             bool status = false;
 
-            try
-            {
-                status = (CWintabFuncs.WTInfoA(0, 0, buf) > 0);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED IsWintabAvailable: " + ex.ToString());
-            }
+            status = (CWintabFuncs.WTInfoA(0, 0, buf) > 0);
 
             return status;
         }
@@ -63,24 +59,18 @@ namespace WintabDN
             string devInfo = null;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(MAX_STRING_SIZE);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES, 
-                    (uint)EWTIDevicesIndex.DVC_NAME, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_DEVICES, 
+                (uint)EWTIDevicesIndex.DVC_NAME, buf);
 
-                if (size < 1)
-                {
-                    throw new Exception("GetDeviceInfo returned empty string.");
-                }
-
-                // Strip off final null character before marshalling.
-                devInfo = CMemUtils.MarshalUnmanagedString(buf, size-1);
-            }
-            catch (Exception ex)
+            if (size < 1)
             {
-                MessageBox.Show("FAILED GetDeviceInfo: " + ex.ToString());
+                var ne = new System.Exception("GetDeviceInfo returned empty string.");
+                throw ne;
             }
+
+            // Strip off final null character before marshalling.
+            devInfo = CMemUtils.MarshalUnmanagedString(buf, size-1);
 
             CMemUtils.FreeUnmanagedBuf(buf);
             return devInfo;
@@ -150,16 +140,9 @@ namespace WintabDN
             CWintabContext context = new CWintabContext();
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(context.LogContext);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA((uint)contextIndex_I, 0, buf);
+            int size = (int)CWintabFuncs.WTInfoA((uint)contextIndex_I, 0, buf);
 
-                context.LogContext = CMemUtils.MarshalUnmanagedBuf<WintabLogContext>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDefaultContext: " + ex.ToString());
-            }
+            context.LogContext = CMemUtils.MarshalUnmanagedBuf<WintabLogContext>(buf, size);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -175,18 +158,11 @@ namespace WintabDN
             Int32 devIndex = 0;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(devIndex);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEFCONTEXT, 
-                    (uint)EWTIContextIndex.CTX_DEVICE, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_DEFCONTEXT, 
+                (uint)EWTIContextIndex.CTX_DEVICE, buf);
 
-                devIndex = CMemUtils.MarshalUnmanagedBuf<Int32>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDefaultDeviceIndex: " + ex.ToString());
-            }
+            devIndex = CMemUtils.MarshalUnmanagedBuf<Int32>(buf, size);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -204,19 +180,12 @@ namespace WintabDN
             WintabAxis axis = new WintabAxis();
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(axis);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I), 
-                    (uint)dim_I, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I), 
+                (uint)dim_I, buf);
 
-                // If size == 0, then returns a zeroed struct.
-                axis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceAxis: " + ex.ToString());
-            }
+            // If size == 0, then returns a zeroed struct.
+            axis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -233,20 +202,13 @@ namespace WintabDN
             tiltSupported_O = false;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(axisArray);          
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES, 
-                    (uint)EWTIDevicesIndex.DVC_ORIENTATION, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_DEVICES, 
+                (uint)EWTIDevicesIndex.DVC_ORIENTATION, buf);
 
-                 // If size == 0, then returns a zeroed struct.
-                axisArray = CMemUtils.MarshalUnmanagedBuf<WintabAxisArray>(buf, size);
-                tiltSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceOrientation: " + ex.ToString());
-            }
+                // If size == 0, then returns a zeroed struct.
+            axisArray = CMemUtils.MarshalUnmanagedBuf<WintabAxisArray>(buf, size);
+            tiltSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -264,20 +226,13 @@ namespace WintabDN
             rotationSupported_O = false;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(axisArray);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES, 
-                    (uint)EWTIDevicesIndex.DVC_ROTATION, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_DEVICES, 
+                (uint)EWTIDevicesIndex.DVC_ROTATION, buf);
 
-                // If size == 0, then returns a zeroed struct.
-                axisArray = CMemUtils.MarshalUnmanagedBuf<WintabAxisArray>(buf, size);
-                rotationSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceRotation: " + ex.ToString());
-            }
+            // If size == 0, then returns a zeroed struct.
+            axisArray = CMemUtils.MarshalUnmanagedBuf<WintabAxisArray>(buf, size);
+            rotationSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);                
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -293,20 +248,11 @@ namespace WintabDN
             UInt32 numDevices = 0;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(numDevices);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_INTERFACE, 
-                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_INTERFACE, 
+                (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
 
-                numDevices = CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetNumberOfDevices: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
+            numDevices = CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
 
             return numDevices;
         }
@@ -320,18 +266,11 @@ namespace WintabDN
             bool isStylusActive = false;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(isStylusActive);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_INTERFACE,
-                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_INTERFACE,
+                (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
 
-                isStylusActive = CMemUtils.MarshalUnmanagedBuf<bool>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetNumberOfDevices: " + ex.ToString());
-            }
+            isStylusActive = CMemUtils.MarshalUnmanagedBuf<bool>(buf, size);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -349,24 +288,18 @@ namespace WintabDN
             string stylusName = null;
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(MAX_STRING_SIZE);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)index_I,
-                    (uint)EWTICursorsIndex.CSR_NAME, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)index_I,
+                (uint)EWTICursorsIndex.CSR_NAME, buf);
 
-                if (size < 1)
-                {
-                    throw new Exception("GetStylusName returned empty string.");
-                }
-
-                // Strip off final null character before marshalling.
-                stylusName = CMemUtils.MarshalUnmanagedString(buf, size-1);
-            }
-            catch (Exception ex)
+            if (size < 1)
             {
-                MessageBox.Show("FAILED GetDeviceInfo: " + ex.ToString());
+                throw new System.Exception("GetStylusName returned empty string.");
             }
+
+            // Strip off final null character before marshalling.
+            stylusName = CMemUtils.MarshalUnmanagedString(buf, size-1);
+
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -389,18 +322,11 @@ namespace WintabDN
             EWTIDevicesIndex devIdx = (getNormalPressure_I ?
                 EWTIDevicesIndex.DVC_NPRESSURE : EWTIDevicesIndex.DVC_TPRESSURE);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)devIdx, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_DEVICES,
+                (uint)devIdx, buf);
 
-                pressureAxis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetMaxPressure: " + ex.ToString());
-            }
+            pressureAxis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -419,18 +345,11 @@ namespace WintabDN
             WintabAxis axis = new WintabAxis();
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(axis);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)dimension_I, buf);
+            int size = (int)CWintabFuncs.WTInfoA(
+                (uint)EWTICategoryIndex.WTI_DEVICES,
+                (uint)dimension_I, buf);
 
-                axis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetMaxPressure: " + ex.ToString());
-            }
+            axis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
