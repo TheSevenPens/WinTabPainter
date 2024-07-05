@@ -8,6 +8,8 @@ namespace WinTabPainter
 {
     public partial class FormBrushSettings : Form
     {
+
+        public Painting.PaintSettings PaintSettings;
         public FormBrushSettings(double amt)
         {
             InitializeComponent();
@@ -151,10 +153,10 @@ namespace WinTabPainter
         private void button_OK_Click(object sender, System.EventArgs e)
         {
             double v= get_smoothing_from_trackbar(this.trackBar_PositionSmoothing);
-            FormWinTabPainterApp.g_paintsettings.PositionSmoother.SmoothingAmount = v;
+            this.PaintSettings.PositionSmoother.SmoothingAmount = v;
 
             double v2 = get_smoothing_from_trackbar(this.trackBar_PressureSmoothing);
-            FormWinTabPainterApp.g_paintsettings.PositionSmoother.SmoothingAmount = v2;
+            this.PaintSettings.PositionSmoother.SmoothingAmount = v2;
 
             state_position_smoothing_trackbar_value = this.trackBar_PositionSmoothing.Value;
             state_pressure_smoothing_trackbar_value = this.trackBar_PressureSmoothing.Value;

@@ -22,7 +22,7 @@ namespace WinTabPainter
 
 
         private WinTabUtils.TabletSession tabsession;
-        public static Painting.PaintSettings g_paintsettings = new Painting.PaintSettings();
+        public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
         Painting.PaintData old_paintdata;
 
         private Painting.BitmapDocument bitmap_doc;
@@ -72,12 +72,12 @@ namespace WinTabPainter
 
             Reposition_app();
 
-            this.trackBar_BrushSize.Value = g_paintsettings.BrushWidth;
-            this.label_BrushSizeValue.Text = g_paintsettings.BrushWidth.ToString();
+            this.trackBar_BrushSize.Value = paint_settings.BrushWidth;
+            this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
 
             // Default to no smoothing
-            g_paintsettings.PositionSmoother.SmoothingAmount = 0.0;
-            g_paintsettings.PressureSmoother.SmoothingAmount = 0.0;
+            paint_settings.PositionSmoother.SmoothingAmount = 0.0;
+            paint_settings.PressureSmoother.SmoothingAmount = 0.0;
         }
 
         private void Reposition_app()
@@ -134,7 +134,7 @@ namespace WinTabPainter
             Update_UI_Button_status(button_info);
 
             // collect all the information we need to start painting
-            var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, g_paintsettings, Screen_loc_to_canvas_loc);
+            var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, paint_settings, Screen_loc_to_canvas_loc);
 
             HandlePainting(paint_data);
             this.old_paintdata = paint_data;
@@ -215,8 +215,8 @@ namespace WinTabPainter
                     // whenever the pen tip touches the tablet
                     // if we don't do this the previous stroke will
                     // have influence on the new stroke
-                    g_paintsettings.PositionSmoother.Reset();
-                    g_paintsettings.PressureSmoother.Reset();
+                    paint_settings.PositionSmoother.Reset();
+                    paint_settings.PressureSmoother.Reset();
                 }
             }
 
@@ -250,8 +250,8 @@ namespace WinTabPainter
 
         private void trackBar_BrushSize_Scroll(object sender, EventArgs e)
         {
-            g_paintsettings.BrushWidth = this.trackBar_BrushSize.Value;
-            this.label_BrushSizeValue.Text = g_paintsettings.BrushWidth.ToString();
+            paint_settings.BrushWidth = this.trackBar_BrushSize.Value;
+            this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
         }
 
 
@@ -280,10 +280,10 @@ namespace WinTabPainter
 
         void relative_modify_brush_size(int value)
         {
-            var w = g_paintsettings.BrushWidth + value;
-            g_paintsettings.BrushWidth = w;
-            this.label_BrushSizeValue.Text = g_paintsettings.BrushWidth.ToString();
-            this.trackBar_BrushSize.Value = g_paintsettings.BrushWidth;
+            var w = paint_settings.BrushWidth + value;
+            paint_settings.BrushWidth = w;
+            this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
+            this.trackBar_BrushSize.Value = paint_settings.BrushWidth;
         }
         private void MenuFileSave_Click(object sender, EventArgs e)
         {
@@ -396,14 +396,15 @@ namespace WinTabPainter
 
         private void pressureCurveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new FormBrushSettings(g_paintsettings.pressure_curve.BendAmount);
+            var form = new FormBrushSettings(paint_settings.pressure_curve.BendAmount);
+            form.PaintSettings = this.paint_settings;
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {
 
-                g_paintsettings.pressure_curve.BendAmount = form.CurveAmount;
-                g_paintsettings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue;
-                g_paintsettings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue;
+                paint_settings.pressure_curve.BendAmount = form.CurveAmount;
+                paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue;
+                paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue;
 
             }
 
