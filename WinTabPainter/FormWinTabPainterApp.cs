@@ -5,6 +5,8 @@ using static System.Windows.Forms.AxHost;
 using WinTabPainter.Painting;
 using WinTabPainter.Geometry;
 using System.Drawing;
+using WinTabUtils;
+using WintabDN;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -135,46 +137,44 @@ namespace WinTabPainter
         char [] button_status = new char[3] { 'U', 'U', 'U' };
         private void PacketHandler(WintabDN.WintabPacket wintab_pkt)
         {
-
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
 
-            
-            if (button_info.Change != 0)
-            {
-                if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.Tip)
-                {
-                    button_status[0] = button_info.Change switch
-                    {
-                        WinTabUtils.PenButtonPressChangeType.Pressed => 'D',
-                        WinTabUtils.PenButtonPressChangeType.Released=> 'U',
-                    };
-                }
-                else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.LowerButton)
-                {
-                    button_status[1] = button_info.Change switch
-                    {
-                        WinTabUtils.PenButtonPressChangeType.Pressed => 'D',
-                        WinTabUtils.PenButtonPressChangeType.Released => 'U',
-                    };
-                }
-                else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.UpperButton)
-                {
-                    button_status[2] = button_info.Change switch
-                    {
-                        WinTabUtils.PenButtonPressChangeType.Pressed => 'D',
-                        WinTabUtils.PenButtonPressChangeType.Released => 'U',
-                    };
-                }
-
-            }
-
-            this.label_ButtonsValue.Text = new string( this.button_status );
+            Update_UI_Button_status(button_info);
 
             // collect all the information we need to start painting
             var paint_data = new Painting.PaintData(wintab_pkt, this.tabsession.TabletInfo, this.paintsettings, Screen_loc_to_canvas_loc);
 
             HandlePainting(paint_data);
             this.old_paintdata = paint_data;
+        }
+
+        private void Update_UI_Button_status(WinTabUtils.PenButtonPressChange button_info)
+        {
+            if (button_info.Change != 0)
+            {
+                int index = button_info.ButtonId switch
+                {
+                    WinTabUtils.PenButtonIdentifier.Tip => 0,
+                    WinTabUtils.PenButtonIdentifier.LowerButton => 1,
+                    WinTabUtils.PenButtonIdentifier.UpperButton => 2,
+                    _ => throw new System.ArgumentOutOfRangeException()
+                };
+
+                button_status[index] = get_press_change_as_letter(button_info.Change);
+
+            }
+
+            this.label_ButtonsValue.Text = new string(this.button_status);
+        }
+
+        private static char get_press_change_as_letter(PenButtonPressChangeType change)
+        {
+            return change switch
+            {
+                WinTabUtils.PenButtonPressChangeType.Pressed => 'D',
+                WinTabUtils.PenButtonPressChangeType.Released => 'U',
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
         }
 
         private void HandlePainting( PaintData paint_data)
