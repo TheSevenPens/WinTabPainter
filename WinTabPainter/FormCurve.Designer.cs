@@ -34,15 +34,22 @@
             labelAmount = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
-            label3 = new System.Windows.Forms.Label();
             button_OK = new System.Windows.Forms.Button();
+            label_position_smoothingval = new System.Windows.Forms.Label();
+            label_pressure_smoothingval = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
+            label3 = new System.Windows.Forms.Label();
+            trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_PositionSmoothing).BeginInit();
             SuspendLayout();
             // 
             // button_Cancel
             // 
-            button_Cancel.Location = new System.Drawing.Point(440, 874);
+            button_Cancel.Location = new System.Drawing.Point(1432, 873);
             button_Cancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             button_Cancel.Name = "button_Cancel";
             button_Cancel.Size = new System.Drawing.Size(157, 69);
@@ -63,12 +70,13 @@
             // 
             // trackBar_Amount
             // 
+            trackBar_Amount.AutoSize = false;
             trackBar_Amount.Location = new System.Drawing.Point(41, 677);
             trackBar_Amount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             trackBar_Amount.Maximum = 100;
             trackBar_Amount.Minimum = -100;
             trackBar_Amount.Name = "trackBar_Amount";
-            trackBar_Amount.Size = new System.Drawing.Size(531, 114);
+            trackBar_Amount.Size = new System.Drawing.Size(531, 36);
             trackBar_Amount.TabIndex = 2;
             trackBar_Amount.TickStyle = System.Windows.Forms.TickStyle.None;
             trackBar_Amount.Value = 100;
@@ -77,7 +85,7 @@
             // labelAmount
             // 
             labelAmount.AutoSize = true;
-            labelAmount.Location = new System.Drawing.Point(259, 803);
+            labelAmount.Location = new System.Drawing.Point(474, 728);
             labelAmount.Name = "labelAmount";
             labelAmount.Size = new System.Drawing.Size(84, 41);
             labelAmount.TabIndex = 3;
@@ -101,18 +109,9 @@
             label2.TabIndex = 5;
             label2.Text = "Harder";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(50, 803);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(137, 41);
-            label3.TabIndex = 6;
-            label3.Text = "Softness:";
-            // 
             // button_OK
             // 
-            button_OK.Location = new System.Drawing.Point(249, 874);
+            button_OK.Location = new System.Drawing.Point(1241, 873);
             button_OK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             button_OK.Name = "button_OK";
             button_OK.Size = new System.Drawing.Size(157, 69);
@@ -121,13 +120,78 @@
             button_OK.UseVisualStyleBackColor = true;
             button_OK.Click += button_OK_Click;
             // 
+            // label_position_smoothingval
+            // 
+            label_position_smoothingval.AutoSize = true;
+            label_position_smoothingval.Location = new System.Drawing.Point(944, 36);
+            label_position_smoothingval.Name = "label_position_smoothingval";
+            label_position_smoothingval.Size = new System.Drawing.Size(84, 41);
+            label_position_smoothingval.TabIndex = 54;
+            label_position_smoothingval.Text = "NNN";
+            // 
+            // label_pressuresmoothingval
+            // 
+            label_pressure_smoothingval.AutoSize = true;
+            label_pressure_smoothingval.Location = new System.Drawing.Point(944, 208);
+            label_pressure_smoothingval.Name = "label_pressuresmoothingval";
+            label_pressure_smoothingval.Size = new System.Drawing.Size(84, 41);
+            label_pressure_smoothingval.TabIndex = 53;
+            label_pressure_smoothingval.Text = "NNN";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(617, 208);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(285, 41);
+            label4.TabIndex = 52;
+            label4.Text = "Pressure Smoothing";
+            // 
+            // trackBar_PressureSmoothing
+            // 
+            trackBar_PressureSmoothing.AutoSize = false;
+            trackBar_PressureSmoothing.Location = new System.Drawing.Point(606, 275);
+            trackBar_PressureSmoothing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            trackBar_PressureSmoothing.Maximum = 100;
+            trackBar_PressureSmoothing.Name = "trackBar_PressureSmoothing";
+            trackBar_PressureSmoothing.Size = new System.Drawing.Size(450, 60);
+            trackBar_PressureSmoothing.TabIndex = 51;
+            trackBar_PressureSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
+            trackBar_PressureSmoothing.Scroll += trackBar_PressureSmoothing_Scroll;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(617, 36);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(279, 41);
+            label3.TabIndex = 50;
+            label3.Text = "Position Smoothing";
+            // 
+            // trackBar_PositionSmoothing
+            // 
+            trackBar_PositionSmoothing.AutoSize = false;
+            trackBar_PositionSmoothing.Location = new System.Drawing.Point(606, 103);
+            trackBar_PositionSmoothing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            trackBar_PositionSmoothing.Maximum = 100;
+            trackBar_PositionSmoothing.Name = "trackBar_PositionSmoothing";
+            trackBar_PositionSmoothing.Size = new System.Drawing.Size(450, 60);
+            trackBar_PositionSmoothing.TabIndex = 49;
+            trackBar_PositionSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
+            trackBar_PositionSmoothing.Scroll += trackBar_PositionSmoothing_Scroll;
+            // 
             // FormCurve
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(630, 965);
-            Controls.Add(button_OK);
+            ClientSize = new System.Drawing.Size(1601, 965);
+            Controls.Add(label_position_smoothingval);
+            Controls.Add(label_pressure_smoothingval);
+            Controls.Add(label4);
+            Controls.Add(trackBar_PressureSmoothing);
             Controls.Add(label3);
+            Controls.Add(trackBar_PositionSmoothing);
+            Controls.Add(button_OK);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(labelAmount);
@@ -141,6 +205,8 @@
             Load += FormCurve_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_PositionSmoothing).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -152,8 +218,13 @@
         private System.Windows.Forms.Label labelAmount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button_OK;
         protected System.Windows.Forms.PictureBox pictureBox_Curve;
+        private System.Windows.Forms.Label label_position_smoothingval;
+        private System.Windows.Forms.Label label_pressure_smoothingval;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar trackBar_PressureSmoothing;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TrackBar trackBar_PositionSmoothing;
     }
 }

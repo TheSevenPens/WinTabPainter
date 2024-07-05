@@ -54,19 +54,11 @@
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             showShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            label2 = new System.Windows.Forms.Label();
-            trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             label_CanvasPos = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
-            label4 = new System.Windows.Forms.Label();
-            trackBar_PressureSmoothing = new System.Windows.Forms.TrackBar();
-            label_pressuresmoothingval = new System.Windows.Forms.Label();
-            label_position_smoothingval = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar_PositionSmoothing).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).BeginInit();
             SuspendLayout();
             // 
             // label_ScreenPos
@@ -290,27 +282,6 @@
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(24, 791);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(279, 41);
-            label2.TabIndex = 42;
-            label2.Text = "Position Smoothing";
-            // 
-            // trackBar_PositionSmoothing
-            // 
-            trackBar_PositionSmoothing.AutoSize = false;
-            trackBar_PositionSmoothing.Location = new System.Drawing.Point(13, 858);
-            trackBar_PositionSmoothing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            trackBar_PositionSmoothing.Maximum = 100;
-            trackBar_PositionSmoothing.Name = "trackBar_PositionSmoothing";
-            trackBar_PositionSmoothing.Size = new System.Drawing.Size(450, 60);
-            trackBar_PositionSmoothing.TabIndex = 41;
-            trackBar_PositionSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
-            trackBar_PositionSmoothing.Scroll += trackBar_PositionSmoothing_Scroll;
-            // 
             // label_CanvasPos
             // 
             label_CanvasPos.AutoSize = true;
@@ -329,58 +300,13 @@
             label5.TabIndex = 43;
             label5.Text = "CanvasPos";
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(24, 963);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(285, 41);
-            label4.TabIndex = 46;
-            label4.Text = "Pressure Smoothing";
-            // 
-            // trackBar_PressureSmoothing
-            // 
-            trackBar_PressureSmoothing.AutoSize = false;
-            trackBar_PressureSmoothing.Location = new System.Drawing.Point(13, 1030);
-            trackBar_PressureSmoothing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            trackBar_PressureSmoothing.Maximum = 100;
-            trackBar_PressureSmoothing.Name = "trackBar_PressureSmoothing";
-            trackBar_PressureSmoothing.Size = new System.Drawing.Size(450, 60);
-            trackBar_PressureSmoothing.TabIndex = 45;
-            trackBar_PressureSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
-            trackBar_PressureSmoothing.Scroll += trackBar_PressureSmoothing_Scroll;
-            // 
-            // label_pressuresmoothingval
-            // 
-            label_pressuresmoothingval.AutoSize = true;
-            label_pressuresmoothingval.Location = new System.Drawing.Point(351, 963);
-            label_pressuresmoothingval.Name = "label_pressuresmoothingval";
-            label_pressuresmoothingval.Size = new System.Drawing.Size(84, 41);
-            label_pressuresmoothingval.TabIndex = 47;
-            label_pressuresmoothingval.Text = "NNN";
-            // 
-            // label_position_smoothingval
-            // 
-            label_position_smoothingval.AutoSize = true;
-            label_position_smoothingval.Location = new System.Drawing.Point(351, 791);
-            label_position_smoothingval.Name = "label_position_smoothingval";
-            label_position_smoothingval.Size = new System.Drawing.Size(84, 41);
-            label_position_smoothingval.TabIndex = 48;
-            label_position_smoothingval.Text = "NNN";
-            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
-            Controls.Add(label_position_smoothingval);
-            Controls.Add(label_pressuresmoothingval);
-            Controls.Add(label4);
-            Controls.Add(trackBar_PressureSmoothing);
             Controls.Add(label_CanvasPos);
             Controls.Add(label5);
-            Controls.Add(label2);
-            Controls.Add(trackBar_PositionSmoothing);
             Controls.Add(label_BrushSize);
             Controls.Add(label_BrushSizeValue);
             Controls.Add(trackBar_BrushSize);
@@ -407,8 +333,6 @@
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar_PositionSmoothing).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -433,12 +357,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItem_FileSave;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_SaveAs;
         private System.Windows.Forms.ToolStripMenuItem MenuItem_Open;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TrackBar trackBar_PositionSmoothing;
         private System.Windows.Forms.Label label_CanvasPos;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TrackBar trackBar_PressureSmoothing;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showShortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -446,8 +366,6 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pressureCurveToolStripMenuItem;
-        private System.Windows.Forms.Label label_pressuresmoothingval;
-        private System.Windows.Forms.Label label_position_smoothingval;
     }
 }
 

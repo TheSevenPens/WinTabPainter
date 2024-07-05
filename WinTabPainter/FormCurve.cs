@@ -1,5 +1,7 @@
 ﻿using SD = System.Drawing;
 using System.Windows.Forms;
+using WinTabPainter.Painting;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace WinTabPainter
@@ -12,6 +14,7 @@ namespace WinTabPainter
             this.curve = new Numerics.SimpleCurve();
             this.curve.BendAmount = amt;
         }
+        Numerics.SimpleCurve smoothing_adjustment_curve = new Numerics.SimpleCurve(0.9);
 
         Painting.BitmapLayer bitmaplayer;
         SD.Pen curve_pen;
@@ -22,10 +25,15 @@ namespace WinTabPainter
         int padding = 25;
         int num_points = 300;
 
+        static int state_pressure_smoothing_trackbar_value = 0;
+        static int state_position_smoothing_trackbar_value = 0;
+        public double PressureSmoothingValue = 0;
+        public double PositionSmoothingValue = 0;
+
         public double CurveAmount
         {
             get => this.curve.BendAmount;
-        } 
+        }
 
         private void button_Close_Click(object sender, System.EventArgs e)
         {
@@ -34,13 +42,13 @@ namespace WinTabPainter
 
         private void FormCurve_Load(object sender, System.EventArgs e)
         {
-            var s = new Geometry.Size(num_points + 2 * this.padding, num_points+2*this.padding);
+            var s = new Geometry.Size(num_points + 2 * this.padding, num_points + 2 * this.padding);
             this.bitmaplayer = new Painting.BitmapLayer(s);
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
             this.labelAmount.Text = this.curve.BendAmount.ToString();
-            this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue,5);
+            this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue, 5);
             this.frame_pen = new SD.Pen(SD.Color.Gray, 1);
 
             this.render_curve();
@@ -49,6 +57,11 @@ namespace WinTabPainter
             var slider_value = (int)curve_slide_range.Clamp(this.curve.BendAmount * 100.0);
             this.trackBar_Amount.Value = slider_value;
 
+            this.trackBar_PositionSmoothing.Value = state_position_smoothing_trackbar_value;
+            this.trackBar_PressureSmoothing.Value = state_pressure_smoothing_trackbar_value; 
+
+            update_smoothing_ui(this.trackBar_PositionSmoothing, label_position_smoothingval, out this.PositionSmoothingValue);
+            update_smoothing_ui(this.trackBar_PressureSmoothing, label_pressure_smoothingval, out this.PressureSmoothingValue);
 
         }
 
@@ -65,12 +78,12 @@ namespace WinTabPainter
                 double x = i / (double)i_max;
                 double y = curve.ApplyCurve(x);
 
-                double x_coord = x_coord_range.Clamp(x * i_max );
+                double x_coord = x_coord_range.Clamp(x * i_max);
                 double y_coord = i_max - y_coord_range.Clamp(y * i_max);
 
                 var p = new Geometry.PointD(x_coord, y_coord);
                 var p2 = p.Add(this.padding, this.padding);
-                var p3 = new SD.PointF( (float) p2.X, (float) p2.Y );
+                var p3 = new SD.PointF((float)p2.X, (float)p2.Y);
                 this.points[i] = p3;
 
 
@@ -99,16 +112,16 @@ namespace WinTabPainter
                 this.curve_pen = null;
             }
 
-            if (this.frame_pen!= null)
+            if (this.frame_pen != null)
             {
                 this.frame_pen.Dispose();
                 this.frame_pen = null;
             }
 
 
-            if (this.brush!=null)
+            if (this.brush != null)
             {
-                this.brush.Dispose();  
+                this.brush.Dispose();
                 this.brush = null;
             }
         }
@@ -124,7 +137,7 @@ namespace WinTabPainter
             double v = get_bend_amount_from_trackbar();
 
             this.labelAmount.Text = v.ToString();
-            this.curve.BendAmount= v;
+            this.curve.BendAmount = v;
         }
 
         private double get_bend_amount_from_trackbar()
@@ -137,9 +150,54 @@ namespace WinTabPainter
 
         private void button_OK_Click(object sender, System.EventArgs e)
         {
+            double v= get_smoothing_from_trackbar(this.trackBar_PositionSmoothing);
+            FormWinTabPainterApp.g_paintsettings.PositionSmoother.SmoothingAmount = v;
+
+            double v2 = get_smoothing_from_trackbar(this.trackBar_PressureSmoothing);
+            FormWinTabPainterApp.g_paintsettings.PositionSmoother.SmoothingAmount = v2;
+
+            state_position_smoothing_trackbar_value = this.trackBar_PositionSmoothing.Value;
+            state_pressure_smoothing_trackbar_value = this.trackBar_PressureSmoothing.Value;
 
             this.Close();
             this.DialogResult = DialogResult.OK;
         }
+
+
+
+        private void trackBar_PositionSmoothing_Scroll(object sender, System.EventArgs e)
+        {
+            var trackbar = this.trackBar_PositionSmoothing;
+            var label = label_position_smoothingval;
+
+            update_smoothing_ui(trackbar, label, out PositionSmoothingValue);
+
+        }
+
+        private void trackBar_PressureSmoothing_Scroll(object sender, System.EventArgs e)
+        {
+            var trackbar = this.trackBar_PressureSmoothing;
+            var label = label_pressure_smoothingval;
+
+            update_smoothing_ui(trackbar, label, out this.PressureSmoothingValue);
+
+        }
+
+        private void update_smoothing_ui(System.Windows.Forms.TrackBar trackbar, Label label, out double new_value)
+        {
+            new_value = get_smoothing_from_trackbar(trackbar);
+            string display_val = string.Format("{0:0.0###}", new_value);
+            label.Text = display_val;
+        }
+
+        private double get_smoothing_from_trackbar(System.Windows.Forms.TrackBar trackbar)
+        {
+            double normalized_slider_value = ((double)trackbar.Value / (double)trackbar.Maximum);
+            double curved_value = this.smoothing_adjustment_curve.ApplyCurve(normalized_slider_value);
+            double new_value = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(curved_value);
+            return new_value;
+        }
+
+
     }
 }
