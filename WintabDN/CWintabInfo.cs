@@ -36,7 +36,7 @@ namespace WintabDN
     /// </summary>
     public class CWintabInfo
     {
-        private const int MAX_STRING_SIZE = 256;
+        public const int MAX_STRING_SIZE = 256;
 
         /// <summary>
         /// Returns TRUE if Wintab service is running and responsive.
@@ -58,24 +58,15 @@ namespace WintabDN
         /// <returns></returns>
         public static String GetDeviceInfo()
         {
-            string devInfo = null;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(MAX_STRING_SIZE);
-
-            int size = (int)CWintabFuncs.WTInfoA(
-                (uint)EWTICategoryIndex.WTI_DEVICES, 
-                (uint)EWTIDevicesIndex.DVC_NAME, buf);
-
-            if (size < 1)
+            using (var ub = new UnmanagedBufferString())
             {
-                var ne = new System.Exception("GetDeviceInfo returned empty string.");
-                throw ne;
+                int size = (int)CWintabFuncs.WTInfoA(
+                    (uint)EWTICategoryIndex.WTI_DEVICES,
+                    (uint)EWTIDevicesIndex.DVC_NAME, ub.BufferPointer);
+
+                string s = ub.GetValue(size);
+                return s;
             }
-
-            // Strip off final null character before marshalling.
-            devInfo = CMemUtils.MarshalUnmanagedString(buf, size-1);
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-            return devInfo;
         }
 
         /// <summary>
@@ -255,18 +246,15 @@ namespace WintabDN
         /// <returns></returns>
         public static bool IsStylusActive()
         {
-            bool isStylusActive = false;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(isStylusActive);
+            using (var ub = new UnmanagedBuffer<bool>())
+            {
+                int size = (int)CWintabFuncs.WTInfoA(
+                    (uint)EWTICategoryIndex.WTI_INTERFACE,
+                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, ub.BufferPointer);
 
-            int size = (int)CWintabFuncs.WTInfoA(
-                (uint)EWTICategoryIndex.WTI_INTERFACE,
-                (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
-
-            isStylusActive = CMemUtils.MarshalUnmanagedBuf<bool>(buf, size);
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return isStylusActive;
+                bool isStylusActive = ub.GetValue(size);
+                return isStylusActive;
+            }
         }
 
 
@@ -277,25 +265,15 @@ namespace WintabDN
         /// <returns></returns>
         public static string GetStylusName(EWTICursorNameIndex index_I)
         {
-            string stylusName = null;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(MAX_STRING_SIZE);
-
-            int size = (int)CWintabFuncs.WTInfoA(
-                (uint)index_I,
-                (uint)EWTICursorsIndex.CSR_NAME, buf);
-
-            if (size < 1)
+            using (var ub = new UnmanagedBufferString())
             {
-                throw new System.Exception("GetStylusName returned empty string.");
+                int size = (int)CWintabFuncs.WTInfoA(
+                    (uint)index_I,
+                    (uint)EWTICursorsIndex.CSR_NAME, ub.BufferPointer);
+
+                string s = ub.GetValue(size);
+                return s;
             }
-
-            // Strip off final null character before marshalling.
-            stylusName = CMemUtils.MarshalUnmanagedString(buf, size-1);
-
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return stylusName;
         }
 
 

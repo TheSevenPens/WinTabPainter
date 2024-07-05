@@ -19,28 +19,21 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Security.Cryptography.Xml;
 
 
 
 namespace WintabDN
 {
-    public class UnmanagedBuffer<T> : IDisposable where T : new()
+    public class BaseUnmanagedBuffer : IDisposable 
     {
         public IntPtr BufferPointer;
-        private T _value;
         private bool _disposed;
 
-        public UnmanagedBuffer()
+        public BaseUnmanagedBuffer()
         {
-            this._value = new T();
-            this.BufferPointer = CMemUtils.AllocUnmanagedBuf(this._value);
+            this.BufferPointer = 0;
             this._disposed = false;
-        }
-
-        public T GetValue(int size)
-        {
-            this._value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
-            return this._value;
         }
 
         public void Dispose()
@@ -50,4 +43,35 @@ namespace WintabDN
         }
     }
 
+    public class UnmanagedBuffer<T> : BaseUnmanagedBuffer where T : new()
+    {
+        private T _value;
+
+        public UnmanagedBuffer() : base()
+        {
+            this._value = new T();
+            this.BufferPointer = CMemUtils.AllocUnmanagedBuf(this._value);
+        }
+
+        public T GetValue(int size)
+        {
+            this._value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
+            return this._value;
+        }
+    }
+
+    public class UnmanagedBufferString: BaseUnmanagedBuffer 
+    {
+        public UnmanagedBufferString() : base()
+        {
+            this.BufferPointer = CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+        }
+
+        public string GetValue(int size)
+        {
+            // Strip off final null character before marshalling.
+            var s = CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
+            return s;
+        }
+    }
 }
