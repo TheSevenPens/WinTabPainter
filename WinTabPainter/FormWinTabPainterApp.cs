@@ -405,6 +405,7 @@ namespace WinTabPainter
                 paint_settings.pressure_curve.BendAmount = form.CurveAmount;
                 paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue;
                 paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue;
+                paint_settings.PressureQuantizeLevels = form.PressureQuant;
 
             }
 

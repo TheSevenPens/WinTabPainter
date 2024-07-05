@@ -146,12 +146,12 @@
             // trackBar_BrushSize
             // 
             trackBar_BrushSize.AutoSize = false;
-            trackBar_BrushSize.Location = new System.Drawing.Point(699, 110);
+            trackBar_BrushSize.Location = new System.Drawing.Point(699, 123);
             trackBar_BrushSize.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             trackBar_BrushSize.Maximum = 100;
             trackBar_BrushSize.Minimum = 1;
             trackBar_BrushSize.Name = "trackBar_BrushSize";
-            trackBar_BrushSize.Size = new System.Drawing.Size(450, 60);
+            trackBar_BrushSize.Size = new System.Drawing.Size(450, 36);
             trackBar_BrushSize.TabIndex = 32;
             trackBar_BrushSize.TickStyle = System.Windows.Forms.TickStyle.None;
             trackBar_BrushSize.Value = 1;
@@ -160,7 +160,7 @@
             // label_BrushSizeValue
             // 
             label_BrushSizeValue.AutoSize = true;
-            label_BrushSizeValue.Location = new System.Drawing.Point(1173, 110);
+            label_BrushSizeValue.Location = new System.Drawing.Point(1173, 121);
             label_BrushSizeValue.Name = "label_BrushSizeValue";
             label_BrushSizeValue.Size = new System.Drawing.Size(54, 41);
             label_BrushSizeValue.TabIndex = 33;
@@ -169,7 +169,7 @@
             // label_BrushSize
             // 
             label_BrushSize.AutoSize = true;
-            label_BrushSize.Location = new System.Drawing.Point(538, 110);
+            label_BrushSize.Location = new System.Drawing.Point(538, 121);
             label_BrushSize.Name = "label_BrushSize";
             label_BrushSize.Size = new System.Drawing.Size(150, 41);
             label_BrushSize.TabIndex = 34;
@@ -182,7 +182,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            menuStrip1.Size = new System.Drawing.Size(1898, 51);
+            menuStrip1.Size = new System.Drawing.Size(1898, 54);
             menuStrip1.TabIndex = 40;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -190,7 +190,7 @@
             // 
             MenuItem_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuItem_Open, MenuItem_FileSave, MenuItem_SaveAs });
             MenuItem_File.Name = "MenuItem_File";
-            MenuItem_File.Size = new System.Drawing.Size(87, 45);
+            MenuItem_File.Size = new System.Drawing.Size(87, 48);
             MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -218,7 +218,7 @@
             // 
             imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { clearToolStripMenuItem });
             imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 45);
+            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
             imageToolStripMenuItem.Text = "Image";
             // 
             // clearToolStripMenuItem
@@ -232,13 +232,13 @@
             // 
             settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { pressureCurveToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 45);
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 48);
             settingsToolStripMenuItem.Text = "Settings";
             // 
             // pressureCurveToolStripMenuItem
             // 
             pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(370, 54);
+            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
             pressureCurveToolStripMenuItem.Text = "Brush settings";
             pressureCurveToolStripMenuItem.Click += pressureCurveToolStripMenuItem_Click;
             // 
@@ -246,7 +246,7 @@
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { showShortcutsToolStripMenuItem, aboutToolStripMenuItem, aboutTabletToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 45);
+            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 48);
             helpToolStripMenuItem.Text = "Help";
             // 
             // showShortcutsToolStripMenuItem

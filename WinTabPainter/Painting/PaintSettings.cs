@@ -8,7 +8,7 @@ public class PaintSettings
 
     // pressure settings
     public Numerics.SimpleCurve pressure_curve = new Numerics.SimpleCurve();
-
+    public int PressureQuantizeLevels = -1;
     // smoothing settings
     public readonly Numerics.EMAPositionSmoother PositionSmoother;
     public readonly Numerics.EMASmoother PressureSmoother;

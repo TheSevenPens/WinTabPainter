@@ -39,6 +39,8 @@ public struct PaintData
     public readonly double PressureCurved;
     public readonly double PressureEffective;
 
+
+
     // BRUSH
     public readonly double BrushWidthEffective;
 
@@ -73,6 +75,11 @@ public struct PaintData
         this.PressureRaw = pkt.pkNormalPressure;
         this.PressureNormalized = this.PressureRaw / (double) tablet.MaxPressure;
 
+        if (paintsettings.PressureQuantizeLevels > 2)
+        {
+            this.PressureNormalized = HelperMethods.Quantize(this.PressureNormalized, paintsettings.PressureQuantizeLevels);
+        }
+        
         this.PressureSmoothed = paintsettings.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
         this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
         this.PressureEffective = this.PressureCurved;

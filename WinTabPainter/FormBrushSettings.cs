@@ -2,10 +2,13 @@
 using System.Windows.Forms;
 using WinTabPainter.Painting;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Threading;
+using System.Linq;
 
 
 namespace WinTabPainter
 {
+
     public partial class FormBrushSettings : Form
     {
 
@@ -15,6 +18,11 @@ namespace WinTabPainter
             InitializeComponent();
             this.curve = new Numerics.SimpleCurve();
             this.curve.BendAmount = amt;
+
+
+
+
+  
         }
         Numerics.SimpleCurve smoothing_adjustment_curve = new Numerics.SimpleCurve(0.9);
 
@@ -60,11 +68,37 @@ namespace WinTabPainter
             this.trackBar_Amount.Value = slider_value;
 
             this.trackBar_PositionSmoothing.Value = state_position_smoothing_trackbar_value;
-            this.trackBar_PressureSmoothing.Value = state_pressure_smoothing_trackbar_value; 
+            this.trackBar_PressureSmoothing.Value = state_pressure_smoothing_trackbar_value;
 
             update_smoothing_ui(this.trackBar_PositionSmoothing, label_position_smoothingval, out this.PositionSmoothingValue);
             update_smoothing_ui(this.trackBar_PressureSmoothing, label_pressure_smoothingval, out this.PressureSmoothingValue);
 
+
+            var l = new System.Collections.Generic.List<QuantItem>();
+
+            l.Add(new QuantItem("No Quantization", -1));
+            l.Add(new QuantItem("4 levels", 4));
+            l.Add(new QuantItem("8 levels", 8));
+            l.Add(new QuantItem("16 levels", 16));
+            l.Add(new QuantItem("32 levels", 32));
+            l.Add(new QuantItem("64 levels", 64));
+            l.Add(new QuantItem("128 levels", 128));
+            l.Add(new QuantItem("256 levels", 256));
+            l.Add(new QuantItem("512 levels", 512));
+            l.Add(new QuantItem("1024 levels", 1024));
+            l.Add(new QuantItem("2048 levels", 2048));
+            this.comboBox_PressureQuant.DataSource = l;
+            this.comboBox_PressureQuant.DisplayMember = "Key";
+            this.comboBox_PressureQuant.ValueMember = "Value";
+            //this.comboBox_PressureQuant.DataBindings.Add("SelectedItem", l, "Key");
+
+            foreach (var (qitem, index) in l.Select((i, q) => (i, q)))
+            {
+                if (qitem.Value == PaintSettings.PressureQuantizeLevels)
+                {
+                    this.comboBox_PressureQuant.SelectedIndex = index; break;
+                }
+            }
         }
 
         private void render_curve()
@@ -152,7 +186,7 @@ namespace WinTabPainter
 
         private void button_OK_Click(object sender, System.EventArgs e)
         {
-            double v= get_smoothing_from_trackbar(this.trackBar_PositionSmoothing);
+            double v = get_smoothing_from_trackbar(this.trackBar_PositionSmoothing);
             this.PaintSettings.PositionSmoother.SmoothingAmount = v;
 
             double v2 = get_smoothing_from_trackbar(this.trackBar_PressureSmoothing);
@@ -200,6 +234,24 @@ namespace WinTabPainter
             return new_value;
         }
 
+        public int PressureQuant;
 
+        private void comboBox_PressureQuant_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            var q = (QuantItem) comboBox_PressureQuant.SelectedItem;
+            this.PressureQuant = q.Value;
+        }
+    }
+
+    public class QuantItem
+    {
+        public string Key { get; set; }
+        public int Value { get; set; }
+
+        public QuantItem(string key, int value)
+        {
+            this.Key = key;
+            this.Value = value;
+        }
     }
 }
