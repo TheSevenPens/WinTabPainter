@@ -306,14 +306,8 @@ namespace WinTabPainter
 
         private void _save()
         {
-            try
-            {
-                this.bitmap_doc.Save(this.filename);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to save " + this.filename);
-            }
+            this.bitmap_doc.Save(this.filename);
+
         }
 
         private void AppSaveAs()

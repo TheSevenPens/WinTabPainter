@@ -135,21 +135,15 @@ namespace WintabDN
 
             Marshal.StructureToPtr(extProperty, buf, false);
 
-            try
-            {
-                bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
+            bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
 
-                if (status)
-                {
-                    WTExtensionProperty retProp = (WTExtensionProperty)Marshal.PtrToStructure(buf, typeof(WTExtensionProperty));
-                    result_O = retProp.data[0];
-                    retStatus = true;
-                }
-            }
-            catch (Exception ex)
+            if (status)
             {
-                MessageBox.Show("FAILED ControlPropertyGet: " + ex.ToString());
+                WTExtensionProperty retProp = (WTExtensionProperty)Marshal.PtrToStructure(buf, typeof(WTExtensionProperty));
+                result_O = retProp.data[0];
+                retStatus = true;
             }
+  
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -183,30 +177,24 @@ namespace WintabDN
             WTExtensionProperty extProperty = new WTExtensionProperty();
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
 
-            try
-            {
-                byte[] valueBytes = BitConverter.GetBytes(value_I);
+            byte[] valueBytes = BitConverter.GetBytes(value_I);
 
-                extProperty.extBase.version = 0;
-                extProperty.extBase.tabletIndex = tabletIndex_I;
-                extProperty.extBase.controlIndex = controlIndex_I;
-                extProperty.extBase.functionIndex = functionIndex_I;
-                extProperty.extBase.propertyID = propertyID_I;
-                extProperty.extBase.reserved = 0;
-                extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(value_I);
-                extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
+            extProperty.extBase.version = 0;
+            extProperty.extBase.tabletIndex = tabletIndex_I;
+            extProperty.extBase.controlIndex = controlIndex_I;
+            extProperty.extBase.functionIndex = functionIndex_I;
+            extProperty.extBase.propertyID = propertyID_I;
+            extProperty.extBase.reserved = 0;
+            extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(value_I);
+            extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
 
-                // Send input value as an array of bytes.
-                System.Buffer.BlockCopy(valueBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
+            // Send input value as an array of bytes.
+            System.Buffer.BlockCopy(valueBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-                Marshal.StructureToPtr(extProperty, buf, false);
+            Marshal.StructureToPtr(extProperty, buf, false);
 
-                retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
+
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -240,31 +228,25 @@ namespace WintabDN
             WTExtensionProperty extProperty = new WTExtensionProperty();
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
 
-            try
-            {
-                // Convert unicode string value_I to UTF8-encoded bytes
-                byte[] utf8Bytes = System.Text.Encoding.Convert(Encoding.Unicode, Encoding.UTF8, Encoding.Unicode.GetBytes(value_I));
+            // Convert unicode string value_I to UTF8-encoded bytes
+            byte[] utf8Bytes = System.Text.Encoding.Convert(Encoding.Unicode, Encoding.UTF8, Encoding.Unicode.GetBytes(value_I));
 
-                extProperty.extBase.version = 0;
-                extProperty.extBase.tabletIndex = tabletIndex_I;
-                extProperty.extBase.controlIndex = controlIndex_I;
-                extProperty.extBase.functionIndex = functionIndex_I;
-                extProperty.extBase.propertyID = propertyID_I;
-                extProperty.extBase.reserved = 0;
-                extProperty.extBase.dataSize = (uint)utf8Bytes.Length;
-                extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
+            extProperty.extBase.version = 0;
+            extProperty.extBase.tabletIndex = tabletIndex_I;
+            extProperty.extBase.controlIndex = controlIndex_I;
+            extProperty.extBase.functionIndex = functionIndex_I;
+            extProperty.extBase.propertyID = propertyID_I;
+            extProperty.extBase.reserved = 0;
+            extProperty.extBase.dataSize = (uint)utf8Bytes.Length;
+            extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
 
-                // Send input value as an array of UTF8-encoded bytes.
-                System.Buffer.BlockCopy(utf8Bytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
+            // Send input value as an array of UTF8-encoded bytes.
+            System.Buffer.BlockCopy(utf8Bytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-                Marshal.StructureToPtr(extProperty, buf, false);
+            Marshal.StructureToPtr(extProperty, buf, false);
 
-                retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
+
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -298,43 +280,37 @@ namespace WintabDN
             WTExtensionImageProperty extProperty = new WTExtensionImageProperty();
             IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
 
-            try
+
+            byte[] imageBytes = null;
+            System.Drawing.Image newImage = Image.FromFile(imageFilePath_I);
+
+            if (newImage == null)
             {
-                byte[] imageBytes = null;
-                System.Drawing.Image newImage = Image.FromFile(imageFilePath_I);
-
-                if (newImage == null)
-                {
-                    MessageBox.Show("Oops - couldn't find/read image: " + imageFilePath_I);
-                    return false;
-                }
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    imageBytes = ms.ToArray();
-                }
-
-                extProperty.extBase.version = 0;
-                extProperty.extBase.tabletIndex = tabletIndex_I;
-                extProperty.extBase.controlIndex = controlIndex_I;
-                extProperty.extBase.functionIndex = functionIndex_I;
-                extProperty.extBase.propertyID = propertyID_I;
-                extProperty.extBase.reserved = 0;
-                extProperty.extBase.dataSize = (uint)imageBytes.Length;
-                extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyImageMaxDataBytes];
-
-                // Send image as an array of bytes.
-                System.Buffer.BlockCopy(imageBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
-
-                Marshal.StructureToPtr(extProperty, buf, false);
-
-                retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
+                MessageBox.Show("Oops - couldn't find/read image: " + imageFilePath_I);
+                return false;
             }
-            catch (Exception ex)
+
+            using (MemoryStream ms = new MemoryStream())
             {
-                MessageBox.Show(ex.ToString());
+                newImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                imageBytes = ms.ToArray();
             }
+
+            extProperty.extBase.version = 0;
+            extProperty.extBase.tabletIndex = tabletIndex_I;
+            extProperty.extBase.controlIndex = controlIndex_I;
+            extProperty.extBase.functionIndex = functionIndex_I;
+            extProperty.extBase.propertyID = propertyID_I;
+            extProperty.extBase.reserved = 0;
+            extProperty.extBase.dataSize = (uint)imageBytes.Length;
+            extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyImageMaxDataBytes];
+
+            // Send image as an array of bytes.
+            System.Buffer.BlockCopy(imageBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
+
+            Marshal.StructureToPtr(extProperty, buf, false);
+
+            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
 
             CMemUtils.FreeUnmanagedBuf(buf);
 
@@ -369,51 +345,45 @@ namespace WintabDN
                 return false;
             }
 
-            try
+            if (!CWintabExtensions.ControlPropertyGet(
+                context_I.HCtx,
+                (byte)extTagIndex_I,
+                (byte)tabletIndex_I,
+                (byte)controlIndex_I,
+                (byte)functionIndex_I,
+                (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_FORMAT,
+                ref iconFmt))
+            { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_FORMAT"); }
+
+            if ((EWTExtensionIconProperty)iconFmt != EWTExtensionIconProperty.TABLET_ICON_FMT_NONE)
             {
+                // Get the width and height of the display icon.
+                UInt32 iconWidth = 0;
+                UInt32 iconHeight = 0;
+
                 if (!CWintabExtensions.ControlPropertyGet(
                     context_I.HCtx,
                     (byte)extTagIndex_I,
                     (byte)tabletIndex_I,
                     (byte)controlIndex_I,
                     (byte)functionIndex_I,
-                    (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_FORMAT,
-                    ref iconFmt))
-                { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_FORMAT"); }
+                    (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_WIDTH,
+                    ref iconWidth))
+                { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_WIDTH"); }
 
-                if ((EWTExtensionIconProperty)iconFmt != EWTExtensionIconProperty.TABLET_ICON_FMT_NONE)
-                {
-                    // Get the width and height of the display icon.
-                    UInt32 iconWidth = 0;
-                    UInt32 iconHeight = 0;
+                if (!CWintabExtensions.ControlPropertyGet(
+                    context_I.HCtx,
+                    (byte)extTagIndex_I,
+                    (byte)tabletIndex_I,
+                    (byte)controlIndex_I,
+                    (byte)functionIndex_I,
+                    (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_HEIGHT,
+                    ref iconHeight))
+                { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_HEIGHT"); }
 
-                    if (!CWintabExtensions.ControlPropertyGet(
-                        context_I.HCtx,
-                        (byte)extTagIndex_I,
-                        (byte)tabletIndex_I,
-                        (byte)controlIndex_I,
-                        (byte)functionIndex_I,
-                        (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_WIDTH,
-                        ref iconWidth))
-                    { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_WIDTH"); }
-
-                    if (!CWintabExtensions.ControlPropertyGet(
-                        context_I.HCtx,
-                        (byte)extTagIndex_I,
-                        (byte)tabletIndex_I,
-                        (byte)controlIndex_I,
-                        (byte)functionIndex_I,
-                        (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_HEIGHT,
-                        ref iconHeight))
-                    { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_HEIGHT"); }
-
-                    return SetIcon(context_I, extTagIndex_I, tabletIndex_I, controlIndex_I, functionIndex_I, imageFilePath_I);
-                }
+                return SetIcon(context_I, extTagIndex_I, tabletIndex_I, controlIndex_I, functionIndex_I, imageFilePath_I);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+
 
             // Not supported by tablet.
             return false;

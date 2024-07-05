@@ -46,17 +46,11 @@ namespace WintabDN
         {
             IntPtr buf = IntPtr.Zero;
 
-            try
-            {
-                int numBytes = Marshal.SizeOf(val_I);
+            int numBytes = Marshal.SizeOf(val_I);
 
-                // First allocate a buffer of the correct size.
-                buf = Marshal.AllocHGlobal(numBytes);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED AllocUnmanagedBuf: " + ex.ToString());
-            }
+            // First allocate a buffer of the correct size.
+            buf = Marshal.AllocHGlobal(numBytes);
+
 
             return buf;
         }
@@ -70,14 +64,8 @@ namespace WintabDN
         {
             IntPtr buf = IntPtr.Zero;
 
-            try
-            {
-                buf = Marshal.AllocHGlobal(size_I);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED AllocUnmanagedBuf: " + ex.ToString());
-            }
+            buf = Marshal.AllocHGlobal(size_I);
+
 
             return buf;
         }
@@ -140,20 +128,13 @@ namespace WintabDN
                 throw new Exception("MarshalUnmanagedString has zero size.");
             }
 
-            try
-            {
-                Byte[] byteArray = new Byte[size_I];
 
-                Marshal.Copy(buf_I, byteArray, 0, size_I);
+            Byte[] byteArray = new Byte[size_I];
 
-                System.Text.Encoding encoding = System.Text.Encoding.UTF8;
-                retStr = encoding.GetString(byteArray);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED MarshalUnmanagedString: " + ex.ToString());
-            }
+            Marshal.Copy(buf_I, byteArray, 0, size_I);
 
+            System.Text.Encoding encoding = System.Text.Encoding.UTF8;
+            retStr = encoding.GetString(byteArray);
             return retStr;
         }
 
