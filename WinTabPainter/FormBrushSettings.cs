@@ -6,9 +6,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinTabPainter
 {
-    public partial class FormCurve : Form
+    public partial class FormBrushSettings : Form
     {
-        public FormCurve(double amt)
+        public FormBrushSettings(double amt)
         {
             InitializeComponent();
             this.curve = new Numerics.SimpleCurve();
@@ -194,7 +194,7 @@ namespace WinTabPainter
         {
             double normalized_slider_value = ((double)trackbar.Value / (double)trackbar.Maximum);
             double curved_value = this.smoothing_adjustment_curve.ApplyCurve(normalized_slider_value);
-            double new_value = PaintSettings.SMOOTHING_RANGE_LIMITED.Clamp(curved_value);
+            double new_value = PaintSettings.SYS_SMOOTHING_RANGE_LIMITED.Clamp(curved_value);
             return new_value;
         }
 

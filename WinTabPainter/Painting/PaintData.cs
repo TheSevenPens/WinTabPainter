@@ -82,7 +82,7 @@ public struct PaintData
         if (this.PressureRaw > 0)
         {
             double effective_width = this.PressureEffective * paintsettings.BrushWidth;
-            effective_width = PaintSettings.BRUSHSIZE_RANGE.Clamp((int)effective_width);
+            effective_width = PaintSettings.SYS_BRUSHSIZE_RANGE.Clamp((int)effective_width);
             this.BrushWidthEffective = (int) effective_width;
         }
         else

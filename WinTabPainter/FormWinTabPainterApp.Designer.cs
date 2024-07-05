@@ -201,7 +201,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            menuStrip1.Size = new System.Drawing.Size(1898, 51);
+            menuStrip1.Size = new System.Drawing.Size(1898, 54);
             menuStrip1.TabIndex = 40;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -209,7 +209,7 @@
             // 
             MenuItem_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuItem_Open, MenuItem_FileSave, MenuItem_SaveAs });
             MenuItem_File.Name = "MenuItem_File";
-            MenuItem_File.Size = new System.Drawing.Size(87, 45);
+            MenuItem_File.Size = new System.Drawing.Size(87, 48);
             MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -237,7 +237,7 @@
             // 
             imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { clearToolStripMenuItem });
             imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 45);
+            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
             imageToolStripMenuItem.Text = "Image";
             // 
             // clearToolStripMenuItem
@@ -251,21 +251,21 @@
             // 
             settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { pressureCurveToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 45);
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 48);
             settingsToolStripMenuItem.Text = "Settings";
             // 
             // pressureCurveToolStripMenuItem
             // 
             pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(380, 54);
-            pressureCurveToolStripMenuItem.Text = "Pressure Curve";
+            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            pressureCurveToolStripMenuItem.Text = "Brush settings";
             pressureCurveToolStripMenuItem.Click += pressureCurveToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { showShortcutsToolStripMenuItem, aboutToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 45);
+            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 48);
             helpToolStripMenuItem.Text = "Help";
             // 
             // showShortcutsToolStripMenuItem

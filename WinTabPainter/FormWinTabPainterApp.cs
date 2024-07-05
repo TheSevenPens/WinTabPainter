@@ -281,8 +281,7 @@ namespace WinTabPainter
         void relative_modify_brush_size(int value)
         {
             var w = g_paintsettings.BrushWidth + value;
-
-            g_paintsettings.BrushWidth = PaintSettings.BRUSHSIZE_RANGE.Clamp(w);
+            g_paintsettings.BrushWidth = w;
             this.label_BrushSizeValue.Text = g_paintsettings.BrushWidth.ToString();
             this.trackBar_BrushSize.Value = g_paintsettings.BrushWidth;
         }
@@ -397,7 +396,7 @@ namespace WinTabPainter
 
         private void pressureCurveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new FormCurve(g_paintsettings.pressure_curve.BendAmount);
+            var form = new FormBrushSettings(g_paintsettings.pressure_curve.BendAmount);
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {

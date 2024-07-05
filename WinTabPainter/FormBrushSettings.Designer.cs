@@ -1,6 +1,6 @@
 ﻿namespace WinTabPainter
 {
-    partial class FormCurve
+    partial class FormBrushSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -129,11 +129,11 @@
             label_position_smoothingval.TabIndex = 54;
             label_position_smoothingval.Text = "NNN";
             // 
-            // label_pressuresmoothingval
+            // label_pressure_smoothingval
             // 
             label_pressure_smoothingval.AutoSize = true;
             label_pressure_smoothingval.Location = new System.Drawing.Point(944, 208);
-            label_pressure_smoothingval.Name = "label_pressuresmoothingval";
+            label_pressure_smoothingval.Name = "label_pressure_smoothingval";
             label_pressure_smoothingval.Size = new System.Drawing.Size(84, 41);
             label_pressure_smoothingval.TabIndex = 53;
             label_pressure_smoothingval.Text = "NNN";
@@ -180,7 +180,7 @@
             trackBar_PositionSmoothing.TickStyle = System.Windows.Forms.TickStyle.None;
             trackBar_PositionSmoothing.Scroll += trackBar_PositionSmoothing_Scroll;
             // 
-            // FormCurve
+            // FormBrushSettings
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -199,8 +199,8 @@
             Controls.Add(pictureBox_Curve);
             Controls.Add(button_Cancel);
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            Name = "FormCurve";
-            Text = "Curve Editor";
+            Name = "FormBrushSettings";
+            Text = "Brush settings";
             FormClosed += FormCurve_FormClosed;
             Load += FormCurve_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).EndInit();
