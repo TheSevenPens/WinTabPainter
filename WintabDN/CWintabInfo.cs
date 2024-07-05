@@ -25,6 +25,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.DirectoryServices.ActiveDirectory;
+using System.Security.Policy;
 
 
 
@@ -58,15 +59,11 @@ namespace WintabDN
         /// <returns></returns>
         public static String GetDeviceInfo()
         {
-            using (var ub = new UnmanagedBufferString())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)EWTIDevicesIndex.DVC_NAME, ub.BufferPointer);
+            string s = _WTInfoA_STRING(
+                (uint)EWTICategoryIndex.WTI_DEVICES,
+                (uint)EWTIDevicesIndex.DVC_NAME);
 
-                string s = ub.GetValue(size);
-                return s;
-            }
+            return s;
         }
 
         /// <summary>
@@ -130,14 +127,9 @@ namespace WintabDN
         /// <returns>Returns the default context or null on error.</returns>
         private static CWintabContext GetDefaultContext(EWTICategoryIndex contextIndex_I)        
         {
-
+            var lc = _WTInfoA_LOGCONTEXT((uint)contextIndex_I, 0);
             CWintabContext context = new CWintabContext();
-
-            using (var ub = new UnmanagedBuffer<WintabLogContext>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA((uint)contextIndex_I, 0, ub.BufferPointer);
-                context.LogContext = ub.GetValue(size);
-            }
+            context.LogContext = lc;
             return context;
         }
 
@@ -147,16 +139,14 @@ namespace WintabDN
         /// <returns></returns>
         public static Int32 GetDefaultDeviceIndex()
         {
-            using (var ub = new UnmanagedBuffer<Int32>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
+            Int32 deviceIndex = _WTInfoA_INT32(
                     (uint)EWTICategoryIndex.WTI_DEFCONTEXT,
-                    (uint)EWTIContextIndex.CTX_DEVICE, ub.BufferPointer);
+                    (uint)EWTIContextIndex.CTX_DEVICE);
 
-                int devIndex = ub.GetValue(size);
-                return devIndex;
-            }
+            return deviceIndex;
         }
+
+
 
         /// <summary>
         /// Returns the WintabAxis object for specified device and dimension.
@@ -166,17 +156,9 @@ namespace WintabDN
         /// <returns></returns>
         public static WintabAxis GetDeviceAxis(Int32 devIndex_I, EAxisDimension dim_I)
         {
-            using (var ub = new UnmanagedBuffer<WintabAxis>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I),
-                    (uint)dim_I, ub.BufferPointer);
-
-                // If size == 0, then returns a zeroed struct.
-                var axis = ub.GetValue(size);
-                return axis;
-
-            }
+            var a = _WTInfoA_AXIS((uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I),
+                    (uint)dim_I);
+            return a;
         }
 
         /// <summary>
@@ -186,19 +168,13 @@ namespace WintabDN
         public static WintabAxisArray GetDeviceOrientation( out bool tiltSupported_O )
         {
             tiltSupported_O = false;
-            using (var ub = new UnmanagedBuffer<WintabAxisArray>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)EWTIDevicesIndex.DVC_ORIENTATION, ub.BufferPointer);
 
-                // If size == 0, then returns a zeroed struct.
-                var axisArray = ub.GetValue(size);
-                tiltSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);
-                return axisArray;
-            }
+            var aa = _WTInfoA_AXISARRAY((uint)EWTICategoryIndex.WTI_DEVICES,
+                    (uint)EWTIDevicesIndex.DVC_ORIENTATION);
 
-
+            // If size == 0, then returns a zeroed struct.
+            tiltSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
+            return aa;
         }
 
 
@@ -209,17 +185,11 @@ namespace WintabDN
         public static WintabAxisArray GetDeviceRotation(out bool rotationSupported_O)
         {
             rotationSupported_O = false;
-            using (var ub = new UnmanagedBuffer<WintabAxisArray>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)EWTIDevicesIndex.DVC_ROTATION, ub.BufferPointer);
 
-                // If size == 0, then returns a zeroed struct.
-                var axisArray = ub.GetValue(size);
-                rotationSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);
-                return axisArray;
-            }
+            var aa = _WTInfoA_AXISARRAY((uint)EWTICategoryIndex.WTI_DEVICES,
+                    (uint)EWTIDevicesIndex.DVC_ROTATION);
+            rotationSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
+            return aa;
         }
 
         /// <summary>
@@ -228,16 +198,10 @@ namespace WintabDN
         /// <returns></returns>
         public static UInt32 GetNumberOfDevices()
         {
-
-            using (var ub = new UnmanagedBuffer<UInt32>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_INTERFACE,
-                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, ub.BufferPointer);
-
-                UInt32 numDevices = ub.GetValue(size);
-                return numDevices;
-            }
+            UInt32 numdevices =
+                _WTInfoA_UINT32((uint)EWTICategoryIndex.WTI_INTERFACE,
+                    (uint)EWTIInterfaceIndex.IFC_NDEVICES);
+            return numdevices;
         }
 
         /// <summary>
@@ -265,16 +229,14 @@ namespace WintabDN
         /// <returns></returns>
         public static string GetStylusName(EWTICursorNameIndex index_I)
         {
-            using (var ub = new UnmanagedBufferString())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)index_I,
-                    (uint)EWTICursorsIndex.CSR_NAME, ub.BufferPointer);
+            string s = _WTInfoA_STRING(
+                (uint)index_I,
+                (uint)EWTICursorsIndex.CSR_NAME);
 
-                string s = ub.GetValue(size);
-                return s;
-            }
+            return s;
+
         }
+
 
 
 
@@ -286,19 +248,13 @@ namespace WintabDN
         /// <returns>maximum pressure value or zero on error</returns>
         public static Int32 GetMaxPressure(bool getNormalPressure_I = true)
         {
-
-            using (var ub = new UnmanagedBuffer<WintabAxis>())
-            {
-                EWTIDevicesIndex devIdx = (getNormalPressure_I ?
+            EWTIDevicesIndex devIdx = (getNormalPressure_I ?
                     EWTIDevicesIndex.DVC_NPRESSURE : EWTIDevicesIndex.DVC_TPRESSURE);
 
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)devIdx, ub.BufferPointer);
-
-                var pressureAxis = ub.GetValue(size);
-                return pressureAxis.axMax;
-            }
+            var a = _WTInfoA_AXIS(
+                (uint)EWTICategoryIndex.WTI_DEVICES,
+                (uint)devIdx);
+            return a.axMax;
         }
 
 
@@ -310,17 +266,75 @@ namespace WintabDN
         /// <returns></returns>
         public static WintabAxis GetTabletAxis(EAxisDimension dimension_I)
         {
-            using (var ub = new UnmanagedBuffer<WintabAxis>())
+            var a = _WTInfoA_AXIS(
+                (uint)EWTICategoryIndex.WTI_DEVICES
+               , (uint)dimension_I);
+            return a;
+
+        }
+
+        public static string _WTInfoA_STRING(uint cat, uint index)
+        {
+            using (var ub = new UnmanagedBufferString())
             {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)dimension_I, ub.BufferPointer);
-
-                var axis = ub.GetValue(size);
-                return axis;
-
+                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+                string s = ub.GetValue(size);
+                return s;
             }
         }
+
+        public static Int32 _WTInfoA_INT32(uint cat, uint index)
+        {
+            using (var ub = new UnmanagedBuffer<Int32>())
+            {
+                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+                Int32 s = ub.GetValue(size);
+                return s;
+            }
+        }
+
+        public static UInt32 _WTInfoA_UINT32(uint cat, uint index)
+        {
+            using (var ub = new UnmanagedBuffer<UInt32>())
+            {
+                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+                UInt32 s = ub.GetValue(size);
+                return s;
+            }
+        }
+
+        public static WintabAxis _WTInfoA_AXIS(uint cat, uint index)
+        {
+            using (var ub = new UnmanagedBuffer<WintabAxis>())
+            {
+                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+                WintabAxis s = ub.GetValue(size);
+                return s;
+            }
+        }
+
+        public static WintabAxisArray _WTInfoA_AXISARRAY(uint cat, uint index)
+        {
+            using (var ub = new UnmanagedBuffer<WintabAxisArray>())
+            {
+                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+                WintabAxisArray s = ub.GetValue(size);
+                return s;
+            }
+        }
+
+        
+        public static WintabLogContext _WTInfoA_LOGCONTEXT(uint cat, uint index)
+        {
+            using (var ub = new UnmanagedBuffer<WintabLogContext>())
+            {
+                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+                WintabLogContext s = ub.GetValue(size);
+                return s;
+            }
+        }
+
+
     }
 
 }
