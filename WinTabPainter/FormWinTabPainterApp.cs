@@ -409,5 +409,14 @@ namespace WinTabPainter
 
         }
 
+        private void aboutTabletToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormTablet();
+            form.tablet_info = this.tabsession.TabletInfo;
+
+            var r = form.ShowDialog(this);
+
+
+        }
     }
 }

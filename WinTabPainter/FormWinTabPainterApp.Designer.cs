@@ -32,13 +32,11 @@
             label_PressureNormalized = new System.Windows.Forms.Label();
             label_Tilt = new System.Windows.Forms.Label();
             label_Buttons = new System.Windows.Forms.Label();
-            label_Device = new System.Windows.Forms.Label();
             pictureBox_Canvas = new System.Windows.Forms.PictureBox();
             label_TiltValue = new System.Windows.Forms.Label();
             label_ScreenPosValue = new System.Windows.Forms.Label();
             label_PressureValue = new System.Windows.Forms.Label();
             label_ButtonsValue = new System.Windows.Forms.Label();
-            label_DeviceValue = new System.Windows.Forms.Label();
             trackBar_BrushSize = new System.Windows.Forms.TrackBar();
             label_BrushSizeValue = new System.Windows.Forms.Label();
             label_BrushSize = new System.Windows.Forms.Label();
@@ -54,6 +52,7 @@
             helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             showShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            aboutTabletToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             label_CanvasPos = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
@@ -96,15 +95,6 @@
             label_Buttons.Size = new System.Drawing.Size(120, 41);
             label_Buttons.TabIndex = 16;
             label_Buttons.Text = "Buttons";
-            // 
-            // label_Device
-            // 
-            label_Device.AutoSize = true;
-            label_Device.Location = new System.Drawing.Point(24, 542);
-            label_Device.Name = "label_Device";
-            label_Device.Size = new System.Drawing.Size(106, 41);
-            label_Device.TabIndex = 18;
-            label_Device.Text = "Device";
             // 
             // pictureBox_Canvas
             // 
@@ -153,15 +143,6 @@
             label_ButtonsValue.TabIndex = 28;
             label_ButtonsValue.Text = "---";
             // 
-            // label_DeviceValue
-            // 
-            label_DeviceValue.AutoSize = true;
-            label_DeviceValue.Location = new System.Drawing.Point(211, 542);
-            label_DeviceValue.Name = "label_DeviceValue";
-            label_DeviceValue.Size = new System.Drawing.Size(54, 41);
-            label_DeviceValue.TabIndex = 29;
-            label_DeviceValue.Text = "---";
-            // 
             // trackBar_BrushSize
             // 
             trackBar_BrushSize.AutoSize = false;
@@ -201,7 +182,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            menuStrip1.Size = new System.Drawing.Size(1898, 54);
+            menuStrip1.Size = new System.Drawing.Size(1898, 51);
             menuStrip1.TabIndex = 40;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -209,7 +190,7 @@
             // 
             MenuItem_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuItem_Open, MenuItem_FileSave, MenuItem_SaveAs });
             MenuItem_File.Name = "MenuItem_File";
-            MenuItem_File.Size = new System.Drawing.Size(87, 48);
+            MenuItem_File.Size = new System.Drawing.Size(87, 45);
             MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -237,7 +218,7 @@
             // 
             imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { clearToolStripMenuItem });
             imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
+            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 45);
             imageToolStripMenuItem.Text = "Image";
             // 
             // clearToolStripMenuItem
@@ -251,36 +232,43 @@
             // 
             settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { pressureCurveToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 48);
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 45);
             settingsToolStripMenuItem.Text = "Settings";
             // 
             // pressureCurveToolStripMenuItem
             // 
             pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(370, 54);
             pressureCurveToolStripMenuItem.Text = "Brush settings";
             pressureCurveToolStripMenuItem.Click += pressureCurveToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { showShortcutsToolStripMenuItem, aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { showShortcutsToolStripMenuItem, aboutToolStripMenuItem, aboutTabletToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 48);
+            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 45);
             helpToolStripMenuItem.Text = "Help";
             // 
             // showShortcutsToolStripMenuItem
             // 
             showShortcutsToolStripMenuItem.Name = "showShortcutsToolStripMenuItem";
-            showShortcutsToolStripMenuItem.Size = new System.Drawing.Size(390, 54);
+            showShortcutsToolStripMenuItem.Size = new System.Drawing.Size(471, 54);
             showShortcutsToolStripMenuItem.Text = "Show Shortcuts";
             showShortcutsToolStripMenuItem.Click += showShortcutsToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new System.Drawing.Size(390, 54);
-            aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(471, 54);
+            aboutToolStripMenuItem.Text = "About WinTab Painter";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
+            // aboutTabletToolStripMenuItem
+            // 
+            aboutTabletToolStripMenuItem.Name = "aboutTabletToolStripMenuItem";
+            aboutTabletToolStripMenuItem.Size = new System.Drawing.Size(471, 54);
+            aboutTabletToolStripMenuItem.Text = "About tablet";
+            aboutTabletToolStripMenuItem.Click += aboutTabletToolStripMenuItem_Click;
             // 
             // label_CanvasPos
             // 
@@ -310,7 +298,6 @@
             Controls.Add(label_BrushSize);
             Controls.Add(label_BrushSizeValue);
             Controls.Add(trackBar_BrushSize);
-            Controls.Add(label_DeviceValue);
             Controls.Add(label_TiltValue);
             Controls.Add(label_ScreenPosValue);
             Controls.Add(label_PressureValue);
@@ -319,7 +306,6 @@
             Controls.Add(label_Tilt);
             Controls.Add(label_ScreenPos);
             Controls.Add(label_PressureNormalized);
-            Controls.Add(label_Device);
             Controls.Add(label_Buttons);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
@@ -342,13 +328,11 @@
         private System.Windows.Forms.Label label_PressureNormalized;
         private System.Windows.Forms.Label label_Tilt;
         private System.Windows.Forms.Label label_Buttons;
-        private System.Windows.Forms.Label label_Device;
         private System.Windows.Forms.PictureBox pictureBox_Canvas;
         private System.Windows.Forms.Label label_TiltValue;
         private System.Windows.Forms.Label label_ScreenPosValue;
         private System.Windows.Forms.Label label_PressureValue;
         private System.Windows.Forms.Label label_ButtonsValue;
-        private System.Windows.Forms.Label label_DeviceValue;
         private System.Windows.Forms.TrackBar trackBar_BrushSize;
         private System.Windows.Forms.Label label_BrushSizeValue;
         private System.Windows.Forms.Label label_BrushSize;
@@ -366,6 +350,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pressureCurveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutTabletToolStripMenuItem;
     }
 }
 
