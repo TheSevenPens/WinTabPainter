@@ -21,7 +21,6 @@ namespace WinTabPainter
 
         private void FormTablet_Load(object sender, EventArgs e)
         {
-            this.label_tabletname_val.Text = this.tablet_info.Name;
 
             StringBuilder sb = new StringBuilder();
             sb.AppendFormatLine("Tablet name: {0}", this.tablet_info.Name);
@@ -37,6 +36,7 @@ namespace WinTabPainter
             sb.AppendFormatLine("Y Axis Units: {0}", this.tablet_info.YAxis.axUnits);
 
             sb.AppendFormatLine("Max Pressure: {0}", this.tablet_info.MaxPressure);
+            sb.AppendFormatLine("Supports tilt: {0}", this.tablet_info.TiltSupport);
 
             this.textBox1.Text = sb.ToString();
 
