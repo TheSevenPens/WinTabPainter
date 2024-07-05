@@ -17,6 +17,11 @@ public class SimpleCurve
         this.BendAmount = 0.0;
     }
 
+    public SimpleCurve(double amount)
+    {
+        this.BendAmount = range.Clamp(amount);
+    }
+
     public double ApplyCurve(double value)
     {
 

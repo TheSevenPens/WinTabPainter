@@ -34,6 +34,8 @@ namespace WinTabPainter
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
         Numerics.Range SMOOTHING_TRACKBAR_RANGE = new Numerics.Range(-100, 100);
 
+        Numerics.SimpleCurve pressure_slider_adjustment_curve = new Numerics.SimpleCurve(0.9);
+
         public FormWinTabPainterApp()
         {
             InitializeComponent();
@@ -337,16 +339,20 @@ namespace WinTabPainter
 
         public void set_position_smoothing(double value)
         {
-            double new_value = this.adjust_smoothing_value(value);
+            double nv = this.pressure_slider_adjustment_curve.ApplyCurve(value);
+            double new_value = this.adjust_smoothing_value(nv);
             this.paintsettings.PositionSmoother.SmoothingAmount = new_value;
-            this.label_position_smoothingval.Text = new_value.ToString();
+            string display_val = String.Format("{0:0.0###}", new_value);
+            this.label_position_smoothingval.Text = display_val;
         }
 
         public void set_pressure_smoothing(double value)
         {
-            double new_value = this.adjust_smoothing_value(value);
+            double nv = this.pressure_slider_adjustment_curve.ApplyCurve(value);
+            double new_value = this.adjust_smoothing_value(nv);
             this.paintsettings.PressureSmoother.SmoothingAmount = new_value;
-            this.label_pressuresmoothingval.Text = new_value.ToString();
+            string display_val = String.Format("{0:0.0###}", new_value);
+            this.label_pressuresmoothingval.Text = display_val;
         }
 
 

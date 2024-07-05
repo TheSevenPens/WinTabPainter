@@ -295,9 +295,9 @@
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(24, 791);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(476, 41);
+            label2.Size = new System.Drawing.Size(279, 41);
             label2.TabIndex = 42;
-            label2.Text = "Position Smoothing (None ↔ Max)";
+            label2.Text = "Position Smoothing";
             // 
             // trackBar_PositionSmoothing
             // 
@@ -334,9 +334,9 @@
             label4.AutoSize = true;
             label4.Location = new System.Drawing.Point(24, 963);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(482, 41);
+            label4.Size = new System.Drawing.Size(285, 41);
             label4.TabIndex = 46;
-            label4.Text = "Pressure Smoothing (None ↔ Max)";
+            label4.Text = "Pressure Smoothing";
             // 
             // trackBar_PressureSmoothing
             // 
@@ -353,7 +353,7 @@
             // label_pressuresmoothingval
             // 
             label_pressuresmoothingval.AutoSize = true;
-            label_pressuresmoothingval.Location = new System.Drawing.Point(379, 1107);
+            label_pressuresmoothingval.Location = new System.Drawing.Point(351, 963);
             label_pressuresmoothingval.Name = "label_pressuresmoothingval";
             label_pressuresmoothingval.Size = new System.Drawing.Size(84, 41);
             label_pressuresmoothingval.TabIndex = 47;
@@ -362,7 +362,7 @@
             // label_position_smoothingval
             // 
             label_position_smoothingval.AutoSize = true;
-            label_position_smoothingval.Location = new System.Drawing.Point(379, 922);
+            label_position_smoothingval.Location = new System.Drawing.Point(351, 791);
             label_position_smoothingval.Name = "label_position_smoothingval";
             label_position_smoothingval.Size = new System.Drawing.Size(84, 41);
             label_position_smoothingval.TabIndex = 48;
