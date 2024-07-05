@@ -327,24 +327,26 @@ namespace WinTabPainter
 
         private void trackBar_PositionSmoothing_Scroll(object sender, EventArgs e)
         {
-            this.set_position_smoothing(this.trackBar_PositionSmoothing.Value / this.trackBar_PositionSmoothing.Maximum);
+            this.set_position_smoothing((double)this.trackBar_PositionSmoothing.Value / (double)this.trackBar_PositionSmoothing.Maximum);
         }
 
         private void trackBar_PressureSmoothing_Scroll(object sender, EventArgs e)
         {
-            this.set_pressure_smoothing(this.trackBar_PressureSmoothing.Value / this.trackBar_PressureSmoothing.Maximum);
+            this.set_pressure_smoothing((double)this.trackBar_PressureSmoothing.Value / (double) this.trackBar_PressureSmoothing.Maximum);
         }
 
         public void set_position_smoothing(double value)
         {
-            value = this.adjust_smoothing_value(value);
-            this.paintsettings.PositionSmoother.SmoothingAmount = value;
+            double new_value = this.adjust_smoothing_value(value);
+            this.paintsettings.PositionSmoother.SmoothingAmount = new_value;
+            this.label_position_smoothingval.Text = new_value.ToString();
         }
 
         public void set_pressure_smoothing(double value)
         {
-            value = this.adjust_smoothing_value(value);
-            this.paintsettings.PressureSmoother.SmoothingAmount = value;
+            double new_value = this.adjust_smoothing_value(value);
+            this.paintsettings.PressureSmoother.SmoothingAmount = new_value;
+            this.label_pressuresmoothingval.Text = new_value.ToString();
         }
 
 
