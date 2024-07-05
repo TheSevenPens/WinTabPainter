@@ -8,6 +8,7 @@ public class TabletInfo
 
     public bool TiltSupport { private set; get; }
 
+
     public void Initialize()
     {
         this.XAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.EAxisDimension.AXIS_X);
