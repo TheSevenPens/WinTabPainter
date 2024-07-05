@@ -20,9 +20,9 @@ public struct PaintData
 
     // POSITION
     public readonly Geometry.Point PosScreen;
-    public readonly Geometry.Point PosScreenSmoothed;
+    public readonly Geometry.Point PosScreenEffective;
     public readonly Geometry.Point PosCanvas;
-    public readonly Geometry.Point PosCanvasSmoothed;
+    public readonly Geometry.Point PosCanvasEffective;
 
     // HOVER
     public readonly int PenHover;
@@ -58,9 +58,9 @@ public struct PaintData
 
         // POSITION
         this.PosScreen = new Geometry.Point(pkt.pkX, pkt.pkY);
-        this.PosScreenSmoothed = paintsettings.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
+        this.PosScreenEffective = paintsettings.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
         this.PosCanvas = to_canv(this.PosScreen);
-        this.PosCanvasSmoothed = to_canv(this.PosScreenSmoothed);
+        this.PosCanvasEffective = to_canv(this.PosScreenEffective);
 
         // HOVER
         this.PenHover = pkt.pkZ;

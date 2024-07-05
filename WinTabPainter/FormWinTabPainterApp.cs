@@ -179,7 +179,7 @@ namespace WinTabPainter
             }
             else
             {
-                dist_from_last_canv_pos = paint_data.PosCanvasSmoothed.DistanceTo(old_paintdata.PosCanvasSmoothed);
+                dist_from_last_canv_pos = paint_data.PosCanvasEffective.DistanceTo(old_paintdata.PosCanvasEffective);
             }
 
             // Update the UI 
@@ -189,7 +189,7 @@ namespace WinTabPainter
                 && (this.bitmap_doc.Contains(paint_data.PosCanvas)))
             {
                 bool need_to_draw = (this.old_paintdata.Status == PaintDataStatus.INVALID)
-                    || (this.old_paintdata.PosCanvasSmoothed != paint_data.PosCanvasSmoothed)
+                    || (this.old_paintdata.PosCanvasEffective != paint_data.PosCanvasEffective)
                     || (this.old_paintdata.PressureEffective != paint_data.PressureEffective);
 
                 if (need_to_draw)
@@ -197,7 +197,7 @@ namespace WinTabPainter
 
                     this.bitmap_doc.DrawDabCenteredAt(
                         clr_black,
-                        paint_data.PosCanvasSmoothed,
+                        paint_data.PosCanvasEffective,
                         paint_data.BrushWidthEffective);
 
                     this.pictureBox_Canvas.Invalidate();
