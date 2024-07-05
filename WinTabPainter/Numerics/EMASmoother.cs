@@ -24,6 +24,10 @@ public class EMASmoother
     {
         _old_sm_val = value;
     }
+    public void Reset()
+    {
+        this._old_sm_val = null;
+    }
 
     public double GetNextSmoothed(double value)
     {

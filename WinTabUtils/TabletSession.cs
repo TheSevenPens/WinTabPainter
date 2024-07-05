@@ -10,6 +10,8 @@ public class TabletSession
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WintabDN.WintabPacket> PacketHandler = null;
+    public System.Action<WintabDN.WintabPacket, WinTabUtils.PenButtonPressChange> ButtonChangedHandler = null;
+
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
@@ -76,7 +78,17 @@ public class TabletSession
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            if (this.PacketHandler != null)
+            var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+            if (button_info.Change != PenButtonPressChangeType.NoChange)
+            {
+                if (this.ButtonChangedHandler != null)
+                {
+                    this.ButtonChangedHandler(wintab_pkt, button_info);
+                }
+
+            }
+
+            if (this.PacketHandler != null) 
             {
                 this.PacketHandler(wintab_pkt);
             }

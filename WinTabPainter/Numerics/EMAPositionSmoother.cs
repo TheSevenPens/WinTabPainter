@@ -23,6 +23,11 @@ public class EMAPositionSmoother
         this._old_sm_pos = p;
     }
 
+    public void Reset()
+    {
+        this._old_sm_pos = null;
+    }
+
     public Geometry.PointD Smooth(Geometry.Point value)
     {
         return this.GetNextSmoothed(new Geometry.PointD(value.X, value.Y));

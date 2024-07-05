@@ -69,6 +69,8 @@ namespace WinTabPainter
             this.tabsession.PacketHandler = this.PacketHandler;
             this.tabsession.Open(WinTabUtils.TabletContextType.System);
 
+            this.tabsession.ButtonChangedHandler = this.HandleButtonChange;
+
             Reposition_app();
 
             this.trackBar_BrushSize.Value = this.paintsettings.BrushWidth;
@@ -122,7 +124,7 @@ namespace WinTabPainter
         {
             this.tabsession.Close();
 
-            if (this.bitmap_doc != null)
+            if (this.bitmap_doc != null) 
             {
                 this.bitmap_doc.Dispose();
             }
@@ -217,6 +219,22 @@ namespace WinTabPainter
             }
         }
 
+        public void HandleButtonChange(WintabDN.WintabPacket pkt, WinTabUtils.PenButtonPressChange change )
+        {
+            if (change.ButtonId == PenButtonIdentifier.Tip)
+            {
+                if (change.Change == PenButtonPressChangeType.Pressed)
+                {
+                    // we need to reset the smoothing 
+                    // whenever the pen tip touches the tablet
+                    // if we don't do this the previous stroke will
+                    // have influence on the new stroke
+                    this.paintsettings.PositionSmoother.Reset();
+                    this.paintsettings.PressureSmoother.Reset();
+                }
+            }
+
+        }
         public Geometry.Point Screen_loc_to_canvas_loc(Geometry.Point screen_loc)
         {
             var canv_loc = this.pictureBox_Canvas.Location.ToPoint();
