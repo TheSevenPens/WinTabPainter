@@ -28,8 +28,14 @@ namespace WintabDN
 
     public class UnmanagedBuffer : IDisposable
     {
-        public IntPtr BufferPointer;
+        private IntPtr bufferPointer;
         private bool _disposed;
+        Type _type;
+
+        public nint BufferPointer { 
+            get => bufferPointer; 
+            private set => bufferPointer = value; }
+
         public UnmanagedBuffer()
         {
         }
@@ -40,6 +46,7 @@ namespace WintabDN
             var v = new T();
             ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(v);
             ub._disposed = false;
+            ub._type = typeof(T);
             return ub;
         }
         public static UnmanagedBuffer ForStringType()
@@ -47,16 +54,25 @@ namespace WintabDN
             var ub = new UnmanagedBuffer();
             ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
             ub._disposed = false;
+            ub._type = typeof(string);
             return ub;
         }
 
         public T GetValueObject<T>(int size) where T : new()
         {
+            if (_type != typeof(T))
+            {
+                throw new System.ArgumentOutOfRangeException("mismatch in types");
+            }
             var _value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
             return _value;
         }
         public string GetValueString(int size)
         {
+            if (_type != typeof(string))
+            {
+                throw new System.ArgumentOutOfRangeException("mismatch in types");
+            }
             // Strip off final null character before marshalling.
             var s = CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
             return s;
