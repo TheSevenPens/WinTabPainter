@@ -52,30 +52,16 @@ namespace WintabDN
         /// <returns>0xFFFFFFFF on error</returns>
         public static UInt32 GetWTExtensionMask(EWTXExtensionTag tag_I)
         {
-            UInt32 extMask = 0;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(extMask);
+            UInt32 extMask = 0;           
+            UInt32 extIndex = FindWTExtensionIndex(tag_I);
         
-            try
+            // Supported if extIndex != -1
+            if (extIndex != 0xFFFFFFFF)
             {
-                UInt32 extIndex = FindWTExtensionIndex(tag_I);
-        
-                // Supported if extIndex != -1
-                if (extIndex != 0xFFFFFFFF)
-                {
-                    int size = (int)CWintabFuncs.WTInfoA(
-                        (uint)EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
-                        (uint)EWTIExtensionIndex.EXT_MASK, buf);
-
-                    extMask = (UInt32)CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
-                }
+                extMask = CWintabInfo._WTInfoA_OBJECT<UInt32>((uint)EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
+                    (uint)EWTIExtensionIndex.EXT_MASK);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetWTExtensionMask: " + ex.ToString());
-            }
-        
-            CMemUtils.FreeUnmanagedBuf(buf);
-        
+                
             return extMask;
         }
 

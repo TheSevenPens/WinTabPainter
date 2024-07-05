@@ -45,11 +45,8 @@ namespace WintabDN
         /// <returns></returns>
         public static bool IsWintabAvailable()
         {
-            IntPtr buf = IntPtr.Zero;
-            bool status = false;
-
-            status = (CWintabFuncs.WTInfoA(0, 0, buf) > 0);
-
+            IntPtr v = _WTInfoA_OBJECT<IntPtr>(0, 0);            
+            bool status = v > 0;
             return status;
         }
 
@@ -210,15 +207,10 @@ namespace WintabDN
         /// <returns></returns>
         public static bool IsStylusActive()
         {
-            using (var ub = UnmanagedBuffer.ForObjectType<bool>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_INTERFACE,
-                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, ub.BufferPointer);
-
-                bool isStylusActive = ub.GetValueObject<bool>(size);
-                return isStylusActive;
-            }
+            var isStylusActive = _WTInfoA_OBJECT<bool>(
+                (uint)EWTICategoryIndex.WTI_INTERFACE,
+                (uint)EWTIInterfaceIndex.IFC_NDEVICES);
+            return isStylusActive;
         }
 
 
