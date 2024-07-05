@@ -210,13 +210,13 @@ namespace WintabDN
         /// <returns></returns>
         public static bool IsStylusActive()
         {
-            using (var ub = new UnmanagedBuffer<bool>())
+            using (var ub = UnmanagedBuffer.ForObjectType<bool>())
             {
                 int size = (int)CWintabFuncs.WTInfoA(
                     (uint)EWTICategoryIndex.WTI_INTERFACE,
                     (uint)EWTIInterfaceIndex.IFC_NDEVICES, ub.BufferPointer);
 
-                bool isStylusActive = ub.GetValue(size);
+                bool isStylusActive = ub.GetValueObject<bool>(size);
                 return isStylusActive;
             }
         }
@@ -275,20 +275,20 @@ namespace WintabDN
 
         public static string _WTInfoA_STRING(uint cat, uint index)
         {
-            using (var ub = new UnmanagedBufferString())
+            using (var ub = UnmanagedBuffer.ForStringType())
             {
                 int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
-                string s = ub.GetValue(size);
+                string s = ub.GetValueString(size);
                 return s;
             }
         }
 
         public static T _WTInfoA_OBJECT<T>(uint cat, uint index) where T :new()
         {
-            using (var ub = new UnmanagedBuffer<T>())
+            using (var ub = UnmanagedBuffer.ForObjectType<T>())
             {
                 int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
-                T s = ub.GetValue(size);
+                T s = ub.GetValueObject<T>(size);
                 return s;
             }
         }

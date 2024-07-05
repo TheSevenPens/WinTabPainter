@@ -25,53 +25,49 @@ using System.Security.Cryptography.Xml;
 
 namespace WintabDN
 {
-    public class BaseUnmanagedBuffer : IDisposable 
+
+    public class UnmanagedBuffer : IDisposable
     {
         public IntPtr BufferPointer;
         private bool _disposed;
-
-        public BaseUnmanagedBuffer()
+        public UnmanagedBuffer()
         {
-            this.BufferPointer = 0;
-            this._disposed = false;
         }
 
-        public void Dispose()
+        public static UnmanagedBuffer ForObjectType<T>() where T : new()
         {
-            if (this._disposed) return;
-            CMemUtils.FreeUnmanagedBuf(this.BufferPointer);
+            var ub = new UnmanagedBuffer();
+            var v = new T();
+            ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(v);
+            ub._disposed = false;
+            return ub;
         }
-    }
-
-    public class UnmanagedBuffer<T> : BaseUnmanagedBuffer where T : new()
-    {
-        private T _value;
-
-        public UnmanagedBuffer() : base()
+        public static UnmanagedBuffer ForStringType()
         {
-            this._value = new T();
-            this.BufferPointer = CMemUtils.AllocUnmanagedBuf(this._value);
-        }
-
-        public T GetValue(int size)
-        {
-            this._value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
-            return this._value;
-        }
-    }
-
-    public class UnmanagedBufferString: BaseUnmanagedBuffer 
-    {
-        public UnmanagedBufferString() : base()
-        {
-            this.BufferPointer = CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+            var ub = new UnmanagedBuffer();
+            ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+            ub._disposed = false;
+            return ub;
         }
 
-        public string GetValue(int size)
+        public T GetValueObject<T>(int size) where T : new()
+        {
+            var _value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
+            return _value;
+        }
+        public string GetValueString(int size)
         {
             // Strip off final null character before marshalling.
             var s = CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
             return s;
         }
+
+        public void Dispose()
+        {
+            if (this._disposed) return;
+            if (this.BufferPointer == IntPtr.Zero) return;
+            CMemUtils.FreeUnmanagedBuf(this.BufferPointer);
+        }
     }
+
 }
