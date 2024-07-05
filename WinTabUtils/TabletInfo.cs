@@ -5,7 +5,6 @@ public class TabletInfo
     public WintabDN.WintabAxis YAxis { private set; get; }
     public int MaxPressure {  private set; get ;}
     public string Name { private set; get; }
-
     public void Initialize()
     {
         this.XAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.EAxisDimension.AXIS_X);

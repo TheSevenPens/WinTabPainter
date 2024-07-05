@@ -416,8 +416,6 @@ namespace WinTabPainter
             form.tablet_info = this.tabsession.TabletInfo;
 
             var r = form.ShowDialog(this);
-
-
         }
     }
 }

@@ -6,7 +6,11 @@ namespace WinTabPainter;
 
 public static class HelperExtensions
 {
-
+    public static void AppendFormatLine(this System.Text.StringBuilder sb, string format, params object[] args)
+    {
+        var s = string.Format(format, args);
+        sb.AppendLine(s);
+    }
     public static Geometry.Point ToPoint(this SD.Point p)
     {
         var np = new Geometry.Point(p.X, p.Y);

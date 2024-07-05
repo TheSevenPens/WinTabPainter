@@ -31,6 +31,7 @@
             label1 = new System.Windows.Forms.Label();
             label_tabletname_val = new System.Windows.Forms.Label();
             button_Close = new System.Windows.Forms.Button();
+            textBox1 = new System.Windows.Forms.TextBox();
             SuspendLayout();
             // 
             // label1
@@ -53,7 +54,7 @@
             // 
             // button_Close
             // 
-            button_Close.Location = new System.Drawing.Point(591, 380);
+            button_Close.Location = new System.Drawing.Point(950, 668);
             button_Close.Name = "button_Close";
             button_Close.Size = new System.Drawing.Size(188, 58);
             button_Close.TabIndex = 2;
@@ -61,11 +62,20 @@
             button_Close.UseVisualStyleBackColor = true;
             button_Close.Click += button_Close_Click;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new System.Drawing.Point(57, 97);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new System.Drawing.Size(1085, 539);
+            textBox1.TabIndex = 3;
+            // 
             // FormTablet
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 450);
+            ClientSize = new System.Drawing.Size(1183, 753);
+            Controls.Add(textBox1);
             Controls.Add(button_Close);
             Controls.Add(label_tabletname_val);
             Controls.Add(label1);
@@ -81,5 +91,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label_tabletname_val;
         private System.Windows.Forms.Button button_Close;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
