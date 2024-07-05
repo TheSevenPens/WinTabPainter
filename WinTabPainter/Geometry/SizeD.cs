@@ -39,6 +39,7 @@ public struct SizeD
         return s;
     }
 
+    public static implicit operator SD.SizeF(SizeD s) => s.ToSDSizeF();
 
     public static bool operator ==(SizeD lhs, SizeD rhs) => lhs.Equals(rhs);
 
