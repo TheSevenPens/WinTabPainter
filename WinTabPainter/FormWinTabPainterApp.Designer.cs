@@ -55,6 +55,8 @@
             aboutTabletToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             label_CanvasPos = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
+            labeltilt_xy = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -83,14 +85,14 @@
             label_Tilt.AutoSize = true;
             label_Tilt.Location = new System.Drawing.Point(24, 410);
             label_Tilt.Name = "label_Tilt";
-            label_Tilt.Size = new System.Drawing.Size(58, 41);
+            label_Tilt.Size = new System.Drawing.Size(167, 41);
             label_Tilt.TabIndex = 13;
-            label_Tilt.Text = "Tilt";
+            label_Tilt.Text = "Tilt (Alt,Azi)";
             // 
             // label_Buttons
             // 
             label_Buttons.AutoSize = true;
-            label_Buttons.Location = new System.Drawing.Point(24, 476);
+            label_Buttons.Location = new System.Drawing.Point(24, 564);
             label_Buttons.Name = "label_Buttons";
             label_Buttons.Size = new System.Drawing.Size(120, 41);
             label_Buttons.TabIndex = 16;
@@ -137,7 +139,7 @@
             // label_ButtonsValue
             // 
             label_ButtonsValue.AutoSize = true;
-            label_ButtonsValue.Location = new System.Drawing.Point(211, 476);
+            label_ButtonsValue.Location = new System.Drawing.Point(211, 564);
             label_ButtonsValue.Name = "label_ButtonsValue";
             label_ButtonsValue.Size = new System.Drawing.Size(54, 41);
             label_ButtonsValue.TabIndex = 28;
@@ -182,7 +184,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            menuStrip1.Size = new System.Drawing.Size(1898, 54);
+            menuStrip1.Size = new System.Drawing.Size(1898, 51);
             menuStrip1.TabIndex = 40;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -190,7 +192,7 @@
             // 
             MenuItem_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuItem_Open, MenuItem_FileSave, MenuItem_SaveAs });
             MenuItem_File.Name = "MenuItem_File";
-            MenuItem_File.Size = new System.Drawing.Size(87, 48);
+            MenuItem_File.Size = new System.Drawing.Size(87, 45);
             MenuItem_File.Text = "File";
             // 
             // MenuItem_Open
@@ -218,7 +220,7 @@
             // 
             imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { clearToolStripMenuItem });
             imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 48);
+            imageToolStripMenuItem.Size = new System.Drawing.Size(125, 45);
             imageToolStripMenuItem.Text = "Image";
             // 
             // clearToolStripMenuItem
@@ -232,13 +234,13 @@
             // 
             settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { pressureCurveToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 48);
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(149, 45);
             settingsToolStripMenuItem.Text = "Settings";
             // 
             // pressureCurveToolStripMenuItem
             // 
             pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(370, 54);
             pressureCurveToolStripMenuItem.Text = "Brush settings";
             pressureCurveToolStripMenuItem.Click += pressureCurveToolStripMenuItem_Click;
             // 
@@ -246,7 +248,7 @@
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { showShortcutsToolStripMenuItem, aboutToolStripMenuItem, aboutTabletToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 48);
+            helpToolStripMenuItem.Size = new System.Drawing.Size(104, 45);
             helpToolStripMenuItem.Text = "Help";
             // 
             // showShortcutsToolStripMenuItem
@@ -288,11 +290,31 @@
             label5.TabIndex = 43;
             label5.Text = "CanvasPos";
             // 
+            // labeltilt_xy
+            // 
+            labeltilt_xy.AutoSize = true;
+            labeltilt_xy.Location = new System.Drawing.Point(211, 470);
+            labeltilt_xy.Name = "labeltilt_xy";
+            labeltilt_xy.Size = new System.Drawing.Size(54, 41);
+            labeltilt_xy.TabIndex = 46;
+            labeltilt_xy.Text = "---";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(24, 470);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(126, 41);
+            label2.TabIndex = 45;
+            label2.Text = "Tilt (X,Y)";
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(labeltilt_xy);
+            Controls.Add(label2);
             Controls.Add(label_CanvasPos);
             Controls.Add(label5);
             Controls.Add(label_BrushSize);
@@ -351,6 +373,8 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pressureCurveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutTabletToolStripMenuItem;
+        private System.Windows.Forms.Label labeltilt_xy;
+        private System.Windows.Forms.Label label2;
     }
 }
 

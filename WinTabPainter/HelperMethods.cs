@@ -1,4 +1,6 @@
-﻿namespace WinTabPainter;
+﻿using System;
+
+namespace WinTabPainter;
 
 
 public static class HelperMethods
@@ -9,5 +11,16 @@ public static class HelperMethods
         return new_value;
     }
 
+    public static double DegreesToRadians(double degrees)
+    {
+        var radians = degrees * Math.PI / 180;
+        return radians;
+    }
+
+    public static double RadiansToDegrees(double radians)
+    {
+        var degrees = radians * 180 / Math.PI;
+        return  degrees;
+    }
 
 }

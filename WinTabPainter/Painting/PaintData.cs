@@ -1,4 +1,5 @@
-﻿using SD = System.Drawing;
+﻿using System.Net.Sockets;
+using SD = System.Drawing;
 
 namespace WinTabPainter.Painting;
 
@@ -23,6 +24,8 @@ public struct PaintData
     //TILT
     public readonly double TiltAltitude;
     public readonly double TiltAzimuth;
+    public readonly double TiltX;
+    public readonly double TiltY;
 
 
     // PRESSURE
@@ -63,6 +66,13 @@ public struct PaintData
         // TILT
         this.TiltAltitude = pkt.pkOrientation.orAltitude / 10.0;
         this.TiltAzimuth = pkt.pkOrientation.orAzimuth / 10.0;
+
+        double radAzim = HelperMethods.DegreesToRadians(this.TiltAzimuth);
+        double tanAlt = System.Math.Tan(HelperMethods.DegreesToRadians(System.Math.Abs(this.TiltAltitude)));
+        double radX = System.Math.Atan(System.Math.Sin(radAzim) / tanAlt);
+        double radY = System.Math.Atan(System.Math.Cos(radAzim) / tanAlt);
+        this.TiltX = HelperMethods.RadiansToDegrees(radX);
+        this.TiltY = HelperMethods.RadiansToDegrees(-radY);
 
         // PRESSURE
         this.PressureRaw = pkt.pkNormalPressure;

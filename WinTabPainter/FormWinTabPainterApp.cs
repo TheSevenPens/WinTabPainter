@@ -234,7 +234,8 @@ namespace WinTabPainter
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.label_PressureValue.Text =
                 string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));
-            this.label_TiltValue.Text = string.Format("(ALT:{0}, AZ:{1})", paint_data.TiltAltitude, paint_data.TiltAzimuth);
+            this.label_TiltValue.Text = string.Format("{0:0.0}°, {1:0.0}°", paint_data.TiltAltitude, paint_data.TiltAzimuth);
+            this.labeltilt_xy.Text = string.Format("{0:0.0}°, {1:0.0}°", paint_data.TiltX, paint_data.TiltY);
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
