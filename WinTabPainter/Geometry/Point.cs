@@ -18,7 +18,7 @@ public struct Point
     public Point Add(int dx, int dy) => new Point(this.X + dx, this.Y + dy);
     public Point Subtract(int dx, int dy) => new Point(this.X - dx, this.Y - dy);
 
-    public Point Subtract(Geometry.Size s) => new Point(this.X - s.Width, this.Y - s.Height);
+    public PointD Subtract(Geometry.SizeD s) => new PointD(this.X - s.Width, this.Y - s.Height);
 
     public Point Subtract(Geometry.Point p) => new Point(this.X - p.X, this.Y - p.Y);
 
@@ -32,6 +32,13 @@ public struct Point
     {
         var p = new SD.Point(this.X, this.Y);
         return p;
+    }
+
+    public Geometry.Point ToPointD()
+    {
+        var p = new Geometry.Point(this.X, this.Y);
+        return p;
+
     }
 
     public static bool operator ==(Point lhs, Point rhs) => lhs.Equals(rhs);

@@ -33,6 +33,13 @@ public struct SizeD
         return s;
     }
 
+    public SD.SizeF ToSDSizeF()
+    {
+        var s = new SD.SizeF((float)this.Width, (float)this.Height);
+        return s;
+    }
+
+
     public static bool operator ==(SizeD lhs, SizeD rhs) => lhs.Equals(rhs);
 
     public static bool operator !=(SizeD lhs, SizeD rhs) => !(lhs == rhs);

@@ -80,13 +80,13 @@ public class BitmapDocument : System.IDisposable
         this.background_layer.Bitmap.Save(filename);
     }
 
-    public void DrawDabCenteredAt(Painting.ColorARGB color, Geometry.Point p, int width)
+    public void DrawDabCenteredAt(Painting.ColorARGB color, Geometry.Point p, double width)
     {
-        int half_width = System.Math.Max(1, width / 2);
-        var halfsize = new Geometry.Size(half_width, half_width);
-        var fullsize = new Geometry.Size(width, width);
+        double half_width = System.Math.Max(1.0, width / 2.0);
+        var halfsize = new Geometry.SizeD(half_width, half_width);
+        var fullsize = new Geometry.SizeD(width, width);
 
-        var r1 = new SD.Rectangle(p.Subtract(halfsize), fullsize);
+        var r1 = new SD.RectangleF(p.ToPointD().Subtract(halfsize).ToSDPointF(), fullsize.ToSDSizeF());
         this.background_layer.Graphics.FillEllipse(this.paint_brush, r1);
     }
 

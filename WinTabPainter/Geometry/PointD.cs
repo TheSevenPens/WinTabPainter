@@ -18,6 +18,9 @@ public struct PointD
     public PointD Add(double dx, double dy) => new PointD(this.X + dx, this.Y + dy);
 
     public PointD Subtract(Point p) => new PointD(this.X + p.X, this.Y + p.Y);
+    public PointD Subtract(Geometry.PointD p) => new PointD(this.X - p.X, this.Y - p.Y);
+
+    public PointD Subtract(Geometry.SizeD s) => new PointD(this.X - s.Width, this.Y - s.Height);
 
     public PointD Divide(double scale) => new PointD(this.X / scale, this.Y / scale);
 
@@ -34,6 +37,12 @@ public struct PointD
     public Geometry.Point ToPoint()
     {
         var p = new Geometry.Point((int)this.X, (int)this.Y);
+        return p;
+    }
+
+    public SD.PointF ToSDPointF()
+    {
+        var p = new SD.PointF((float)this.X, (float)this.Y);
         return p;
     }
 

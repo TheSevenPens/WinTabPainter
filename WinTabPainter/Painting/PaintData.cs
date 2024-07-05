@@ -40,7 +40,7 @@ public struct PaintData
     public readonly double PressureEffective;
 
     // BRUSH
-    public readonly int BrushWidthEffective;
+    public readonly double BrushWidthEffective;
 
     public PaintData()
     {
@@ -83,11 +83,11 @@ public struct PaintData
         {
             double effective_width = this.PressureEffective * paintsettings.BrushWidth;
             effective_width = PaintSettings.SYS_BRUSHSIZE_RANGE.Clamp((int)effective_width);
-            this.BrushWidthEffective = (int) effective_width;
+            this.BrushWidthEffective = effective_width;
         }
         else
         {
-            this.BrushWidthEffective = 0;
+            this.BrushWidthEffective = 0.0;
         }
     }
 }
