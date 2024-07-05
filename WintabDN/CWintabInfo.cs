@@ -45,7 +45,7 @@ namespace WintabDN
         /// <returns></returns>
         public static bool IsWintabAvailable()
         {
-            IntPtr v = _WTInfoA_OBJECT<IntPtr>(0, 0);            
+            IntPtr v = CWintabFuncs._WTInfoA_OBJECT<IntPtr>(0, 0);            
             bool status = v > 0;
             return status;
         }
@@ -56,7 +56,7 @@ namespace WintabDN
         /// <returns></returns>
         public static String GetDeviceInfo()
         {
-            string s = _WTInfoA_STRING(
+            string s = CWintabFuncs._WTInfoA_STRING(
                 (uint)EWTICategoryIndex.WTI_DEVICES,
                 (uint)EWTIDevicesIndex.DVC_NAME);
 
@@ -124,7 +124,7 @@ namespace WintabDN
         /// <returns>Returns the default context or null on error.</returns>
         private static CWintabContext GetDefaultContext(EWTICategoryIndex contextIndex_I)        
         {
-            var lc = _WTInfoA_OBJECT<WintabLogContext>((uint)contextIndex_I, 0);
+            var lc = CWintabFuncs._WTInfoA_OBJECT<WintabLogContext>((uint)contextIndex_I, 0);
             CWintabContext context = new CWintabContext();
             context.LogContext = lc;
             return context;
@@ -136,7 +136,7 @@ namespace WintabDN
         /// <returns></returns>
         public static Int32 GetDefaultDeviceIndex()
         {
-            Int32 deviceIndex = _WTInfoA_OBJECT<Int32>(
+            Int32 deviceIndex = CWintabFuncs._WTInfoA_OBJECT<Int32>(
                     (uint)EWTICategoryIndex.WTI_DEFCONTEXT,
                     (uint)EWTIContextIndex.CTX_DEVICE);
 
@@ -153,7 +153,7 @@ namespace WintabDN
         /// <returns></returns>
         public static WintabAxis GetDeviceAxis(Int32 devIndex_I, EAxisDimension dim_I)
         {
-            var a = _WTInfoA_OBJECT<WintabAxis>((uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I),
+            var a = CWintabFuncs._WTInfoA_OBJECT<WintabAxis>((uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I),
                     (uint)dim_I);
             return a;
         }
@@ -166,7 +166,7 @@ namespace WintabDN
         {
             tiltSupported_O = false;
 
-            var aa = _WTInfoA_OBJECT<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
+            var aa = CWintabFuncs._WTInfoA_OBJECT<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
                     (uint)EWTIDevicesIndex.DVC_ORIENTATION);
 
             // If size == 0, then returns a zeroed struct.
@@ -183,7 +183,7 @@ namespace WintabDN
         {
             rotationSupported_O = false;
 
-            var aa = _WTInfoA_OBJECT<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
+            var aa = CWintabFuncs._WTInfoA_OBJECT<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
                     (uint)EWTIDevicesIndex.DVC_ROTATION);
             rotationSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
             return aa;
@@ -196,7 +196,7 @@ namespace WintabDN
         public static UInt32 GetNumberOfDevices()
         {
             UInt32 numdevices =
-                _WTInfoA_OBJECT<UInt32>((uint)EWTICategoryIndex.WTI_INTERFACE,
+                CWintabFuncs._WTInfoA_OBJECT<UInt32>((uint)EWTICategoryIndex.WTI_INTERFACE,
                     (uint)EWTIInterfaceIndex.IFC_NDEVICES);
             return numdevices;
         }
@@ -207,7 +207,7 @@ namespace WintabDN
         /// <returns></returns>
         public static bool IsStylusActive()
         {
-            var isStylusActive = _WTInfoA_OBJECT<bool>(
+            var isStylusActive = CWintabFuncs._WTInfoA_OBJECT<bool>(
                 (uint)EWTICategoryIndex.WTI_INTERFACE,
                 (uint)EWTIInterfaceIndex.IFC_NDEVICES);
             return isStylusActive;
@@ -221,7 +221,7 @@ namespace WintabDN
         /// <returns></returns>
         public static string GetStylusName(EWTICursorNameIndex index_I)
         {
-            string s = _WTInfoA_STRING(
+            string s = CWintabFuncs._WTInfoA_STRING(
                 (uint)index_I,
                 (uint)EWTICursorsIndex.CSR_NAME);
 
@@ -243,7 +243,7 @@ namespace WintabDN
             EWTIDevicesIndex devIdx = (getNormalPressure_I ?
                     EWTIDevicesIndex.DVC_NPRESSURE : EWTIDevicesIndex.DVC_TPRESSURE);
 
-            var a = _WTInfoA_OBJECT<WintabAxis>(
+            var a = CWintabFuncs._WTInfoA_OBJECT<WintabAxis>(
                 (uint)EWTICategoryIndex.WTI_DEVICES,
                 (uint)devIdx);
             return a.axMax;
@@ -258,32 +258,13 @@ namespace WintabDN
         /// <returns></returns>
         public static WintabAxis GetTabletAxis(EAxisDimension dimension_I)
         {
-            var a = _WTInfoA_OBJECT<WintabAxis>(
+            var a = CWintabFuncs._WTInfoA_OBJECT<WintabAxis>(
                 (uint)EWTICategoryIndex.WTI_DEVICES
                , (uint)dimension_I);
             return a;
 
         }
 
-        public static string _WTInfoA_STRING(uint cat, uint index)
-        {
-            using (var ub = UnmanagedBuffer.ForStringType())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
-                string s = ub.GetValueString(size);
-                return s;
-            }
-        }
-
-        public static T _WTInfoA_OBJECT<T>(uint cat, uint index) where T :new()
-        {
-            using (var ub = UnmanagedBuffer.ForObjectType<T>())
-            {
-                int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
-                T s = ub.GetValueObject<T>(size);
-                return s;
-            }
-        }
     }
 
 }

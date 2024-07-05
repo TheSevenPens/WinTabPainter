@@ -58,7 +58,7 @@ namespace WintabDN
             // Supported if extIndex != -1
             if (extIndex != 0xFFFFFFFF)
             {
-                extMask = CWintabInfo._WTInfoA_OBJECT<UInt32>((uint)EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
+                extMask = CWintabFuncs._WTInfoA_OBJECT<UInt32>((uint)EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
                     (uint)EWTIExtensionIndex.EXT_MASK);
             }
                 
