@@ -30,7 +30,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace WintabDN;
+namespace WintabDN.Interop;
 
 /// <summary>
 /// Provide utility methods for unmanaged memory management.

@@ -74,7 +74,7 @@ public class CWintabExtensions
     {
         UInt32 thisTag = 0;
         UInt32 extIndex = 0xFFFFFFFF;
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(thisTag);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(thisTag);
     
         for (Int32 loopIdx = 0, size = -1; size != 0; loopIdx++)
         {
@@ -84,7 +84,7 @@ public class CWintabExtensions
     
             if (size > 0)
             {
-                thisTag = CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
+                thisTag = Interop.CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
     
                 if ((Enums.EWTXExtensionTag)thisTag == tag_I)
                 {
@@ -93,8 +93,8 @@ public class CWintabExtensions
                 }
             }
         }
-    
-        CMemUtils.FreeUnmanagedBuf(buf);
+
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
     
         return extIndex;
     }
@@ -123,7 +123,7 @@ public class CWintabExtensions
     {
         bool retStatus = false;
         WTExtensionProperty extProperty = new WTExtensionProperty();
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
         extProperty.extBase.version = 0;
         extProperty.extBase.tabletIndex = tabletIndex_I;
@@ -145,7 +145,7 @@ public class CWintabExtensions
         }
 
 
-        CMemUtils.FreeUnmanagedBuf(buf);
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
 
         return retStatus;
     }
@@ -175,7 +175,7 @@ public class CWintabExtensions
     {
         bool retStatus = false;
         WTExtensionProperty extProperty = new WTExtensionProperty();
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
         byte[] valueBytes = BitConverter.GetBytes(value_I);
 
@@ -196,7 +196,7 @@ public class CWintabExtensions
         retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
 
 
-        CMemUtils.FreeUnmanagedBuf(buf);
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
 
         return retStatus;
     }
@@ -226,7 +226,7 @@ public class CWintabExtensions
     {
         bool retStatus = false;
         WTExtensionProperty extProperty = new WTExtensionProperty();
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
         // Convert unicode string value_I to UTF8-encoded bytes
         byte[] utf8Bytes = System.Text.Encoding.Convert(Encoding.Unicode, Encoding.UTF8, Encoding.Unicode.GetBytes(value_I));
@@ -248,7 +248,7 @@ public class CWintabExtensions
         retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
 
 
-        CMemUtils.FreeUnmanagedBuf(buf);
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
 
         return retStatus;
     }
@@ -278,7 +278,7 @@ public class CWintabExtensions
     {
         bool retStatus = false;
         WTExtensionImageProperty extProperty = new WTExtensionImageProperty();
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(extProperty);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
 
         byte[] imageBytes = null;
@@ -312,7 +312,7 @@ public class CWintabExtensions
 
         retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
 
-        CMemUtils.FreeUnmanagedBuf(buf);
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
 
         return retStatus;
     }

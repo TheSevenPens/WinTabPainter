@@ -121,7 +121,7 @@ public class CWintabData
     public WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
         int size = (int)(Marshal.SizeOf(new WintabPacketExt()));
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(size);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
         WintabPacketExt[] packets = null;
 
         bool status = false;
@@ -136,7 +136,7 @@ public class CWintabData
 
         if (status)
         {
-            packets = CMemUtils.MarshalDataExtPackets(1, buf);
+            packets = Interop.CMemUtils.MarshalDataExtPackets(1, buf);
         }
         else
         {
@@ -151,7 +151,7 @@ public class CWintabData
          * causing the app to crash now or later...
          * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
          */
-        CMemUtils.FreeUnmanagedBuf(buf);
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
 
         return packets[0];
     }
@@ -178,7 +178,7 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(WintabPacket)));
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(WintabPacket)));
         WintabPacket packet = new WintabPacket();
 
         if (pktID_I == 0)
@@ -207,7 +207,7 @@ public class CWintabData
          * causing the app to crash now or later...
          * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
          */
-        CMemUtils.FreeUnmanagedBuf(buf);
+        Interop.CMemUtils.FreeUnmanagedBuf(buf);
 
         return packet;
     }
@@ -247,7 +247,7 @@ public class CWintabData
 
         // Packet array is used whether we're just looking or buying.
         int size = (int)(maxPkts_I * Marshal.SizeOf(new WintabPacket()));
-        IntPtr buf = CMemUtils.AllocUnmanagedBuf(size);
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
 
         if (remove_I)
         {
@@ -256,7 +256,7 @@ public class CWintabData
 
             if (numPkts_O > 0)
             {
-                packets = CMemUtils.MarshalDataPackets(numPkts_O, buf);
+                packets = Interop.CMemUtils.MarshalDataPackets(numPkts_O, buf);
             }
 
             //System.Diagnostics.Debug.WriteLine("GetDataPackets: numPkts_O: " + numPkts_O);
@@ -290,7 +290,7 @@ public class CWintabData
                     throw new Exception("WTDataPeek reports more packets returned than actually exist in queue.");
                 }
 
-                packets = CMemUtils.MarshalDataPackets(numPkts_O, buf);
+                packets = Interop.CMemUtils.MarshalDataPackets(numPkts_O, buf);
             }
         }
 

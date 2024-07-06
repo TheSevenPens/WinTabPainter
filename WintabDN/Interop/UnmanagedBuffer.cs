@@ -23,7 +23,7 @@ using System.Security.Cryptography.Xml;
 
 
 
-namespace WintabDN;
+namespace WintabDN.Interop;
 
 
 public class UnmanagedBuffer : IDisposable
