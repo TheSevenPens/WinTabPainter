@@ -31,25 +31,6 @@ using System.Collections.Generic;
 namespace WintabDN;
 
 /// <summary>
-/// Support for registering a Native Windows message with MessageEvents class.
-/// </summary>
-public class MessageReceivedEventArgs : EventArgs
-{
-    private readonly Message _message;
-
-    /// <summary>
-    /// MessageReceivedEventArgs constructor.
-    /// </summary>
-    /// <param name="message">Native windows message to be registered.</param>
-    public MessageReceivedEventArgs(Message message) { _message = message; }
-
-    /// <summary>
-    /// Return native Windows message handled by this object.
-    /// </summary>
-    public Message Message { get { return _message; } }
-}
-
-/// <summary>
 /// Windows native message handler, to provide support for detecting and
 /// responding to Wintab messages. 
 /// </summary>
