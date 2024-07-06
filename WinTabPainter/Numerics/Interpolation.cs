@@ -15,10 +15,10 @@ public static class Interpolation
         return t;
     }
 
-    public static double Remap( OrderedRangeD from_range, OrderedRangeD to_range , double from_value)
+    public static double Remap( RangeD from_range, RangeD to_range , double from_value)
     {
-        double t = InverseLerp(from_range.Lower, from_range.Upper, from_value);
-        double to_value = Lerp(to_range.Lower, to_range.Upper, t);
+        double t = InverseLerp(from_range.A, from_range.B, from_value);
+        double to_value = Lerp(to_range.A, to_range.B, t);
         return to_value;
     }
 }
