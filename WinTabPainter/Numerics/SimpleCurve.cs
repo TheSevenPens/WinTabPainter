@@ -7,7 +7,7 @@ public class SimpleCurve
 
     double amt;
 
-    private static RangeD range = new RangeD(-1.0,1.0);
+    private static OrderedRangeD range = new OrderedRangeD(-1.0,1.0);
     public double BendAmount { 
         get => this.amt; 
         set => this.amt = range.Clamp(value); }
