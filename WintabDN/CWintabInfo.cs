@@ -23,422 +23,246 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using System.DirectoryServices.ActiveDirectory;
+using System.Security.Policy;
 
-namespace WintabDN
+
+
+namespace WintabDN;
+
+
+/// <summary>
+/// Class to access Wintab interface data.
+/// </summary>
+public class CWintabInfo
 {
+    public const int MAX_STRING_SIZE = 256;
+
     /// <summary>
-    /// Class to access Wintab interface data.
+    /// Returns TRUE if Wintab service is running and responsive.
     /// </summary>
-    public class CWintabInfo
+    /// <returns></returns>
+    public static bool IsWintabAvailable()
     {
-        private const int MAX_STRING_SIZE = 256;
+        IntPtr v = CWintabFuncs.WTInfoAObject<IntPtr>(0, 0);            
+        bool status = v > 0;
+        return status;
+    }
 
-        /// <summary>
-        /// Returns TRUE if Wintab service is running and responsive.
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsWintabAvailable()
+    /// <summary>
+    /// Returns a string containing device name.
+    /// </summary>
+    /// <returns></returns>
+    public static String GetDeviceInfo()
+    {
+        string s = CWintabFuncs.WTInfoAString(
+            (uint)EWTICategoryIndex.WTI_DEVICES,
+            (uint)EWTIDevicesIndex.DVC_NAME);
+
+        return s;
+    }
+
+    /// <summary>
+    /// Returns the default system context or digitizer , with useful context overrides.
+    /// </summary>
+    /// <param name="cat">EWTICategoryIndex.WTI_DEFCONTEXT for digitizer context. EWTICategoryIndex.WTI_DEFSYSCTX for system context</param>
+    /// <param name="options_I">caller's options; OR'd into context options</param>
+    /// <returns>A 
+    public static CWintabContext GetDefaultContext(EWTICategoryIndex cat, ECTXOptionValues options_I = 0)
+    {
+        // SevenPens: In the original code this is made up of two separate methods that
+        // do almost the exact same thing. I've merged them and added the cat parameter
+        // indicates to indicate which kind of context to build
+
+        // EWTICategoryIndex.WTI_DEFSYSCTX = System context
+        // EWTICategoryIndex.WTI_DEFCONTEXT = Digitizer context
+
+        if ( cat != EWTICategoryIndex.WTI_DEFSYSCTX && cat != EWTICategoryIndex.WTI_DEFCONTEXT)
         {
-            IntPtr buf = IntPtr.Zero;
-            bool status = false;
-
-            try
-            {
-                status = (CWintabFuncs.WTInfoA(0, 0, buf) > 0);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED IsWintabAvailable: " + ex.ToString());
-            }
-
-            return status;
+            throw new System.ArgumentOutOfRangeException(nameof(cat));
         }
 
-        /// <summary>
-        /// Returns a string containing device name.
-        /// </summary>
-        /// <returns></returns>
-        public static String GetDeviceInfo()
+        var context = GetDefaultContext(cat);
+
+        if ( context == null)
         {
-            string devInfo = null;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(MAX_STRING_SIZE);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES, 
-                    (uint)EWTIDevicesIndex.DVC_NAME, buf);
-
-                if (size < 1)
-                {
-                    throw new Exception("GetDeviceInfo returned empty string.");
-                }
-
-                // Strip off final null character before marshalling.
-                devInfo = CMemUtils.MarshalUnmanagedString(buf, size-1);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceInfo: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-            return devInfo;
-        }
-
-        /// <summary>
-        /// Returns the default system context or digitizer , with useful context overrides.
-        /// </summary>
-        /// <param name="cat">EWTICategoryIndex.WTI_DEFCONTEXT for digitizer context. EWTICategoryIndex.WTI_DEFSYSCTX for system context</param>
-        /// <param name="options_I">caller's options; OR'd into context options</param>
-        /// <returns>A 
-        public static CWintabContext GetDefaultContext(EWTICategoryIndex cat, ECTXOptionValues options_I = 0)
-        {
-            // SevenPens: In the original code this is made up of two separate methods that
-            // do almost the exact same thing. I've merged them and added the cat parameter
-            // indicates to indicate which kind of context to build
-
-            // EWTICategoryIndex.WTI_DEFSYSCTX = System context
-            // EWTICategoryIndex.WTI_DEFCONTEXT = Digitizer context
-
-            if ( cat != EWTICategoryIndex.WTI_DEFSYSCTX && cat != EWTICategoryIndex.WTI_DEFCONTEXT)
-            {
-                throw new System.ArgumentOutOfRangeException(nameof(cat));
-            }
-
-            var context = GetDefaultContext(cat);
-
-            if ( context == null)
-            {
-                return context;
-            }
-
-            // Add caller's options.
-            context.Options |= (uint)options_I; 
-
-            if (cat == EWTICategoryIndex.WTI_DEFSYSCTX)
-            {
-                // Make sure we get data packet messages.
-                context.Options |= (uint)ECTXOptionValues.CXO_MESSAGES;
-            }
-
-            // Send all possible data bits (not including extended data).
-            // This is redundant with CWintabContext initialization, which
-            // also inits with PK_PKTBITS_ALL.
-            uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty 
-            uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; 
-
-            // Set the context data bits.
-            context.PktData = PACKETDATA; 
-            context.PktMode = PACKETMODE; 
-            context.MoveMask = PACKETDATA; 
-            context.BtnUpMask = context.BtnDnMask; 
-
-            // Name the context
-            context.Name = cat == EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
-
             return context;
         }
 
-        /// <summary>
-        /// Helper function to get digitizing or system default context.
-        /// </summary>
-        /// <param name="contextType_I">Use WTI_DEFCONTEXT for digital context or WTI_DEFSYSCTX for system context</param>
-        /// <returns>Returns the default context or null on error.</returns>
-        private static CWintabContext GetDefaultContext(EWTICategoryIndex contextIndex_I)        
+        // Add caller's options.
+        context.Options |= (uint)options_I; 
+
+        if (cat == EWTICategoryIndex.WTI_DEFSYSCTX)
         {
-            CWintabContext context = new CWintabContext();
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(context.LogContext);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA((uint)contextIndex_I, 0, buf);
-
-                context.LogContext = CMemUtils.MarshalUnmanagedBuf<WintabLogContext>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDefaultContext: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return context;
+            // Make sure we get data packet messages.
+            context.Options |= (uint)ECTXOptionValues.CXO_MESSAGES;
         }
 
-        /// <summary>
-        /// Returns the default device.  If this value is -1, then it also known as a "virtual device".
-        /// </summary>
-        /// <returns></returns>
-        public static Int32 GetDefaultDeviceIndex()
-        {
-            Int32 devIndex = 0;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(devIndex);
+        // Send all possible data bits (not including extended data).
+        // This is redundant with CWintabContext initialization, which
+        // also inits with PK_PKTBITS_ALL.
+        uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty 
+        uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; 
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEFCONTEXT, 
-                    (uint)EWTIContextIndex.CTX_DEVICE, buf);
+        // Set the context data bits.
+        context.PktData = PACKETDATA; 
+        context.PktMode = PACKETMODE; 
+        context.MoveMask = PACKETDATA; 
+        context.BtnUpMask = context.BtnDnMask; 
 
-                devIndex = CMemUtils.MarshalUnmanagedBuf<Int32>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDefaultDeviceIndex: " + ex.ToString());
-            }
+        // Name the context
+        context.Name = cat == EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
 
-            CMemUtils.FreeUnmanagedBuf(buf);
+        return context;
+    }
 
-            return devIndex;
-        }
+    /// <summary>
+    /// Helper function to get digitizing or system default context.
+    /// </summary>
+    /// <param name="contextType_I">Use WTI_DEFCONTEXT for digital context or WTI_DEFSYSCTX for system context</param>
+    /// <returns>Returns the default context or null on error.</returns>
+    private static CWintabContext GetDefaultContext(EWTICategoryIndex contextIndex_I)        
+    {
+        var lc = CWintabFuncs.WTInfoAObject<WintabLogContext>((uint)contextIndex_I, 0);
+        CWintabContext context = new CWintabContext();
+        context.LogContext = lc;
+        return context;
+    }
 
-        /// <summary>
-        /// Returns the WintabAxis object for specified device and dimension.
-        /// </summary>
-        /// <param name="devIndex_I">Device index (-1 = virtual device)</param>
-        /// <param name="dim_I">Dimension: AXIS_X, AXIS_Y or AXIS_Z</param>
-        /// <returns></returns>
-        public static WintabAxis GetDeviceAxis(Int32 devIndex_I, EAxisDimension dim_I)
-        {
-            WintabAxis axis = new WintabAxis();
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(axis);
+    /// <summary>
+    /// Returns the default device.  If this value is -1, then it also known as a "virtual device".
+    /// </summary>
+    /// <returns></returns>
+    public static Int32 GetDefaultDeviceIndex()
+    {
+        Int32 deviceIndex = CWintabFuncs.WTInfoAObject<Int32>(
+                (uint)EWTICategoryIndex.WTI_DEFCONTEXT,
+                (uint)EWTIContextIndex.CTX_DEVICE);
 
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I), 
-                    (uint)dim_I, buf);
-
-                // If size == 0, then returns a zeroed struct.
-                axis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceAxis: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return axis;
-        }
-
-        /// <summary>
-        /// Returns a 3-element array describing the tablet's orientation range and resolution capabilities.
-        /// </summary>
-        /// <returns></returns>
-        public static WintabAxisArray GetDeviceOrientation( out bool tiltSupported_O )
-        {
-            WintabAxisArray axisArray = new WintabAxisArray();
-            tiltSupported_O = false;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(axisArray);          
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES, 
-                    (uint)EWTIDevicesIndex.DVC_ORIENTATION, buf);
-
-                 // If size == 0, then returns a zeroed struct.
-                axisArray = CMemUtils.MarshalUnmanagedBuf<WintabAxisArray>(buf, size);
-                tiltSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceOrientation: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return axisArray;
-        }
-
-
-        /// <summary>
-        /// Returns a 3-element array describing the tablet's rotation range and resolution capabilities
-        /// </summary>
-        /// <returns></returns>
-        public static WintabAxisArray GetDeviceRotation(out bool rotationSupported_O)
-        {
-            WintabAxisArray axisArray = new WintabAxisArray();
-            rotationSupported_O = false;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(axisArray);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES, 
-                    (uint)EWTIDevicesIndex.DVC_ROTATION, buf);
-
-                // If size == 0, then returns a zeroed struct.
-                axisArray = CMemUtils.MarshalUnmanagedBuf<WintabAxisArray>(buf, size);
-                rotationSupported_O = (axisArray.array[0].axResolution != 0 && axisArray.array[1].axResolution != 0);                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceRotation: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return axisArray;
-        }
-
-        /// <summary>
-        /// Returns the number of devices connected.
-        /// </summary>
-        /// <returns></returns>
-        public static UInt32 GetNumberOfDevices()
-        {
-            UInt32 numDevices = 0;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(numDevices);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_INTERFACE, 
-                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
-
-                numDevices = CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetNumberOfDevices: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return numDevices;
-        }
-
-        /// <summary>
-        /// Returns whether a stylus is currently connected to the active cursor.
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsStylusActive()
-        {
-            bool isStylusActive = false;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(isStylusActive);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_INTERFACE,
-                    (uint)EWTIInterfaceIndex.IFC_NDEVICES, buf);
-
-                isStylusActive = CMemUtils.MarshalUnmanagedBuf<bool>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetNumberOfDevices: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return isStylusActive;
-        }
-
-
-        /// <summary>
-        /// Returns a string containing the name of the selected stylus. 
-        /// </summary>
-        /// <param name="index_I">indicates stylus type</param>
-        /// <returns></returns>
-        public static string GetStylusName(EWTICursorNameIndex index_I)
-        {
-            string stylusName = null;
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(MAX_STRING_SIZE);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)index_I,
-                    (uint)EWTICursorsIndex.CSR_NAME, buf);
-
-                if (size < 1)
-                {
-                    throw new Exception("GetStylusName returned empty string.");
-                }
-
-                // Strip off final null character before marshalling.
-                stylusName = CMemUtils.MarshalUnmanagedString(buf, size-1);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetDeviceInfo: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return stylusName;
-        }
-
-
-
-        /// <summary>
-        /// Return max normal pressure supported by tablet.
-        /// </summary>
-        /// <param name="getNormalPressure_I">TRUE=> normal pressure; 
-        /// FALSE=> tangential pressure (not supported on all tablets)</param>
-        /// <returns>maximum pressure value or zero on error</returns>
-        public static Int32 GetMaxPressure(bool getNormalPressure_I = true)
-        {
-            WintabAxis pressureAxis = new WintabAxis();
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(pressureAxis);
-
-            EWTIDevicesIndex devIdx = (getNormalPressure_I ?
-                EWTIDevicesIndex.DVC_NPRESSURE : EWTIDevicesIndex.DVC_TPRESSURE);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)devIdx, buf);
-
-                pressureAxis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetMaxPressure: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return pressureAxis.axMax;
-        }
-
-
-
-        /// <summary>
-        /// Return the WintabAxis object for the specified dimension.
-        /// </summary>
-        /// <param name="dimension_I">Dimension to fetch (eg: x, y)</param>
-        /// <returns></returns>
-        public static WintabAxis GetTabletAxis(EAxisDimension dimension_I)
-        {
-            WintabAxis axis = new WintabAxis();
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(axis);
-
-            try
-            {
-                int size = (int)CWintabFuncs.WTInfoA(
-                    (uint)EWTICategoryIndex.WTI_DEVICES,
-                    (uint)dimension_I, buf);
-
-                axis = CMemUtils.MarshalUnmanagedBuf<WintabAxis>(buf, size);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("FAILED GetMaxPressure: " + ex.ToString());
-            }
-
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return axis;
-        }
+        return deviceIndex;
     }
 
 
 
+    /// <summary>
+    /// Returns the WintabAxis object for specified device and dimension.
+    /// </summary>
+    /// <param name="devIndex_I">Device index (-1 = virtual device)</param>
+    /// <param name="dim_I">Dimension: AXIS_X, AXIS_Y or AXIS_Z</param>
+    /// <returns></returns>
+    public static WintabAxis GetDeviceAxis(Int32 devIndex_I, EAxisDimension dim_I)
+    {
+        var a = CWintabFuncs.WTInfoAObject<WintabAxis>((uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I),
+                (uint)dim_I);
+        return a;
+    }
+
+    /// <summary>
+    /// Returns a 3-element array describing the tablet's orientation range and resolution capabilities.
+    /// </summary>
+    /// <returns></returns>
+    public static WintabAxisArray GetDeviceOrientation( out bool tiltSupported_O )
+    {
+        tiltSupported_O = false;
+
+        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
+                (uint)EWTIDevicesIndex.DVC_ORIENTATION);
+
+        // If size == 0, then returns a zeroed struct.
+        tiltSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
+        return aa;
+    }
+
+
+    /// <summary>
+    /// Returns a 3-element array describing the tablet's rotation range and resolution capabilities
+    /// </summary>
+    /// <returns></returns>
+    public static WintabAxisArray GetDeviceRotation(out bool rotationSupported_O)
+    {
+        rotationSupported_O = false;
+
+        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
+                (uint)EWTIDevicesIndex.DVC_ROTATION);
+        rotationSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
+        return aa;
+    }
+
+    /// <summary>
+    /// Returns the number of devices connected.
+    /// </summary>
+    /// <returns></returns>
+    public static UInt32 GetNumberOfDevices()
+    {
+        UInt32 numdevices =
+            CWintabFuncs.WTInfoAObject<UInt32>((uint)EWTICategoryIndex.WTI_INTERFACE,
+                (uint)EWTIInterfaceIndex.IFC_NDEVICES);
+        return numdevices;
+    }
+
+    /// <summary>
+    /// Returns whether a stylus is currently connected to the active cursor.
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsStylusActive()
+    {
+        var isStylusActive = CWintabFuncs.WTInfoAObject<bool>(
+            (uint)EWTICategoryIndex.WTI_INTERFACE,
+            (uint)EWTIInterfaceIndex.IFC_NDEVICES);
+        return isStylusActive;
+    }
+
+
+    /// <summary>
+    /// Returns a string containing the name of the selected stylus. 
+    /// </summary>
+    /// <param name="index_I">indicates stylus type</param>
+    /// <returns></returns>
+    public static string GetStylusName(EWTICursorNameIndex index_I)
+    {
+        string s = CWintabFuncs.WTInfoAString(
+            (uint)index_I,
+            (uint)EWTICursorsIndex.CSR_NAME);
+
+        return s;
+
+    }
+
+
+
+
+    /// <summary>
+    /// Return max normal pressure supported by tablet.
+    /// </summary>
+    /// <param name="getNormalPressure_I">TRUE=> normal pressure; 
+    /// FALSE=> tangential pressure (not supported on all tablets)</param>
+    /// <returns>maximum pressure value or zero on error</returns>
+    public static Int32 GetMaxPressure(bool getNormalPressure_I = true)
+    {
+        EWTIDevicesIndex devIdx = (getNormalPressure_I ?
+                EWTIDevicesIndex.DVC_NPRESSURE : EWTIDevicesIndex.DVC_TPRESSURE);
+
+        var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
+            (uint)EWTICategoryIndex.WTI_DEVICES,
+            (uint)devIdx);
+        return a.axMax;
+    }
+
+
+
+    /// <summary>
+    /// Return the WintabAxis object for the specified dimension.
+    /// </summary>
+    /// <param name="dimension_I">Dimension to fetch (eg: x, y)</param>
+    /// <returns></returns>
+    public static WintabAxis GetTabletAxis(EAxisDimension dimension_I)
+    {
+        var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
+            (uint)EWTICategoryIndex.WTI_DEVICES
+           , (uint)dimension_I);
+        return a;
+
+    }
 
 }

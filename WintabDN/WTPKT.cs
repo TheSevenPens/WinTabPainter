@@ -21,31 +21,29 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Managed implementation of Wintab WTPKT typedef.
+/// Holds Wintab packet identifier.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public class WTPKT
 {
-    /// <summary>
-    /// Managed implementation of Wintab WTPKT typedef.
-    /// Holds Wintab packet identifier.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public class WTPKT
-    {
-        // \cond IGNORED_BY_DOXYGEN
-        [MarshalAs(UnmanagedType.U4)]
-        UInt32 value;
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.U4)]
+    UInt32 value;
 
-        public WTPKT(UInt32 value) 
-        { this.value = value; }
+    public WTPKT(UInt32 value) 
+    { this.value = value; }
 
-        public static implicit operator UInt32(WTPKT pkt_I)
-        { return pkt_I.value; }
+    public static implicit operator UInt32(WTPKT pkt_I)
+    { return pkt_I.value; }
 
-        public static implicit operator WTPKT(UInt32 value)
-        { return new WTPKT(value); }
+    public static implicit operator WTPKT(UInt32 value)
+    { return new WTPKT(value); }
 
-        public override string ToString()
-        { return value.ToString(); }
-        // // \endcond IGNORED_BY_DOXYGEN
-    }
-
+    public override string ToString()
+    { return value.ToString(); }
+    // // \endcond IGNORED_BY_DOXYGEN
 }

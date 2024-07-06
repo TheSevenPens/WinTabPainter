@@ -21,27 +21,26 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Pen Rotation
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WTRotation
 {
     /// <summary>
-    /// Pen Rotation
+    /// Specifies the pitch of the cursor.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct WTRotation
-    {
-        /// <summary>
-        /// Specifies the pitch of the cursor.
-        /// </summary>
-        public Int32 rotPitch;
+    public Int32 rotPitch;
 
-        /// <summary>
-        /// Specifies the roll of the cursor. 
-        /// </summary>
-        public Int32 rotRoll;
+    /// <summary>
+    /// Specifies the roll of the cursor. 
+    /// </summary>
+    public Int32 rotRoll;
 
-        /// <summary>
-        /// Specifies the yaw of the cursor.
-        /// </summary>
-        public Int32 rotYaw;
-    }
+    /// <summary>
+    /// Specifies the yaw of the cursor.
+    /// </summary>
+    public Int32 rotYaw;
 }

@@ -20,27 +20,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 //TODO - generics should be used where possible -
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Tag values used to get extension masks in GetWTExtensionMask
+/// </summary>
+public enum EWTXExtensionTag
 {
+    // enums 0 - 5 are deprecated
     /// <summary>
-    /// Tag values used to get extension masks in GetWTExtensionMask
+    /// Touch Strip extension mask tag
     /// </summary>
-    public enum EWTXExtensionTag
-    {
-        // enums 0 - 5 are deprecated
-        /// <summary>
-        /// Touch Strip extension mask tag
-        /// </summary>
-        WTX_TOUCHSTRIP = 6,
+    WTX_TOUCHSTRIP = 6,
 
-        /// <summary>
-        /// Touch Ring extension mask tag
-        /// </summary>
-        WTX_TOUCHRING = 7,
+    /// <summary>
+    /// Touch Ring extension mask tag
+    /// </summary>
+    WTX_TOUCHRING = 7,
 
-        /// <summary>
-        /// Express Key extension mask tag
-        /// </summary>
-        WTX_EXPKEYS2 = 8
-    }
-} // end namespace WintabDN
+    /// <summary>
+    /// Express Key extension mask tag
+    /// </summary>
+    WTX_EXPKEYS2 = 8
+}
+// end namespace WintabDN

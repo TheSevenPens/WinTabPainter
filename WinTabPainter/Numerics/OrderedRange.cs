@@ -1,13 +1,18 @@
 ﻿namespace WinTabPainter.Numerics;
 
-public struct Range
+public readonly struct OrderedRange
 {
 
     public readonly int Lower;
     public readonly int Upper;
 
-    public Range(int lower, int upper)
+    public OrderedRange(int lower, int upper)
     {
+        if (lower > upper)
+        {
+            throw new System.ArgumentOutOfRangeException();
+        }
+
         this.Lower = lower;
         this.Upper = upper;
     }

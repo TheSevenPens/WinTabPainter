@@ -21,31 +21,29 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Managed implementation of Wintab FIX32 typedef.
+/// Used for a fixed-point arithmetic value.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public class FIX32
 {
-    /// <summary>
-    /// Managed implementation of Wintab FIX32 typedef.
-    /// Used for a fixed-point arithmetic value.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public class FIX32
-    {
-        // \cond IGNORED_BY_DOXYGEN
-        [MarshalAs(UnmanagedType.U4)]
-        UInt32 value;
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.U4)]
+    UInt32 value;
 
-        public FIX32(UInt32 value)
-        { this.value = value; }
+    public FIX32(UInt32 value)
+    { this.value = value; }
 
-        public static implicit operator UInt32(FIX32 fix32_I)
-        { return fix32_I.value; }
+    public static implicit operator UInt32(FIX32 fix32_I)
+    { return fix32_I.value; }
 
-        public static implicit operator FIX32(UInt32 value)
-        { return new FIX32(value); }
+    public static implicit operator FIX32(UInt32 value)
+    { return new FIX32(value); }
 
-        public override string ToString()
-        { return value.ToString(); }
-        // \endcond IGNORED_BY_DOXYGEN
-    }
-
+    public override string ToString()
+    { return value.ToString(); }
+    // \endcond IGNORED_BY_DOXYGEN
 }

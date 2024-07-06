@@ -21,43 +21,41 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Managed implementation of Wintab HCTX typedef.
+/// Holds a Wintab context identifier.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public class HCTX
 {
-    /// <summary>
-    /// Managed implementation of Wintab HCTX typedef.
-    /// Holds a Wintab context identifier.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public class HCTX
-    {
-        // \cond IGNORED_BY_DOXYGEN
-        [MarshalAs(UnmanagedType.U4)]
-        UInt32 value;
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.U4)]
+    UInt32 value;
 
-        public HCTX(UInt32 value)
-        { this.value = value; }
+    public HCTX(UInt32 value)
+    { this.value = value; }
 
-        public static implicit operator UInt32(HCTX hctx_I)
-        { return hctx_I.value; }
+    public static implicit operator UInt32(HCTX hctx_I)
+    { return hctx_I.value; }
 
-        public static implicit operator HCTX(UInt32 value)
-        { return new HCTX(value); }
+    public static implicit operator HCTX(UInt32 value)
+    { return new HCTX(value); }
 
-        public static bool operator ==(HCTX hctx, UInt32 value)
-        { return hctx.value == value; }
+    public static bool operator ==(HCTX hctx, UInt32 value)
+    { return hctx.value == value; }
 
-        public static bool operator !=(HCTX hctx, UInt32 value)
-        { return hctx.value != value; }
+    public static bool operator !=(HCTX hctx, UInt32 value)
+    { return hctx.value != value; }
 
-        public override bool Equals(object obj)
-        { return (HCTX)obj == this; }
+    public override bool Equals(object obj)
+    { return (HCTX)obj == this; }
 
-        public override int GetHashCode()
-        { return 0; }
+    public override int GetHashCode()
+    { return 0; }
 
-        public override string ToString()
-        { return value.ToString(); }
-        // \endcond IGNORED_BY_DOXYGEN
-    }
-
+    public override string ToString()
+    { return value.ToString(); }
+    // \endcond IGNORED_BY_DOXYGEN
 }

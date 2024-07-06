@@ -3,7 +3,7 @@ using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry;
 
-public struct Point
+public readonly struct Point
 {
     public readonly int X;
     public readonly int Y;

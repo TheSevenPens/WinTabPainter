@@ -34,7 +34,7 @@ namespace WinTabPainter
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
-        Numerics.Range SMOOTHING_TRACKBAR_RANGE = new Numerics.Range(-100, 100);
+        Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new Numerics.OrderedRange(-100, 100);
 
 
         public FormWinTabPainterApp()
@@ -306,14 +306,8 @@ namespace WinTabPainter
 
         private void _save()
         {
-            try
-            {
-                this.bitmap_doc.Save(this.filename);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to save " + this.filename);
-            }
+            this.bitmap_doc.Save(this.filename);
+
         }
 
         private void AppSaveAs()

@@ -18,17 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN
-{
-    /// <summary>
-    /// Values to use when asking for X, Y or Z WintabAxis object.
-    /// </summary>
-    public enum EAxisDimension
-    {
-        AXIS_X = EWTIDevicesIndex.DVC_X,
-        AXIS_Y = EWTIDevicesIndex.DVC_Y,
-        AXIS_Z = EWTIDevicesIndex.DVC_Z
-    }
+namespace WintabDN;
 
+/// <summary>
+/// Values to use when asking for X, Y or Z WintabAxis object.
+/// </summary>
+public enum EAxisDimension
+{
+    AXIS_X = EWTIDevicesIndex.DVC_X,
+    AXIS_Y = EWTIDevicesIndex.DVC_Y,
+    AXIS_Z = EWTIDevicesIndex.DVC_Z
 }
 

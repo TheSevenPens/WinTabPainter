@@ -21,32 +21,31 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Common properties for control extension data transactions.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WTExtensionBase
 {
     /// <summary>
-    /// Common properties for control extension data transactions.
+    /// Specifies the Wintab context to which these properties apply.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct WTExtensionBase
-    {
-        /// <summary>
-        /// Specifies the Wintab context to which these properties apply.
-        /// </summary>
-        public HCTX nContext;
+    public HCTX nContext;
 
-        /// <summary>
-        /// Status of setting/getting properties.
-        /// </summary>
-        public UInt32 nStatus;
+    /// <summary>
+    /// Status of setting/getting properties.
+    /// </summary>
+    public UInt32 nStatus;
 
-        /// <summary>
-        /// Timestamp applied to property transaction.
-        /// </summary>
-        public WTPKT nTime;
+    /// <summary>
+    /// Timestamp applied to property transaction.
+    /// </summary>
+    public WTPKT nTime;
 
-        /// <summary>
-        /// Reserved - not used.
-        /// </summary>
-        public UInt32 nSerialNumber;
-    }
+    /// <summary>
+    /// Reserved - not used.
+    /// </summary>
+    public UInt32 nSerialNumber;
 }

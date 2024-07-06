@@ -18,17 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Context status values.
+/// </summary>
+public enum ECTXStatusValues
 {
-    /// <summary>
-    /// Context status values.
-    /// </summary>
-    public enum ECTXStatusValues
-    {
 	    CXS_DISABLED		= 0x0001,
 	    CXS_OBSCURED		= 0x0002,
 	    CXS_ONTOP			= 0x0004
-    }
-
 }
 

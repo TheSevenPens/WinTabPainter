@@ -21,30 +21,29 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Pen Orientation
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WTOrientation
 {
     /// <summary>
-    /// Pen Orientation
+    /// Specifies the clockwise rotation of the cursor about the 
+    /// z axis through a full circular range.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct WTOrientation
-    {
-        /// <summary>
-        /// Specifies the clockwise rotation of the cursor about the 
-        /// z axis through a full circular range.
-        /// </summary>
-        public Int32 orAzimuth;
+    public Int32 orAzimuth;
 
-        /// <summary>
-        /// Specifies the angle with the x-y plane through a signed, semicircular range.  
-        /// Positive values specify an angle upward toward the positive z axis; negative 
-        /// values specify an angle downward toward the negative z axis. 
-        /// </summary>
-        public Int32 orAltitude;
+    /// <summary>
+    /// Specifies the angle with the x-y plane through a signed, semicircular range.  
+    /// Positive values specify an angle upward toward the positive z axis; negative 
+    /// values specify an angle downward toward the negative z axis. 
+    /// </summary>
+    public Int32 orAltitude;
 
-        /// <summary>
-        /// Specifies the clockwise rotation of the cursor about its own major axis.
-        /// </summary>
-        public Int32 orTwist;
-    }
+    /// <summary>
+    /// Specifies the clockwise rotation of the cursor about its own major axis.
+    /// </summary>
+    public Int32 orTwist;
 }
