@@ -20,18 +20,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 //TODO - generics should be used where possible -
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Globals used for Wintab extensions.
+/// </summary>
+public class WTExtensionsGlobal
 {
     /// <summary>
-    /// Globals used for Wintab extensions.
+    /// Maximum size of data buffer used in WTExtensionProperty.
     /// </summary>
-    public class WTExtensionsGlobal
-    {
-        /// <summary>
-        /// Maximum size of data buffer used in WTExtensionProperty.
-        /// </summary>
-        public const int WTExtensionPropertyMaxDataBytes = 32;
+    public const int WTExtensionPropertyMaxDataBytes = 32;
 
-        public const int WTExtensionPropertyImageMaxDataBytes = 4096;
-    }
-} // end namespace WintabDN
+    public const int WTExtensionPropertyImageMaxDataBytes = 4096;
+}
+// end namespace WintabDN

@@ -20,19 +20,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System.Runtime.InteropServices;
 
-namespace WintabDN
-{
-    /// <summary>
-    /// Array of WintabAxis objects.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct WintabAxisArray
-    {
-        // \cond IGNORED_BY_DOXYGEN
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public WintabAxis[] array;
-        // \endcond IGNORED_BY_DOXYGEN
-    }
+namespace WintabDN;
 
+/// <summary>
+/// Array of WintabAxis objects.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WintabAxisArray
+{
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    public WintabAxis[] array;
+    // \endcond IGNORED_BY_DOXYGEN
 }
 

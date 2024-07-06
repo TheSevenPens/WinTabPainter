@@ -23,44 +23,44 @@ using System.Runtime.InteropServices;
 
 //TODO - generics should be used where possible -
 
-namespace WintabDN
+namespace WintabDN;
+
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WTExtensionPropertyBase
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct WTExtensionPropertyBase
-    {
-        /// <summary>
-        /// Structure version (reserved: always 0 for now)
-        /// </summary>
-        public byte version;
+    /// <summary>
+    /// Structure version (reserved: always 0 for now)
+    /// </summary>
+    public byte version;
 
-        /// <summary>
-        /// 0-based index for tablet
-        /// </summary>
-        public byte tabletIndex;
+    /// <summary>
+    /// 0-based index for tablet
+    /// </summary>
+    public byte tabletIndex;
 
-        /// <summary>
-        /// 0-based index for control 
-        /// </summary>
-        public byte controlIndex;
+    /// <summary>
+    /// 0-based index for control 
+    /// </summary>
+    public byte controlIndex;
 
-        /// <summary>
-        /// 0-based index for control's sub-function
-        /// </summary>
-        public byte functionIndex;
+    /// <summary>
+    /// 0-based index for control's sub-function
+    /// </summary>
+    public byte functionIndex;
 
-        /// <summary>
-        /// ID of property being set (see EWTExtensionTabletProperty)
-        /// </summary>
-        public UInt16 propertyID;
+    /// <summary>
+    /// ID of property being set (see EWTExtensionTabletProperty)
+    /// </summary>
+    public UInt16 propertyID;
 
-        /// <summary>
-        /// Alignment padding (reserved)
-        /// </summary>
-        public UInt16 reserved;
+    /// <summary>
+    /// Alignment padding (reserved)
+    /// </summary>
+    public UInt16 reserved;
 
-        /// <summary>
-        /// Number of bytes in data[] buffer
-        /// </summary>
-        public UInt32 dataSize;
-    }
-} // end namespace WintabDN
+    /// <summary>
+    /// Number of bytes in data[] buffer
+    /// </summary>
+    public UInt32 dataSize;
+}
+// end namespace WintabDN

@@ -23,67 +23,65 @@ using System.Security.Cryptography.Xml;
 
 
 
-namespace WintabDN
+namespace WintabDN;
+
+
+public class UnmanagedBuffer : IDisposable
 {
+    private IntPtr bufferPointer;
+    private bool _disposed;
+    Type _type;
 
-    public class UnmanagedBuffer : IDisposable
+    public nint BufferPointer { 
+        get => bufferPointer; 
+        private set => bufferPointer = value; }
+
+    public UnmanagedBuffer()
     {
-        private IntPtr bufferPointer;
-        private bool _disposed;
-        Type _type;
-
-        public nint BufferPointer { 
-            get => bufferPointer; 
-            private set => bufferPointer = value; }
-
-        public UnmanagedBuffer()
-        {
-        }
-
-        public static UnmanagedBuffer ForObjectType<T>() where T : new()
-        {
-            var ub = new UnmanagedBuffer();
-            var v = new T();
-            ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(v);
-            ub._disposed = false;
-            ub._type = typeof(T);
-            return ub;
-        }
-        public static UnmanagedBuffer ForStringType()
-        {
-            var ub = new UnmanagedBuffer();
-            ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
-            ub._disposed = false;
-            ub._type = typeof(string);
-            return ub;
-        }
-
-        public T GetValueObject<T>(int size) where T : new()
-        {
-            if (_type != typeof(T))
-            {
-                throw new System.ArgumentOutOfRangeException("mismatch in types");
-            }
-            var _value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
-            return _value;
-        }
-        public string GetValueString(int size)
-        {
-            if (_type != typeof(string))
-            {
-                throw new System.ArgumentOutOfRangeException("mismatch in types");
-            }
-            // Strip off final null character before marshalling.
-            var s = CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
-            return s;
-        }
-
-        public void Dispose()
-        {
-            if (this._disposed) return;
-            if (this.BufferPointer == IntPtr.Zero) return;
-            CMemUtils.FreeUnmanagedBuf(this.BufferPointer);
-        }
     }
 
+    public static UnmanagedBuffer ForObjectType<T>() where T : new()
+    {
+        var ub = new UnmanagedBuffer();
+        var v = new T();
+        ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(v);
+        ub._disposed = false;
+        ub._type = typeof(T);
+        return ub;
+    }
+    public static UnmanagedBuffer ForStringType()
+    {
+        var ub = new UnmanagedBuffer();
+        ub.BufferPointer = CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+        ub._disposed = false;
+        ub._type = typeof(string);
+        return ub;
+    }
+
+    public T GetValueObject<T>(int size) where T : new()
+    {
+        if (_type != typeof(T))
+        {
+            throw new System.ArgumentOutOfRangeException("mismatch in types");
+        }
+        var _value = CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
+        return _value;
+    }
+    public string GetValueString(int size)
+    {
+        if (_type != typeof(string))
+        {
+            throw new System.ArgumentOutOfRangeException("mismatch in types");
+        }
+        // Strip off final null character before marshalling.
+        var s = CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
+        return s;
+    }
+
+    public void Dispose()
+    {
+        if (this._disposed) return;
+        if (this.BufferPointer == IntPtr.Zero) return;
+        CMemUtils.FreeUnmanagedBuf(this.BufferPointer);
+    }
 }

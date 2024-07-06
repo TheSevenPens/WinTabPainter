@@ -18,26 +18,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// WintabPacket.pkButton codes.
+/// </summary>
+public enum EWintabPacketButtonCode
 {
     /// <summary>
-    /// WintabPacket.pkButton codes.
+    /// No change in button state.
     /// </summary>
-    public enum EWintabPacketButtonCode
-    {
-        /// <summary>
-        /// No change in button state.
-        /// </summary>
-        TBN_NONE	    = 0,
+    TBN_NONE	    = 0,
 
-        /// <summary>
-        /// Button was released.
-        /// </summary>
-        TBN_UP		    = 1,
+    /// <summary>
+    /// Button was released.
+    /// </summary>
+    TBN_UP		    = 1,
 
-        /// <summary>
-        /// Button was pressed.
-        /// </summary>
-        TBN_DOWN	    = 2
-    }
+    /// <summary>
+    /// Button was pressed.
+    /// </summary>
+    TBN_DOWN	    = 2
 }

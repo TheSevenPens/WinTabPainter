@@ -21,34 +21,32 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN
+namespace WintabDN;
+
+/// <summary>
+/// Managed version of AXIS struct.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WintabAxis
 {
     /// <summary>
-    /// Managed version of AXIS struct.
+    /// Specifies the minimum value of the data item in the tablet's na-tive coordinates.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct WintabAxis
-    {
-        /// <summary>
-        /// Specifies the minimum value of the data item in the tablet's na-tive coordinates.
-        /// </summary>
-        public Int32 axMin;
+    public Int32 axMin;
 
-        /// <summary>
-        /// Specifies the maximum value of the data item in the tablet's na-tive coordinates.
-        /// </summary>
-        public Int32 axMax;
+    /// <summary>
+    /// Specifies the maximum value of the data item in the tablet's na-tive coordinates.
+    /// </summary>
+    public Int32 axMax;
 
-        /// <summary>
-        /// Indicates the units used in calculating the resolution for the data item.
-        /// </summary>
-        public UInt32 axUnits;
+    /// <summary>
+    /// Indicates the units used in calculating the resolution for the data item.
+    /// </summary>
+    public UInt32 axUnits;
 
-        /// <summary>
-        /// Is a fixed-point number giving the number of data item incre-ments per physical unit.
-        /// </summary>
-        public FIX32 axResolution;
-    }
-
+    /// <summary>
+    /// Is a fixed-point number giving the number of data item incre-ments per physical unit.
+    /// </summary>
+    public FIX32 axResolution;
 }
 

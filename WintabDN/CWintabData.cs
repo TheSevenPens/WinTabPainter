@@ -25,290 +25,289 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace WintabDN
+namespace WintabDN;
+
+
+/// <summary>
+/// Class to support capture and management of Wintab daa.
+/// </summary>
+public class CWintabData
 {
+    private CWintabContext m_context;
 
     /// <summary>
-    /// Class to support capture and management of Wintab daa.
+    /// CWintabData constructor
     /// </summary>
-    public class CWintabData
+    /// <param name="context_I">logical context for this data object</param>
+    public CWintabData(CWintabContext context_I)
     {
-        private CWintabContext m_context;
+        Init(context_I);
+    }
 
-        /// <summary>
-        /// CWintabData constructor
-        /// </summary>
-        /// <param name="context_I">logical context for this data object</param>
-        public CWintabData(CWintabContext context_I)
+    /// <summary>
+    /// Initialize this data object.
+    /// </summary>
+    /// <param name="context_I">logical context for this data object</param>
+    private void Init(CWintabContext context_I)
+    {
+        if (context_I == null)
         {
-            Init(context_I);
+            throw new Exception("Trying to init CWintabData with null context.");
+        }
+        m_context = context_I;
+
+        // Watch for the Wintab WT_PACKET event.
+        MessageEvents.WatchMessage((int)EWintabEventMessage.WT_PACKET);
+
+        // Watch for the Wintab WT_PACKETEXT event.
+        MessageEvents.WatchMessage((int)EWintabEventMessage.WT_PACKETEXT);
+
+    }
+
+    /// <summary>
+    /// Set the handler to be called when WT_PACKET events are received.
+    /// </summary>
+    /// <param name="handler_I">WT_PACKET event handler supplied by the client.</param>
+    public void SetWTPacketEventHandler(EventHandler<MessageReceivedEventArgs> handler_I)
+    {
+        MessageEvents.MessageReceived += handler_I;
+    }
+
+    public void ClearWTPacketEventHandler()
+    {
+        MessageEvents.ClearMessageEvents();
+    }
+
+
+    /// <summary>
+    /// Set packet queue size for this data object's context.
+    /// </summary>
+    /// <param name="numPkts_I">desired #packets in queue</param>
+    /// <returns>Returns true if operation successful</returns>
+    public bool SetPacketQueueSize(UInt32 numPkts_I)
+    {
+        bool status = false;
+
+        CheckForValidHCTX("SetPacketQueueSize");
+        status = CWintabFuncs.WTQueueSizeSet(m_context.HCtx, numPkts_I);
+
+
+        return status;
+    }
+
+    /// <summary>
+    /// Get packet queue size for this data object's context.
+    /// </summary>
+    /// <returns>Returns a packet queue size in #packets or 0 if fails</returns>
+    public UInt32 GetPacketQueueSize()
+    {
+        UInt32 numPkts = 0;
+
+        CheckForValidHCTX("GetPacketQueueSize");
+        numPkts = CWintabFuncs.WTQueueSizeGet(m_context.HCtx);
+
+
+        return numPkts;
+    }
+
+
+
+    /// <summary>
+    /// Returns one packet of WintabPacketExt data from the packet queue.
+    /// </summary>
+    /// <param name="hCtx_I">Wintab context to be used when asking for the data</param>
+    /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
+    /// <returns>Returns a data packet with non-null context if successful.</returns>
+    public WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
+    {
+        int size = (int)(Marshal.SizeOf(new WintabPacketExt()));
+        IntPtr buf = CMemUtils.AllocUnmanagedBuf(size);
+        WintabPacketExt[] packets = null;
+
+        bool status = false;
+
+        if (pktID_I == 0)
+        {
+            throw new Exception("GetDataPacket - invalid pktID");
         }
 
-        /// <summary>
-        /// Initialize this data object.
-        /// </summary>
-        /// <param name="context_I">logical context for this data object</param>
-        private void Init(CWintabContext context_I)
+        CheckForValidHCTX("GetDataPacket");
+        status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf);
+
+        if (status)
         {
-            if (context_I == null)
+            packets = CMemUtils.MarshalDataExtPackets(1, buf);
+        }
+        else
+        {
+            // If fails, make sure context is zero.
+            packets[0].pkBase.nContext = 0;
+        }
+
+
+        /**
+         * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
+         * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
+         * causing the app to crash now or later...
+         * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
+         */
+        CMemUtils.FreeUnmanagedBuf(buf);
+
+        return packets[0];
+    }
+
+
+
+    /// <summary>
+    /// Returns one packet of WintabPacket data from the packet queue. (Deprecated)
+    /// </summary>
+    /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
+    /// <returns>Returns a data packet with non-null context if successful.</returns>
+    public WintabPacket GetDataPacket(UInt32 pktID_I)
+    {
+        return GetDataPacket(m_context.HCtx, pktID_I);
+    }
+
+
+
+    /// <summary>
+    /// Returns one packet of Wintab data from the packet queue.
+    /// </summary>
+    /// <param name="hCtx_I">Wintab context to be used when asking for the data</param>
+    /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
+    /// <returns>Returns a data packet with non-null context if successful.</returns>
+    public WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
+    {
+        IntPtr buf = CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(WintabPacket)));
+        WintabPacket packet = new WintabPacket();
+
+        if (pktID_I == 0)
+        {
+            throw new Exception("GetDataPacket - invalid pktID");
+        }
+
+        CheckForValidHCTX("GetDataPacket");
+
+        if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf))
+        {
+            packet = (WintabPacket)Marshal.PtrToStructure(buf, typeof(WintabPacket));
+        }
+        else
+        {
+            //
+            // If fails, make sure context is zero.
+            //
+            packet.pkContext = 0;
+
+        }
+
+        /**
+         * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
+         * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
+         * causing the app to crash now or later...
+         * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
+         */
+        CMemUtils.FreeUnmanagedBuf(buf);
+
+        return packet;
+    }
+
+
+
+    /// <summary>
+    /// Removes all pending data packets from the context's queue.
+    /// </summary>
+    public void FlushDataPackets(uint numPacketsToFlush_I)
+    {
+        CheckForValidHCTX("FlushDataPackets");
+        CWintabFuncs.WTPacketsGet(m_context.HCtx, numPacketsToFlush_I, IntPtr.Zero);
+    }
+
+
+
+    /// <summary>
+    /// Returns an array of Wintab data packets from the packet queue.
+    /// </summary>
+    /// <param name="maxPkts_I">Specifies the maximum number of packets to return.</param>
+    /// <param name="remove_I">If true, returns data packets and removes them from the queue.</param>
+    /// <param name="numPkts_O">Number of packets actually returned.</param>
+    /// <returns>Returns the next maxPkts_I from the list.  Note that if remove_I is false, then 
+    /// repeated calls will return the same packets.  If remove_I is true, then packets will be 
+    /// removed and subsequent calls will get different packets (if any).</returns>
+    public WintabPacket[] GetDataPackets(UInt32 maxPkts_I, bool remove_I, ref UInt32 numPkts_O)
+    {
+        WintabPacket[] packets = null;
+
+        CheckForValidHCTX("GetDataPackets");
+
+        if (maxPkts_I == 0)
+        {
+            throw new Exception("GetDataPackets - maxPkts_I is zero.");
+        }
+
+        // Packet array is used whether we're just looking or buying.
+        int size = (int)(maxPkts_I * Marshal.SizeOf(new WintabPacket()));
+        IntPtr buf = CMemUtils.AllocUnmanagedBuf(size);
+
+        if (remove_I)
+        {
+            // Return data packets and remove packets from queue.
+            numPkts_O = CWintabFuncs.WTPacketsGet(m_context.HCtx, maxPkts_I, buf);
+
+            if (numPkts_O > 0)
             {
-                throw new Exception("Trying to init CWintabData with null context.");
+                packets = CMemUtils.MarshalDataPackets(numPkts_O, buf);
             }
-            m_context = context_I;
 
-            // Watch for the Wintab WT_PACKET event.
-            MessageEvents.WatchMessage((int)EWintabEventMessage.WT_PACKET);
-
-            // Watch for the Wintab WT_PACKETEXT event.
-            MessageEvents.WatchMessage((int)EWintabEventMessage.WT_PACKETEXT);
-
+            //System.Diagnostics.Debug.WriteLine("GetDataPackets: numPkts_O: " + numPkts_O);
         }
-
-        /// <summary>
-        /// Set the handler to be called when WT_PACKET events are received.
-        /// </summary>
-        /// <param name="handler_I">WT_PACKET event handler supplied by the client.</param>
-        public void SetWTPacketEventHandler(EventHandler<MessageReceivedEventArgs> handler_I)
+        else
         {
-            MessageEvents.MessageReceived += handler_I;
-        }
+            // Return data packets, but leave on queue.  (Peek mode)
+            UInt32 pktIDOldest = 0;
+            UInt32 pktIDNewest = 0;
 
-        public void ClearWTPacketEventHandler()
-        {
-            MessageEvents.ClearMessageEvents();
-        }
-
-
-        /// <summary>
-        /// Set packet queue size for this data object's context.
-        /// </summary>
-        /// <param name="numPkts_I">desired #packets in queue</param>
-        /// <returns>Returns true if operation successful</returns>
-        public bool SetPacketQueueSize(UInt32 numPkts_I)
-        {
-            bool status = false;
-
-            CheckForValidHCTX("SetPacketQueueSize");
-            status = CWintabFuncs.WTQueueSizeSet(m_context.HCtx, numPkts_I);
-    
-
-            return status;
-        }
-
-        /// <summary>
-        /// Get packet queue size for this data object's context.
-        /// </summary>
-        /// <returns>Returns a packet queue size in #packets or 0 if fails</returns>
-        public UInt32 GetPacketQueueSize()
-        {
-            UInt32 numPkts = 0;
-
-            CheckForValidHCTX("GetPacketQueueSize");
-            numPkts = CWintabFuncs.WTQueueSizeGet(m_context.HCtx);
-
-
-            return numPkts;
-        }
-
-
-
-        /// <summary>
-        /// Returns one packet of WintabPacketExt data from the packet queue.
-        /// </summary>
-        /// <param name="hCtx_I">Wintab context to be used when asking for the data</param>
-        /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
-        /// <returns>Returns a data packet with non-null context if successful.</returns>
-        public WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
-        {
-            int size = (int)(Marshal.SizeOf(new WintabPacketExt()));
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(size);
-            WintabPacketExt[] packets = null;
-
-            bool status = false;
-
-            if (pktID_I == 0)
+            // Get oldest and newest packet identifiers in the queue.  These will bound the
+            // packets that are actually returned.
+            if (CWintabFuncs.WTQueuePacketsEx(m_context.HCtx, ref pktIDOldest, ref pktIDNewest))
             {
-                throw new Exception("GetDataPacket - invalid pktID");
-            }
+                UInt32 pktIDStart = pktIDOldest;
+                UInt32 pktIDEnd = pktIDNewest;
 
-            CheckForValidHCTX("GetDataPacket");
-            status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf);
+                if (pktIDStart == 0)
+                { throw new Exception("WTQueuePacketsEx reports zero start packet identifier"); }
 
-            if (status)
-            {
-                packets = CMemUtils.MarshalDataExtPackets(1, buf);
-            }
-            else
-            {
-                // If fails, make sure context is zero.
-                packets[0].pkBase.nContext = 0;
-            }
+                if (pktIDEnd == 0)
+                { throw new Exception("WTQueuePacketsEx reports zero end packet identifier"); }
 
+                // Peek up to the max number of packets specified.
+                UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, maxPkts_I, buf, ref numPkts_O);
 
-            /**
-             * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
-             * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
-             * causing the app to crash now or later...
-             * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
-             */
-            CMemUtils.FreeUnmanagedBuf(buf);
+                System.Diagnostics.Debug.WriteLine("GetDataPackets: WTDataPeek - numFoundPkts: " + numFoundPkts + ", numPkts_O: " + numPkts_O);
 
-            return packets[0];
-        }
-
-
-
-        /// <summary>
-        /// Returns one packet of WintabPacket data from the packet queue. (Deprecated)
-        /// </summary>
-        /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
-        /// <returns>Returns a data packet with non-null context if successful.</returns>
-        public WintabPacket GetDataPacket(UInt32 pktID_I)
-        {
-            return GetDataPacket(m_context.HCtx, pktID_I);
-        }
-
-
-
-        /// <summary>
-        /// Returns one packet of Wintab data from the packet queue.
-        /// </summary>
-        /// <param name="hCtx_I">Wintab context to be used when asking for the data</param>
-        /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
-        /// <returns>Returns a data packet with non-null context if successful.</returns>
-        public WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
-        {
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(WintabPacket)));
-            WintabPacket packet = new WintabPacket();
-
-            if (pktID_I == 0)
-            {
-                throw new Exception("GetDataPacket - invalid pktID");
-            }
-
-            CheckForValidHCTX("GetDataPacket");
-
-            if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf))
-            {
-                packet = (WintabPacket)Marshal.PtrToStructure(buf, typeof(WintabPacket));
-            }
-            else
-            {
-                //
-                // If fails, make sure context is zero.
-                //
-                packet.pkContext = 0;
-
-            }
-
-            /**
-             * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
-             * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
-             * causing the app to crash now or later...
-             * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
-             */
-            CMemUtils.FreeUnmanagedBuf(buf);
-
-            return packet;
-        }
-
-
-
-        /// <summary>
-        /// Removes all pending data packets from the context's queue.
-        /// </summary>
-        public void FlushDataPackets(uint numPacketsToFlush_I)
-        {
-            CheckForValidHCTX("FlushDataPackets");
-            CWintabFuncs.WTPacketsGet(m_context.HCtx, numPacketsToFlush_I, IntPtr.Zero);
-        }
-
-
-
-        /// <summary>
-        /// Returns an array of Wintab data packets from the packet queue.
-        /// </summary>
-        /// <param name="maxPkts_I">Specifies the maximum number of packets to return.</param>
-        /// <param name="remove_I">If true, returns data packets and removes them from the queue.</param>
-        /// <param name="numPkts_O">Number of packets actually returned.</param>
-        /// <returns>Returns the next maxPkts_I from the list.  Note that if remove_I is false, then 
-        /// repeated calls will return the same packets.  If remove_I is true, then packets will be 
-        /// removed and subsequent calls will get different packets (if any).</returns>
-        public WintabPacket[] GetDataPackets(UInt32 maxPkts_I, bool remove_I, ref UInt32 numPkts_O)
-        {
-            WintabPacket[] packets = null;
-
-            CheckForValidHCTX("GetDataPackets");
-
-            if (maxPkts_I == 0)
-            {
-                throw new Exception("GetDataPackets - maxPkts_I is zero.");
-            }
-
-            // Packet array is used whether we're just looking or buying.
-            int size = (int)(maxPkts_I * Marshal.SizeOf(new WintabPacket()));
-            IntPtr buf = CMemUtils.AllocUnmanagedBuf(size);
-
-            if (remove_I)
-            {
-                // Return data packets and remove packets from queue.
-                numPkts_O = CWintabFuncs.WTPacketsGet(m_context.HCtx, maxPkts_I, buf);
-
-                if (numPkts_O > 0)
+                if (numFoundPkts > 0 && numFoundPkts < numPkts_O)
                 {
-                    packets = CMemUtils.MarshalDataPackets(numPkts_O, buf);
+                    throw new Exception("WTDataPeek reports more packets returned than actually exist in queue.");
                 }
 
-                //System.Diagnostics.Debug.WriteLine("GetDataPackets: numPkts_O: " + numPkts_O);
+                packets = CMemUtils.MarshalDataPackets(numPkts_O, buf);
             }
-            else
-            {
-                // Return data packets, but leave on queue.  (Peek mode)
-                UInt32 pktIDOldest = 0;
-                UInt32 pktIDNewest = 0;
-
-                // Get oldest and newest packet identifiers in the queue.  These will bound the
-                // packets that are actually returned.
-                if (CWintabFuncs.WTQueuePacketsEx(m_context.HCtx, ref pktIDOldest, ref pktIDNewest))
-                {
-                    UInt32 pktIDStart = pktIDOldest;
-                    UInt32 pktIDEnd = pktIDNewest;
-
-                    if (pktIDStart == 0)
-                    { throw new Exception("WTQueuePacketsEx reports zero start packet identifier"); }
-
-                    if (pktIDEnd == 0)
-                    { throw new Exception("WTQueuePacketsEx reports zero end packet identifier"); }
-
-                    // Peek up to the max number of packets specified.
-                    UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, maxPkts_I, buf, ref numPkts_O);
-
-                    System.Diagnostics.Debug.WriteLine("GetDataPackets: WTDataPeek - numFoundPkts: " + numFoundPkts + ", numPkts_O: " + numPkts_O);
-
-                    if (numFoundPkts > 0 && numFoundPkts < numPkts_O)
-                    {
-                        throw new Exception("WTDataPeek reports more packets returned than actually exist in queue.");
-                    }
-
-                    packets = CMemUtils.MarshalDataPackets(numPkts_O, buf);
-                }
-            }
-
-
-
-            return packets;
         }
 
 
-        /// <summary>
-        /// Throws exception if logical context for this data object is zero.
-        /// </summary>
-        private void CheckForValidHCTX(string msg)
-        {
-            if (m_context.HCtx == 0)
-            { 
-                throw new Exception(msg + " - Bad Context"); 
-            }
+
+        return packets;
+    }
+
+
+    /// <summary>
+    /// Throws exception if logical context for this data object is zero.
+    /// </summary>
+    private void CheckForValidHCTX(string msg)
+    {
+        if (m_context.HCtx == 0)
+        { 
+            throw new Exception(msg + " - Bad Context"); 
         }
     }
 }
