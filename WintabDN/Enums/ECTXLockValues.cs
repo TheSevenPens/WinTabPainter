@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabExtensions.cs - Wintab extensions access for WintabDN
+// CWintabContext.cs - Wintab context management for WintabDN
 //
-// Copyright (c) 2013, Wacom Technology Corporation
+// Copyright (c) 2010, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,29 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-//TODO - generics should be used where possible -
-
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Tag values used to get extension masks in GetWTExtensionMask
+/// Context lock values.
 /// </summary>
-public enum EWTXExtensionTag
+public enum ECTXLockValues
 {
-    // enums 0 - 5 are deprecated
-    /// <summary>
-    /// Touch Strip extension mask tag
-    /// </summary>
-    WTX_TOUCHSTRIP = 6,
-
-    /// <summary>
-    /// Touch Ring extension mask tag
-    /// </summary>
-    WTX_TOUCHRING = 7,
-
-    /// <summary>
-    /// Express Key extension mask tag
-    /// </summary>
-    WTX_EXPKEYS2 = 8
+	    CXL_INSIZE		= 0x0001,
+	    CXL_INASPECT    = 0x0002,
+	    CXL_SENSITIVITY	= 0x0004,
+	    CXL_MARGIN		= 0x0008,
+	    CXL_SYSOUT		= 0x0010
 }
-// end namespace WintabDN
+

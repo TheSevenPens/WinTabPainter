@@ -42,19 +42,19 @@ public class CWintabContext
     {
         // Init with all bits set (The Full Monty) to get all non-extended data types.
         PktData = (uint)
-            (EWintabPacketBit.PK_CONTEXT |
-                EWintabPacketBit.PK_STATUS |
-                EWintabPacketBit.PK_TIME |
-                EWintabPacketBit.PK_CHANGED |
-                EWintabPacketBit.PK_SERIAL_NUMBER |
-                EWintabPacketBit.PK_CURSOR |
-                EWintabPacketBit.PK_BUTTONS |
-                EWintabPacketBit.PK_X |
-                EWintabPacketBit.PK_Y |
-                EWintabPacketBit.PK_Z |
-                EWintabPacketBit.PK_NORMAL_PRESSURE |
-                EWintabPacketBit.PK_TANGENT_PRESSURE |
-                EWintabPacketBit.PK_ORIENTATION);
+            (Enums.EWintabPacketBit.PK_CONTEXT |
+                Enums.EWintabPacketBit.PK_STATUS |
+                Enums.EWintabPacketBit.PK_TIME |
+                Enums.EWintabPacketBit.PK_CHANGED |
+                Enums.EWintabPacketBit.PK_SERIAL_NUMBER |
+                Enums.EWintabPacketBit.PK_CURSOR |
+                Enums.EWintabPacketBit.PK_BUTTONS |
+                Enums.EWintabPacketBit.PK_X |
+                Enums.EWintabPacketBit.PK_Y |
+                Enums.EWintabPacketBit.PK_Z |
+                Enums.EWintabPacketBit.PK_NORMAL_PRESSURE |
+                Enums.EWintabPacketBit.PK_TANGENT_PRESSURE |
+                Enums.EWintabPacketBit.PK_ORIENTATION);
         MoveMask = PktData;
     }
 

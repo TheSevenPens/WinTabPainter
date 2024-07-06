@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabData.cs - Wintab data management for WintabDN
+// CWintabExtensions.cs - Wintab extensions access for WintabDN
 //
-// Copyright (c) 2010, Wacom Technology Corporation
+// Copyright (c) 2013, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,36 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+//TODO - generics should be used where possible -
+
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Wintab packet status values.
+/// Tablet Icon values used with WTExtGet and WTExtSet
 /// </summary>
-public enum EWintabPacketStatusValue
+public enum EWTExtensionIconProperty
 {
-    /// <summary>
-    /// Specifies that the cursor is out of the context.
-    /// </summary>
-    TPS_PROXIMITY   = 0x0001,
-
-    /// <summary>
-    /// Specifies that the event queue for the context has overflowed.
-    /// </summary>
-    TPS_QUEUE_ERR   = 0x0002,
-
-    /// <summary>
-    /// Specifies that the cursor is in the margin of the context.
-    /// </summary>
-    TPS_MARGIN      = 0x0004,
-
-    /// <summary>
-    /// Specifies that the cursor is out of the context, but that the 
-    /// context has grabbed input while waiting for a button release event.
-    /// </summary>
-    TPS_GRAB        = 0x0008,
-
-    /// <summary>
-    /// Specifies that the cursor is in its inverted state.
-    /// </summary>
-    TPS_INVERT      = 0x0010
+    TABLET_ICON_FMT_NONE = 0,          // No display
+    TABLET_ICON_FMT_4BPP_GRAY = 1      // 4bpp grayscale
 }
+// end namespace WintabDN

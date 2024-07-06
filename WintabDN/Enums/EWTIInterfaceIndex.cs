@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabContext.cs - Wintab context management for WintabDN
+// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,17 +18,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+using System;
+
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Context lock values.
+/// Index values for WTI_INTERFACE.
 /// </summary>
-public enum ECTXLockValues
+public enum EWTIInterfaceIndex
 {
-	    CXL_INSIZE		= 0x0001,
-	    CXL_INASPECT    = 0x0002,
-	    CXL_SENSITIVITY	= 0x0004,
-	    CXL_MARGIN		= 0x0008,
-	    CXL_SYSOUT		= 0x0010
+     IFC_WINTABID       = 1,
+     IFC_SPECVERSION    = 2,
+     IFC_IMPLVERSION    = 3,
+     IFC_NDEVICES       = 4,
+     IFC_NCURSORS       = 5,
+     IFC_NCONTEXTS      = 6,
+     IFC_CTXOPTIONS     = 7,
+     IFC_CTXSAVESIZE    = 8,
+     IFC_NEXTENSIONS    = 9,
+     IFC_NMANAGERS      = 10
 }
-

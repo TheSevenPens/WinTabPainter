@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
+// CWintabContext.cs - Wintab context management for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,16 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-using System;
-
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Index used with CSR_NAME to get stylus types.
+/// Values to use when asking for X, Y or Z WintabAxis object.
 /// </summary>
-public enum EWTICursorNameIndex
+public enum EAxisDimension
 {
-    CSR_NAME_PUCK               = EWTICategoryIndex.WTI_CURSORS + 0,
-    CSR_NAME_PRESSURE_STYLUS    = EWTICategoryIndex.WTI_CURSORS + 1,
-    CSR_NAME_ERASER             = EWTICategoryIndex.WTI_CURSORS + 2
+    AXIS_X = EWTIDevicesIndex.DVC_X,
+    AXIS_Y = EWTIDevicesIndex.DVC_Y,
+    AXIS_Z = EWTIDevicesIndex.DVC_Z
 }
+

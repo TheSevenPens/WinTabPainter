@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabContext.cs - Wintab context management for WintabDN
+// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,15 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+using System;
+
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Context status values.
+/// Index used with CSR_NAME to get stylus types.
 /// </summary>
-public enum ECTXStatusValues
+public enum EWTICursorNameIndex
 {
-	    CXS_DISABLED		= 0x0001,
-	    CXS_OBSCURED		= 0x0002,
-	    CXS_ONTOP			= 0x0004
+    CSR_NAME_PUCK               = EWTICategoryIndex.WTI_CURSORS + 0,
+    CSR_NAME_PRESSURE_STYLUS    = EWTICategoryIndex.WTI_CURSORS + 1,
+    CSR_NAME_ERASER             = EWTICategoryIndex.WTI_CURSORS + 2
 }
-

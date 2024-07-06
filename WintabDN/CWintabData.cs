@@ -57,10 +57,10 @@ public class CWintabData
         m_context = context_I;
 
         // Watch for the Wintab WT_PACKET event.
-        MessageEvents.WatchMessage((int)EWintabEventMessage.WT_PACKET);
+        MessageEvents.WatchMessage((int)Enums.EWintabEventMessage.WT_PACKET);
 
         // Watch for the Wintab WT_PACKETEXT event.
-        MessageEvents.WatchMessage((int)EWintabEventMessage.WT_PACKETEXT);
+        MessageEvents.WatchMessage((int)Enums.EWintabEventMessage.WT_PACKETEXT);
 
     }
 

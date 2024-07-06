@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabData.cs - Wintab data management for WintabDN
+// CWintabExtensions.cs - Wintab extensions access for WintabDN
 //
-// Copyright (c) 2010, Wacom Technology Corporation
+// Copyright (c) 2013, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,25 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+//TODO - generics should be used where possible -
+
+namespace WintabDN.Enums;
 
 /// <summary>
-/// WintabPacket.pkButton codes.
+/// Tag values used to get extension masks in GetWTExtensionMask
 /// </summary>
-public enum EWintabPacketButtonCode
+public enum EWTXExtensionTag
 {
+    // enums 0 - 5 are deprecated
     /// <summary>
-    /// No change in button state.
+    /// Touch Strip extension mask tag
     /// </summary>
-    TBN_NONE	    = 0,
+    WTX_TOUCHSTRIP = 6,
 
     /// <summary>
-    /// Button was released.
+    /// Touch Ring extension mask tag
     /// </summary>
-    TBN_UP		    = 1,
+    WTX_TOUCHRING = 7,
 
     /// <summary>
-    /// Button was pressed.
+    /// Express Key extension mask tag
     /// </summary>
-    TBN_DOWN	    = 2
+    WTX_EXPKEYS2 = 8
 }
+// end namespace WintabDN

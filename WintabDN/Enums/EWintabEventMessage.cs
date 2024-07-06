@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabContext.cs - Wintab context management for WintabDN
+// CWintabData.cs - Wintab data management for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,18 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Context option values.
+/// Wintab event messsages sent to an application.
+/// See Wintab Spec 1.4 for a description of these messages.
 /// </summary>
-public enum ECTXOptionValues
+public enum EWintabEventMessage
 {
-	    CXO_SYSTEM		= 0x0001,
-	    CXO_PEN			= 0x0002,
-	    CXO_MESSAGES	= 0x0004,
-    CXO_CSRMESSAGES	= 0x0008,
-	    CXO_MGNINSIDE	= 0x4000,
-	    CXO_MARGIN		= 0x8000,
+    WT_PACKET       = 0x7FF0,
+    WT_CTXOPEN      = 0x7FF1,
+    WT_CTXCLOSE     = 0x7FF2,
+    WT_CTXUPDATE    = 0x7FF3,
+    WT_CTXOVERLAP   = 0x7FF4,
+    WT_PROXIMITY    = 0x7FF5,
+    WT_INFOCHANGE   = 0x7FF6,
+    WT_CSRCHANGE    = 0x7FF7,
+    WT_PACKETEXT    = 0x7FF8
 }
-

@@ -18,25 +18,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Wintab Packet bits.
+/// Wintab packet status values.
 /// </summary>
-public enum EWintabPacketBit
+public enum EWintabPacketStatusValue
 {
-	    PK_CONTEXT			= 0x0001,	/* reporting context */
-	    PK_STATUS			= 0x0002,	/* status bits */
-	    PK_TIME				= 0x0004,	/* time stamp */
-	    PK_CHANGED			= 0x0008,	/* change bit vector */
-	    PK_SERIAL_NUMBER	= 0x0010,	/* packet serial number */
-	    PK_CURSOR			= 0x0020,	/* reporting cursor */
-	    PK_BUTTONS			= 0x0040,	/* button information */
-	    PK_X				= 0x0080,	/* x axis */
-	    PK_Y				= 0x0100,	/* y axis */
-	    PK_Z				= 0x0200,	/* z axis */
-	    PK_NORMAL_PRESSURE	= 0x0400,	/* normal or tip pressure */
-	    PK_TANGENT_PRESSURE	= 0x0800,	/* tangential or barrel pressure */
-	    PK_ORIENTATION		= 0x1000,	/* orientation info: tilts */
-   PK_PKTBITS_ALL      = 0x1FFF    // The Full Monty - all the bits execept Rotation - not supported
+    /// <summary>
+    /// Specifies that the cursor is out of the context.
+    /// </summary>
+    TPS_PROXIMITY   = 0x0001,
+
+    /// <summary>
+    /// Specifies that the event queue for the context has overflowed.
+    /// </summary>
+    TPS_QUEUE_ERR   = 0x0002,
+
+    /// <summary>
+    /// Specifies that the cursor is in the margin of the context.
+    /// </summary>
+    TPS_MARGIN      = 0x0004,
+
+    /// <summary>
+    /// Specifies that the cursor is out of the context, but that the 
+    /// context has grabbed input while waiting for a button release event.
+    /// </summary>
+    TPS_GRAB        = 0x0008,
+
+    /// <summary>
+    /// Specifies that the cursor is in its inverted state.
+    /// </summary>
+    TPS_INVERT      = 0x0010
 }

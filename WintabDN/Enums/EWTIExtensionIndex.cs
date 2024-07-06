@@ -20,71 +20,67 @@
 ///////////////////////////////////////////////////////////////////////////////
 //TODO - generics should be used where possible -
 
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Tablet property values used with WTExtGet and WTExtSet
+/// Index values used for WTI extensions.
+/// For more information, see Wintab 1.4.
 /// </summary>
-public enum EWTExtensionTabletProperty
+public enum EWTIExtensionIndex
 {
     /// <summary>
-    /// number of physical controls on tablet
+    /// Get a unique, null-terminated string describing the extension.
     /// </summary>
-    TABLET_PROPERTY_CONTROLCOUNT = 0,
+    EXT_NAME = 1,
 
     /// <summary>
-    /// number of functions of control
+    /// Get a unique identifier for the extension.
     /// </summary>
-    TABLET_PROPERTY_FUNCCOUNT = 1,
+    EXT_TAG = 2,
 
     /// <summary>
-    /// control/mode is available for override
+    /// Get a mask that can be bitwise OR'ed with WTPKT-type variables to select the extension.
     /// </summary>
-    TABLET_PROPERTY_AVAILABLE = 2,
+    EXT_MASK = 3,
 
     /// <summary>
-    /// minimum value of control function
+    /// Get an array of two UINTs specifying the extension's size within a packet (in bytes). The first is for absolute mode; the second is for relative mode.
     /// </summary>
-    TABLET_PROPERTY_MIN = 3,
+    EXT_SIZE = 4,
 
     /// <summary>
-    /// maximum value of control function
+    /// Get an array of axis descriptions, as needed for the extension.
     /// </summary>
-    TABLET_PROPERTY_MAX = 4,
+    EXT_AXES = 5,
 
     /// <summary>
-    /// Indicates control should be overriden
+    /// get the current global default data, as needed for the extension. 
     /// </summary>
-    TABLET_PROPERTY_OVERRIDE = 5,
+    EXT_DEFAULT = 6,
 
     /// <summary>
-    ///  UTF8 encoded displayable name when control is overridden
+    /// Get the current default digitizing context-specific data, as needed for the extension.
     /// </summary>
-    TABLET_PROPERTY_OVERRIDE_NAME = 6,
+    EXT_DEFCONTEXT = 7,
 
     /// <summary>
-    /// PNG icon image to shown when control is overriden (supported only tablets with display OLEDs; eg: Intuos4)
+    /// Get the current default system context-specific data, as needed for the extension.
     /// </summary>
-    TABLET_PROPERTY_OVERRIDE_ICON = 7,
+    EXT_DEFSYSCTX = 8,
 
     /// <summary>
-    /// Pixel width of icon display
+    /// Get a byte array of the current default cursor-specific data, as need for the extension. 
     /// </summary>
-    TABLET_PROPERTY_ICON_WIDTH = 8,
+    EXT_CURSORS = 9,
 
     /// <summary>
-    /// Pixel height of icon display
+    /// Allow 100 cursors
     /// </summary>
-    TABLET_PROPERTY_ICON_HEIGHT = 9,
+    EXT_DEVICES = 110,
 
     /// <summary>
-    /// Pixel format of icon display (see TABLET_ICON_FMT_*)
+    /// Allow 100 devices
     /// </summary>
-    TABLET_PROPERTY_ICON_FORMAT = 10,
-
-    /// <summary>
-    /// Physical location of control (see TABLET_LOC_*)
-    /// </summary>
-    TABLET_PROPERTY_LOCATION = 11
+    EXT_MAX = 210   // Allow 100 devices
 }
 // end namespace WintabDN

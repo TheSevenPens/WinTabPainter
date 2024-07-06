@@ -20,7 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System;
 
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
 /// Index values for WTInfo wCategory parameter.

@@ -11,8 +11,8 @@ public class TabletInfo
 
     public void Initialize()
     {
-        this.XAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.EAxisDimension.AXIS_X);
-        this.YAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.EAxisDimension.AXIS_Y);
+        this.XAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.Enums.EAxisDimension.AXIS_X);
+        this.YAxis = WintabDN.CWintabInfo.GetTabletAxis(WintabDN.Enums.EAxisDimension.AXIS_Y);
         this.MaxPressure = WintabDN.CWintabInfo.GetMaxPressure();
         this.Name = WintabDN.CWintabInfo.GetDeviceInfo();
 

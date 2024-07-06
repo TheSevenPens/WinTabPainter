@@ -50,7 +50,7 @@ public class CWintabExtensions
     /// </summary>
     /// <param name="tag_I">type of extension being searched for</param>
     /// <returns>0xFFFFFFFF on error</returns>
-    public static UInt32 GetWTExtensionMask(EWTXExtensionTag tag_I)
+    public static UInt32 GetWTExtensionMask(Enums.EWTXExtensionTag tag_I)
     {
         UInt32 extMask = 0;           
         UInt32 extIndex = FindWTExtensionIndex(tag_I);
@@ -58,8 +58,8 @@ public class CWintabExtensions
         // Supported if extIndex != -1
         if (extIndex != 0xFFFFFFFF)
         {
-            extMask = CWintabFuncs.WTInfoAObject<UInt32>((uint)EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
-                (uint)EWTIExtensionIndex.EXT_MASK);
+            extMask = CWintabFuncs.WTInfoAObject<UInt32>((uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
+                (uint)Enums.EWTIExtensionIndex.EXT_MASK);
         }
             
         return extMask;
@@ -70,7 +70,7 @@ public class CWintabExtensions
     /// </summary>
     /// <param name="tag_I">type of extension being searched for</param>
     /// <returns>0xFFFFFFFF on error</returns>
-    public static UInt32 FindWTExtensionIndex(EWTXExtensionTag tag_I)
+    public static UInt32 FindWTExtensionIndex(Enums.EWTXExtensionTag tag_I)
     {
         UInt32 thisTag = 0;
         UInt32 extIndex = 0xFFFFFFFF;
@@ -79,14 +79,14 @@ public class CWintabExtensions
         for (Int32 loopIdx = 0, size = -1; size != 0; loopIdx++)
         {
             size = (int)CWintabFuncs.WTInfoA(
-                (uint)EWTICategoryIndex.WTI_EXTENSIONS + (UInt32)loopIdx,
-                (uint)EWTIExtensionIndex.EXT_TAG, buf);
+                (uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (UInt32)loopIdx,
+                (uint)Enums.EWTIExtensionIndex.EXT_TAG, buf);
     
             if (size > 0)
             {
                 thisTag = CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
     
-                if ((EWTXExtensionTag)thisTag == tag_I)
+                if ((Enums.EWTXExtensionTag)thisTag == tag_I)
                 {
                     extIndex = (UInt32)loopIdx;
                     break;
@@ -330,7 +330,7 @@ public class CWintabExtensions
     /// <returns>true if successful and tablet supports property</returns>
     public static bool SetDisplayProperty(
         CWintabContext context_I,
-        EWTXExtensionTag extTagIndex_I,
+        Enums.EWTXExtensionTag extTagIndex_I,
         UInt32 tabletIndex_I,
         UInt32 controlIndex_I,
         UInt32 functionIndex_I,
@@ -351,11 +351,11 @@ public class CWintabExtensions
             (byte)tabletIndex_I,
             (byte)controlIndex_I,
             (byte)functionIndex_I,
-            (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_FORMAT,
+            (ushort)Enums.EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_FORMAT,
             ref iconFmt))
         { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_FORMAT"); }
 
-        if ((EWTExtensionIconProperty)iconFmt != EWTExtensionIconProperty.TABLET_ICON_FMT_NONE)
+        if ((Enums.EWTExtensionIconProperty)iconFmt != Enums.EWTExtensionIconProperty.TABLET_ICON_FMT_NONE)
         {
             // Get the width and height of the display icon.
             UInt32 iconWidth = 0;
@@ -367,7 +367,7 @@ public class CWintabExtensions
                 (byte)tabletIndex_I,
                 (byte)controlIndex_I,
                 (byte)functionIndex_I,
-                (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_WIDTH,
+                (ushort)Enums.EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_WIDTH,
                 ref iconWidth))
             { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_WIDTH"); }
 
@@ -377,7 +377,7 @@ public class CWintabExtensions
                 (byte)tabletIndex_I,
                 (byte)controlIndex_I,
                 (byte)functionIndex_I,
-                (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_HEIGHT,
+                (ushort)Enums.EWTExtensionTabletProperty.TABLET_PROPERTY_ICON_HEIGHT,
                 ref iconHeight))
             { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_HEIGHT"); }
 
@@ -401,7 +401,7 @@ public class CWintabExtensions
     /// <param name="imageFilePath_I">path to PNG image file</param>
     private static bool SetIcon(
         CWintabContext context_I,
-        EWTXExtensionTag extTagIndex_I,
+        Enums.EWTXExtensionTag extTagIndex_I,
         UInt32 tabletIndex_I,
         UInt32 controlIndex_I,
         UInt32 functionIndex_I,
@@ -415,7 +415,7 @@ public class CWintabExtensions
                 (byte)tabletIndex_I,
                 (byte)controlIndex_I,
                 (byte)functionIndex_I,
-                (ushort)EWTExtensionTabletProperty.TABLET_PROPERTY_OVERRIDE_ICON,
+                (ushort)Enums.EWTExtensionTabletProperty.TABLET_PROPERTY_OVERRIDE_ICON,
                 imageFilePath_I))
             { throw new Exception("Oops - FAILED ControlPropertySet for TABLET_PROPERTY_OVERRIDE"); }
         }

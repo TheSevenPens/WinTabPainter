@@ -1,4 +1,5 @@
-﻿using WintabDN;
+﻿using System;
+using WintabDN;
 
 namespace WinTabUtils;
 
@@ -23,7 +24,7 @@ public class TabletSession
         var wt_context_type = context_type_to_index(context_type);
 
         // CREATE CONTEXT
-        var options = WintabDN.ECTXOptionValues.CXO_MESSAGES;
+        var options = WintabDN.Enums.ECTXOptionValues.CXO_MESSAGES;
         this.Context = WintabDN.CWintabInfo.GetDefaultContext(wt_context_type, options);
 
         if (this.Context == null)
@@ -31,7 +32,7 @@ public class TabletSession
             throw new System.ApplicationException("Failed to get digitizing context");
         }
 
-        this.Context.Options |= (uint)WintabDN.ECTXOptionValues.CXO_SYSTEM;
+        this.Context.Options |= (uint)WintabDN.Enums.ECTXOptionValues.CXO_SYSTEM;
 
         // Move origin from lower-left to upper left to it matches screen origin
         this.Context.OutExtY = -this.Context.OutExtY;
@@ -49,17 +50,14 @@ public class TabletSession
         {
             this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
         }
-
-
-
     }
 
-    private static EWTICategoryIndex context_type_to_index(TabletContextType context_type)
+    private static WintabDN.Enums.EWTICategoryIndex context_type_to_index(TabletContextType context_type)
     {
         return context_type switch
         {
-            TabletContextType.System => WintabDN.EWTICategoryIndex.WTI_DEFSYSCTX,
-            TabletContextType.Digitizer => WintabDN.EWTICategoryIndex.WTI_DEFCONTEXT,
+            TabletContextType.System => WintabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
+            TabletContextType.Digitizer => WintabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }

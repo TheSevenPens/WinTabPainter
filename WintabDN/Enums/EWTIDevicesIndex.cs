@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabContext.cs - Wintab context management for WintabDN
+// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,15 +18,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-namespace WintabDN;
+using System;
+
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Values to use when asking for X, Y or Z WintabAxis object.
+/// Index values for WTI_DEVICES
 /// </summary>
-public enum EAxisDimension
+public enum EWTIDevicesIndex
 {
-    AXIS_X = EWTIDevicesIndex.DVC_X,
-    AXIS_Y = EWTIDevicesIndex.DVC_Y,
-    AXIS_Z = EWTIDevicesIndex.DVC_Z
+     DVC_NAME		    = 1,
+     DVC_HARDWARE	    = 2,
+     DVC_NCSRTYPES	    = 3,
+     DVC_FIRSTCSR	    = 4,
+     DVC_PKTRATE		= 5,
+     DVC_PKTDATA		= 6,
+     DVC_PKTMODE		= 7,
+     DVC_CSRDATA		= 8,
+     DVC_XMARGIN		= 9,
+     DVC_YMARGIN		= 10,
+     DVC_ZMARGIN		= 11,
+     DVC_X			    = 12,
+     DVC_Y			    = 13,
+     DVC_Z			    = 14,
+     DVC_NPRESSURE	    = 15,
+     DVC_TPRESSURE	    = 16,
+     DVC_ORIENTATION	= 17,
+     DVC_ROTATION	    = 18,
+     DVC_PNPID		    = 19
 }
-

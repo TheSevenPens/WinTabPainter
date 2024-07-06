@@ -57,8 +57,8 @@ public class CWintabInfo
     public static String GetDeviceInfo()
     {
         string s = CWintabFuncs.WTInfoAString(
-            (uint)EWTICategoryIndex.WTI_DEVICES,
-            (uint)EWTIDevicesIndex.DVC_NAME);
+            (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
+            (uint)Enums.EWTIDevicesIndex.DVC_NAME);
 
         return s;
     }
@@ -69,7 +69,7 @@ public class CWintabInfo
     /// <param name="cat">EWTICategoryIndex.WTI_DEFCONTEXT for digitizer context. EWTICategoryIndex.WTI_DEFSYSCTX for system context</param>
     /// <param name="options_I">caller's options; OR'd into context options</param>
     /// <returns>A 
-    public static CWintabContext GetDefaultContext(EWTICategoryIndex cat, ECTXOptionValues options_I = 0)
+    public static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex cat, Enums.ECTXOptionValues options_I = 0)
     {
         // SevenPens: In the original code this is made up of two separate methods that
         // do almost the exact same thing. I've merged them and added the cat parameter
@@ -78,7 +78,7 @@ public class CWintabInfo
         // EWTICategoryIndex.WTI_DEFSYSCTX = System context
         // EWTICategoryIndex.WTI_DEFCONTEXT = Digitizer context
 
-        if ( cat != EWTICategoryIndex.WTI_DEFSYSCTX && cat != EWTICategoryIndex.WTI_DEFCONTEXT)
+        if ( cat != Enums.EWTICategoryIndex.WTI_DEFSYSCTX && cat != Enums.EWTICategoryIndex.WTI_DEFCONTEXT)
         {
             throw new System.ArgumentOutOfRangeException(nameof(cat));
         }
@@ -93,17 +93,17 @@ public class CWintabInfo
         // Add caller's options.
         context.Options |= (uint)options_I; 
 
-        if (cat == EWTICategoryIndex.WTI_DEFSYSCTX)
+        if (cat == Enums.EWTICategoryIndex.WTI_DEFSYSCTX)
         {
             // Make sure we get data packet messages.
-            context.Options |= (uint)ECTXOptionValues.CXO_MESSAGES;
+            context.Options |= (uint)Enums.ECTXOptionValues.CXO_MESSAGES;
         }
 
         // Send all possible data bits (not including extended data).
         // This is redundant with CWintabContext initialization, which
         // also inits with PK_PKTBITS_ALL.
-        uint PACKETDATA = (uint)EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty 
-        uint PACKETMODE = (uint)EWintabPacketBit.PK_BUTTONS; 
+        uint PACKETDATA = (uint)Enums.EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty 
+        uint PACKETMODE = (uint)Enums.EWintabPacketBit.PK_BUTTONS; 
 
         // Set the context data bits.
         context.PktData = PACKETDATA; 
@@ -112,7 +112,7 @@ public class CWintabInfo
         context.BtnUpMask = context.BtnDnMask; 
 
         // Name the context
-        context.Name = cat == EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
+        context.Name = cat == Enums.EWTICategoryIndex.WTI_DEFSYSCTX ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
 
         return context;
     }
@@ -122,7 +122,7 @@ public class CWintabInfo
     /// </summary>
     /// <param name="contextType_I">Use WTI_DEFCONTEXT for digital context or WTI_DEFSYSCTX for system context</param>
     /// <returns>Returns the default context or null on error.</returns>
-    private static CWintabContext GetDefaultContext(EWTICategoryIndex contextIndex_I)        
+    private static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex contextIndex_I)        
     {
         var lc = CWintabFuncs.WTInfoAObject<WintabLogContext>((uint)contextIndex_I, 0);
         CWintabContext context = new CWintabContext();
@@ -137,8 +137,8 @@ public class CWintabInfo
     public static Int32 GetDefaultDeviceIndex()
     {
         Int32 deviceIndex = CWintabFuncs.WTInfoAObject<Int32>(
-                (uint)EWTICategoryIndex.WTI_DEFCONTEXT,
-                (uint)EWTIContextIndex.CTX_DEVICE);
+                (uint)Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
+                (uint)Enums.EWTIContextIndex.CTX_DEVICE);
 
         return deviceIndex;
     }
@@ -151,9 +151,9 @@ public class CWintabInfo
     /// <param name="devIndex_I">Device index (-1 = virtual device)</param>
     /// <param name="dim_I">Dimension: AXIS_X, AXIS_Y or AXIS_Z</param>
     /// <returns></returns>
-    public static WintabAxis GetDeviceAxis(Int32 devIndex_I, EAxisDimension dim_I)
+    public static WintabAxis GetDeviceAxis(Int32 devIndex_I, Enums.EAxisDimension dim_I)
     {
-        var a = CWintabFuncs.WTInfoAObject<WintabAxis>((uint)(EWTICategoryIndex.WTI_DEVICES + devIndex_I),
+        var a = CWintabFuncs.WTInfoAObject<WintabAxis>((uint)(Enums.EWTICategoryIndex.WTI_DEVICES + devIndex_I),
                 (uint)dim_I);
         return a;
     }
@@ -166,8 +166,8 @@ public class CWintabInfo
     {
         tiltSupported_O = false;
 
-        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
-                (uint)EWTIDevicesIndex.DVC_ORIENTATION);
+        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)Enums.EWTICategoryIndex.WTI_DEVICES,
+                (uint)Enums.EWTIDevicesIndex.DVC_ORIENTATION);
 
         // If size == 0, then returns a zeroed struct.
         tiltSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
@@ -183,8 +183,8 @@ public class CWintabInfo
     {
         rotationSupported_O = false;
 
-        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)EWTICategoryIndex.WTI_DEVICES,
-                (uint)EWTIDevicesIndex.DVC_ROTATION);
+        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)Enums.EWTICategoryIndex.WTI_DEVICES,
+                (uint)Enums.EWTIDevicesIndex.DVC_ROTATION);
         rotationSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
         return aa;
     }
@@ -196,8 +196,8 @@ public class CWintabInfo
     public static UInt32 GetNumberOfDevices()
     {
         UInt32 numdevices =
-            CWintabFuncs.WTInfoAObject<UInt32>((uint)EWTICategoryIndex.WTI_INTERFACE,
-                (uint)EWTIInterfaceIndex.IFC_NDEVICES);
+            CWintabFuncs.WTInfoAObject<UInt32>((uint)Enums.EWTICategoryIndex.WTI_INTERFACE,
+                (uint)Enums.EWTIInterfaceIndex.IFC_NDEVICES);
         return numdevices;
     }
 
@@ -208,8 +208,8 @@ public class CWintabInfo
     public static bool IsStylusActive()
     {
         var isStylusActive = CWintabFuncs.WTInfoAObject<bool>(
-            (uint)EWTICategoryIndex.WTI_INTERFACE,
-            (uint)EWTIInterfaceIndex.IFC_NDEVICES);
+            (uint)Enums.EWTICategoryIndex.WTI_INTERFACE,
+            (uint)Enums.EWTIInterfaceIndex.IFC_NDEVICES);
         return isStylusActive;
     }
 
@@ -219,11 +219,11 @@ public class CWintabInfo
     /// </summary>
     /// <param name="index_I">indicates stylus type</param>
     /// <returns></returns>
-    public static string GetStylusName(EWTICursorNameIndex index_I)
+    public static string GetStylusName(Enums.EWTICursorNameIndex index_I)
     {
         string s = CWintabFuncs.WTInfoAString(
             (uint)index_I,
-            (uint)EWTICursorsIndex.CSR_NAME);
+            (uint)Enums.EWTICursorsIndex.CSR_NAME);
 
         return s;
 
@@ -240,11 +240,11 @@ public class CWintabInfo
     /// <returns>maximum pressure value or zero on error</returns>
     public static Int32 GetMaxPressure(bool getNormalPressure_I = true)
     {
-        EWTIDevicesIndex devIdx = (getNormalPressure_I ?
-                EWTIDevicesIndex.DVC_NPRESSURE : EWTIDevicesIndex.DVC_TPRESSURE);
+        Enums.EWTIDevicesIndex devIdx = (getNormalPressure_I ?
+                Enums.EWTIDevicesIndex.DVC_NPRESSURE : Enums.EWTIDevicesIndex.DVC_TPRESSURE);
 
         var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
-            (uint)EWTICategoryIndex.WTI_DEVICES,
+            (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
             (uint)devIdx);
         return a.axMax;
     }
@@ -256,10 +256,10 @@ public class CWintabInfo
     /// </summary>
     /// <param name="dimension_I">Dimension to fetch (eg: x, y)</param>
     /// <returns></returns>
-    public static WintabAxis GetTabletAxis(EAxisDimension dimension_I)
+    public static WintabAxis GetTabletAxis(Enums.EAxisDimension dimension_I)
     {
         var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
-            (uint)EWTICategoryIndex.WTI_DEVICES
+            (uint)Enums.EWTICategoryIndex.WTI_DEVICES
            , (uint)dimension_I);
         return a;
 

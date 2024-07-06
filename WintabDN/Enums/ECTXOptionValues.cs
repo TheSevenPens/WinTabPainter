@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
+// CWintabContext.cs - Wintab context management for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,33 +18,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-using System;
-
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Index values for WTI_CURSORS.
+/// Context option values.
 /// </summary>
-public enum EWTICursorsIndex
+public enum ECTXOptionValues
 {
-     CSR_NAME            = 1,
-     CSR_ACTIVE			 = 2,
-     CSR_PKTDATA		 = 3,
-     CSR_BUTTONS		 = 4,
-     CSR_BUTTONBITS		 = 5,
-     CSR_BTNNAMES		 = 6,
-     CSR_BUTTONMAP		 = 7,
-     CSR_SYSBTNMAP		 = 8,
-     CSR_NPBUTTON		 = 9,
-     CSR_NPBTNMARKS		 = 10,
-     CSR_NPRESPONSE		 = 11,
-     CSR_TPBUTTON        = 12,
-     CSR_TPBTNMARKS		 = 13,
-     CSR_TPRESPONSE		 = 14,
-     CSR_PHYSID			 = 15,
-     CSR_MODE			 = 16,
-     CSR_MINPKTDATA		 = 17,
-     CSR_MINBUTTONS		 = 18,
-     CSR_CAPABILITIES	 = 19,
-     CSR_TYPE			 = 20
+	    CXO_SYSTEM		= 0x0001,
+	    CXO_PEN			= 0x0002,
+	    CXO_MESSAGES	= 0x0004,
+    CXO_CSRMESSAGES	= 0x0008,
+	    CXO_MGNINSIDE	= 0x4000,
+	    CXO_MARGIN		= 0x8000,
 }
+

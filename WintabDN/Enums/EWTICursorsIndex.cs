@@ -20,30 +20,31 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System;
 
-namespace WintabDN;
+namespace WintabDN.Enums;
 
 /// <summary>
-/// Index values for WTI_DEVICES
+/// Index values for WTI_CURSORS.
 /// </summary>
-public enum EWTIDevicesIndex
+public enum EWTICursorsIndex
 {
-     DVC_NAME		    = 1,
-     DVC_HARDWARE	    = 2,
-     DVC_NCSRTYPES	    = 3,
-     DVC_FIRSTCSR	    = 4,
-     DVC_PKTRATE		= 5,
-     DVC_PKTDATA		= 6,
-     DVC_PKTMODE		= 7,
-     DVC_CSRDATA		= 8,
-     DVC_XMARGIN		= 9,
-     DVC_YMARGIN		= 10,
-     DVC_ZMARGIN		= 11,
-     DVC_X			    = 12,
-     DVC_Y			    = 13,
-     DVC_Z			    = 14,
-     DVC_NPRESSURE	    = 15,
-     DVC_TPRESSURE	    = 16,
-     DVC_ORIENTATION	= 17,
-     DVC_ROTATION	    = 18,
-     DVC_PNPID		    = 19
+     CSR_NAME            = 1,
+     CSR_ACTIVE			 = 2,
+     CSR_PKTDATA		 = 3,
+     CSR_BUTTONS		 = 4,
+     CSR_BUTTONBITS		 = 5,
+     CSR_BTNNAMES		 = 6,
+     CSR_BUTTONMAP		 = 7,
+     CSR_SYSBTNMAP		 = 8,
+     CSR_NPBUTTON		 = 9,
+     CSR_NPBTNMARKS		 = 10,
+     CSR_NPRESPONSE		 = 11,
+     CSR_TPBUTTON        = 12,
+     CSR_TPBTNMARKS		 = 13,
+     CSR_TPRESPONSE		 = 14,
+     CSR_PHYSID			 = 15,
+     CSR_MODE			 = 16,
+     CSR_MINPKTDATA		 = 17,
+     CSR_MINBUTTONS		 = 18,
+     CSR_CAPABILITIES	 = 19,
+     CSR_TYPE			 = 20
 }
