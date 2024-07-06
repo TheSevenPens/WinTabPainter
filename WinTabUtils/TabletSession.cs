@@ -61,7 +61,7 @@ public class TabletSession
         };
     }
 
-    private void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
+    private void WinTabPacketHandler(Object sender, WintabDN.WinForms.MessageReceivedEventArgs args)
     {
         if (this.Data == null)
         {

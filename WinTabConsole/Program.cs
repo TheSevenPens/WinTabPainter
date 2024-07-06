@@ -40,7 +40,7 @@ namespace MyApp
 
         }
 
-        private static void WinTabPacketHandler(Object sender, WintabDN.MessageReceivedEventArgs args)
+        private static void WinTabPacketHandler(Object sender, WintabDN.WinForms.MessageReceivedEventArgs args)
         {
 
             uint pktId = (uint)args.Message.WParam;

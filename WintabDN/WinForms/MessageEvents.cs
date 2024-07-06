@@ -27,7 +27,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace WintabDN;
+namespace WintabDN.WinForms;
 
 /// <summary>
 /// Windows native message handler, to provide support for detecting and

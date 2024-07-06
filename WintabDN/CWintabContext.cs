@@ -79,7 +79,7 @@ public class CWintabContext
     {
         // Get the handle of the anonymous MessageEvents window. This is a 
         // static (global) object, so there's only one of these at a time.
-        var hwnd = MessageEvents.WindowHandle;
+        var hwnd = WinForms.MessageEvents.WindowHandle;
 
         m_hCTX = CWintabFuncs.WTOpenA(hwnd, ref m_logContext, true);
 

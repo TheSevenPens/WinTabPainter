@@ -25,7 +25,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace WintabDN;
+namespace WintabDN.WinForms;
 
 /// <summary>
 /// Support for registering a Native Windows message with MessageEvents class.

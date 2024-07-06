@@ -54,10 +54,10 @@ public class CWintabData
         m_context = context_I;
 
         // Watch for the Wintab WT_PACKET event.
-        MessageEvents.WatchMessage((int)Enums.EWintabEventMessage.WT_PACKET);
+        WinForms.MessageEvents.WatchMessage((int)Enums.EWintabEventMessage.WT_PACKET);
 
         // Watch for the Wintab WT_PACKETEXT event.
-        MessageEvents.WatchMessage((int)Enums.EWintabEventMessage.WT_PACKETEXT);
+        WinForms.MessageEvents.WatchMessage((int)Enums.EWintabEventMessage.WT_PACKETEXT);
 
     }
 
@@ -65,14 +65,14 @@ public class CWintabData
     /// Set the handler to be called when WT_PACKET events are received.
     /// </summary>
     /// <param name="handler_I">WT_PACKET event handler supplied by the client.</param>
-    public void SetWTPacketEventHandler(EventHandler<MessageReceivedEventArgs> handler_I)
+    public void SetWTPacketEventHandler(EventHandler<WinForms.MessageReceivedEventArgs> handler_I)
     {
-        MessageEvents.MessageReceived += handler_I;
+        WinForms.MessageEvents.MessageReceived += handler_I;
     }
 
     public void ClearWTPacketEventHandler()
     {
-        MessageEvents.ClearMessageEvents();
+        WinForms.MessageEvents.ClearMessageEvents();
     }
 
 
