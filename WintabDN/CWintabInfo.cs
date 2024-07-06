@@ -19,7 +19,6 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using WintabDN.Structs;
 
 namespace WintabDN;
 
@@ -115,7 +114,7 @@ public class CWintabInfo
     /// <returns>Returns the default context or null on error.</returns>
     private static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex contextIndex_I)        
     {
-        var lc = CWintabFuncs.WTInfoAObject<WintabLogContext>((uint)contextIndex_I, 0);
+        var lc = CWintabFuncs.WTInfoAObject<Structs.WintabLogContext>((uint)contextIndex_I, 0);
         CWintabContext context = new CWintabContext();
         context.LogContext = lc;
         return context;
@@ -142,9 +141,9 @@ public class CWintabInfo
     /// <param name="devIndex_I">Device index (-1 = virtual device)</param>
     /// <param name="dim_I">Dimension: AXIS_X, AXIS_Y or AXIS_Z</param>
     /// <returns></returns>
-    public static WintabAxis GetDeviceAxis(Int32 devIndex_I, Enums.EAxisDimension dim_I)
+    public static Structs.WintabAxis GetDeviceAxis(Int32 devIndex_I, Enums.EAxisDimension dim_I)
     {
-        var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
+        var a = CWintabFuncs.WTInfoAObject<Structs.WintabAxis>(
                 (uint)(Enums.EWTICategoryIndex.WTI_DEVICES + devIndex_I),
                 (uint)dim_I);
         return a;
@@ -154,11 +153,11 @@ public class CWintabInfo
     /// Returns a 3-element array describing the tablet's orientation range and resolution capabilities.
     /// </summary>
     /// <returns></returns>
-    public static WintabAxisArray GetDeviceOrientation( out bool tiltSupported_O )
+    public static Structs.WintabAxisArray GetDeviceOrientation( out bool tiltSupported_O )
     {
         tiltSupported_O = false;
 
-        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>(
+        var aa = CWintabFuncs.WTInfoAObject<Structs.WintabAxisArray>(
             (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
             (uint)Enums.EWTIDevicesIndex.DVC_ORIENTATION);
 
@@ -172,11 +171,11 @@ public class CWintabInfo
     /// Returns a 3-element array describing the tablet's rotation range and resolution capabilities
     /// </summary>
     /// <returns></returns>
-    public static WintabAxisArray GetDeviceRotation(out bool rotationSupported_O)
+    public static Structs.WintabAxisArray GetDeviceRotation(out bool rotationSupported_O)
     {
         rotationSupported_O = false;
 
-        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>(
+        var aa = CWintabFuncs.WTInfoAObject<Structs.WintabAxisArray>(
             (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
             (uint)Enums.EWTIDevicesIndex.DVC_ROTATION);
         
@@ -238,7 +237,7 @@ public class CWintabInfo
         Enums.EWTIDevicesIndex devIdx = (getNormalPressure_I ?
                 Enums.EWTIDevicesIndex.DVC_NPRESSURE : Enums.EWTIDevicesIndex.DVC_TPRESSURE);
 
-        var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
+        var a = CWintabFuncs.WTInfoAObject<Structs.WintabAxis>(
             (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
             (uint)devIdx);
         return a.axMax;
@@ -251,9 +250,9 @@ public class CWintabInfo
     /// </summary>
     /// <param name="dimension_I">Dimension to fetch (eg: x, y)</param>
     /// <returns></returns>
-    public static WintabAxis GetTabletAxis(Enums.EAxisDimension dimension_I)
+    public static Structs.WintabAxis GetTabletAxis(Enums.EAxisDimension dimension_I)
     {
-        var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
+        var a = CWintabFuncs.WTInfoAObject<Structs.WintabAxis>(
             (uint)Enums.EWTICategoryIndex.WTI_DEVICES
            , (uint)dimension_I);
         return a;

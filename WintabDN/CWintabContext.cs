@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using WintabDN.Structs;
+//using WintabDN.Structs;
 
 namespace WintabDN;
 
@@ -30,8 +30,8 @@ namespace WintabDN;
 public class CWintabContext
 {
     // Context data.
-    private WintabLogContext m_logContext = new WintabLogContext();
-    private HCTX                m_hCTX = 0;
+    private Structs.WintabLogContext m_logContext = new Structs.WintabLogContext();
+    private Structs.HCTX                m_hCTX = 0;
 
     /// <summary>
     /// Default constructor sets all data bits to be captured.
@@ -63,7 +63,7 @@ public class CWintabContext
     /// <param name="hwnd_I">parent window for the context</param>
     /// <param name="enable_I">true to enable, false to disable</param>
     /// <returns>Returns non-zero context handle if successful.</returns>
-    public Structs.HCTX Open(HWND hwnd_I, bool enable_I)
+    public Structs.HCTX Open(Structs.HWND hwnd_I, bool enable_I)
     {
         m_hCTX = CWintabFuncs.WTOpenA(hwnd_I, ref m_logContext, enable_I);
 
@@ -101,7 +101,7 @@ public class CWintabContext
 
         status = CWintabFuncs.WTClose(m_hCTX);
         m_hCTX = 0;
-        m_logContext = new WintabLogContext();
+        m_logContext = new Structs.WintabLogContext();
 
 
         return status;
@@ -151,12 +151,12 @@ public class CWintabContext
     /// <summary>
     /// Logical Wintab context managed by this object.  
     /// </summary>
-    public WintabLogContext LogContext { get { return m_logContext; } set { m_logContext = value; } }
+    public Structs.WintabLogContext LogContext { get { return m_logContext; } set { m_logContext = value; } }
 
     /// <summary>
     /// Handle (identifier) used to identify this context.
     /// </summary>
-    public HCTX HCtx    { get { return m_hCTX; } }
+    public Structs.HCTX HCtx    { get { return m_hCTX; } }
 
     /// <summary>
     /// Get/Set context name.
@@ -213,7 +213,7 @@ public class CWintabContext
     /// Specifies which optional data items will be in packets returned from the context. Requesting 
     /// unsupported data items will cause Open() to fail.
     /// </summary>
-    public WTPKT PktData    { get { return m_logContext.lcPktData; }  set { m_logContext.lcPktData = value; } }
+    public Structs.WTPKT PktData    { get { return m_logContext.lcPktData; }  set { m_logContext.lcPktData = value; } }
 
     /// <summary>
     /// Specifies whether the packet data items will be returned in absolute or relative mode. If the item's 
@@ -221,7 +221,7 @@ public class CWintabContext
     /// selected in the PktData property will be ignored.  Bits for data items that only allow one mode (such 
     /// as the packet identifier) will also be ignored.        
     /// </summary>
-    public WTPKT PktMode    { get { return m_logContext.lcPktMode; }  set { m_logContext.lcPktMode = value; } }
+    public Structs.WTPKT PktMode    { get { return m_logContext.lcPktMode; }  set { m_logContext.lcPktMode = value; } }
 
     /// <summary>
     /// Specifies which packet data items can generate move events in the context. Bits for items that 
@@ -229,7 +229,7 @@ public class CWintabContext
     /// time stamp, and the packet identifier will also be ignored. In the case of overlapping contexts, movement 
     /// events for data items not selected in this field may be processed by underlying contexts.
     /// </summary>
-    public WTPKT MoveMask   { get { return m_logContext.lcMoveMask; } set { m_logContext.lcMoveMask = value; } }
+    public Structs.WTPKT MoveMask   { get { return m_logContext.lcMoveMask; } set { m_logContext.lcMoveMask = value; } }
 
     /// <summary>
     /// Specifies the buttons for which button press events will be processed in the context. In the case of 
@@ -324,17 +324,17 @@ public class CWintabContext
     /// <summary>
     /// Specifies the relative-mode sensitivity factor for the x axis.
     /// </summary>
-    public FIX32 SensX      { get { return m_logContext.lcSensX; }    set { m_logContext.lcSensX = value; } }
+    public Structs.FIX32 SensX      { get { return m_logContext.lcSensX; }    set { m_logContext.lcSensX = value; } }
 
     /// <summary>
     /// Specifies the relative-mode sensitivity factor for the y axis.
     /// </summary>
-    public FIX32 SensY      { get { return m_logContext.lcSensY; }    set { m_logContext.lcSensY = value; } }
+    public Structs.FIX32 SensY      { get { return m_logContext.lcSensY; }    set { m_logContext.lcSensY = value; } }
 
     /// <summary>
     /// Specifies the relative-mode sensitivity factor for the Z axis.
     /// </summary>
-    public FIX32 SensZ      { get { return m_logContext.lcSensZ; }    set { m_logContext.lcSensZ = value; } }
+    public Structs.FIX32 SensZ      { get { return m_logContext.lcSensZ; }    set { m_logContext.lcSensZ = value; } }
 
     /// <summary>
     /// Specifies the system cursor tracking mode. Zero specifies absolute; non-zero means relative.
@@ -364,12 +364,12 @@ public class CWintabContext
     /// <summary>
     /// Specifies the system-cursor relative-mode sensitivity factor for the x axis.
     /// </summary>
-    public FIX32 SysSensX   { get { return m_logContext.lcSysSensX; } set { m_logContext.lcSysSensX = value; } }
+    public Structs.FIX32 SysSensX   { get { return m_logContext.lcSysSensX; } set { m_logContext.lcSysSensX = value; } }
 
     /// <summary>
     /// Specifies the system-cursor relative-mode sensitivity factor for the y axis.
     /// </summary>
-    public FIX32 SysSensY   { get { return m_logContext.lcSysSensY; } set { m_logContext.lcSysSensY = value; } }
+    public Structs.FIX32 SysSensY   { get { return m_logContext.lcSysSensY; } set { m_logContext.lcSysSensY = value; } }
 
 }
 

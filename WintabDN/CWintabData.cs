@@ -20,7 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Runtime.InteropServices;
-using WintabDN.Structs;
+//using WintabDN.Structs;
 
 namespace WintabDN;
 
@@ -115,11 +115,11 @@ public class CWintabData
     /// <param name="hCtx_I">Wintab context to be used when asking for the data</param>
     /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
     /// <returns>Returns a data packet with non-null context if successful.</returns>
-    public WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
+    public Structs.WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        int size = (int)(Marshal.SizeOf(new WintabPacketExt()));
+        int size = (int)(Marshal.SizeOf(new Structs.WintabPacketExt()));
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
-        WintabPacketExt[] packets = null;
+        Structs.WintabPacketExt[] packets = null;
 
         bool status = false;
 
@@ -160,7 +160,7 @@ public class CWintabData
     /// </summary>
     /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
     /// <returns>Returns a data packet with non-null context if successful.</returns>
-    public WintabPacket GetDataPacket(UInt32 pktID_I)
+    public Structs.WintabPacket GetDataPacket(UInt32 pktID_I)
     {
         return GetDataPacket(m_context.HCtx, pktID_I);
     }
@@ -173,10 +173,10 @@ public class CWintabData
     /// <param name="hCtx_I">Wintab context to be used when asking for the data</param>
     /// <param name="pktID_I">Identifier for the tablet event packet to return.</param>
     /// <returns>Returns a data packet with non-null context if successful.</returns>
-    public WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
+    public Structs.WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(WintabPacket)));
-        WintabPacket packet = new WintabPacket();
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(Structs.WintabPacket)));
+        var packet = new Structs.WintabPacket();
 
         if (pktID_I == 0)
         {
@@ -187,7 +187,7 @@ public class CWintabData
 
         if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf))
         {
-            packet = (WintabPacket)Marshal.PtrToStructure(buf, typeof(WintabPacket));
+            packet = (Structs.WintabPacket)Marshal.PtrToStructure(buf, typeof(Structs.WintabPacket));
         }
         else
         {
@@ -231,9 +231,9 @@ public class CWintabData
     /// <returns>Returns the next maxPkts_I from the list.  Note that if remove_I is false, then 
     /// repeated calls will return the same packets.  If remove_I is true, then packets will be 
     /// removed and subsequent calls will get different packets (if any).</returns>
-    public WintabPacket[] GetDataPackets(UInt32 maxPkts_I, bool remove_I, ref UInt32 numPkts_O)
+    public Structs.WintabPacket[] GetDataPackets(UInt32 maxPkts_I, bool remove_I, ref UInt32 numPkts_O)
     {
-        WintabPacket[] packets = null;
+        Structs.WintabPacket[] packets = null;
 
         CheckForValidHCTX("GetDataPackets");
 
@@ -243,7 +243,7 @@ public class CWintabData
         }
 
         // Packet array is used whether we're just looking or buying.
-        int size = (int)(maxPkts_I * Marshal.SizeOf(new WintabPacket()));
+        int size = (int)(maxPkts_I * Marshal.SizeOf(new Structs.WintabPacket()));
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
 
         if (remove_I)

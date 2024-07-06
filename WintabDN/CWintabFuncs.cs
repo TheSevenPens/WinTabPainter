@@ -20,7 +20,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Runtime.InteropServices;
-using WintabDN.Structs;
 
 namespace WintabDN;
 using P_HCTX = UInt32;
@@ -58,7 +57,7 @@ public class CWintabFuncs
     /// <param name="enable_I">Specifies whether the new context will immediately begin processing input data.</param>
     /// <returns>The return value identifies the new context. It is NULL if the context is not opened.</returns>
     [DllImport("Wintab32.dll", CharSet = CharSet.Auto)]
-    public static extern P_HCTX WTOpenA(P_HWND hWnd_I, ref WintabLogContext logContext_I, bool enable_I);
+    public static extern P_HCTX WTOpenA(P_HWND hWnd_I, ref Structs.WintabLogContext logContext_I, bool enable_I);
 
     /// <summary>
     /// This function closes and destroys the tablet context object.

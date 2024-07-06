@@ -24,7 +24,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using WintabDN.Structs;
+//using WintabDN.Structs;
 
 //TODO - generics should be used where possible -
 
@@ -112,7 +112,7 @@ public class CWintabExtensions
     /// <param name="result_O">value of the property requested</param>
     /// <returns>true if property obtained</returns>
     public static bool ControlPropertyGet(
-        HCTX context_I,
+        Structs.HCTX context_I,
         byte extTagIndex_I,
         byte tabletIndex_I,
         byte controlIndex_I,
@@ -122,7 +122,7 @@ public class CWintabExtensions
         )
     {
         bool retStatus = false;
-        WTExtensionProperty extProperty = new WTExtensionProperty();
+        var extProperty = new Structs.WTExtensionProperty();
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
         extProperty.extBase.version = 0;
@@ -139,7 +139,7 @@ public class CWintabExtensions
 
         if (status)
         {
-            WTExtensionProperty retProp = (WTExtensionProperty)Marshal.PtrToStructure(buf, typeof(WTExtensionProperty));
+            var retProp = (Structs.WTExtensionProperty)Marshal.PtrToStructure(buf, typeof(Structs.WTExtensionProperty));
             result_O = retProp.data[0];
             retStatus = true;
         }
@@ -164,7 +164,7 @@ public class CWintabExtensions
     /// <param name="value_I">value of the property being set</param>
     /// <returns>true if successful</returns>
     public static bool ControlPropertySet(
-        HCTX context_I,
+        Structs.HCTX context_I,
         byte extTagIndex_I,
         byte tabletIndex_I,
         byte controlIndex_I,
@@ -174,7 +174,7 @@ public class CWintabExtensions
     )
     {
         bool retStatus = false;
-        WTExtensionProperty extProperty = new WTExtensionProperty();
+        var extProperty = new Structs.WTExtensionProperty();
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
         byte[] valueBytes = BitConverter.GetBytes(value_I);
@@ -186,7 +186,7 @@ public class CWintabExtensions
         extProperty.extBase.propertyID = propertyID_I;
         extProperty.extBase.reserved = 0;
         extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(value_I);
-        extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
+        extProperty.data = new byte[Structs.WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
 
         // Send input value as an array of bytes.
         System.Buffer.BlockCopy(valueBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
@@ -215,7 +215,7 @@ public class CWintabExtensions
     /// <param name="value_I">value of the property being set (a string)</param>
     /// <returns>true if successful</returns>
     public static bool ControlPropertySet(
-        HCTX context_I,
+        Structs.HCTX context_I,
         byte extTagIndex_I,
         byte tabletIndex_I,
         byte controlIndex_I,
@@ -225,7 +225,7 @@ public class CWintabExtensions
         )
     {
         bool retStatus = false;
-        WTExtensionProperty extProperty = new WTExtensionProperty();
+        var extProperty = new Structs.WTExtensionProperty();
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
         // Convert unicode string value_I to UTF8-encoded bytes
@@ -238,7 +238,7 @@ public class CWintabExtensions
         extProperty.extBase.propertyID = propertyID_I;
         extProperty.extBase.reserved = 0;
         extProperty.extBase.dataSize = (uint)utf8Bytes.Length;
-        extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
+        extProperty.data = new byte[Structs.WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes];
 
         // Send input value as an array of UTF8-encoded bytes.
         System.Buffer.BlockCopy(utf8Bytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
@@ -267,7 +267,7 @@ public class CWintabExtensions
     /// <param name="value_I">value of the property being set (a string)</param>
     /// <returns>true if successful</returns>
     public static bool ControlPropertySetImage(
-        HCTX context_I,
+        Structs.HCTX context_I,
         byte extTagIndex_I,
         byte tabletIndex_I,
         byte controlIndex_I,
@@ -277,7 +277,7 @@ public class CWintabExtensions
         )
     {
         bool retStatus = false;
-        WTExtensionImageProperty extProperty = new WTExtensionImageProperty();
+        var extProperty = new Structs.WTExtensionImageProperty();
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
 
@@ -303,7 +303,7 @@ public class CWintabExtensions
         extProperty.extBase.propertyID = propertyID_I;
         extProperty.extBase.reserved = 0;
         extProperty.extBase.dataSize = (uint)imageBytes.Length;
-        extProperty.data = new byte[WTExtensionsGlobal.WTExtensionPropertyImageMaxDataBytes];
+        extProperty.data = new byte[Structs.WTExtensionsGlobal.WTExtensionPropertyImageMaxDataBytes];
 
         // Send image as an array of bytes.
         System.Buffer.BlockCopy(imageBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
