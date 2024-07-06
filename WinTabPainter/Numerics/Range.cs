@@ -1,6 +1,6 @@
 ﻿namespace WinTabPainter.Numerics;
 
-public struct Range
+public readonly struct Range
 {
 
     public readonly int Lower;

@@ -1,6 +1,6 @@
 ﻿namespace WinTabPainter.Numerics;
 
-public struct RangeD
+public readonly struct RangeD
 {
 
     public readonly double Lower;
