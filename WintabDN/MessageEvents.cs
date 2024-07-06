@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
@@ -34,7 +33,7 @@ namespace WintabDN;
 /// Windows native message handler, to provide support for detecting and
 /// responding to Wintab messages. 
 /// </summary>
-public static class MessageEvents
+public static partial class MessageEvents
 {
     private static object _lock = new object();
     private static MessageWindow _window;
@@ -97,37 +96,6 @@ public static class MessageEvents
                     mre.WaitOne();
                 }
             }
-        }
-    }
-
-    private class MessageWindow : Form
-    {
-        private ReaderWriterLock _lock = new ReaderWriterLock();
-        private Dictionary<int, bool> _messageSet = new Dictionary<int, bool>();
-
-        public void RegisterEventForMessage(int messageID)
-        {
-            _lock.AcquireWriterLock(Timeout.Infinite);
-            _messageSet[messageID] = true;
-            _lock.ReleaseWriterLock();
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            _lock.AcquireReaderLock(Timeout.Infinite);
-            bool handleMessage = _messageSet.ContainsKey(m.Msg);
-            _lock.ReleaseReaderLock();
-
-            if (handleMessage)
-            {
-                MessageEvents._context.Post(delegate(object state)
-                {
-                    EventHandler<MessageReceivedEventArgs> handler = MessageEvents.MessageReceived;
-                    if (handler != null) handler(null, new MessageReceivedEventArgs((Message)state));
-                }, m);
-            }
-
-            base.WndProc(ref m);
         }
     }
 }
