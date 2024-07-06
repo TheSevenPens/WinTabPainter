@@ -3,7 +3,7 @@ using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry;
 
-public struct SizeD
+public readonly struct SizeD
 {
     public readonly double Width;
     public readonly double Height;
