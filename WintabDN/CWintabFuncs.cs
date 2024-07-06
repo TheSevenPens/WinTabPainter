@@ -194,23 +194,23 @@ namespace WintabDN
         public static extern bool WTExtSet(P_HCTX hctx_I, UInt32 extTag_I, IntPtr extData_I);
 
 
-        public static string _WTInfoA_STRING(uint cat, uint index)
+        public static string WTInfoAString(uint cat, uint index)
         {
             using (var ub = UnmanagedBuffer.ForStringType())
             {
                 int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
-                string s = ub.GetValueString(size);
-                return s;
+                string val = ub.GetValueString(size);
+                return val;
             }
         }
 
-        public static T _WTInfoA_OBJECT<T>(uint cat, uint index) where T : new()
+        public static T WTInfoAObject<T>(uint cat, uint index) where T : new()
         {
             using (var ub = UnmanagedBuffer.ForObjectType<T>())
             {
                 int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
-                T s = ub.GetValueObject<T>(size);
-                return s;
+                T val = ub.GetValueObject<T>(size);
+                return val;
             }
         }
     }
