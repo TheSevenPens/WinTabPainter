@@ -1,4 +1,6 @@
-﻿namespace WinTabPainter.Numerics;
+﻿using WinTabPainter.Geometry;
+
+namespace WinTabPainter.Numerics;
 
 public static class Interpolation
 {
@@ -31,5 +33,13 @@ public static class Interpolation
         double t = InverseLerp(from_range.A, from_range.B, from_value);
         double to_value = Lerp(to_range.A, to_range.B, t);
         return to_value;
+    }
+
+    public static PointD Lerp(PointD a, PointD b, double t)
+    {
+        double new_sm_x = Interpolation.Lerp(a.X, b.X, t);
+        double new_sm_y = Interpolation.Lerp(a.Y, b.Y, t);
+        var p = new Geometry.PointD(new_sm_x, new_sm_y);
+        return p;
     }
 }

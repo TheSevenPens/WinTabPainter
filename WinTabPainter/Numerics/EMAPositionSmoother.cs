@@ -38,9 +38,7 @@ public class EMAPositionSmoother
         Geometry.PointD new_sm_pos;
         if (_old_sm_pos.HasValue)
         {
-            double new_sm_x = Interpolation.Lerp(_old_sm_pos.Value.X, p.X, 1.0 - this.SmoothingAmount);
-            double new_sm_y = Interpolation.Lerp(_old_sm_pos.Value.Y, p.Y, 1.0 - this.SmoothingAmount);
-            new_sm_pos = new Geometry.PointD(new_sm_x, new_sm_y);
+            new_sm_pos = Interpolation.Lerp(_old_sm_pos.Value, p, 1.0 - this.SmoothingAmount);
         }
         else
         {
