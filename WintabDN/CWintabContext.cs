@@ -19,9 +19,6 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WintabDN;
 

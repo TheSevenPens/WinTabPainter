@@ -23,10 +23,10 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
-using System.ComponentModel;
-using System.Collections.Generic;
 
 namespace WintabDN;
 

@@ -19,14 +19,9 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace WintabDN;
-
-using P_WTPKT = UInt32;
-using P_FIX32 = UInt32;
 using P_HCTX = UInt32;
 using P_HWND = System.IntPtr;
 
