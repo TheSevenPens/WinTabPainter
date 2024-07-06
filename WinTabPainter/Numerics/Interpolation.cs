@@ -9,10 +9,21 @@ public static class Interpolation
         return v;
     }
 
+    public static double Lerp(RangeD r, double t)
+    {
+        return Lerp(r.A, r.B, t);
+    }
+
+
     public static double InverseLerp(double a, double b, double v)
     {
         double t = (v-a)/(b-a);
         return t;
+    }
+
+    public static double InverseLerp(RangeD r, double v)
+    {
+        return InverseLerp(r.A, r.B, v);
     }
 
     public static double Remap( RangeD from_range, RangeD to_range , double from_value)
