@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabExtensions.cs - Wintab extensions access for WintabDN
+// CWintabData.cs - Wintab data management for WintabDN
 //
-// Copyright (c) 2013, Wacom Technology Corporation
+// Copyright (c) 2010, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,20 +18,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-//TODO - generics should be used where possible -
+using System;
+using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Globals used for Wintab extensions.
+/// Pen Orientation
 /// </summary>
-public class WTExtensionsGlobal
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct WTOrientation
 {
     /// <summary>
-    /// Maximum size of data buffer used in WTExtensionProperty.
+    /// Specifies the clockwise rotation of the cursor about the 
+    /// z axis through a full circular range.
     /// </summary>
-    public const int WTExtensionPropertyMaxDataBytes = 32;
+    public int orAzimuth;
 
-    public const int WTExtensionPropertyImageMaxDataBytes = 4096;
+    /// <summary>
+    /// Specifies the angle with the x-y plane through a signed, semicircular range.  
+    /// Positive values specify an angle upward toward the positive z axis; negative 
+    /// values specify an angle downward toward the negative z axis. 
+    /// </summary>
+    public int orAltitude;
+
+    /// <summary>
+    /// Specifies the clockwise rotation of the cursor about its own major axis.
+    /// </summary>
+    public int orTwist;
 }
-// end namespace WintabDN

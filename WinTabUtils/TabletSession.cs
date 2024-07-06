@@ -1,5 +1,4 @@
 ﻿using System;
-using WintabDN;
 
 namespace WinTabUtils;
 
@@ -10,8 +9,8 @@ public class TabletSession
     public WintabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
-    public System.Action<WintabDN.WintabPacket> PacketHandler = null;
-    public System.Action<WintabDN.WintabPacket, WinTabUtils.PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WintabDN.Structs.WintabPacket> PacketHandler = null;
+    public System.Action<WintabDN.Structs.WintabPacket, WinTabUtils.PenButtonPressChange> ButtonChangedHandler = null;
 
     public TabletSession()
     {

@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
+// CWintabExtensions.cs - Wintab extensions access for WintabDN
 //
-// Copyright (c) 2010, Wacom Technology Corporation
+// Copyright (c) 2013, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,46 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+//TODO - generics should be used where possible -
 
-/// <summary>
-/// Managed implementation of Wintab WTPKT typedef.
-/// Holds Wintab packet identifier.
-/// </summary>
+namespace WintabDN.Structs;
+
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public class WTPKT
+public struct WTExtensionPropertyBase
 {
-    // \cond IGNORED_BY_DOXYGEN
-    [MarshalAs(UnmanagedType.U4)]
-    UInt32 value;
+    /// <summary>
+    /// Structure version (reserved: always 0 for now)
+    /// </summary>
+    public byte version;
 
-    public WTPKT(UInt32 value) 
-    { this.value = value; }
+    /// <summary>
+    /// 0-based index for tablet
+    /// </summary>
+    public byte tabletIndex;
 
-    public static implicit operator UInt32(WTPKT pkt_I)
-    { return pkt_I.value; }
+    /// <summary>
+    /// 0-based index for control 
+    /// </summary>
+    public byte controlIndex;
 
-    public static implicit operator WTPKT(UInt32 value)
-    { return new WTPKT(value); }
+    /// <summary>
+    /// 0-based index for control's sub-function
+    /// </summary>
+    public byte functionIndex;
 
-    public override string ToString()
-    { return value.ToString(); }
-    // // \endcond IGNORED_BY_DOXYGEN
+    /// <summary>
+    /// ID of property being set (see EWTExtensionTabletProperty)
+    /// </summary>
+    public ushort propertyID;
+
+    /// <summary>
+    /// Alignment padding (reserved)
+    /// </summary>
+    public ushort reserved;
+
+    /// <summary>
+    /// Number of bytes in data[] buffer
+    /// </summary>
+    public uint dataSize;
 }
+// end namespace WintabDN

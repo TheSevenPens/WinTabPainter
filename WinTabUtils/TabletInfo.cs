@@ -1,8 +1,8 @@
 ﻿namespace WinTabUtils;
 public class TabletInfo
 {
-    public WintabDN.WintabAxis XAxis {  private set; get ;}
-    public WintabDN.WintabAxis YAxis { private set; get; }
+    public WintabDN.Structs.WintabAxis XAxis {  private set; get ;}
+    public WintabDN.Structs.WintabAxis YAxis { private set; get; }
     public int MaxPressure {  private set; get ;}
     public string Name { private set; get; }
 

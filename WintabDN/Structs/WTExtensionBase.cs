@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabExtensions.cs - Wintab extensions access for WintabDN
+// CWintabData.cs - Wintab data management for WintabDN
 //
-// Copyright (c) 2013, Wacom Technology Corporation
+// Copyright (c) 2010, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,25 +18,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Runtime.InteropServices;
 
-//TODO - generics should be used where possible -
-
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Structure read/writing image Wintab extension data. (Wintab 1.4)
+/// Common properties for control extension data transactions.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WTExtensionImageProperty
+public struct WTExtensionBase
 {
-    public WTExtensionPropertyBase extBase;
+    /// <summary>
+    /// Specifies the Wintab context to which these properties apply.
+    /// </summary>
+    public HCTX nContext;
 
     /// <summary>
-    /// Image data being written through the extensions API.
-    /// A large buffer is needed.
+    /// Status of setting/getting properties.
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = WTExtensionsGlobal.WTExtensionPropertyImageMaxDataBytes)]
-    public byte[] data;
+    public uint nStatus;
+
+    /// <summary>
+    /// Timestamp applied to property transaction.
+    /// </summary>
+    public WTPKT nTime;
+
+    /// <summary>
+    /// Reserved - not used.
+    /// </summary>
+    public uint nSerialNumber;
 }
-// end namespace WintabDN

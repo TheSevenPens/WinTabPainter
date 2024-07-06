@@ -20,6 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Runtime.InteropServices;
+using WintabDN.Structs;
 
 namespace WintabDN;
 

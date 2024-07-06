@@ -20,7 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
 /// Extension data for one Express Key.

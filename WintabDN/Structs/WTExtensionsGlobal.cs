@@ -18,25 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-using System.Runtime.InteropServices;
-
 //TODO - generics should be used where possible -
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Structure for reading/writing non-image Wintab extension data. (Wintab 1.4)
+/// Globals used for Wintab extensions.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WTExtensionProperty
+public class WTExtensionsGlobal
 {
-    public WTExtensionPropertyBase extBase;
-
     /// <summary>
-    /// Non-image data being written/read through the extensions API.
-    /// A small buffer is sufficient.
+    /// Maximum size of data buffer used in WTExtensionProperty.
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = WTExtensionsGlobal.WTExtensionPropertyMaxDataBytes)]
-    public byte[] data;
+    public const int WTExtensionPropertyMaxDataBytes = 32;
+
+    public const int WTExtensionPropertyImageMaxDataBytes = 4096;
 }
 // end namespace WintabDN

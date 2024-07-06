@@ -20,7 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
 /// Wintab extension data packet for one tablet control.
@@ -34,7 +34,7 @@ public struct WintabPacketExt
     /// <summary>
     /// Extension control properties common to all control types.
     /// </summary>
-    public WTExtensionBase	pkBase;
+    public WTExtensionBase pkBase;
 
     /// <summary>
     /// Extension data for one Express Key.
@@ -44,11 +44,11 @@ public struct WintabPacketExt
     /// <summary>
     /// Extension data for one Touch Strip.
     /// </summary>
-    public WTSliderData	pkTouchStrip;
+    public WTSliderData pkTouchStrip;
 
     /// <summary>
     /// Extension data for one Touch Ring.
     /// </summary>
-    public WTSliderData	pkTouchRing;
+    public WTSliderData pkTouchRing;
 
 }

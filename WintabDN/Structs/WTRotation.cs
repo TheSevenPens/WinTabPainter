@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabContext.cs - Wintab context management for WintabDN
+// CWintabData.cs - Wintab data management for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,19 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Array of WintabAxis objects.
+/// Pen Rotation
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WintabAxisArray
+public struct WTRotation
 {
-    // \cond IGNORED_BY_DOXYGEN
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-    public WintabAxis[] array;
-    // \endcond IGNORED_BY_DOXYGEN
-}
+    /// <summary>
+    /// Specifies the pitch of the cursor.
+    /// </summary>
+    public int rotPitch;
 
+    /// <summary>
+    /// Specifies the roll of the cursor. 
+    /// </summary>
+    public int rotRoll;
+
+    /// <summary>
+    /// Specifies the yaw of the cursor.
+    /// </summary>
+    public int rotYaw;
+}

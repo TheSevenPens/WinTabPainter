@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
+// CWintabData.cs - Wintab data management for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,48 +18,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
-
-//Implementation note: cannot use statement such as:
-//      using WTPKT = UInt32;
-// because the scope of the statement is this file only.
-// Thus we need to implement the 'typedef' using a class that
-// implicitly defines the type.  Also remember to make it
-// sequential so it won't make marshalling barf.
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Managed implementation of Wintab HWND typedef. 
-/// Holds native Window handle.
+/// Extension data for one touch ring or one touch strip.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct HWND
+public struct WTSliderData
 {
-    // \cond IGNORED_BY_DOXYGEN
-    [MarshalAs(UnmanagedType.I4)]
-    public IntPtr value;
+    /// <summary>
+    /// Tablet index where control is found.
+    /// </summary>
+    public byte nTablet;
 
-    public HWND(IntPtr value)
-    { this.value = value; }
+    /// <summary>
+    /// Zero-based control index.
+    /// </summary>
+    public byte nControl;
 
-    public static implicit operator IntPtr(HWND hwnd_I)
-    { return hwnd_I.value; }
+    /// <summary>
+    /// Zero-based current active mode of control.
+    /// This is the mode selected by control's toggle button.
+    /// </summary>
+    public byte nMode;
 
-    public static implicit operator HWND(IntPtr ptr_I)
-    {  return new HWND(ptr_I); }
+    /// <summary>
+    /// Reserved - not used
+    /// </summary>
+    public byte nReserved;
 
-    public static bool operator ==(HWND hwnd1, HWND hwnd2)
-    { return hwnd1.value == hwnd2.value; }
-
-    public static bool operator !=(HWND hwnd1, HWND hwnd2)
-    { return hwnd1.value != hwnd2.value; }
-
-    public override bool Equals(object obj)
-    { return (HWND)obj == this; }
-
-    public override int GetHashCode()
-    { return 0; }
-    // \endcond IGNORED_BY_DOXYGEN
+    /// <summary>
+    /// An integer representing the position of the user's finger on the control.
+    /// When there is no finger on the control, this value is negative.
+    /// </summary>
+    public WTPKT nPosition;
 }

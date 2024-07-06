@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.IO;
+using WintabDN.Structs;
 
 //TODO - generics should be used where possible -
 

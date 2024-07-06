@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabData.cs - Wintab data management for WintabDN
+// CWintabExtensions.cs - Wintab extensions access for WintabDN
 //
-// Copyright (c) 2010, Wacom Technology Corporation
+// Copyright (c) 2013, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,29 +18,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+//TODO - generics should be used where possible -
+
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Pen Rotation
+/// Structure read/writing image Wintab extension data. (Wintab 1.4)
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WTRotation
+public struct WTExtensionImageProperty
 {
-    /// <summary>
-    /// Specifies the pitch of the cursor.
-    /// </summary>
-    public Int32 rotPitch;
+    public WTExtensionPropertyBase extBase;
 
     /// <summary>
-    /// Specifies the roll of the cursor. 
+    /// Image data being written through the extensions API.
+    /// A large buffer is needed.
     /// </summary>
-    public Int32 rotRoll;
-
-    /// <summary>
-    /// Specifies the yaw of the cursor.
-    /// </summary>
-    public Int32 rotYaw;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = WTExtensionsGlobal.WTExtensionPropertyImageMaxDataBytes)]
+    public byte[] data;
 }
+// end namespace WintabDN

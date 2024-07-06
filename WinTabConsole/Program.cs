@@ -1,7 +1,4 @@
 ﻿using System;
-using WintabDN;
-
-
 
 namespace MyApp
 {
@@ -56,7 +53,7 @@ namespace MyApp
             }
         }
 
-        private static void PacketHandler( WintabDN.WintabPacket pkt)
+        private static void PacketHandler(WintabDN.Structs.WintabPacket pkt)
         {
             Console.WriteLine("Packet");
         }

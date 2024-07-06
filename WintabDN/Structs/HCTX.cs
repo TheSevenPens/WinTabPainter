@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabData.cs - Wintab data management for WintabDN
+// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -18,40 +18,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Extension data for one touch ring or one touch strip.
+/// Managed implementation of Wintab HCTX typedef.
+/// Holds a Wintab context identifier.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WTSliderData
+public class HCTX
 {
-    /// <summary>
-    /// Tablet index where control is found.
-    /// </summary>
-    public byte nTablet;
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.U4)]
+    uint value;
 
-    /// <summary>
-    /// Zero-based control index.
-    /// </summary>
-    public byte nControl;
+    public HCTX(uint value)
+    { this.value = value; }
 
-    /// <summary>
-    /// Zero-based current active mode of control.
-    /// This is the mode selected by control's toggle button.
-    /// </summary>
-    public byte nMode;
+    public static implicit operator uint(HCTX hctx_I)
+    { return hctx_I.value; }
 
-    /// <summary>
-    /// Reserved - not used
-    /// </summary>
-    public byte nReserved;
+    public static implicit operator HCTX(uint value)
+    { return new HCTX(value); }
 
-    /// <summary>
-    /// An integer representing the position of the user's finger on the control.
-    /// When there is no finger on the control, this value is negative.
-    /// </summary>
-    public WTPKT nPosition;
+    public static bool operator ==(HCTX hctx, uint value)
+    { return hctx.value == value; }
+
+    public static bool operator !=(HCTX hctx, uint value)
+    { return hctx.value != value; }
+
+    public override bool Equals(object obj)
+    { return (HCTX)obj == this; }
+
+    public override int GetHashCode()
+    { return 0; }
+
+    public override string ToString()
+    { return value.ToString(); }
+    // \endcond IGNORED_BY_DOXYGEN
 }

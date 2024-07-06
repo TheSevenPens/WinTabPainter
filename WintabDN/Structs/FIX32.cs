@@ -21,39 +21,27 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Managed implementation of Wintab HCTX typedef.
-/// Holds a Wintab context identifier.
+/// Managed implementation of Wintab FIX32 typedef.
+/// Used for a fixed-point arithmetic value.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public class HCTX
+public class FIX32
 {
     // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.U4)]
-    UInt32 value;
+    uint value;
 
-    public HCTX(UInt32 value)
+    public FIX32(uint value)
     { this.value = value; }
 
-    public static implicit operator UInt32(HCTX hctx_I)
-    { return hctx_I.value; }
+    public static implicit operator uint(FIX32 fix32_I)
+    { return fix32_I.value; }
 
-    public static implicit operator HCTX(UInt32 value)
-    { return new HCTX(value); }
-
-    public static bool operator ==(HCTX hctx, UInt32 value)
-    { return hctx.value == value; }
-
-    public static bool operator !=(HCTX hctx, UInt32 value)
-    { return hctx.value != value; }
-
-    public override bool Equals(object obj)
-    { return (HCTX)obj == this; }
-
-    public override int GetHashCode()
-    { return 0; }
+    public static implicit operator FIX32(uint value)
+    { return new FIX32(value); }
 
     public override string ToString()
     { return value.ToString(); }

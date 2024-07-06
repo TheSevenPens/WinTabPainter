@@ -19,6 +19,7 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
+using WintabDN.Structs;
 
 namespace WintabDN;
 
@@ -29,7 +30,7 @@ namespace WintabDN;
 public class CWintabContext
 {
     // Context data.
-    private WintabLogContext   m_logContext = new WintabLogContext();
+    private WintabLogContext m_logContext = new WintabLogContext();
     private HCTX                m_hCTX = 0;
 
     /// <summary>
@@ -62,7 +63,7 @@ public class CWintabContext
     /// <param name="hwnd_I">parent window for the context</param>
     /// <param name="enable_I">true to enable, false to disable</param>
     /// <returns>Returns non-zero context handle if successful.</returns>
-    public HCTX Open(HWND hwnd_I, bool enable_I)
+    public Structs.HCTX Open(HWND hwnd_I, bool enable_I)
     {
         m_hCTX = CWintabFuncs.WTOpenA(hwnd_I, ref m_logContext, enable_I);
 
@@ -78,7 +79,7 @@ public class CWintabContext
     {
         // Get the handle of the anonymous MessageEvents window. This is a 
         // static (global) object, so there's only one of these at a time.
-        HWND hwnd = MessageEvents.WindowHandle;
+        var hwnd = MessageEvents.WindowHandle;
 
         m_hCTX = CWintabFuncs.WTOpenA(hwnd, ref m_logContext, true);
 

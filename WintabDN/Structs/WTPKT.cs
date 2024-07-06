@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabContext.cs - Wintab context management for WintabDN
+// CWintabFuncs.cs - Wintab32 function wrappers for WintabDN
 //
 // Copyright (c) 2010, Wacom Technology Corporation
 // 
@@ -21,32 +21,29 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Managed version of AXIS struct.
+/// Managed implementation of Wintab WTPKT typedef.
+/// Holds Wintab packet identifier.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WintabAxis
+public class WTPKT
 {
-    /// <summary>
-    /// Specifies the minimum value of the data item in the tablet's na-tive coordinates.
-    /// </summary>
-    public Int32 axMin;
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.U4)]
+    uint value;
 
-    /// <summary>
-    /// Specifies the maximum value of the data item in the tablet's na-tive coordinates.
-    /// </summary>
-    public Int32 axMax;
+    public WTPKT(uint value)
+    { this.value = value; }
 
-    /// <summary>
-    /// Indicates the units used in calculating the resolution for the data item.
-    /// </summary>
-    public UInt32 axUnits;
+    public static implicit operator uint(WTPKT pkt_I)
+    { return pkt_I.value; }
 
-    /// <summary>
-    /// Is a fixed-point number giving the number of data item incre-ments per physical unit.
-    /// </summary>
-    public FIX32 axResolution;
+    public static implicit operator WTPKT(uint value)
+    { return new WTPKT(value); }
+
+    public override string ToString()
+    { return value.ToString(); }
+    // // \endcond IGNORED_BY_DOXYGEN
 }
-

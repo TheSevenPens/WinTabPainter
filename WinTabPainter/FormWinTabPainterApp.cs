@@ -1,12 +1,7 @@
 ﻿using System;
-using SD=System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
 using WinTabPainter.Painting;
-using WinTabPainter.Geometry;
-using System.Drawing;
 using WinTabUtils;
-using WintabDN;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -127,7 +122,7 @@ namespace WinTabPainter
             get_press_change_as_letter(PenButtonPressChangeType.Released),
             get_press_change_as_letter(PenButtonPressChangeType.Released)};
 
-        private void PacketHandler(WintabDN.WintabPacket wintab_pkt)
+        private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
 
@@ -205,7 +200,7 @@ namespace WinTabPainter
             }
         }
 
-        public void HandleButtonChange(WintabDN.WintabPacket pkt, WinTabUtils.PenButtonPressChange change)
+        public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, WinTabUtils.PenButtonPressChange change)
         {
             if (change.ButtonId == PenButtonIdentifier.Tip)
             {

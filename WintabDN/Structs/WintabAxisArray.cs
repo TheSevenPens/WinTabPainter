@@ -1,7 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
-// CWintabExtensions.cs - Wintab extensions access for WintabDN
+// CWintabContext.cs - Wintab context management for WintabDN
 //
-// Copyright (c) 2013, Wacom Technology Corporation
+// Copyright (c) 2010, Wacom Technology Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,49 +18,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
-using System;
 using System.Runtime.InteropServices;
 
-//TODO - generics should be used where possible -
+namespace WintabDN.Structs;
 
-namespace WintabDN;
-
+/// <summary>
+/// Array of WintabAxis objects.
+/// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WTExtensionPropertyBase
+public struct WintabAxisArray
 {
-    /// <summary>
-    /// Structure version (reserved: always 0 for now)
-    /// </summary>
-    public byte version;
-
-    /// <summary>
-    /// 0-based index for tablet
-    /// </summary>
-    public byte tabletIndex;
-
-    /// <summary>
-    /// 0-based index for control 
-    /// </summary>
-    public byte controlIndex;
-
-    /// <summary>
-    /// 0-based index for control's sub-function
-    /// </summary>
-    public byte functionIndex;
-
-    /// <summary>
-    /// ID of property being set (see EWTExtensionTabletProperty)
-    /// </summary>
-    public UInt16 propertyID;
-
-    /// <summary>
-    /// Alignment padding (reserved)
-    /// </summary>
-    public UInt16 reserved;
-
-    /// <summary>
-    /// Number of bytes in data[] buffer
-    /// </summary>
-    public UInt32 dataSize;
+    // \cond IGNORED_BY_DOXYGEN
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    public WintabAxis[] array;
+    // \endcond IGNORED_BY_DOXYGEN
 }
-// end namespace WintabDN
+

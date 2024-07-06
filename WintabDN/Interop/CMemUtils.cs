@@ -148,16 +148,16 @@ public class CMemUtils
     /// <param name="buf_I">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
 #if DOTNET_4_OR_LATER
-    public static WintabPacket[] MarshalDataPackets(UInt32 numPkts_I, IntPtr buf_I)
+    public static WintabDN.Structs.WintabPacket[] MarshalDataPackets(UInt32 numPkts_I, IntPtr buf_I)
     {
         if (numPkts_I == 0 || buf_I == IntPtr.Zero)
         {
             return null;
         }
 
-        WintabPacket[] packets = new WintabPacket[numPkts_I];
+        var packets = new WintabDN.Structs.WintabPacket[numPkts_I];
 
-        int pktSize = Marshal.SizeOf(new WintabPacket());
+        int pktSize = Marshal.SizeOf(new WintabDN.Structs.WintabPacket());
 
         for (int pktsIdx = 0; pktsIdx < numPkts_I; pktsIdx++)
         {
@@ -175,7 +175,7 @@ public class CMemUtils
         Debug.WriteLine("");
 #endif //TRACE_RAW_BYTES
 
-            packets[pktsIdx] = (WintabPacket)Marshal.PtrToStructure(IntPtr.Add(buf_I, pktsIdx * pktSize), typeof(WintabPacket));
+            packets[pktsIdx] = (WintabDN.Structs.WintabPacket)Marshal.PtrToStructure(IntPtr.Add(buf_I, pktsIdx * pktSize), typeof(WintabDN.Structs.WintabPacket));
         }
 
         return packets;
@@ -232,9 +232,9 @@ public class CMemUtils
     /// <param name="numPkts_I">number of packets to marshal</param>
     /// <param name="buf_I">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
-    public static WintabPacketExt[] MarshalDataExtPackets(UInt32 numPkts_I, IntPtr buf_I)
+    public static WintabDN.Structs.WintabPacketExt[] MarshalDataExtPackets(UInt32 numPkts_I, IntPtr buf_I)
     {
-        WintabPacketExt[] packets = new WintabPacketExt[numPkts_I];
+        var packets = new WintabDN.Structs.WintabPacketExt[numPkts_I];
 
         if (numPkts_I == 0 || buf_I == IntPtr.Zero)
         {
@@ -244,7 +244,7 @@ public class CMemUtils
         // Marshal each WintabPacketExt in the array separately.
         // This is "necessary" because none of the other ways I tried to marshal
         // seemed to work.  It's ugly, but it works.
-        int pktSize = Marshal.SizeOf(new WintabPacketExt());
+        int pktSize = Marshal.SizeOf(new WintabDN.Structs.WintabPacketExt());
         Byte[] byteArray = new Byte[numPkts_I * pktSize];
         Marshal.Copy(buf_I, byteArray, 0, (int)numPkts_I * pktSize);
 
@@ -260,7 +260,7 @@ public class CMemUtils
             IntPtr tmp = CMemUtils.AllocUnmanagedBuf(pktSize);
             Marshal.Copy(byteArray2, 0, tmp, pktSize);
 
-            packets[pktsIdx] = CMemUtils.MarshalUnmanagedBuf<WintabPacketExt>(tmp, pktSize);
+            packets[pktsIdx] = CMemUtils.MarshalUnmanagedBuf<WintabDN.Structs.WintabPacketExt>(tmp, pktSize);
         }
 
         return packets;

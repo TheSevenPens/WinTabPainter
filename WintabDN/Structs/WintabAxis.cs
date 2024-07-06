@@ -21,52 +21,32 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WintabDN.Structs;
 
 /// <summary>
-/// Managed version of Wintab LOGCONTEXT struct.  This structure determines what events an 
-/// application will get, how they will be processed, and how they will be delivered to the 
-/// application or to Windows itself.
+/// Managed version of AXIS struct.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public struct WintabLogContext
+public struct WintabAxis
 {
-    // \cond IGNORED_BY_DOXYGEN
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 40)]    //LCNAMELEN
-    public string lcName;
-    public UInt32 lcOptions;
-    public UInt32 lcStatus;
-    public UInt32 lcLocks;
-    public UInt32 lcMsgBase;
-    public UInt32 lcDevice;
-    public UInt32 lcPktRate;
-    public WTPKT lcPktData;
-    public WTPKT lcPktMode;
-    public WTPKT lcMoveMask;
-    public UInt32 lcBtnDnMask;
-    public UInt32 lcBtnUpMask;
-    public Int32 lcInOrgX;
-    public Int32 lcInOrgY;
-    public Int32 lcInOrgZ;
-    public Int32 lcInExtX;
-    public Int32 lcInExtY;
-    public Int32 lcInExtZ;
-    public Int32 lcOutOrgX;
-    public Int32 lcOutOrgY;
-    public Int32 lcOutOrgZ;
-    public Int32 lcOutExtX;
-    public Int32 lcOutExtY;
-    public Int32 lcOutExtZ;
-    public FIX32 lcSensX;
-    public FIX32 lcSensY;
-    public FIX32 lcSensZ;
-    public bool lcSysMode;
-    public Int32 lcSysOrgX;
-    public Int32 lcSysOrgY;
-    public Int32 lcSysExtX;
-    public Int32 lcSysExtY;
-    public FIX32 lcSysSensX;
-    public FIX32 lcSysSensY;
-    // \endcond IGNORED_BY_DOXYGEN
+    /// <summary>
+    /// Specifies the minimum value of the data item in the tablet's na-tive coordinates.
+    /// </summary>
+    public int axMin;
+
+    /// <summary>
+    /// Specifies the maximum value of the data item in the tablet's na-tive coordinates.
+    /// </summary>
+    public int axMax;
+
+    /// <summary>
+    /// Indicates the units used in calculating the resolution for the data item.
+    /// </summary>
+    public uint axUnits;
+
+    /// <summary>
+    /// Is a fixed-point number giving the number of data item incre-ments per physical unit.
+    /// </summary>
+    public FIX32 axResolution;
 }
 
