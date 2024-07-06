@@ -21,10 +21,7 @@
 using System;
 using WintabDN.Structs;
 
-
-
 namespace WintabDN;
-
 
 /// <summary>
 /// Class to access Wintab interface data.
@@ -147,7 +144,8 @@ public class CWintabInfo
     /// <returns></returns>
     public static WintabAxis GetDeviceAxis(Int32 devIndex_I, Enums.EAxisDimension dim_I)
     {
-        var a = CWintabFuncs.WTInfoAObject<WintabAxis>((uint)(Enums.EWTICategoryIndex.WTI_DEVICES + devIndex_I),
+        var a = CWintabFuncs.WTInfoAObject<WintabAxis>(
+                (uint)(Enums.EWTICategoryIndex.WTI_DEVICES + devIndex_I),
                 (uint)dim_I);
         return a;
     }
@@ -160,8 +158,9 @@ public class CWintabInfo
     {
         tiltSupported_O = false;
 
-        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)Enums.EWTICategoryIndex.WTI_DEVICES,
-                (uint)Enums.EWTIDevicesIndex.DVC_ORIENTATION);
+        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>(
+            (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
+            (uint)Enums.EWTIDevicesIndex.DVC_ORIENTATION);
 
         // If size == 0, then returns a zeroed struct.
         tiltSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
@@ -177,8 +176,10 @@ public class CWintabInfo
     {
         rotationSupported_O = false;
 
-        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>((uint)Enums.EWTICategoryIndex.WTI_DEVICES,
-                (uint)Enums.EWTIDevicesIndex.DVC_ROTATION);
+        var aa = CWintabFuncs.WTInfoAObject<WintabAxisArray>(
+            (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
+            (uint)Enums.EWTIDevicesIndex.DVC_ROTATION);
+        
         rotationSupported_O = (aa.array[0].axResolution != 0 && aa.array[1].axResolution != 0);
         return aa;
     }
@@ -189,9 +190,9 @@ public class CWintabInfo
     /// <returns></returns>
     public static UInt32 GetNumberOfDevices()
     {
-        UInt32 numdevices =
-            CWintabFuncs.WTInfoAObject<UInt32>((uint)Enums.EWTICategoryIndex.WTI_INTERFACE,
-                (uint)Enums.EWTIInterfaceIndex.IFC_NDEVICES);
+        UInt32 numdevices = CWintabFuncs.WTInfoAObject<UInt32>(
+            (uint)Enums.EWTICategoryIndex.WTI_INTERFACE,
+            (uint)Enums.EWTIInterfaceIndex.IFC_NDEVICES);
         return numdevices;
     }
 
