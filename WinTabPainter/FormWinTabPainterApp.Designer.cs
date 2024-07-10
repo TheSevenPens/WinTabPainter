@@ -60,6 +60,7 @@
             button_Clear = new System.Windows.Forms.Button();
             buttonRec = new System.Windows.Forms.Button();
             label_RecStatus = new System.Windows.Forms.Label();
+            button_replay = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -340,11 +341,22 @@
             label_RecStatus.TabIndex = 49;
             label_RecStatus.Text = "---";
             // 
+            // button_replay
+            // 
+            button_replay.Location = new System.Drawing.Point(37, 733);
+            button_replay.Name = "button_replay";
+            button_replay.Size = new System.Drawing.Size(362, 58);
+            button_replay.TabIndex = 50;
+            button_replay.Text = "Replay";
+            button_replay.UseVisualStyleBackColor = true;
+            button_replay.Click += button_replay_Click;
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(button_replay);
             Controls.Add(label_RecStatus);
             Controls.Add(buttonRec);
             Controls.Add(button_Clear);
@@ -413,6 +425,7 @@
         private System.Windows.Forms.Button button_Clear;
         private System.Windows.Forms.Button buttonRec;
         private System.Windows.Forms.Label label_RecStatus;
+        private System.Windows.Forms.Button button_replay;
     }
 }
 
