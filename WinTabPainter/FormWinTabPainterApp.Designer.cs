@@ -58,6 +58,8 @@
             labeltilt_xy = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             button_Clear = new System.Windows.Forms.Button();
+            buttonRec = new System.Windows.Forms.Button();
+            label_RecStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -319,11 +321,32 @@
             button_Clear.UseVisualStyleBackColor = true;
             button_Clear.Click += button_Clear_Click_1;
             // 
+            // buttonRec
+            // 
+            buttonRec.Location = new System.Drawing.Point(37, 516);
+            buttonRec.Name = "buttonRec";
+            buttonRec.Size = new System.Drawing.Size(362, 58);
+            buttonRec.TabIndex = 48;
+            buttonRec.Text = "Start recording";
+            buttonRec.UseVisualStyleBackColor = true;
+            buttonRec.Click += button1_Click_1;
+            // 
+            // label_RecStatus
+            // 
+            label_RecStatus.AutoSize = true;
+            label_RecStatus.Location = new System.Drawing.Point(53, 648);
+            label_RecStatus.Name = "label_RecStatus";
+            label_RecStatus.Size = new System.Drawing.Size(54, 41);
+            label_RecStatus.TabIndex = 49;
+            label_RecStatus.Text = "---";
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(label_RecStatus);
+            Controls.Add(buttonRec);
             Controls.Add(button_Clear);
             Controls.Add(labeltilt_xy);
             Controls.Add(label2);
@@ -388,6 +411,8 @@
         private System.Windows.Forms.Label labeltilt_xy;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button_Clear;
+        private System.Windows.Forms.Button buttonRec;
+        private System.Windows.Forms.Label label_RecStatus;
     }
 }
 

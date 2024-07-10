@@ -15,6 +15,12 @@ namespace WinTabPainter
     public partial class FormWinTabPainterApp : Form
     {
 
+        public enum RecStatusEnum
+        {
+            NotRecording,
+            Recording,
+        }
+        RecStatusEnum RecStat = RecStatusEnum.NotRecording;
 
         private WinTabUtils.TabletSession tabsession;
         public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
@@ -69,6 +75,8 @@ namespace WinTabPainter
 
             this.trackBar_BrushSize.Value = paint_settings.BrushWidth;
             this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
+
+            this.UpdateRecStatus();
 
             // Default to no smoothing
             paint_settings.PositionSmoother.SmoothingAmount = 0.0;
@@ -412,6 +420,33 @@ namespace WinTabPainter
         private void button_Clear_Click_1(object sender, EventArgs e)
         {
             this.EraseCanvas();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (this.RecStat == RecStatusEnum.NotRecording)
+            {
+                this.RecStat = RecStatusEnum.Recording;
+            }
+            else
+            {
+                this.RecStat = RecStatusEnum.NotRecording;
+            }
+
+            this.UpdateRecStatus();
+        }
+
+        private void UpdateRecStatus()
+        {
+            this.label_RecStatus.Text = this.RecStat.ToString();
+            if (this.RecStat == RecStatusEnum.NotRecording)
+            {
+                this.buttonRec.Text = "Start recording";
+            }
+            else
+            {
+                this.buttonRec.Text = "Stop recording";
+            }
         }
     }
 }
