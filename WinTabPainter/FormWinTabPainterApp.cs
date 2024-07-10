@@ -10,11 +10,14 @@ using WinTabUtils;
 // https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
+using System.Collections.Generic;
+
 namespace WinTabPainter
 {
     public partial class FormWinTabPainterApp : Form
     {
-
+        int max_rec_packets = 60 * 60 * 10;
+        List<WintabDN.Structs.WintabPacket> recorded_packets;
         public enum RecStatusEnum
         {
             NotRecording,
@@ -76,6 +79,9 @@ namespace WinTabPainter
             this.trackBar_BrushSize.Value = paint_settings.BrushWidth;
             this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
 
+
+            this.recorded_packets = new List<WintabDN.Structs.WintabPacket>(this.max_rec_packets);
+
             this.UpdateRecStatus();
 
             // Default to no smoothing
@@ -132,6 +138,18 @@ namespace WinTabPainter
 
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {
+            if (this.RecStat == RecStatusEnum.Recording)
+            {
+                if (this.recorded_packets.Count >= this.max_rec_packets)
+                {
+                    this.RecStat = RecStatusEnum.NotRecording;
+                }
+                else
+                {
+                    this.recorded_packets.Add(wintab_pkt);
+                }
+                this.UpdateRecStatus();
+            }
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
 
             Update_UI_Button_status(button_info);
@@ -436,16 +454,38 @@ namespace WinTabPainter
             this.UpdateRecStatus();
         }
 
+
         private void UpdateRecStatus()
         {
-            this.label_RecStatus.Text = this.RecStat.ToString();
             if (this.RecStat == RecStatusEnum.NotRecording)
             {
+                this.label_RecStatus.Text = "---";
                 this.buttonRec.Text = "Start recording";
+                if (this.recorded_packets.Count > 0)
+                {
+                    //this.recorded_packets.Clear();
+                }
             }
             else
             {
+                this.label_RecStatus.Text = string.Format("Recorded: {0} packets", this.recorded_packets.Count);
                 this.buttonRec.Text = "Stop recording";
+            }
+
+        }
+
+        private void button_replay_Click(object sender, EventArgs e)
+        {
+            if (this.RecStat == RecStatusEnum.Recording) { return; }
+            if (this.recorded_packets.Count<1) { return; }
+
+            this.EraseCanvas();
+            foreach (var packet in this.recorded_packets)
+            {
+                var paint_data = new Painting.PaintData(packet, this.tabsession.TabletInfo, paint_settings, Screen_loc_to_canvas_loc);
+
+                HandlePainting(paint_data);
+                this.old_paintdata = paint_data;
             }
         }
     }
