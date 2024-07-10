@@ -57,6 +57,7 @@
             label5 = new System.Windows.Forms.Label();
             labeltilt_xy = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            button_Clear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -74,7 +75,7 @@
             // label_PressureNormalized
             // 
             label_PressureNormalized.AutoSize = true;
-            label_PressureNormalized.Location = new System.Drawing.Point(24, 278);
+            label_PressureNormalized.Location = new System.Drawing.Point(24, 259);
             label_PressureNormalized.Name = "label_PressureNormalized";
             label_PressureNormalized.Size = new System.Drawing.Size(130, 41);
             label_PressureNormalized.TabIndex = 11;
@@ -83,7 +84,7 @@
             // label_Tilt
             // 
             label_Tilt.AutoSize = true;
-            label_Tilt.Location = new System.Drawing.Point(24, 410);
+            label_Tilt.Location = new System.Drawing.Point(24, 316);
             label_Tilt.Name = "label_Tilt";
             label_Tilt.Size = new System.Drawing.Size(167, 41);
             label_Tilt.TabIndex = 13;
@@ -92,7 +93,7 @@
             // label_Buttons
             // 
             label_Buttons.AutoSize = true;
-            label_Buttons.Location = new System.Drawing.Point(24, 564);
+            label_Buttons.Location = new System.Drawing.Point(24, 430);
             label_Buttons.Name = "label_Buttons";
             label_Buttons.Size = new System.Drawing.Size(120, 41);
             label_Buttons.TabIndex = 16;
@@ -112,7 +113,7 @@
             // label_TiltValue
             // 
             label_TiltValue.AutoSize = true;
-            label_TiltValue.Location = new System.Drawing.Point(211, 410);
+            label_TiltValue.Location = new System.Drawing.Point(211, 316);
             label_TiltValue.Name = "label_TiltValue";
             label_TiltValue.Size = new System.Drawing.Size(54, 41);
             label_TiltValue.TabIndex = 26;
@@ -130,7 +131,7 @@
             // label_PressureValue
             // 
             label_PressureValue.AutoSize = true;
-            label_PressureValue.Location = new System.Drawing.Point(211, 278);
+            label_PressureValue.Location = new System.Drawing.Point(211, 259);
             label_PressureValue.Name = "label_PressureValue";
             label_PressureValue.Size = new System.Drawing.Size(54, 41);
             label_PressureValue.TabIndex = 25;
@@ -139,7 +140,7 @@
             // label_ButtonsValue
             // 
             label_ButtonsValue.AutoSize = true;
-            label_ButtonsValue.Location = new System.Drawing.Point(211, 564);
+            label_ButtonsValue.Location = new System.Drawing.Point(211, 430);
             label_ButtonsValue.Name = "label_ButtonsValue";
             label_ButtonsValue.Size = new System.Drawing.Size(54, 41);
             label_ButtonsValue.TabIndex = 28;
@@ -275,7 +276,7 @@
             // label_CanvasPos
             // 
             label_CanvasPos.AutoSize = true;
-            label_CanvasPos.Location = new System.Drawing.Point(211, 212);
+            label_CanvasPos.Location = new System.Drawing.Point(211, 202);
             label_CanvasPos.Name = "label_CanvasPos";
             label_CanvasPos.Size = new System.Drawing.Size(54, 41);
             label_CanvasPos.TabIndex = 44;
@@ -284,7 +285,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(24, 212);
+            label5.Location = new System.Drawing.Point(24, 202);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(158, 41);
             label5.TabIndex = 43;
@@ -293,7 +294,7 @@
             // labeltilt_xy
             // 
             labeltilt_xy.AutoSize = true;
-            labeltilt_xy.Location = new System.Drawing.Point(211, 470);
+            labeltilt_xy.Location = new System.Drawing.Point(211, 373);
             labeltilt_xy.Name = "labeltilt_xy";
             labeltilt_xy.Size = new System.Drawing.Size(54, 41);
             labeltilt_xy.TabIndex = 46;
@@ -302,17 +303,28 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(24, 470);
+            label2.Location = new System.Drawing.Point(24, 373);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(126, 41);
             label2.TabIndex = 45;
             label2.Text = "Tilt (X,Y)";
+            // 
+            // button_Clear
+            // 
+            button_Clear.Location = new System.Drawing.Point(1697, 104);
+            button_Clear.Name = "button_Clear";
+            button_Clear.Size = new System.Drawing.Size(188, 58);
+            button_Clear.TabIndex = 47;
+            button_Clear.Text = "Clear";
+            button_Clear.UseVisualStyleBackColor = true;
+            button_Clear.Click += button_Clear_Click_1;
             // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(button_Clear);
             Controls.Add(labeltilt_xy);
             Controls.Add(label2);
             Controls.Add(label_CanvasPos);
@@ -375,6 +387,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutTabletToolStripMenuItem;
         private System.Windows.Forms.Label labeltilt_xy;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button_Clear;
     }
 }
 

@@ -408,5 +408,10 @@ namespace WinTabPainter
 
             var r = form.ShowDialog(this);
         }
+
+        private void button_Clear_Click_1(object sender, EventArgs e)
+        {
+            this.EraseCanvas();
+        }
     }
 }
