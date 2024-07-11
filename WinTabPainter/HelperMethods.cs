@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using static WinTabPainter.FormWinTabPainterApp;
 
 namespace WinTabPainter;
 
@@ -21,6 +23,16 @@ public static class HelperMethods
     {
         var degrees = radians * 180 / Math.PI;
         return  degrees;
+    }
+
+    public static bool UpdatesOld( int val, int? oldval ) 
+    {
+        return ((!oldval.HasValue) || (oldval.HasValue && (val != oldval.Value)));
+    }
+
+    public static bool UpdatesOld(RecStatusEnum val, RecStatusEnum? oldval)
+    {
+        return ((!oldval.HasValue) || (oldval.HasValue && (val != oldval.Value)));
     }
 
 }

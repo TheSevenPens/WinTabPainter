@@ -455,29 +455,41 @@ namespace WinTabPainter
         }
 
 
+        RecStatusEnum old_rec_stat;
+        int? old_rec_count;
+
         private void UpdateRecStatus()
         {
-            if (this.RecStat == RecStatusEnum.NotRecording)
+            if (HelperMethods.UpdatesOld(this.recorded_packets.Count, this.old_rec_count))
             {
-                this.label_RecStatus.Text = "---";
-                this.buttonRec.Text = "Start recording";
-                if (this.recorded_packets.Count > 0)
-                {
-                    //this.recorded_packets.Clear();
-                }
+                this.label_RecCount.Text = this.recorded_packets.Count.ToString();
+                this.old_rec_count = this.recorded_packets.Count;
+
             }
-            else
+
+            if (HelperMethods.UpdatesOld(this.RecStat, this.old_rec_stat))
             {
-                this.label_RecStatus.Text = string.Format("Recorded: {0} packets", this.recorded_packets.Count);
-                this.buttonRec.Text = "Stop recording";
+                this.buttonRec.Text = this.RecStat.ToString();
+                this.old_rec_stat = this.RecStat;
+
             }
 
         }
 
+
         private void button_replay_Click(object sender, EventArgs e)
         {
-            if (this.RecStat == RecStatusEnum.Recording) { return; }
-            if (this.recorded_packets.Count<1) { return; }
+            if (this.RecStat == RecStatusEnum.Recording) 
+            { 
+                // do nothing - app is in the middle of recording
+                return; 
+            }
+            
+            if (this.recorded_packets.Count<1) 
+            { 
+                // do nothing - there is nothing to replay
+                return; 
+            }
 
             this.EraseCanvas();
             foreach (var packet in this.recorded_packets)

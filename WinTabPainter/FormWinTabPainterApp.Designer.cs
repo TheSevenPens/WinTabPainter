@@ -59,8 +59,9 @@
             label2 = new System.Windows.Forms.Label();
             button_Clear = new System.Windows.Forms.Button();
             buttonRec = new System.Windows.Forms.Button();
-            label_RecStatus = new System.Windows.Forms.Label();
+            label_RecCount = new System.Windows.Forms.Label();
             button_replay = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -326,38 +327,48 @@
             // 
             buttonRec.Location = new System.Drawing.Point(37, 516);
             buttonRec.Name = "buttonRec";
-            buttonRec.Size = new System.Drawing.Size(362, 58);
+            buttonRec.Size = new System.Drawing.Size(252, 58);
             buttonRec.TabIndex = 48;
             buttonRec.Text = "Start recording";
             buttonRec.UseVisualStyleBackColor = true;
             buttonRec.Click += button1_Click_1;
             // 
-            // label_RecStatus
+            // label_RecCount
             // 
-            label_RecStatus.AutoSize = true;
-            label_RecStatus.Location = new System.Drawing.Point(53, 648);
-            label_RecStatus.Name = "label_RecStatus";
-            label_RecStatus.Size = new System.Drawing.Size(54, 41);
-            label_RecStatus.TabIndex = 49;
-            label_RecStatus.Text = "---";
+            label_RecCount.AutoSize = true;
+            label_RecCount.Location = new System.Drawing.Point(345, 600);
+            label_RecCount.Name = "label_RecCount";
+            label_RecCount.Size = new System.Drawing.Size(54, 41);
+            label_RecCount.TabIndex = 49;
+            label_RecCount.Text = "---";
             // 
             // button_replay
             // 
-            button_replay.Location = new System.Drawing.Point(37, 733);
+            button_replay.Location = new System.Drawing.Point(37, 664);
             button_replay.Name = "button_replay";
-            button_replay.Size = new System.Drawing.Size(362, 58);
+            button_replay.Size = new System.Drawing.Size(166, 58);
             button_replay.TabIndex = 50;
             button_replay.Text = "Replay";
             button_replay.UseVisualStyleBackColor = true;
             button_replay.Click += button_replay_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(37, 600);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(245, 41);
+            label1.TabIndex = 51;
+            label1.Text = "Packets recorded";
             // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(label1);
             Controls.Add(button_replay);
-            Controls.Add(label_RecStatus);
+            Controls.Add(label_RecCount);
             Controls.Add(buttonRec);
             Controls.Add(button_Clear);
             Controls.Add(labeltilt_xy);
@@ -424,8 +435,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button_Clear;
         private System.Windows.Forms.Button buttonRec;
-        private System.Windows.Forms.Label label_RecStatus;
+        private System.Windows.Forms.Label label_RecCount;
         private System.Windows.Forms.Button button_replay;
+        private System.Windows.Forms.Label label1;
     }
 }
 
