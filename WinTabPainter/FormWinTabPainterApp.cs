@@ -412,13 +412,13 @@ namespace WinTabPainter
 
         private void pressureCurveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new FormBrushSettings(paint_settings.pressure_curve.BendAmount);
+            var form = new FormBrushSettings(paint_settings.pressure_curve.CurveAmount);
             form.PaintSettings = this.paint_settings;
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {
 
-                paint_settings.pressure_curve.BendAmount = form.CurveAmount;
+                paint_settings.pressure_curve.CurveAmount = form.CurveAmount;
                 paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue;
                 paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue;
                 paint_settings.PressureQuantizeLevels = form.PressureQuant;

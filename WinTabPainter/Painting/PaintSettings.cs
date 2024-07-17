@@ -7,7 +7,7 @@ public class PaintSettings
     public static readonly Numerics.OrderedRange SYS_BRUSHSIZE_RANGE = new Numerics.OrderedRange(1, 100);
 
     // pressure settings
-    public Numerics.SimpleCurve pressure_curve = new Numerics.SimpleCurve();
+    public Numerics.TestCurve pressure_curve = new Numerics.TestCurve();
     public int PressureQuantizeLevels = -1;
     // smoothing settings
     public readonly Numerics.EMAPositionSmoother PositionSmoother;
