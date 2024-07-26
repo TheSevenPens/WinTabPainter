@@ -418,7 +418,7 @@ namespace WinTabPainter
             if (r == DialogResult.OK)
             {
 
-                paint_settings.pressure_curve.CurveAmount = form.CurveAmount;
+                paint_settings.pressure_curve.CurveAmount = form.PressureCurveAmount;
                 paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue;
                 paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue;
                 paint_settings.PressureQuantizeLevels = form.PressureQuant;

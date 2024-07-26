@@ -22,7 +22,7 @@ namespace WinTabPainter
 
 
 
-  
+
         }
         Numerics.SimpleCurve smoothing_adjustment_curve = new Numerics.SimpleCurve(0.9);
 
@@ -40,7 +40,7 @@ namespace WinTabPainter
         public double PressureSmoothingValue = 0;
         public double PositionSmoothingValue = 0;
 
-        public double CurveAmount
+        public double PressureCurveAmount
         {
             get => this.curve.CurveAmount;
         }
@@ -238,8 +238,13 @@ namespace WinTabPainter
 
         private void comboBox_PressureQuant_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            var q = (QuantItem) comboBox_PressureQuant.SelectedItem;
+            var q = (QuantItem)comboBox_PressureQuant.SelectedItem;
             this.PressureQuant = q.Value;
+        }
+
+        private void trackBar1_Scroll(object sender, System.EventArgs e)
+        {
+
         }
     }
 

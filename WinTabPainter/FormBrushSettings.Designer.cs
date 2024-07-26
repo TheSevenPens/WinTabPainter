@@ -43,10 +43,14 @@
             label_position_smoothingval = new System.Windows.Forms.Label();
             trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             label3 = new System.Windows.Forms.Label();
+            labelPCInputMin = new System.Windows.Forms.Label();
+            trackBar1 = new System.Windows.Forms.TrackBar();
+            label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PositionSmoothing).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             SuspendLayout();
             // 
             // button_Cancel
@@ -203,11 +207,44 @@
             label3.TabIndex = 50;
             label3.Text = "Position Smoothing";
             // 
+            // labelPCInputMin
+            // 
+            labelPCInputMin.AutoSize = true;
+            labelPCInputMin.Location = new System.Drawing.Point(493, 738);
+            labelPCInputMin.Name = "labelPCInputMin";
+            labelPCInputMin.Size = new System.Drawing.Size(84, 41);
+            labelPCInputMin.TabIndex = 58;
+            labelPCInputMin.Text = "NNN";
+            // 
+            // trackBar1
+            // 
+            trackBar1.AutoSize = false;
+            trackBar1.Location = new System.Drawing.Point(34, 743);
+            trackBar1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            trackBar1.Maximum = 100;
+            trackBar1.Name = "trackBar1";
+            trackBar1.Size = new System.Drawing.Size(460, 36);
+            trackBar1.TabIndex = 57;
+            trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
+            trackBar1.Scroll += trackBar1_Scroll;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(34, 698);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(139, 41);
+            label7.TabIndex = 59;
+            label7.Text = "InputMin";
+            // 
             // FormBrushSettings
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1601, 965);
+            Controls.Add(label7);
+            Controls.Add(labelPCInputMin);
+            Controls.Add(trackBar1);
             Controls.Add(label5);
             Controls.Add(comboBox_PressureQuant);
             Controls.Add(label_position_smoothingval);
@@ -232,6 +269,7 @@
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PositionSmoothing).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -253,5 +291,8 @@
         private System.Windows.Forms.Label label_position_smoothingval;
         private System.Windows.Forms.TrackBar trackBar_PositionSmoothing;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelPCInputMin;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label7;
     }
 }
