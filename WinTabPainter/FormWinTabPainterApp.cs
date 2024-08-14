@@ -11,6 +11,8 @@ using WinTabUtils;
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Linq.Expressions;
 
 namespace WinTabPainter
 {
@@ -479,16 +481,16 @@ namespace WinTabPainter
 
         private void button_replay_Click(object sender, EventArgs e)
         {
-            if (this.RecStat == RecStatusEnum.Recording) 
-            { 
+            if (this.RecStat == RecStatusEnum.Recording)
+            {
                 // do nothing - app is in the middle of recording
-                return; 
+                return;
             }
-            
-            if (this.recorded_packets.Count<1) 
-            { 
+
+            if (this.recorded_packets.Count < 1)
+            {
                 // do nothing - there is nothing to replay
-                return; 
+                return;
             }
 
             this.EraseCanvas();
@@ -498,6 +500,44 @@ namespace WinTabPainter
 
                 HandlePainting(paint_data);
                 this.old_paintdata = paint_data;
+            }
+        }
+
+        private void buttonClearRecording_Click(object sender, EventArgs e)
+        {
+            if (this.RecStat == RecStatusEnum.Recording)
+            {
+                this.RecStat = RecStatusEnum.NotRecording;
+                this.UpdateRecStatus();
+            }
+
+            this.recorded_packets.Clear();
+            this.UpdateRecStatus();
+
+        }
+
+        private void buttonSavePackets_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.FileName = "Untitled.WinTab.json";
+            sfd.DefaultExt = "json";
+            sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var v = sfd.ShowDialog();
+
+            if (v == DialogResult.OK)
+            {
+                string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var options = new JsonSerializerOptions();
+                options.IncludeFields = true;
+                options.WriteIndented = true;
+
+                string content = JsonSerializer.Serialize(this.recorded_packets, options);
+                System.IO.File.WriteAllText(sfd.FileName, content);
+            }
+            else
+            {
+                //do nothing
             }
         }
     }
