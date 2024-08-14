@@ -13,6 +13,7 @@ using WinTabUtils;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq.Expressions;
+using System.Globalization;
 
 namespace WinTabPainter
 {
@@ -516,6 +517,19 @@ namespace WinTabPainter
 
         }
 
+        public class PacketRecording
+        {
+            public String App;
+            public string SaveDate;
+            public int NumPackets;
+            public List<WintabDN.Structs.WintabPacket> Packets;
+            public PacketRecording()
+            {
+                this.App = "WinTabPainter/V1.0";
+                this.SaveDate = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
+            }
+        }
+
         private void buttonSavePackets_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog();
@@ -532,12 +546,37 @@ namespace WinTabPainter
                 options.IncludeFields = true;
                 options.WriteIndented = true;
 
-                string content = JsonSerializer.Serialize(this.recorded_packets, options);
+                var pr = new PacketRecording();
+                pr.Packets = this.recorded_packets;
+                pr.NumPackets = pr.Packets.Count;
+
+                string content = JsonSerializer.Serialize(pr, options);
                 System.IO.File.WriteAllText(sfd.FileName, content);
             }
             else
             {
                 //do nothing
+            }
+        }
+
+        private void buttonLoadPackets_Click(object sender, EventArgs e)
+        {
+
+            var ofd = new OpenFileDialog();
+            ofd.DefaultExt = ".json";
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var v = ofd.ShowDialog();
+            if (v == DialogResult.OK)
+            {
+                this.bitmap_doc.Load(ofd.FileName);
+                this.filename = ofd.FileName;
+                this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
+                this.pictureBox_Canvas.Invalidate();
+            }
+            else
+            {
+                // do nothing
             }
         }
     }

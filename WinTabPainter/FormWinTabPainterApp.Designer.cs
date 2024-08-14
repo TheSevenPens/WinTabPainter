@@ -392,6 +392,7 @@
             buttonLoadPackets.TabIndex = 54;
             buttonLoadPackets.Text = "Load packets";
             buttonLoadPackets.UseVisualStyleBackColor = true;
+            buttonLoadPackets.Click += buttonLoadPackets_Click;
             // 
             // FormWinTabPainterApp
             // 
