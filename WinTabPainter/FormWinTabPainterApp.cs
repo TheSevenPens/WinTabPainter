@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq.Expressions;
 using System.Globalization;
+using WintabDN.Structs;
 
 namespace WinTabPainter
 {
@@ -519,13 +520,19 @@ namespace WinTabPainter
 
         public class PacketRecording
         {
-            public String App;
+            public string App;
+            public string AppVer;
             public string SaveDate;
-            public int NumPackets;
-            public List<WintabDN.Structs.WintabPacket> Packets;
+            private int numPackets;
+            private List<WintabDN.Structs.WintabPacket> packets;
+
+            public int NumPackets { get => numPackets; set => numPackets = value; }
+            public List<WintabPacket> Packets { get => packets; set => packets = value; }
+
             public PacketRecording()
             {
-                this.App = "WinTabPainter/V1.0";
+                this.App = "WinTabPainter";
+                this.AppVer = "1.0";
                 this.SaveDate = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
             }
         }
@@ -563,16 +570,21 @@ namespace WinTabPainter
         {
 
             var ofd = new OpenFileDialog();
-            ofd.DefaultExt = ".json";
+            ofd.DefaultExt = ".WinTab.json";
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             var v = ofd.ShowDialog();
             if (v == DialogResult.OK)
             {
-                this.bitmap_doc.Load(ofd.FileName);
-                this.filename = ofd.FileName;
-                this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
-                this.pictureBox_Canvas.Invalidate();
+                var options = new JsonSerializerOptions();
+                //options.IncludeFields = true;
+                options.WriteIndented = true;
+
+
+                var JsonStr = System.IO.File.ReadAllText(ofd.FileName);
+                var loaded_recording = JsonSerializer.Deserialize<PacketRecording>(JsonStr,options);
+                this.recorded_packets = loaded_recording.Packets;
+                this.UpdateRecStatus();
             }
             else
             {
