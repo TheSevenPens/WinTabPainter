@@ -15,6 +15,8 @@ using System.Text.Json;
 using System.Linq.Expressions;
 using System.Globalization;
 using WintabDN.Structs;
+using System.Security.Cryptography;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace WinTabPainter
 {
@@ -535,6 +537,28 @@ namespace WinTabPainter
                 this.AppVer = "1.0";
                 this.SaveDate = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
             }
+
+            static public PacketRecording FromFile(string filename)
+            {
+                var options = new JsonSerializerOptions();
+                options.IncludeFields = true;
+                options.WriteIndented = true;
+
+
+                var JsonStr = System.IO.File.ReadAllText(filename);
+                var loaded_recording = JsonSerializer.Deserialize<PacketRecording>(JsonStr, options);
+                return loaded_recording;
+            }
+
+            public void Save(string filename)
+            {
+                var options = new JsonSerializerOptions();
+                options.IncludeFields = true;
+                options.WriteIndented = true;
+
+                string content = JsonSerializer.Serialize(this, options);
+                System.IO.File.WriteAllText(filename, content);
+            }
         }
 
         private void buttonSavePackets_Click(object sender, EventArgs e)
@@ -546,24 +570,18 @@ namespace WinTabPainter
 
             var v = sfd.ShowDialog();
 
-            if (v == DialogResult.OK)
+            if (v != DialogResult.OK)
             {
-                string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var options = new JsonSerializerOptions();
-                options.IncludeFields = true;
-                options.WriteIndented = true;
-
-                var pr = new PacketRecording();
-                pr.Packets = this.recorded_packets;
-                pr.NumPackets = pr.Packets.Count;
-
-                string content = JsonSerializer.Serialize(pr, options);
-                System.IO.File.WriteAllText(sfd.FileName, content);
+                return;
             }
-            else
-            {
-                //do nothing
-            }
+
+            string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var pr = new PacketRecording();
+            pr.Packets = this.recorded_packets;
+            pr.NumPackets = pr.Packets.Count;
+
+            pr.Save(sfd.FileName);
         }
 
         private void buttonLoadPackets_Click(object sender, EventArgs e)
@@ -574,22 +592,18 @@ namespace WinTabPainter
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             var v = ofd.ShowDialog();
-            if (v == DialogResult.OK)
-            {
-                var options = new JsonSerializerOptions();
-                //options.IncludeFields = true;
-                options.WriteIndented = true;
 
-
-                var JsonStr = System.IO.File.ReadAllText(ofd.FileName);
-                var loaded_recording = JsonSerializer.Deserialize<PacketRecording>(JsonStr,options);
-                this.recorded_packets = loaded_recording.Packets;
-                this.UpdateRecStatus();
-            }
-            else
+            if (v != DialogResult.OK)
             {
-                // do nothing
+                return;
             }
+            var options = new JsonSerializerOptions();
+            options.IncludeFields = true;
+            options.WriteIndented = true;
+
+            var loaded_recording = PacketRecording.FromFile(ofd.FileName);
+            this.recorded_packets = loaded_recording.Packets;
+            this.UpdateRecStatus();
         }
     }
 }
