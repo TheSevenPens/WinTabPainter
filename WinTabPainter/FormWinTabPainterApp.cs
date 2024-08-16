@@ -13,7 +13,6 @@ using WinTabUtils;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq.Expressions;
-using System.Globalization;
 using WintabDN.Structs;
 using System.Security.Cryptography;
 using static System.Windows.Forms.Design.AxImporter;
@@ -520,47 +519,6 @@ namespace WinTabPainter
 
         }
 
-        public class PacketRecording
-        {
-            public string App;
-            public string AppVer;
-            public string SaveDate;
-            private int numPackets;
-            private List<WintabDN.Structs.WintabPacket> packets;
-
-            public int NumPackets { get => numPackets; set => numPackets = value; }
-            public List<WintabPacket> Packets { get => packets; set => packets = value; }
-
-            public PacketRecording()
-            {
-                this.App = "WinTabPainter";
-                this.AppVer = "1.0";
-                this.SaveDate = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
-            }
-
-            static public PacketRecording FromFile(string filename)
-            {
-                var options = new JsonSerializerOptions();
-                options.IncludeFields = true;
-                options.WriteIndented = true;
-
-
-                var JsonStr = System.IO.File.ReadAllText(filename);
-                var loaded_recording = JsonSerializer.Deserialize<PacketRecording>(JsonStr, options);
-                return loaded_recording;
-            }
-
-            public void Save(string filename)
-            {
-                var options = new JsonSerializerOptions();
-                options.IncludeFields = true;
-                options.WriteIndented = true;
-
-                string content = JsonSerializer.Serialize(this, options);
-                System.IO.File.WriteAllText(filename, content);
-            }
-        }
-
         private void buttonSavePackets_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog();
@@ -577,9 +535,7 @@ namespace WinTabPainter
 
             string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            var pr = new PacketRecording();
-            pr.Packets = this.recorded_packets;
-            pr.NumPackets = pr.Packets.Count;
+            var pr = new PacketRecording(this.recorded_packets);
 
             pr.Save(sfd.FileName);
         }
@@ -602,8 +558,14 @@ namespace WinTabPainter
             options.WriteIndented = true;
 
             var loaded_recording = PacketRecording.FromFile(ofd.FileName);
-            this.recorded_packets = loaded_recording.Packets;
-            this.UpdateRecStatus();
+            this.recorded_packets = new List<WintabPacket>();
+            foreach (var packet in loaded_recording.Packets)
+            {
+                {
+                    this.recorded_packets.Add(packet.ToPacket());
+                }
+                this.UpdateRecStatus();
+            }
         }
     }
 }
