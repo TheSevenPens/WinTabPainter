@@ -28,7 +28,7 @@ namespace WintabDN.Structs;
 /// Holds Wintab packet identifier.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public class WTPKT
+public struct WTPKT
 {
     // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.U4)]

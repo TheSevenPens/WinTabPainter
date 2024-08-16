@@ -28,7 +28,7 @@ namespace WintabDN.Structs;
 /// Used for a fixed-point arithmetic value.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public class FIX32
+public struct FIX32
 {
     // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.U4)]
