@@ -87,6 +87,8 @@ namespace WinTabPainter
             l.Add(new QuantItem("512 levels", 512));
             l.Add(new QuantItem("1024 levels", 1024));
             l.Add(new QuantItem("2048 levels", 2048));
+            l.Add(new QuantItem("4096 levels", 4096));
+            l.Add(new QuantItem("8192 levels", 8192));
             this.comboBox_PressureQuant.DataSource = l;
             this.comboBox_PressureQuant.DisplayMember = "Key";
             this.comboBox_PressureQuant.ValueMember = "Value";
@@ -240,18 +242,6 @@ namespace WinTabPainter
         {
             var q = (QuantItem) comboBox_PressureQuant.SelectedItem;
             this.PressureQuant = q.Value;
-        }
-    }
-
-    public class QuantItem
-    {
-        public string Key { get; set; }
-        public int Value { get; set; }
-
-        public QuantItem(string key, int value)
-        {
-            this.Key = key;
-            this.Value = value;
         }
     }
 }

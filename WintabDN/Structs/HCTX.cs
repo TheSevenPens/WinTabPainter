@@ -28,7 +28,7 @@ namespace WintabDN.Structs;
 /// Holds a Wintab context identifier.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-public class HCTX
+public struct HCTX
 {
     // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.U4)]

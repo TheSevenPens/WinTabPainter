@@ -58,6 +58,13 @@
             labeltilt_xy = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             button_Clear = new System.Windows.Forms.Button();
+            buttonRec = new System.Windows.Forms.Button();
+            label_RecCount = new System.Windows.Forms.Label();
+            button_replay = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            buttonClearRecording = new System.Windows.Forms.Button();
+            buttonSavePackets = new System.Windows.Forms.Button();
+            buttonLoadPackets = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -319,11 +326,86 @@
             button_Clear.UseVisualStyleBackColor = true;
             button_Clear.Click += button_Clear_Click_1;
             // 
+            // buttonRec
+            // 
+            buttonRec.Location = new System.Drawing.Point(33, 628);
+            buttonRec.Name = "buttonRec";
+            buttonRec.Size = new System.Drawing.Size(252, 58);
+            buttonRec.TabIndex = 48;
+            buttonRec.Text = "Start recording";
+            buttonRec.UseVisualStyleBackColor = true;
+            buttonRec.Click += button1_Click_1;
+            // 
+            // label_RecCount
+            // 
+            label_RecCount.AutoSize = true;
+            label_RecCount.Location = new System.Drawing.Point(341, 712);
+            label_RecCount.Name = "label_RecCount";
+            label_RecCount.Size = new System.Drawing.Size(54, 41);
+            label_RecCount.TabIndex = 49;
+            label_RecCount.Text = "---";
+            // 
+            // button_replay
+            // 
+            button_replay.Location = new System.Drawing.Point(33, 776);
+            button_replay.Name = "button_replay";
+            button_replay.Size = new System.Drawing.Size(166, 58);
+            button_replay.TabIndex = 50;
+            button_replay.Text = "Replay";
+            button_replay.UseVisualStyleBackColor = true;
+            button_replay.Click += button_replay_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(33, 712);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(245, 41);
+            label1.TabIndex = 51;
+            label1.Text = "Packets recorded";
+            // 
+            // buttonClearRecording
+            // 
+            buttonClearRecording.Location = new System.Drawing.Point(33, 866);
+            buttonClearRecording.Name = "buttonClearRecording";
+            buttonClearRecording.Size = new System.Drawing.Size(166, 58);
+            buttonClearRecording.TabIndex = 52;
+            buttonClearRecording.Text = "Clear";
+            buttonClearRecording.UseVisualStyleBackColor = true;
+            buttonClearRecording.Click += buttonClearRecording_Click;
+            // 
+            // buttonSavePackets
+            // 
+            buttonSavePackets.Location = new System.Drawing.Point(33, 951);
+            buttonSavePackets.Name = "buttonSavePackets";
+            buttonSavePackets.Size = new System.Drawing.Size(280, 58);
+            buttonSavePackets.TabIndex = 53;
+            buttonSavePackets.Text = "Save packets";
+            buttonSavePackets.UseVisualStyleBackColor = true;
+            buttonSavePackets.Click += buttonSavePackets_Click;
+            // 
+            // buttonLoadPackets
+            // 
+            buttonLoadPackets.Location = new System.Drawing.Point(33, 1045);
+            buttonLoadPackets.Name = "buttonLoadPackets";
+            buttonLoadPackets.Size = new System.Drawing.Size(280, 58);
+            buttonLoadPackets.TabIndex = 54;
+            buttonLoadPackets.Text = "Load packets";
+            buttonLoadPackets.UseVisualStyleBackColor = true;
+            buttonLoadPackets.Click += buttonLoadPackets_Click;
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(buttonLoadPackets);
+            Controls.Add(buttonSavePackets);
+            Controls.Add(buttonClearRecording);
+            Controls.Add(label1);
+            Controls.Add(button_replay);
+            Controls.Add(label_RecCount);
+            Controls.Add(buttonRec);
             Controls.Add(button_Clear);
             Controls.Add(labeltilt_xy);
             Controls.Add(label2);
@@ -388,6 +470,13 @@
         private System.Windows.Forms.Label labeltilt_xy;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button_Clear;
+        private System.Windows.Forms.Button buttonRec;
+        private System.Windows.Forms.Label label_RecCount;
+        private System.Windows.Forms.Button button_replay;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonClearRecording;
+        private System.Windows.Forms.Button buttonSavePackets;
+        private System.Windows.Forms.Button buttonLoadPackets;
     }
 }
 
