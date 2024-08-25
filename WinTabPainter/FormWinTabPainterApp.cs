@@ -92,6 +92,9 @@ namespace WinTabPainter
             // Default to no smoothing
             paint_settings.PositionSmoother.SmoothingAmount = 0.0;
             paint_settings.PressureSmoother.SmoothingAmount = 0.0;
+
+
+            this.update_config();
         }
 
         private void Reposition_app()
@@ -279,9 +282,21 @@ namespace WinTabPainter
         {
             paint_settings.BrushWidth = this.trackBar_BrushSize.Value;
             this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
+
+            this.update_config();
         }
 
-
+        void update_config()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(string.Format("Brush Size: {0}", paint_settings.BrushWidth));
+            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.pressure_curve.BendAmount));
+            sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.PressureSmoother.SmoothingAmount));
+            sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.PositionSmoother.SmoothingAmount));
+            sb.AppendLine(string.Format("Pressure Quantization: {0}", 
+                (paint_settings.PressureQuantizeLevels <1) ? "NONE": paint_settings.PressureQuantizeLevels.ToString()));
+            this.textBox_config.Text = sb.ToString();
+        }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -429,7 +444,7 @@ namespace WinTabPainter
                 paint_settings.PressureQuantizeLevels = form.PressureQuant;
 
             }
-
+            this.update_config();
         }
 
         private void aboutTabletToolStripMenuItem_Click(object sender, EventArgs e)
