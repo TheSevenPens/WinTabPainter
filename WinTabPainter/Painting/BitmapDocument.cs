@@ -1,4 +1,5 @@
-﻿using SD = System.Drawing;
+﻿using System.Windows.Forms;
+using SD = System.Drawing;
 
 namespace WinTabPainter.Painting;
 
@@ -114,5 +115,10 @@ public class BitmapDocument : System.IDisposable
         if (p.X >= this.Width) { return false; }
         if (p.Y >= this.Height) { return false; }
         return true;
+    }
+
+    public void CopyToClipboard()
+    {
+        Clipboard.SetImage(this.background_layer.Bitmap);
     }
 }
