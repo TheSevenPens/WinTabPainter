@@ -20,12 +20,15 @@ User Features
 - Position smoothing
 - Pressure curve
 - Pressure smoothing
-- Pressure quantization - simulate having for example 512 levels of pressure
+- Pressure quantization - simulate having fewer levels of pressure
 - Use pressure to control width of brush
 - Tilt detection using both altitude & azimuth angles and xtilt & ytilt angles
 - Detection of button state
 - Open PNG
 - Save image as PNG
+- Copy image to clipboard
+- Record/Replay drawing packets
+- Save/Load Drawing packets
 - Shortcut keys to clear canvas, increase/decrease brush size
 
 Library
