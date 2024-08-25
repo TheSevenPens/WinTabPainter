@@ -65,6 +65,7 @@
             buttonClearRecording = new System.Windows.Forms.Button();
             buttonSavePackets = new System.Windows.Forms.Button();
             buttonLoadPackets = new System.Windows.Forms.Button();
+            buttonCopy = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -328,13 +329,13 @@
             // 
             // buttonRec
             // 
-            buttonRec.Location = new System.Drawing.Point(33, 628);
+            buttonRec.Location = new System.Drawing.Point(33, 785);
             buttonRec.Name = "buttonRec";
-            buttonRec.Size = new System.Drawing.Size(252, 58);
+            buttonRec.Size = new System.Drawing.Size(170, 58);
             buttonRec.TabIndex = 48;
-            buttonRec.Text = "Start recording";
+            buttonRec.Text = "Record";
             buttonRec.UseVisualStyleBackColor = true;
-            buttonRec.Click += button1_Click_1;
+            buttonRec.Click += buttonRec_Click_1;
             // 
             // label_RecCount
             // 
@@ -347,11 +348,11 @@
             // 
             // button_replay
             // 
-            button_replay.Location = new System.Drawing.Point(33, 776);
+            button_replay.Location = new System.Drawing.Point(225, 785);
             button_replay.Name = "button_replay";
-            button_replay.Size = new System.Drawing.Size(166, 58);
+            button_replay.Size = new System.Drawing.Size(170, 58);
             button_replay.TabIndex = 50;
-            button_replay.Text = "Replay";
+            button_replay.Text = "Play";
             button_replay.UseVisualStyleBackColor = true;
             button_replay.Click += button_replay_Click;
             // 
@@ -366,9 +367,9 @@
             // 
             // buttonClearRecording
             // 
-            buttonClearRecording.Location = new System.Drawing.Point(33, 866);
+            buttonClearRecording.Location = new System.Drawing.Point(33, 955);
             buttonClearRecording.Name = "buttonClearRecording";
-            buttonClearRecording.Size = new System.Drawing.Size(166, 58);
+            buttonClearRecording.Size = new System.Drawing.Size(170, 58);
             buttonClearRecording.TabIndex = 52;
             buttonClearRecording.Text = "Clear";
             buttonClearRecording.UseVisualStyleBackColor = true;
@@ -376,29 +377,40 @@
             // 
             // buttonSavePackets
             // 
-            buttonSavePackets.Location = new System.Drawing.Point(33, 951);
+            buttonSavePackets.Location = new System.Drawing.Point(33, 870);
             buttonSavePackets.Name = "buttonSavePackets";
-            buttonSavePackets.Size = new System.Drawing.Size(280, 58);
+            buttonSavePackets.Size = new System.Drawing.Size(170, 58);
             buttonSavePackets.TabIndex = 53;
-            buttonSavePackets.Text = "Save packets";
+            buttonSavePackets.Text = "Save";
             buttonSavePackets.UseVisualStyleBackColor = true;
             buttonSavePackets.Click += buttonSavePackets_Click;
             // 
             // buttonLoadPackets
             // 
-            buttonLoadPackets.Location = new System.Drawing.Point(33, 1045);
+            buttonLoadPackets.Location = new System.Drawing.Point(225, 870);
             buttonLoadPackets.Name = "buttonLoadPackets";
-            buttonLoadPackets.Size = new System.Drawing.Size(280, 58);
+            buttonLoadPackets.Size = new System.Drawing.Size(170, 58);
             buttonLoadPackets.TabIndex = 54;
-            buttonLoadPackets.Text = "Load packets";
+            buttonLoadPackets.Text = "Load";
             buttonLoadPackets.UseVisualStyleBackColor = true;
             buttonLoadPackets.Click += buttonLoadPackets_Click;
+            // 
+            // buttonCopy
+            // 
+            buttonCopy.Location = new System.Drawing.Point(1516, 104);
+            buttonCopy.Name = "buttonCopy";
+            buttonCopy.Size = new System.Drawing.Size(175, 58);
+            buttonCopy.TabIndex = 55;
+            buttonCopy.Text = "Copy";
+            buttonCopy.UseVisualStyleBackColor = true;
+            buttonCopy.Click += buttonCopy_Click;
             // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(buttonCopy);
             Controls.Add(buttonLoadPackets);
             Controls.Add(buttonSavePackets);
             Controls.Add(buttonClearRecording);
@@ -477,6 +489,7 @@
         private System.Windows.Forms.Button buttonClearRecording;
         private System.Windows.Forms.Button buttonSavePackets;
         private System.Windows.Forms.Button buttonLoadPackets;
+        private System.Windows.Forms.Button buttonCopy;
     }
 }
 

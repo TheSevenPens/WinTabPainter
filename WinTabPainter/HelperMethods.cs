@@ -9,7 +9,13 @@ public static class HelperMethods
 {
     public static double Quantize(double value, int quant_levels)
     {
-        double new_value = ((int)(value * quant_levels)) / (double)quant_levels;
+        //double new_value = ((int)(value * quant_levels)) / (double)quant_levels;
+
+        double new_value  = (System.Math.Floor(value*quant_levels) / quant_levels);
+        //double new_value = (System.Math.Round(value * quant_levels) / quant_levels);
+        //Console.WriteLine("{0,7}: in {1,-20}, em {2}, em2 {3}", i, in_p, em_p, em_p2);
+
+
         return new_value;
     }
 

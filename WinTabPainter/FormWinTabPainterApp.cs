@@ -445,15 +445,18 @@ namespace WinTabPainter
             this.EraseCanvas();
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void buttonRec_Click_1(object sender, EventArgs e)
         {
             if (this.RecStat == RecStatusEnum.NotRecording)
             {
                 this.RecStat = RecStatusEnum.Recording;
+                this.buttonRec.BackColor = System.Drawing.Color.Red;
+
             }
             else
             {
                 this.RecStat = RecStatusEnum.NotRecording;
+                this.buttonRec.BackColor = System.Drawing.Color.White;
             }
 
             this.UpdateRecStatus();
@@ -566,6 +569,11 @@ namespace WinTabPainter
                 }
                 this.UpdateRecStatus();
             }
+        }
+
+        private void buttonCopy_Click(object sender, EventArgs e)
+        {
+            this.bitmap_doc.CopyToClipboard();
         }
     }
 }
