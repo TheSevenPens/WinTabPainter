@@ -66,6 +66,7 @@
             buttonSavePackets = new System.Windows.Forms.Button();
             buttonLoadPackets = new System.Windows.Forms.Button();
             buttonCopy = new System.Windows.Forms.Button();
+            textBox_config = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -329,7 +330,7 @@
             // 
             // buttonRec
             // 
-            buttonRec.Location = new System.Drawing.Point(33, 785);
+            buttonRec.Location = new System.Drawing.Point(24, 617);
             buttonRec.Name = "buttonRec";
             buttonRec.Size = new System.Drawing.Size(170, 58);
             buttonRec.TabIndex = 48;
@@ -340,7 +341,7 @@
             // label_RecCount
             // 
             label_RecCount.AutoSize = true;
-            label_RecCount.Location = new System.Drawing.Point(341, 712);
+            label_RecCount.Location = new System.Drawing.Point(332, 544);
             label_RecCount.Name = "label_RecCount";
             label_RecCount.Size = new System.Drawing.Size(54, 41);
             label_RecCount.TabIndex = 49;
@@ -348,7 +349,7 @@
             // 
             // button_replay
             // 
-            button_replay.Location = new System.Drawing.Point(225, 785);
+            button_replay.Location = new System.Drawing.Point(216, 617);
             button_replay.Name = "button_replay";
             button_replay.Size = new System.Drawing.Size(170, 58);
             button_replay.TabIndex = 50;
@@ -359,7 +360,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(33, 712);
+            label1.Location = new System.Drawing.Point(24, 544);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(245, 41);
             label1.TabIndex = 51;
@@ -367,7 +368,7 @@
             // 
             // buttonClearRecording
             // 
-            buttonClearRecording.Location = new System.Drawing.Point(33, 955);
+            buttonClearRecording.Location = new System.Drawing.Point(24, 787);
             buttonClearRecording.Name = "buttonClearRecording";
             buttonClearRecording.Size = new System.Drawing.Size(170, 58);
             buttonClearRecording.TabIndex = 52;
@@ -377,7 +378,7 @@
             // 
             // buttonSavePackets
             // 
-            buttonSavePackets.Location = new System.Drawing.Point(33, 870);
+            buttonSavePackets.Location = new System.Drawing.Point(24, 702);
             buttonSavePackets.Name = "buttonSavePackets";
             buttonSavePackets.Size = new System.Drawing.Size(170, 58);
             buttonSavePackets.TabIndex = 53;
@@ -387,7 +388,7 @@
             // 
             // buttonLoadPackets
             // 
-            buttonLoadPackets.Location = new System.Drawing.Point(225, 870);
+            buttonLoadPackets.Location = new System.Drawing.Point(216, 702);
             buttonLoadPackets.Name = "buttonLoadPackets";
             buttonLoadPackets.Size = new System.Drawing.Size(170, 58);
             buttonLoadPackets.TabIndex = 54;
@@ -405,11 +406,22 @@
             buttonCopy.UseVisualStyleBackColor = true;
             buttonCopy.Click += buttonCopy_Click;
             // 
+            // textBox_config
+            // 
+            textBox_config.Location = new System.Drawing.Point(24, 866);
+            textBox_config.Multiline = true;
+            textBox_config.Name = "textBox_config";
+            textBox_config.ReadOnly = true;
+            textBox_config.Size = new System.Drawing.Size(489, 354);
+            textBox_config.TabIndex = 56;
+            textBox_config.Text = "N/A";
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1898, 1250);
+            Controls.Add(textBox_config);
             Controls.Add(buttonCopy);
             Controls.Add(buttonLoadPackets);
             Controls.Add(buttonSavePackets);
@@ -490,6 +502,7 @@
         private System.Windows.Forms.Button buttonSavePackets;
         private System.Windows.Forms.Button buttonLoadPackets;
         private System.Windows.Forms.Button buttonCopy;
+        private System.Windows.Forms.TextBox textBox_config;
     }
 }
 
