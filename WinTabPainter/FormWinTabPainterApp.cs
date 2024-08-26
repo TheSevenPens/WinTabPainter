@@ -203,7 +203,7 @@ namespace WinTabPainter
             }
 
             // Update the UI 
-            UpdateUIWithPaintData(paint_data, paint_data.PosCanvas);
+            UpdateLivePaintStats(paint_data, paint_data.PosCanvas);
 
             if ((paint_data.PressureRaw > 0)
                 && (this.bitmap_doc.Contains(paint_data.PosCanvas)))
@@ -248,12 +248,12 @@ namespace WinTabPainter
             var penpos_canvas = this.PointToClient(adjusted_pos).ToPoint();
             return penpos_canvas;
         }
-        private void UpdateUIWithPaintData(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
+        private void UpdateLivePaintStats(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.label_PressureValue.Text =
-                string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 5), Math.Round(paint_data.PressureEffective, 5));
+                string.Format("{0} → {1}", Math.Round(paint_data.PressureNormalized, 8), Math.Round(paint_data.PressureEffective, 8));
             this.label_TiltValue.Text = string.Format("{0:0.0}°, {1:0.0}°", paint_data.TiltAltitude, paint_data.TiltAzimuth);
             this.labeltilt_xy.Text = string.Format("{0:0.0}°, {1:0.0}°", paint_data.TiltX, paint_data.TiltY);
         }

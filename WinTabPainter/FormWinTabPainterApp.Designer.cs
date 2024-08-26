@@ -112,10 +112,10 @@
             // 
             pictureBox_Canvas.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             pictureBox_Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            pictureBox_Canvas.Location = new System.Drawing.Point(545, 177);
+            pictureBox_Canvas.Location = new System.Drawing.Point(618, 177);
             pictureBox_Canvas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             pictureBox_Canvas.Name = "pictureBox_Canvas";
-            pictureBox_Canvas.Size = new System.Drawing.Size(1340, 999);
+            pictureBox_Canvas.Size = new System.Drawing.Size(1325, 999);
             pictureBox_Canvas.TabIndex = 21;
             pictureBox_Canvas.TabStop = false;
             // 
@@ -158,7 +158,7 @@
             // trackBar_BrushSize
             // 
             trackBar_BrushSize.AutoSize = false;
-            trackBar_BrushSize.Location = new System.Drawing.Point(699, 123);
+            trackBar_BrushSize.Location = new System.Drawing.Point(777, 121);
             trackBar_BrushSize.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             trackBar_BrushSize.Maximum = 100;
             trackBar_BrushSize.Minimum = 1;
@@ -181,7 +181,7 @@
             // label_BrushSize
             // 
             label_BrushSize.AutoSize = true;
-            label_BrushSize.Location = new System.Drawing.Point(538, 121);
+            label_BrushSize.Location = new System.Drawing.Point(616, 119);
             label_BrushSize.Name = "label_BrushSize";
             label_BrushSize.Size = new System.Drawing.Size(150, 41);
             label_BrushSize.TabIndex = 34;
@@ -194,7 +194,7 @@
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            menuStrip1.Size = new System.Drawing.Size(1898, 51);
+            menuStrip1.Size = new System.Drawing.Size(1956, 51);
             menuStrip1.TabIndex = 40;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -420,7 +420,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1898, 1250);
+            ClientSize = new System.Drawing.Size(1956, 1250);
             Controls.Add(textBox_config);
             Controls.Add(buttonCopy);
             Controls.Add(buttonLoadPackets);
