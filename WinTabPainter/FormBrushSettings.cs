@@ -16,7 +16,7 @@ namespace WinTabPainter
         {
             InitializeComponent();
             this.curve = new Numerics.SimpleCurve();
-            this.curve.BendAmount = amt;
+            this.curve.CurveAmount = amt;
 
 
 
@@ -44,8 +44,8 @@ namespace WinTabPainter
 
         public double CurveAmount
         {
-            get => this.curve.BendAmount;
-            set => this.curve.BendAmount = value;
+            get => this.curve.CurveAmount;
+            set => this.curve.CurveAmount = value;
         }
 
         private void button_Close_Click(object sender, System.EventArgs e)
@@ -60,14 +60,14 @@ namespace WinTabPainter
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
-            this.labelAmount.Text = this.curve.BendAmount.ToString();
+            this.labelAmount.Text = this.curve.CurveAmount.ToString();
             this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue, 5);
             this.frame_pen = new SD.Pen(SD.Color.Gray, 1);
             this.checkBoxAntiAliasing.Checked = this.AntiAliasing;
             this.render_curve();
 
             var curve_slide_range = new Numerics.OrderedRangeD(-100.0, 100.0);
-            var slider_value = (int)curve_slide_range.Clamp(this.curve.BendAmount * 100.0);
+            var slider_value = (int)curve_slide_range.Clamp(this.curve.CurveAmount * 100.0);
             this.trackBar_Amount.Value = slider_value;
 
             this.trackBar_PositionSmoothing.Value = state_position_smoothing_trackbar_value;
@@ -179,7 +179,7 @@ namespace WinTabPainter
             double v = get_bend_amount_from_trackbar();
 
             this.labelAmount.Text = v.ToString();
-            this.curve.BendAmount = v;
+            this.curve.CurveAmount = v;
         }
 
         private double get_bend_amount_from_trackbar()
@@ -240,12 +240,12 @@ namespace WinTabPainter
             return new_value;
         }
 
-        public int PressureQuant;
+        public int PressureQuantizeLevels;
 
         private void comboBox_PressureQuant_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             var q = (QuantItem)comboBox_PressureQuant.SelectedItem;
-            this.PressureQuant = q.Value;
+            this.PressureQuantizeLevels = q.Value;
         }
 
         private void checkBoxAntiAliasing_CheckedChanged(object sender, System.EventArgs e)
