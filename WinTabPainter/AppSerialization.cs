@@ -15,7 +15,7 @@ namespace WinTabPainter
 {
     public partial class FormWinTabPainterApp : Form
     {
-        int max_rec_packets = 200 * 60 * 60 * 1; // allocate enough for 1 minute at 200 reports per second
+        int max_rec_packets = 200 * 60 * 2; // allocate enough for 2 minute at 200 reports per second
 
         List<WintabDN.Structs.WintabPacket> recorded_packets;
 
@@ -38,6 +38,19 @@ namespace WinTabPainter
                 this.buttonRec.BackColor = System.Drawing.Color.White;
             }
 
+            this.UpdateRecStatus();
+        }
+
+        private void RecordPacket(WintabPacket wintab_pkt)
+        {
+            if (this.recorded_packets.Count >= this.max_rec_packets)
+            {
+                this.RecStat = RecStatusEnum.NotRecording;
+            }
+            else
+            {
+                this.recorded_packets.Add(wintab_pkt);
+            }
             this.UpdateRecStatus();
         }
 
@@ -83,9 +96,7 @@ namespace WinTabPainter
             this.recorded_packets = new List<WintabPacket>();
             foreach (var packet in loaded_recording.Packets)
             {
-                {
-                    this.recorded_packets.Add(packet.ToPacket());
-                }
+                this.recorded_packets.Add(packet.ToPacket());
                 this.UpdateRecStatus();
             }
         }

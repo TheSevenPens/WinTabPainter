@@ -145,15 +145,7 @@ namespace WinTabPainter
         {
             if (this.RecStat == RecStatusEnum.Recording)
             {
-                if (this.recorded_packets.Count >= this.max_rec_packets)
-                {
-                    this.RecStat = RecStatusEnum.NotRecording;
-                }
-                else
-                {
-                    this.recorded_packets.Add(wintab_pkt);
-                }
-                this.UpdateRecStatus();
+                RecordPacket(wintab_pkt);
             }
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
 
@@ -165,6 +157,8 @@ namespace WinTabPainter
             HandlePainting(paint_data);
             this.old_paintdata = paint_data;
         }
+
+
 
         private void Update_UI_Button_status(WinTabUtils.PenButtonPressChange button_info)
         {
