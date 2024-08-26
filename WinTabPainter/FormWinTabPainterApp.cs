@@ -46,6 +46,7 @@ namespace WinTabPainter
         Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new Numerics.OrderedRange(-100, 100);
 
 
+
         public FormWinTabPainterApp()
         {
             InitializeComponent();
@@ -94,8 +95,7 @@ namespace WinTabPainter
             paint_settings.PressureSmoother.SmoothingAmount = 0.0;
 
             this.paint_settings.AntiAliasing= true;
-            this.bitmap_doc.background_layer.Graphics.SmoothingMode = this.paint_settings.AntiAliasing ?
-                System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
+            this.bitmap_doc.AntiAliasing= this.paint_settings.AntiAliasing;
 
             this.update_config();
         }
@@ -455,9 +455,9 @@ namespace WinTabPainter
                 paint_settings.PressureQuantizeLevels = form.PressureQuantizeLevels;
                 paint_settings.AntiAliasing = form.AntiAliasing;
 
+                this.update_config();
+                this.bitmap_doc.AntiAliasing = paint_settings.AntiAliasing;
             }
-            this.update_config();
-            this.bitmap_doc.background_layer.Graphics.SmoothingMode = paint_settings.AntiAliasing ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
         }
 
         private void aboutTabletToolStripMenuItem_Click(object sender, EventArgs e)

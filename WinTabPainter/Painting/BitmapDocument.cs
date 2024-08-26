@@ -32,6 +32,11 @@ public class BitmapDocument : System.IDisposable
 
     Painting.ColorARGB DefaultPageColor = new Painting.ColorARGB(255,255,255,255);
 
+    public bool AntiAliasing
+    {
+        get => this.background_layer.Graphics.SmoothingMode == SD.Drawing2D.SmoothingMode.AntiAlias ;
+        set => this.background_layer.Graphics.SmoothingMode = value ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
+    }
     public Geometry.Size Size
     {
         get { return new Geometry.Size(this._width,this._height); }
