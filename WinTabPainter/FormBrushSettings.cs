@@ -12,7 +12,6 @@ namespace WinTabPainter
     public partial class FormBrushSettings : Form
     {
 
-        public Painting.PaintSettings PaintSettings;
         public FormBrushSettings(double amt)
         {
             InitializeComponent();
@@ -22,7 +21,7 @@ namespace WinTabPainter
 
 
 
-  
+
         }
         Numerics.SimpleCurve smoothing_adjustment_curve = new Numerics.SimpleCurve(0.9);
 
@@ -37,12 +36,16 @@ namespace WinTabPainter
 
         static int state_pressure_smoothing_trackbar_value = 0;
         static int state_position_smoothing_trackbar_value = 0;
+
         public double PressureSmoothingValue = 0;
         public double PositionSmoothingValue = 0;
+        public bool AntiAliasing;
+        int QuantizeLevels;
 
         public double CurveAmount
         {
             get => this.curve.BendAmount;
+            set => this.curve.BendAmount = value;
         }
 
         private void button_Close_Click(object sender, System.EventArgs e)
@@ -60,7 +63,7 @@ namespace WinTabPainter
             this.labelAmount.Text = this.curve.BendAmount.ToString();
             this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue, 5);
             this.frame_pen = new SD.Pen(SD.Color.Gray, 1);
-
+            this.checkBoxAntiAliasing.Checked = this.AntiAliasing;
             this.render_curve();
 
             var curve_slide_range = new Numerics.OrderedRangeD(-100.0, 100.0);
@@ -77,6 +80,7 @@ namespace WinTabPainter
             var l = new System.Collections.Generic.List<QuantItem>();
 
             l.Add(new QuantItem("No Quantization", -1));
+            l.Add(new QuantItem("2 levels", 2));
             l.Add(new QuantItem("4 levels", 4));
             l.Add(new QuantItem("8 levels", 8));
             l.Add(new QuantItem("16 levels", 16));
@@ -96,7 +100,7 @@ namespace WinTabPainter
 
             foreach (var (qitem, index) in l.Select((i, q) => (i, q)))
             {
-                if (qitem.Value == PaintSettings.PressureQuantizeLevels)
+                if (qitem.Value == this.QuantizeLevels)
                 {
                     this.comboBox_PressureQuant.SelectedIndex = index; break;
                 }
@@ -189,10 +193,10 @@ namespace WinTabPainter
         private void button_OK_Click(object sender, System.EventArgs e)
         {
             double v = get_smoothing_from_trackbar(this.trackBar_PositionSmoothing);
-            this.PaintSettings.PositionSmoother.SmoothingAmount = v;
+            this.PositionSmoothingValue = v;
 
             double v2 = get_smoothing_from_trackbar(this.trackBar_PressureSmoothing);
-            this.PaintSettings.PositionSmoother.SmoothingAmount = v2;
+            this.PressureSmoothingValue = v2;
 
             state_position_smoothing_trackbar_value = this.trackBar_PositionSmoothing.Value;
             state_pressure_smoothing_trackbar_value = this.trackBar_PressureSmoothing.Value;
@@ -240,8 +244,13 @@ namespace WinTabPainter
 
         private void comboBox_PressureQuant_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            var q = (QuantItem) comboBox_PressureQuant.SelectedItem;
+            var q = (QuantItem)comboBox_PressureQuant.SelectedItem;
             this.PressureQuant = q.Value;
+        }
+
+        private void checkBoxAntiAliasing_CheckedChanged(object sender, System.EventArgs e)
+        {
+            this.AntiAliasing = checkBoxAntiAliasing.Checked;
         }
     }
 }

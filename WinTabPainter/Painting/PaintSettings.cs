@@ -20,11 +20,13 @@ public class PaintSettings
         get => brushWidth; 
         set => brushWidth = PaintSettings.SYS_BRUSHSIZE_RANGE.Clamp(value); }
 
+    public bool AntiAliasing = true;
     public PaintSettings()
     {
         this.PositionSmoother = new Numerics.EMAPositionSmoother(0);
         this.PressureSmoother = new Numerics.EMASmoother(0);
     }
+
 
 
 }

@@ -75,7 +75,7 @@ public struct PaintData
         this.PressureRaw = pkt.pkNormalPressure;
         this.PressureNormalized = this.PressureRaw / (double) tablet.MaxPressure;
 
-        if (paintsettings.PressureQuantizeLevels > 2)
+        if (paintsettings.PressureQuantizeLevels >= 2)
         {
             this.PressureNormalized = HelperMethods.Quantize(this.PressureNormalized, paintsettings.PressureQuantizeLevels);
         }
@@ -90,7 +90,7 @@ public struct PaintData
         {
             double effective_width = this.PressureEffective * paintsettings.BrushWidth;
             effective_width = PaintSettings.SYS_BRUSHSIZE_RANGE.Clamp((int)effective_width);
-            this.BrushWidthEffective = effective_width;
+            this.BrushWidthEffective = effective_width; 
         }
         else
         {
