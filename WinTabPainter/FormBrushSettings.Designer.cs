@@ -43,6 +43,7 @@
             label_position_smoothingval = new System.Windows.Forms.Label();
             trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             label3 = new System.Windows.Forms.Label();
+            checkBoxAntiAliasing = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).BeginInit();
@@ -203,11 +204,23 @@
             label3.TabIndex = 50;
             label3.Text = "Position Smoothing";
             // 
+            // checkBoxAntiAliasing
+            // 
+            checkBoxAntiAliasing.AutoSize = true;
+            checkBoxAntiAliasing.Location = new System.Drawing.Point(626, 336);
+            checkBoxAntiAliasing.Name = "checkBoxAntiAliasing";
+            checkBoxAntiAliasing.Size = new System.Drawing.Size(224, 45);
+            checkBoxAntiAliasing.TabIndex = 57;
+            checkBoxAntiAliasing.Text = "Anti-Aliasing";
+            checkBoxAntiAliasing.UseVisualStyleBackColor = true;
+            checkBoxAntiAliasing.CheckedChanged += checkBoxAntiAliasing_CheckedChanged;
+            // 
             // FormBrushSettings
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1601, 965);
+            Controls.Add(checkBoxAntiAliasing);
             Controls.Add(label5);
             Controls.Add(comboBox_PressureQuant);
             Controls.Add(label_position_smoothingval);
@@ -253,5 +266,6 @@
         private System.Windows.Forms.Label label_position_smoothingval;
         private System.Windows.Forms.TrackBar trackBar_PositionSmoothing;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox checkBoxAntiAliasing;
     }
 }

@@ -93,6 +93,9 @@ namespace WinTabPainter
             paint_settings.PositionSmoother.SmoothingAmount = 0.0;
             paint_settings.PressureSmoother.SmoothingAmount = 0.0;
 
+            this.paint_settings.AntiAliasing= true;
+            this.bitmap_doc.background_layer.Graphics.SmoothingMode = this.paint_settings.AntiAliasing ?
+                System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
 
             this.update_config();
         }
@@ -295,6 +298,8 @@ namespace WinTabPainter
             sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.PositionSmoother.SmoothingAmount));
             sb.AppendLine(string.Format("Pressure Quantization: {0}", 
                 (paint_settings.PressureQuantizeLevels <1) ? "NONE": paint_settings.PressureQuantizeLevels.ToString()));
+            sb.AppendLine(string.Format("Anit-Aliasing: {0}", paint_settings.AntiAliasing));
+
             this.textBox_config.Text = sb.ToString();
         }
 
@@ -433,18 +438,26 @@ namespace WinTabPainter
         private void pressureCurveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new FormBrushSettings(paint_settings.pressure_curve.BendAmount);
-            form.PaintSettings = this.paint_settings;
+
+            form.CurveAmount = paint_settings.pressure_curve.BendAmount;
+            form.PressureSmoothingValue = paint_settings.PressureSmoother.SmoothingAmount;
+            form.PositionSmoothingValue = paint_settings.PositionSmoother.SmoothingAmount;
+            form.PressureQuant = paint_settings.PressureQuantizeLevels;
+            form.AntiAliasing = paint_settings.AntiAliasing;
+
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {
 
-                paint_settings.pressure_curve.BendAmount = form.CurveAmount;
-                paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue;
-                paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue;
+                paint_settings.pressure_curve.BendAmount = form.CurveAmount; //
+                paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue; //
+                paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue; //
                 paint_settings.PressureQuantizeLevels = form.PressureQuant;
+                paint_settings.AntiAliasing = form.AntiAliasing;
 
             }
             this.update_config();
+            this.bitmap_doc.background_layer.Graphics.SmoothingMode = paint_settings.AntiAliasing ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
         }
 
         private void aboutTabletToolStripMenuItem_Click(object sender, EventArgs e)
