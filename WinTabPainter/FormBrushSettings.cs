@@ -77,6 +77,7 @@ namespace WinTabPainter
             var l = new System.Collections.Generic.List<QuantItem>();
 
             l.Add(new QuantItem("No Quantization", -1));
+            l.Add(new QuantItem("2 levels", 2));
             l.Add(new QuantItem("4 levels", 4));
             l.Add(new QuantItem("8 levels", 8));
             l.Add(new QuantItem("16 levels", 16));
