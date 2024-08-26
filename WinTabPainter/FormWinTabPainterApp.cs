@@ -21,14 +21,8 @@ namespace WinTabPainter
 {
     public partial class FormWinTabPainterApp : Form
     {
-        int max_rec_packets = 60 * 60 * 10;
-        List<WintabDN.Structs.WintabPacket> recorded_packets;
-        public enum RecStatusEnum
-        {
-            NotRecording,
-            Recording,
-        }
-        RecStatusEnum RecStat = RecStatusEnum.NotRecording;
+
+
 
         private WinTabUtils.TabletSession tabsession;
         public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
@@ -475,129 +469,38 @@ namespace WinTabPainter
 
         private void buttonRec_Click_1(object sender, EventArgs e)
         {
-            if (this.RecStat == RecStatusEnum.NotRecording)
-            {
-                this.RecStat = RecStatusEnum.Recording;
-                this.buttonRec.BackColor = System.Drawing.Color.Red;
-
-            }
-            else
-            {
-                this.RecStat = RecStatusEnum.NotRecording;
-                this.buttonRec.BackColor = System.Drawing.Color.White;
-            }
-
-            this.UpdateRecStatus();
+            ToggleRecordingPackets();
         }
 
-
-        RecStatusEnum old_rec_stat;
-        int? old_rec_count;
-
-        private void UpdateRecStatus()
-        {
-            if (HelperMethods.UpdatesOld(this.recorded_packets.Count, this.old_rec_count))
-            {
-                this.label_RecCount.Text = this.recorded_packets.Count.ToString();
-                this.old_rec_count = this.recorded_packets.Count;
-
-            }
-
-            if (HelperMethods.UpdatesOld(this.RecStat, this.old_rec_stat))
-            {
-                this.buttonRec.Text = this.RecStat.ToString();
-                this.old_rec_stat = this.RecStat;
-
-            }
-
-        }
 
 
         private void button_replay_Click(object sender, EventArgs e)
         {
-            if (this.RecStat == RecStatusEnum.Recording)
-            {
-                // do nothing - app is in the middle of recording
-                return;
-            }
-
-            if (this.recorded_packets.Count < 1)
-            {
-                // do nothing - there is nothing to replay
-                return;
-            }
-
-            this.EraseCanvas();
-            foreach (var packet in this.recorded_packets)
-            {
-                var paint_data = new Painting.PaintData(packet, this.tabsession.TabletInfo, paint_settings, Screen_loc_to_canvas_loc);
-
-                HandlePainting(paint_data);
-                this.old_paintdata = paint_data;
-            }
+            ReplayPackets();
         }
+
+
 
         private void buttonClearRecording_Click(object sender, EventArgs e)
         {
-            if (this.RecStat == RecStatusEnum.Recording)
-            {
-                this.RecStat = RecStatusEnum.NotRecording;
-                this.UpdateRecStatus();
-            }
-
-            this.recorded_packets.Clear();
-            this.UpdateRecStatus();
+            ClearRecording();
 
         }
+
 
         private void buttonSavePackets_Click(object sender, EventArgs e)
         {
-            var sfd = new SaveFileDialog();
-            sfd.FileName = "Untitled.WinTab.json";
-            sfd.DefaultExt = "json";
-            sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            var v = sfd.ShowDialog();
-
-            if (v != DialogResult.OK)
-            {
-                return;
-            }
-
-            string mydocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            var pr = new PacketRecording(this.recorded_packets);
-
-            pr.Save(sfd.FileName);
+            SavePackets();
         }
+
+
 
         private void buttonLoadPackets_Click(object sender, EventArgs e)
         {
-
-            var ofd = new OpenFileDialog();
-            ofd.DefaultExt = ".WinTab.json";
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            var v = ofd.ShowDialog();
-
-            if (v != DialogResult.OK)
-            {
-                return;
-            }
-            var options = new JsonSerializerOptions();
-            options.IncludeFields = true;
-            options.WriteIndented = true;
-
-            var loaded_recording = PacketRecording.FromFile(ofd.FileName);
-            this.recorded_packets = new List<WintabPacket>();
-            foreach (var packet in loaded_recording.Packets)
-            {
-                {
-                    this.recorded_packets.Add(packet.ToPacket());
-                }
-                this.UpdateRecStatus();
-            }
+            LoadPackets();
         }
+
+
 
         private void buttonCopy_Click(object sender, EventArgs e)
         {
