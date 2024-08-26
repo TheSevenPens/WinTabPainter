@@ -28,16 +28,25 @@ namespace WinTabPainter
         {
             if (this.RecStat == RecStatusEnum.NotRecording)
             {
-                this.RecStat = RecStatusEnum.Recording;
-                this.buttonRec.BackColor = System.Drawing.Color.Red;
-
+                StartRecording();
             }
             else
             {
-                this.RecStat = RecStatusEnum.NotRecording;
-                this.buttonRec.BackColor = System.Drawing.Color.White;
+                StopRecording();
             }
+        }
 
+        private void StopRecording()
+        {
+            this.RecStat = RecStatusEnum.NotRecording;
+            this.buttonRec.BackColor = System.Drawing.Color.White;
+            this.UpdateRecStatus();
+        }
+
+        private void StartRecording()
+        {
+            this.RecStat = RecStatusEnum.Recording;
+            this.buttonRec.BackColor = System.Drawing.Color.Red;
             this.UpdateRecStatus();
         }
 
@@ -61,9 +70,9 @@ namespace WinTabPainter
             sfd.DefaultExt = ".WinTab.json";
             sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            var v = sfd.ShowDialog();
+            var dr = sfd.ShowDialog();
 
-            if (v != DialogResult.OK)
+            if (dr != DialogResult.OK)
             {
                 return;
             }
@@ -82,9 +91,9 @@ namespace WinTabPainter
             ofd.DefaultExt = ".WinTab.json";
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            var v = ofd.ShowDialog();
+            var dr = ofd.ShowDialog();
 
-            if (v != DialogResult.OK)
+            if (dr != DialogResult.OK)
             {
                 return;
             }
