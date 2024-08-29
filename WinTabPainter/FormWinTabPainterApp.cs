@@ -254,16 +254,13 @@ namespace WinTabPainter
             int pressure_digits = 3;
             double rp = Math.Round(p, pressure_digits);
             string ps = string.Format("{0:0.000}", rp);
-            if (rp <= 0)
+            
+            // handle the case when we have rounded
+            // but actually there is a little bit of pressure
+            // we want to indidate that it is non-zero
+            if ((rp <= 0) && (p > 0) )
             {
-                if (p>0)
-                {
-                    return ">0.0";
-                }
-                else
-                {
-                    return ps;
-                }
+                return ">0.0";
             }
             else
             {
