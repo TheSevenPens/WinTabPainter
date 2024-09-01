@@ -88,8 +88,8 @@ namespace WinTabPainter
             paint_settings.PositionSmoother.SmoothingAmount = 0.0;
             paint_settings.PressureSmoother.SmoothingAmount = 0.0;
 
-            this.paint_settings.AntiAliasing= true;
-            this.bitmap_doc.AntiAliasing= this.paint_settings.AntiAliasing;
+            this.paint_settings.AntiAliasing = true;
+            this.bitmap_doc.AntiAliasing = this.paint_settings.AntiAliasing;
 
             this.update_config();
         }
@@ -254,11 +254,11 @@ namespace WinTabPainter
             int pressure_digits = 4;
             double pressure_rounded = Math.Round(pressure, pressure_digits);
             string str_pressure = string.Format("{0:0.0000}", pressure_rounded);
-            
+
             // handle the case when we have rounded
             // but actually there is a little bit of pressure
             // we want to indidate that it is non-zero
-            if ((pressure <= 0.0001) && (pressure > 0.0) )
+            if ((pressure <= 0.0001) && (pressure > 0.0))
             {
                 return ">0.000";
             }
@@ -272,10 +272,10 @@ namespace WinTabPainter
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
 
-            
+
             this.label_PressureValue.Text =
-                string.Format("{0} → {1}", 
-                    get_pressure_string(paint_data.PressureNormalized), 
+                string.Format("{0} → {1}",
+                    get_pressure_string(paint_data.PressureNormalized),
                     get_pressure_string(paint_data.PressureEffective));
 
             this.label_TiltValue.Text = string.Format("{0:0.0}°, {1:0.0}°", paint_data.TiltAltitude, paint_data.TiltAzimuth);
@@ -308,8 +308,8 @@ namespace WinTabPainter
             sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.pressure_curve.CurveAmount));
             sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.PressureSmoother.SmoothingAmount));
             sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.PositionSmoother.SmoothingAmount));
-            sb.AppendLine(string.Format("Pressure Quantization: {0}", 
-                (paint_settings.PressureQuantizeLevels <1) ? "NONE": paint_settings.PressureQuantizeLevels.ToString()));
+            sb.AppendLine(string.Format("Pressure Quantization: {0}",
+                (paint_settings.PressureQuantizeLevels < 1) ? "NONE" : paint_settings.PressureQuantizeLevels.ToString()));
             sb.AppendLine(string.Format("Anit-Aliasing: {0}", paint_settings.AntiAliasing));
 
             this.textBox_config.Text = sb.ToString();
@@ -449,6 +449,11 @@ namespace WinTabPainter
 
         private void pressureCurveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            RunFormSettings();
+        }
+
+        private void RunFormSettings()
+        {
             var form = new FormBrushSettings(paint_settings.pressure_curve.CurveAmount);
 
             form.CurveAmount = paint_settings.pressure_curve.CurveAmount;
@@ -523,6 +528,11 @@ namespace WinTabPainter
         private void buttonCopy_Click(object sender, EventArgs e)
         {
             this.bitmap_doc.CopyToClipboard();
+        }
+
+        private void buttonSettings_Click(object sender, EventArgs e)
+        {
+            RunFormSettings();
         }
     }
 }

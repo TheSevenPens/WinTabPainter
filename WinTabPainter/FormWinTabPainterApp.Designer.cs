@@ -67,6 +67,7 @@
             buttonLoadPackets = new System.Windows.Forms.Button();
             buttonCopy = new System.Windows.Forms.Button();
             textBox_config = new System.Windows.Forms.TextBox();
+            buttonSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -254,7 +255,7 @@
             // pressureCurveToolStripMenuItem
             // 
             pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(370, 54);
+            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
             pressureCurveToolStripMenuItem.Text = "Brush settings";
             pressureCurveToolStripMenuItem.Click += pressureCurveToolStripMenuItem_Click;
             // 
@@ -422,11 +423,22 @@
             textBox_config.TabIndex = 56;
             textBox_config.Text = "N/A";
             // 
+            // buttonSettings
+            // 
+            buttonSettings.Location = new System.Drawing.Point(616, 1183);
+            buttonSettings.Name = "buttonSettings";
+            buttonSettings.Size = new System.Drawing.Size(170, 58);
+            buttonSettings.TabIndex = 57;
+            buttonSettings.Text = "Settings";
+            buttonSettings.UseVisualStyleBackColor = true;
+            buttonSettings.Click += buttonSettings_Click;
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1956, 1250);
+            Controls.Add(buttonSettings);
             Controls.Add(textBox_config);
             Controls.Add(buttonCopy);
             Controls.Add(buttonLoadPackets);
@@ -509,6 +521,7 @@
         private System.Windows.Forms.Button buttonLoadPackets;
         private System.Windows.Forms.Button buttonCopy;
         private System.Windows.Forms.TextBox textBox_config;
+        private System.Windows.Forms.Button buttonSettings;
     }
 }
 
