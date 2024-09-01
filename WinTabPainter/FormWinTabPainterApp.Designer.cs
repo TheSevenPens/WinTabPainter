@@ -122,36 +122,40 @@
             // label_TiltValue
             // 
             label_TiltValue.AutoSize = true;
+            label_TiltValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label_TiltValue.Location = new System.Drawing.Point(211, 316);
             label_TiltValue.Name = "label_TiltValue";
-            label_TiltValue.Size = new System.Drawing.Size(54, 41);
+            label_TiltValue.Size = new System.Drawing.Size(63, 36);
             label_TiltValue.TabIndex = 26;
             label_TiltValue.Text = "---";
             // 
             // label_ScreenPosValue
             // 
             label_ScreenPosValue.AutoSize = true;
+            label_ScreenPosValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label_ScreenPosValue.Location = new System.Drawing.Point(211, 145);
             label_ScreenPosValue.Name = "label_ScreenPosValue";
-            label_ScreenPosValue.Size = new System.Drawing.Size(54, 41);
+            label_ScreenPosValue.Size = new System.Drawing.Size(63, 36);
             label_ScreenPosValue.TabIndex = 22;
             label_ScreenPosValue.Text = "---";
             // 
             // label_PressureValue
             // 
             label_PressureValue.AutoSize = true;
+            label_PressureValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label_PressureValue.Location = new System.Drawing.Point(211, 259);
             label_PressureValue.Name = "label_PressureValue";
-            label_PressureValue.Size = new System.Drawing.Size(54, 41);
+            label_PressureValue.Size = new System.Drawing.Size(63, 36);
             label_PressureValue.TabIndex = 25;
             label_PressureValue.Text = "---";
             // 
             // label_ButtonsValue
             // 
             label_ButtonsValue.AutoSize = true;
+            label_ButtonsValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label_ButtonsValue.Location = new System.Drawing.Point(211, 430);
             label_ButtonsValue.Name = "label_ButtonsValue";
-            label_ButtonsValue.Size = new System.Drawing.Size(54, 41);
+            label_ButtonsValue.Size = new System.Drawing.Size(63, 36);
             label_ButtonsValue.TabIndex = 28;
             label_ButtonsValue.Text = "---";
             // 
@@ -285,9 +289,10 @@
             // label_CanvasPos
             // 
             label_CanvasPos.AutoSize = true;
+            label_CanvasPos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label_CanvasPos.Location = new System.Drawing.Point(211, 202);
             label_CanvasPos.Name = "label_CanvasPos";
-            label_CanvasPos.Size = new System.Drawing.Size(54, 41);
+            label_CanvasPos.Size = new System.Drawing.Size(63, 36);
             label_CanvasPos.TabIndex = 44;
             label_CanvasPos.Text = "---";
             // 
@@ -303,9 +308,10 @@
             // labeltilt_xy
             // 
             labeltilt_xy.AutoSize = true;
+            labeltilt_xy.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             labeltilt_xy.Location = new System.Drawing.Point(211, 373);
             labeltilt_xy.Name = "labeltilt_xy";
-            labeltilt_xy.Size = new System.Drawing.Size(54, 41);
+            labeltilt_xy.Size = new System.Drawing.Size(63, 36);
             labeltilt_xy.TabIndex = 46;
             labeltilt_xy.Text = "---";
             // 

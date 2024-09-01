@@ -249,22 +249,22 @@ namespace WinTabPainter
             return penpos_canvas;
         }
 
-        private string get_pressure_string(double p)
+        private string get_pressure_string(double pressure)
         {
-            int pressure_digits = 3;
-            double rp = Math.Round(p, pressure_digits);
-            string ps = string.Format("{0:0.000}", rp);
+            int pressure_digits = 4;
+            double pressure_rounded = Math.Round(pressure, pressure_digits);
+            string str_pressure = string.Format("{0:0.0000}", pressure_rounded);
             
             // handle the case when we have rounded
             // but actually there is a little bit of pressure
             // we want to indidate that it is non-zero
-            if ((rp <= 0) && (p > 0) )
+            if ((pressure <= 0.0001) && (pressure > 0.0) )
             {
-                return ">0.0";
+                return ">0.000";
             }
             else
             {
-                return ps;
+                return str_pressure;
             }
         }
         private void UpdateLivePaintStats(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
