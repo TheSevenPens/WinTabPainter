@@ -251,9 +251,9 @@ namespace WinTabPainter
 
         private string get_pressure_string(double pressure)
         {
-            int pressure_digits = 4;
-            double pressure_rounded = Math.Round(pressure, pressure_digits);
-            string str_pressure = string.Format("{0:0.0000}", pressure_rounded);
+            int pressure_digits = 2;
+            double pressure_rounded = Math.Round(pressure*100, pressure_digits);
+            string str_pressure = string.Format("{0:00.00}%", pressure_rounded);
 
             // handle the case when we have rounded
             // but actually there is a little bit of pressure

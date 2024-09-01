@@ -24,7 +24,7 @@ public readonly struct Point
 
     public PointD Divide(double scale) => new PointD(this.X / scale, this.Y / scale);
 
-    public string ToStringXY() => string.Format("{0}x{1}", this.X, this.Y);
+    public string ToStringXY() => string.Format("{0},{1}", this.X, this.Y);
 
     public static implicit operator SD.Point(Point s) => s.ToSDPoint();
 
