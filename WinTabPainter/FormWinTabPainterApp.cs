@@ -251,16 +251,17 @@ namespace WinTabPainter
 
         private string get_pressure_string(double pressure)
         {
-            int pressure_digits = 2;
+            int pressure_digits = 8;
             double pressure_rounded = Math.Round(pressure*100, pressure_digits);
-            string str_pressure = string.Format("{0:00.00}%", pressure_rounded);
-
+            string str_pressure = string.Format("{0:00.00000}%", pressure_rounded);
+            return str_pressure;
             // handle the case when we have rounded
             // but actually there is a little bit of pressure
             // we want to indidate that it is non-zero
-            if ((pressure <= 0.0001) && (pressure > 0.0))
+
+            if (pressure_rounded==0.0 && pressure > 0.0)
             {
-                return ">0.000";
+                return "00.00000+";
             }
             else
             {
