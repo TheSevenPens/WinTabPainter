@@ -48,12 +48,15 @@ namespace WinTabPainter
         }
 
         Graphics gfx_pressure_guage;
+        Graphics gfx_pressure_guage2;
         Pen np_pressure_guage = new Pen(Color.Black, 11);
         Pen ep_pressure_guage = new Pen(Color.Red, 11);
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.pictureBoxPressureGuage.Image = new System.Drawing.Bitmap(this.pictureBoxPressureGuage.Width, this.pictureBoxPressureGuage.Height);
             this.gfx_pressure_guage = panelPressureGuage.CreateGraphics();
+            this.gfx_pressure_guage2 = System.Drawing.Graphics.FromImage(this.pictureBoxPressureGuage.Image);
 
             this.old_paintdata = new Painting.PaintData();
 
@@ -74,6 +77,7 @@ namespace WinTabPainter
 
             this.pictureBox_Canvas.Image = this.bitmap_doc.background_layer.Bitmap;
             this.EraseCanvas();
+
 
             this.tabsession = new WinTabUtils.TabletSession();
             this.tabsession.PacketHandler = this.PacketHandler;
@@ -132,26 +136,12 @@ namespace WinTabPainter
         {
             this.tabsession.Close();
 
-            if (this.bitmap_doc != null)
-            {
-                this.bitmap_doc.Dispose();
-            }
-
-            if (this.gfx_pressure_guage != null)
-            {
-                this.gfx_pressure_guage.Dispose();
-            }
-
-
-            if (this.np_pressure_guage!= null)
-            {
-                this.np_pressure_guage.Dispose();
-            }
-
-            if (this.ep_pressure_guage != null)
-            {
-                this.ep_pressure_guage.Dispose();
-            }
+            this.bitmap_doc?.Dispose();
+            this.gfx_pressure_guage?.Dispose();
+            this.gfx_pressure_guage2?.Dispose();
+            this.np_pressure_guage?.Dispose();
+            this.ep_pressure_guage?.Dispose();
+            this.pictureBoxPressureGuage.Image?.Dispose();
 
 
             var s = Screen.FromControl(this);
@@ -250,6 +240,7 @@ namespace WinTabPainter
                     this.pictureBox_Canvas.Invalidate();
                 }
             }
+            this.pictureBoxPressureGuage.Invalidate();
         }
 
         public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, WinTabUtils.PenButtonPressChange change)
@@ -568,15 +559,20 @@ namespace WinTabPainter
         {
             if (this.gfx_pressure_guage == null) { return; }
 
-            int guage_width = this.panelPressureGuage.Width;
-            int guage_height = this.panelPressureGuage.Height;
+            int guage_width = this.pictureBoxPressureGuage.Width;
+            int guage_height = this.pictureBoxPressureGuage.Height;
             int nx = (int)(guage_width * this.cur_paintdata.PressureNormalized);
-            gfx_pressure_guage.DrawLine(np_pressure_guage,nx, 0, nx, guage_height);
+            using (var pack = new System.Drawing.SolidBrush(System.Drawing.Color.Wheat))
+            {
+                gfx_pressure_guage2.FillRectangle(pack, new System.Drawing.Rectangle(0, 0, guage_width, guage_height));
+
+            }
+            gfx_pressure_guage2.DrawLine(np_pressure_guage, nx, 0, nx, guage_height);
 
             if (this.cur_paintdata.PressureEffective!=this.cur_paintdata.PressureNormalized)
             {
                 int ex = (int)(guage_width * this.cur_paintdata.PressureEffective);
-                gfx_pressure_guage.DrawLine(ep_pressure_guage, ex, 0, ex, guage_height);
+                gfx_pressure_guage2.DrawLine(ep_pressure_guage, ex, 0, ex, guage_height);
 
             }
 

@@ -71,9 +71,11 @@
             labelPressureValueInteger = new System.Windows.Forms.Label();
             labelMaxPressure = new System.Windows.Forms.Label();
             panelPressureGuage = new System.Windows.Forms.Panel();
+            pictureBoxPressureGuage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPressureGuage).BeginInit();
             SuspendLayout();
             // 
             // label_ScreenPos
@@ -119,7 +121,7 @@
             pictureBox_Canvas.Location = new System.Drawing.Point(618, 177);
             pictureBox_Canvas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             pictureBox_Canvas.Name = "pictureBox_Canvas";
-            pictureBox_Canvas.Size = new System.Drawing.Size(1325, 925);
+            pictureBox_Canvas.Size = new System.Drawing.Size(1325, 786);
             pictureBox_Canvas.TabIndex = 21;
             pictureBox_Canvas.TabStop = false;
             // 
@@ -466,11 +468,21 @@
             panelPressureGuage.TabIndex = 60;
             panelPressureGuage.Paint += panelPressureGuage_Paint;
             // 
+            // pictureBoxPressureGuage
+            // 
+            pictureBoxPressureGuage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            pictureBoxPressureGuage.Location = new System.Drawing.Point(623, 1028);
+            pictureBoxPressureGuage.Name = "pictureBoxPressureGuage";
+            pictureBoxPressureGuage.Size = new System.Drawing.Size(1320, 71);
+            pictureBoxPressureGuage.TabIndex = 61;
+            pictureBoxPressureGuage.TabStop = false;
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1956, 1250);
+            Controls.Add(pictureBoxPressureGuage);
             Controls.Add(panelPressureGuage);
             Controls.Add(labelMaxPressure);
             Controls.Add(labelPressureValueInteger);
@@ -513,6 +525,7 @@
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPressureGuage).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -561,6 +574,7 @@
         private System.Windows.Forms.Label labelPressureValueInteger;
         private System.Windows.Forms.Label labelMaxPressure;
         private System.Windows.Forms.Panel panelPressureGuage;
+        private System.Windows.Forms.PictureBox pictureBoxPressureGuage;
     }
 }
 
