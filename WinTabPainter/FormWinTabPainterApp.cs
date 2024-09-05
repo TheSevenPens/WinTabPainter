@@ -74,6 +74,7 @@ namespace WinTabPainter
 
             this.tabsession.ButtonChangedHandler = this.HandleButtonChange;
 
+            this.labelMaxPressure.Text = this.tabsession.TabletInfo.MaxPressure.ToString();
             Reposition_app();
 
             this.trackBar_BrushSize.Value = paint_settings.BrushWidth;
@@ -272,6 +273,7 @@ namespace WinTabPainter
         {
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
+            this.labelPressureValueInteger.Text = paint_data.PressureRaw.ToString();
 
 
             this.label_PressureValue.Text =

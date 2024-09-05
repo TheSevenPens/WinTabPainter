@@ -68,6 +68,8 @@
             buttonCopy = new System.Windows.Forms.Button();
             textBox_config = new System.Windows.Forms.TextBox();
             buttonSettings = new System.Windows.Forms.Button();
+            labelPressureValueInteger = new System.Windows.Forms.Label();
+            labelMaxPressure = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
             menuStrip1.SuspendLayout();
@@ -76,7 +78,7 @@
             // label_ScreenPos
             // 
             label_ScreenPos.AutoSize = true;
-            label_ScreenPos.Location = new System.Drawing.Point(24, 145);
+            label_ScreenPos.Location = new System.Drawing.Point(24, 162);
             label_ScreenPos.Name = "label_ScreenPos";
             label_ScreenPos.Size = new System.Drawing.Size(154, 41);
             label_ScreenPos.TabIndex = 8;
@@ -85,7 +87,7 @@
             // label_PressureNormalized
             // 
             label_PressureNormalized.AutoSize = true;
-            label_PressureNormalized.Location = new System.Drawing.Point(24, 259);
+            label_PressureNormalized.Location = new System.Drawing.Point(24, 272);
             label_PressureNormalized.Name = "label_PressureNormalized";
             label_PressureNormalized.Size = new System.Drawing.Size(130, 41);
             label_PressureNormalized.TabIndex = 11;
@@ -94,7 +96,7 @@
             // label_Tilt
             // 
             label_Tilt.AutoSize = true;
-            label_Tilt.Location = new System.Drawing.Point(24, 316);
+            label_Tilt.Location = new System.Drawing.Point(24, 382);
             label_Tilt.Name = "label_Tilt";
             label_Tilt.Size = new System.Drawing.Size(167, 41);
             label_Tilt.TabIndex = 13;
@@ -103,7 +105,7 @@
             // label_Buttons
             // 
             label_Buttons.AutoSize = true;
-            label_Buttons.Location = new System.Drawing.Point(24, 430);
+            label_Buttons.Location = new System.Drawing.Point(24, 492);
             label_Buttons.Name = "label_Buttons";
             label_Buttons.Size = new System.Drawing.Size(120, 41);
             label_Buttons.TabIndex = 16;
@@ -124,7 +126,7 @@
             // 
             label_TiltValue.AutoSize = true;
             label_TiltValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label_TiltValue.Location = new System.Drawing.Point(211, 316);
+            label_TiltValue.Location = new System.Drawing.Point(211, 382);
             label_TiltValue.Name = "label_TiltValue";
             label_TiltValue.Size = new System.Drawing.Size(63, 36);
             label_TiltValue.TabIndex = 26;
@@ -134,7 +136,7 @@
             // 
             label_ScreenPosValue.AutoSize = true;
             label_ScreenPosValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label_ScreenPosValue.Location = new System.Drawing.Point(211, 145);
+            label_ScreenPosValue.Location = new System.Drawing.Point(211, 162);
             label_ScreenPosValue.Name = "label_ScreenPosValue";
             label_ScreenPosValue.Size = new System.Drawing.Size(63, 36);
             label_ScreenPosValue.TabIndex = 22;
@@ -144,7 +146,7 @@
             // 
             label_PressureValue.AutoSize = true;
             label_PressureValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label_PressureValue.Location = new System.Drawing.Point(211, 259);
+            label_PressureValue.Location = new System.Drawing.Point(211, 327);
             label_PressureValue.Name = "label_PressureValue";
             label_PressureValue.Size = new System.Drawing.Size(63, 36);
             label_PressureValue.TabIndex = 25;
@@ -154,7 +156,7 @@
             // 
             label_ButtonsValue.AutoSize = true;
             label_ButtonsValue.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label_ButtonsValue.Location = new System.Drawing.Point(211, 430);
+            label_ButtonsValue.Location = new System.Drawing.Point(211, 492);
             label_ButtonsValue.Name = "label_ButtonsValue";
             label_ButtonsValue.Size = new System.Drawing.Size(63, 36);
             label_ButtonsValue.TabIndex = 28;
@@ -255,7 +257,7 @@
             // pressureCurveToolStripMenuItem
             // 
             pressureCurveToolStripMenuItem.Name = "pressureCurveToolStripMenuItem";
-            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(448, 54);
+            pressureCurveToolStripMenuItem.Size = new System.Drawing.Size(370, 54);
             pressureCurveToolStripMenuItem.Text = "Brush settings";
             pressureCurveToolStripMenuItem.Click += pressureCurveToolStripMenuItem_Click;
             // 
@@ -291,7 +293,7 @@
             // 
             label_CanvasPos.AutoSize = true;
             label_CanvasPos.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label_CanvasPos.Location = new System.Drawing.Point(211, 202);
+            label_CanvasPos.Location = new System.Drawing.Point(211, 217);
             label_CanvasPos.Name = "label_CanvasPos";
             label_CanvasPos.Size = new System.Drawing.Size(63, 36);
             label_CanvasPos.TabIndex = 44;
@@ -300,7 +302,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(24, 202);
+            label5.Location = new System.Drawing.Point(24, 217);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(158, 41);
             label5.TabIndex = 43;
@@ -310,7 +312,7 @@
             // 
             labeltilt_xy.AutoSize = true;
             labeltilt_xy.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            labeltilt_xy.Location = new System.Drawing.Point(211, 373);
+            labeltilt_xy.Location = new System.Drawing.Point(211, 437);
             labeltilt_xy.Name = "labeltilt_xy";
             labeltilt_xy.Size = new System.Drawing.Size(63, 36);
             labeltilt_xy.TabIndex = 46;
@@ -319,7 +321,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(24, 373);
+            label2.Location = new System.Drawing.Point(24, 437);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(126, 41);
             label2.TabIndex = 45;
@@ -337,7 +339,7 @@
             // 
             // buttonRec
             // 
-            buttonRec.Location = new System.Drawing.Point(24, 617);
+            buttonRec.Location = new System.Drawing.Point(24, 642);
             buttonRec.Name = "buttonRec";
             buttonRec.Size = new System.Drawing.Size(170, 58);
             buttonRec.TabIndex = 48;
@@ -348,7 +350,7 @@
             // label_RecCount
             // 
             label_RecCount.AutoSize = true;
-            label_RecCount.Location = new System.Drawing.Point(332, 544);
+            label_RecCount.Location = new System.Drawing.Point(332, 588);
             label_RecCount.Name = "label_RecCount";
             label_RecCount.Size = new System.Drawing.Size(54, 41);
             label_RecCount.TabIndex = 49;
@@ -356,7 +358,7 @@
             // 
             // button_replay
             // 
-            button_replay.Location = new System.Drawing.Point(216, 617);
+            button_replay.Location = new System.Drawing.Point(216, 642);
             button_replay.Name = "button_replay";
             button_replay.Size = new System.Drawing.Size(170, 58);
             button_replay.TabIndex = 50;
@@ -367,7 +369,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(24, 544);
+            label1.Location = new System.Drawing.Point(24, 588);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(245, 41);
             label1.TabIndex = 51;
@@ -385,7 +387,7 @@
             // 
             // buttonSavePackets
             // 
-            buttonSavePackets.Location = new System.Drawing.Point(24, 702);
+            buttonSavePackets.Location = new System.Drawing.Point(24, 718);
             buttonSavePackets.Name = "buttonSavePackets";
             buttonSavePackets.Size = new System.Drawing.Size(170, 58);
             buttonSavePackets.TabIndex = 53;
@@ -395,7 +397,7 @@
             // 
             // buttonLoadPackets
             // 
-            buttonLoadPackets.Location = new System.Drawing.Point(216, 702);
+            buttonLoadPackets.Location = new System.Drawing.Point(216, 718);
             buttonLoadPackets.Name = "buttonLoadPackets";
             buttonLoadPackets.Size = new System.Drawing.Size(170, 58);
             buttonLoadPackets.TabIndex = 54;
@@ -415,16 +417,17 @@
             // 
             // textBox_config
             // 
-            textBox_config.Location = new System.Drawing.Point(24, 866);
+            textBox_config.Location = new System.Drawing.Point(24, 886);
             textBox_config.Multiline = true;
             textBox_config.Name = "textBox_config";
             textBox_config.ReadOnly = true;
-            textBox_config.Size = new System.Drawing.Size(489, 354);
+            textBox_config.Size = new System.Drawing.Size(489, 334);
             textBox_config.TabIndex = 56;
             textBox_config.Text = "N/A";
             // 
             // buttonSettings
             // 
+            buttonSettings.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             buttonSettings.Location = new System.Drawing.Point(616, 1183);
             buttonSettings.Name = "buttonSettings";
             buttonSettings.Size = new System.Drawing.Size(170, 58);
@@ -433,11 +436,33 @@
             buttonSettings.UseVisualStyleBackColor = true;
             buttonSettings.Click += buttonSettings_Click;
             // 
+            // labelPressureValueInteger
+            // 
+            labelPressureValueInteger.AutoSize = true;
+            labelPressureValueInteger.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            labelPressureValueInteger.Location = new System.Drawing.Point(211, 272);
+            labelPressureValueInteger.Name = "labelPressureValueInteger";
+            labelPressureValueInteger.Size = new System.Drawing.Size(63, 36);
+            labelPressureValueInteger.TabIndex = 58;
+            labelPressureValueInteger.Text = "---";
+            // 
+            // labelMaxPressure
+            // 
+            labelMaxPressure.AutoSize = true;
+            labelMaxPressure.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            labelMaxPressure.Location = new System.Drawing.Point(400, 272);
+            labelMaxPressure.Name = "labelMaxPressure";
+            labelMaxPressure.Size = new System.Drawing.Size(63, 36);
+            labelMaxPressure.TabIndex = 59;
+            labelMaxPressure.Text = "---";
+            // 
             // FormWinTabPainterApp
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1956, 1250);
+            Controls.Add(labelMaxPressure);
+            Controls.Add(labelPressureValueInteger);
             Controls.Add(buttonSettings);
             Controls.Add(textBox_config);
             Controls.Add(buttonCopy);
@@ -522,6 +547,8 @@
         private System.Windows.Forms.Button buttonCopy;
         private System.Windows.Forms.TextBox textBox_config;
         private System.Windows.Forms.Button buttonSettings;
+        private System.Windows.Forms.Label labelPressureValueInteger;
+        private System.Windows.Forms.Label labelMaxPressure;
     }
 }
 
