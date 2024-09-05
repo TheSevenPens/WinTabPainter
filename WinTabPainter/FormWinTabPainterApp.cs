@@ -240,7 +240,7 @@ namespace WinTabPainter
                     this.pictureBox_Canvas.Invalidate();
                 }
             }
-            this.pictureBoxPressureGuage.Invalidate();
+
         }
 
         public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, WinTabUtils.PenButtonPressChange change)
@@ -291,8 +291,8 @@ namespace WinTabPainter
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.labelPressureValueInteger.Text = paint_data.PressureRaw.ToString();
-            this.panelPressureGuage.Invalidate();
-
+            //this.panelPressureGuage.Invalidate();
+            this.pictureBoxPressureGuage.Invalidate();
             this.label_PressureValue.Text =
                 string.Format("{0} → {1}",
                     get_pressure_string(paint_data.PressureNormalized),
@@ -557,6 +557,12 @@ namespace WinTabPainter
 
         private void panelPressureGuage_Paint(object sender, PaintEventArgs e)
         {
+
+
+        }
+
+        private void pictureBoxPressureGuage_Paint(object sender, PaintEventArgs e)
+        {
             if (this.gfx_pressure_guage == null) { return; }
 
             int guage_width = this.pictureBoxPressureGuage.Width;
@@ -569,13 +575,12 @@ namespace WinTabPainter
             }
             gfx_pressure_guage2.DrawLine(np_pressure_guage, nx, 0, nx, guage_height);
 
-            if (this.cur_paintdata.PressureEffective!=this.cur_paintdata.PressureNormalized)
+            if (this.cur_paintdata.PressureEffective != this.cur_paintdata.PressureNormalized)
             {
                 int ex = (int)(guage_width * this.cur_paintdata.PressureEffective);
                 gfx_pressure_guage2.DrawLine(ep_pressure_guage, ex, 0, ex, guage_height);
 
             }
-
 
         }
     }

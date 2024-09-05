@@ -476,6 +476,7 @@
             pictureBoxPressureGuage.Size = new System.Drawing.Size(1320, 71);
             pictureBoxPressureGuage.TabIndex = 61;
             pictureBoxPressureGuage.TabStop = false;
+            pictureBoxPressureGuage.Paint += pictureBoxPressureGuage_Paint;
             // 
             // FormWinTabPainterApp
             // 
