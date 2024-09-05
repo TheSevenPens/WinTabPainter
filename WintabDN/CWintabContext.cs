@@ -31,7 +31,7 @@ public class CWintabContext
 {
     // Context data.
     private Structs.WintabLogContext m_logContext = new Structs.WintabLogContext();
-    private Structs.HCTX                m_hCTX = 0;
+    private Structs.HCTX m_hCTX = 0;
 
     /// <summary>
     /// Default constructor sets all data bits to be captured.
@@ -156,12 +156,12 @@ public class CWintabContext
     /// <summary>
     /// Handle (identifier) used to identify this context.
     /// </summary>
-    public Structs.HCTX HCtx    { get { return m_hCTX; } }
+    public Structs.HCTX HCtx { get { return m_hCTX; } }
 
     /// <summary>
     /// Get/Set context name.
     /// </summary>
-    public string Name      { get { return m_logContext.lcName; }     set { m_logContext.lcName = value; } }
+    public string Name { get { return m_logContext.lcName; } set { m_logContext.lcName = value; } }
 
     /// <summary>
     /// Specifies options for the context. These options can be 
@@ -169,7 +169,7 @@ public class CWintabContext
     /// field can be any combination of the values defined in 
     /// ECTXOptionValues.
     /// </summary>
-    public UInt32 Options   { get { return m_logContext.lcOptions; }  set { m_logContext.lcOptions = value; } }
+    public UInt32 Options { get { return m_logContext.lcOptions; } set { m_logContext.lcOptions = value; } }
 
     /// <summary>
     /// Specifies current status conditions for the context. 
@@ -177,7 +177,7 @@ public class CWintabContext
     /// operator. The lcStatus field can be any combination of 
     /// the values defined in ECTXStatusValues.
     /// </summary>
-    public UInt32 Status    { get { return m_logContext.lcStatus; }   set { m_logContext.lcStatus = value; } }
+    public UInt32 Status { get { return m_logContext.lcStatus; } set { m_logContext.lcStatus = value; } }
 
     /// <summary>
     /// Specifies which attributes of the context the application 
@@ -190,30 +190,30 @@ public class CWintabContext
     /// ECTXLockValues. Locks can only be changed by the task 
     /// or process that owns the context.
     /// </summary>
-    public UInt32 Locks     { get { return m_logContext.lcLocks; }    set { m_logContext.lcLocks = value; } }
+    public UInt32 Locks { get { return m_logContext.lcLocks; } set { m_logContext.lcLocks = value; } }
 
     /// <summary>
     /// Specifies the range of message numbers that will be used for 
     /// reporting the activity of the context. 
     /// </summary>
-    public UInt32 MsgBase   { get { return m_logContext.lcMsgBase; }  set { m_logContext.lcMsgBase = value; } }
+    public UInt32 MsgBase { get { return m_logContext.lcMsgBase; } set { m_logContext.lcMsgBase = value; } }
 
     /// <summary>
     /// Specifies the device whose input the context processes.
     /// </summary>
-    public UInt32 Device    { get { return m_logContext.lcDevice; }   set { m_logContext.lcDevice = value; } }
+    public UInt32 Device { get { return m_logContext.lcDevice; } set { m_logContext.lcDevice = value; } }
 
     /// <summary>
     /// Specifies the desired packet report rate in Hertz. Once the con-text is opened, this field will 
     /// contain the actual report rate.
     /// </summary>
-    public UInt32 PktRate   { get { return m_logContext.lcPktRate; }  set { m_logContext.lcPktRate = value; } }
+    public UInt32 PktRate { get { return m_logContext.lcPktRate; } set { m_logContext.lcPktRate = value; } }
 
     /// <summary>
     /// Specifies which optional data items will be in packets returned from the context. Requesting 
     /// unsupported data items will cause Open() to fail.
     /// </summary>
-    public Structs.WTPKT PktData    { get { return m_logContext.lcPktData; }  set { m_logContext.lcPktData = value; } }
+    public Structs.WTPKT PktData { get { return m_logContext.lcPktData; } set { m_logContext.lcPktData = value; } }
 
     /// <summary>
     /// Specifies whether the packet data items will be returned in absolute or relative mode. If the item's 
@@ -221,7 +221,7 @@ public class CWintabContext
     /// selected in the PktData property will be ignored.  Bits for data items that only allow one mode (such 
     /// as the packet identifier) will also be ignored.        
     /// </summary>
-    public Structs.WTPKT PktMode    { get { return m_logContext.lcPktMode; }  set { m_logContext.lcPktMode = value; } }
+    public Structs.WTPKT PktMode { get { return m_logContext.lcPktMode; } set { m_logContext.lcPktMode = value; } }
 
     /// <summary>
     /// Specifies which packet data items can generate move events in the context. Bits for items that 
@@ -229,7 +229,7 @@ public class CWintabContext
     /// time stamp, and the packet identifier will also be ignored. In the case of overlapping contexts, movement 
     /// events for data items not selected in this field may be processed by underlying contexts.
     /// </summary>
-    public Structs.WTPKT MoveMask   { get { return m_logContext.lcMoveMask; } set { m_logContext.lcMoveMask = value; } }
+    public Structs.WTPKT MoveMask { get { return m_logContext.lcMoveMask; } set { m_logContext.lcMoveMask = value; } }
 
     /// <summary>
     /// Specifies the buttons for which button press events will be processed in the context. In the case of 
@@ -253,123 +253,123 @@ public class CWintabContext
     /// Specifies the X origin of the context's input area in the tablet's native coordinates. Value is clipped 
     /// to the tablet native coordinate space when the context is opened or modified.
     /// </summary>
-    public Int32 InOrgX     { get { return m_logContext.lcInOrgX; }   set { m_logContext.lcInOrgX = value; } }
+    public Int32 InOrgX { get { return m_logContext.lcInOrgX; } set { m_logContext.lcInOrgX = value; } }
 
     /// <summary>
     /// Specifies the Y origin of the context's input area in the tablet's native coordinates. Value is clipped 
     /// to the tablet native coordinate space when the context is opened or modified.
     /// </summary>
-    public Int32 InOrgY     { get { return m_logContext.lcInOrgY; }   set { m_logContext.lcInOrgY = value; } }
+    public Int32 InOrgY { get { return m_logContext.lcInOrgY; } set { m_logContext.lcInOrgY = value; } }
 
     /// <summary>
     /// Specifies the Z origin of the context's input area in the tablet's native coordinates. Value is clipped 
     /// to the tablet native coordinate space when the context is opened or modified.
     /// </summary>
-    public Int32 InOrgZ     { get { return m_logContext.lcInOrgZ; }   set { m_logContext.lcInOrgZ = value; } }
+    public Int32 InOrgZ { get { return m_logContext.lcInOrgZ; } set { m_logContext.lcInOrgZ = value; } }
 
     /// <summary>
     /// Specifies the X extent of the context's input area in the tablet's native coordinates. Value is clipped 
     /// to the tablet native coordinate space when the context is opened or modified.
     /// </summary>
-    public Int32 InExtX     { get { return m_logContext.lcInExtX; }   set { m_logContext.lcInExtX = value; } }
+    public Int32 InExtX { get { return m_logContext.lcInExtX; } set { m_logContext.lcInExtX = value; } }
 
     /// <summary>
     /// Specifies the Y extent of the context's input area in the tablet's native coordinates. Value is clipped 
     /// to the tablet native coordinate space when the context is opened or modified. 
     /// </summary>
-    public Int32 InExtY     { get { return m_logContext.lcInExtY; }   set { m_logContext.lcInExtY = value; } }
+    public Int32 InExtY { get { return m_logContext.lcInExtY; } set { m_logContext.lcInExtY = value; } }
 
     /// <summary>
     /// Specifies the Z extent of the context's input area in the tablet's native coordinates. Value is clipped 
     /// to the tablet native coordinate space when the context is opened or modified. 
     /// </summary>
-    public Int32 InExtZ     { get { return m_logContext.lcInExtZ; }   set { m_logContext.lcInExtZ = value; } }
+    public Int32 InExtZ { get { return m_logContext.lcInExtZ; } set { m_logContext.lcInExtZ = value; } }
 
     /// <summary>
     /// Specifies the X origin of the context's output area in context output coordinates.  Value is used in 
     /// coordinate scaling for absolute mode only.
     /// </summary>
-    public Int32 OutOrgX    { get { return m_logContext.lcOutOrgX; }  set { m_logContext.lcOutOrgX = value; } }
+    public Int32 OutOrgX { get { return m_logContext.lcOutOrgX; } set { m_logContext.lcOutOrgX = value; } }
 
     /// <summary>
     /// Specifies the Y origin of the context's output area in context output coordinates.  Value is used in 
     /// coordinate scaling for absolute mode only.
     /// </summary>
-    public Int32 OutOrgY    { get { return m_logContext.lcOutOrgY; }  set { m_logContext.lcOutOrgY = value; } }
+    public Int32 OutOrgY { get { return m_logContext.lcOutOrgY; } set { m_logContext.lcOutOrgY = value; } }
 
     /// <summary>
     /// Specifies the Z origin of the context's output area in context output coordinates.  Value is used in 
     /// coordinate scaling for absolute mode only.
     /// </summary>
-    public Int32 OutOrgZ    { get { return m_logContext.lcOutOrgZ; }  set { m_logContext.lcOutOrgZ = value; } }
+    public Int32 OutOrgZ { get { return m_logContext.lcOutOrgZ; } set { m_logContext.lcOutOrgZ = value; } }
 
     /// <summary>
     /// Specifies the X extent of the context's output area in context output coordinates.  Value is used 
     /// in coordinate scaling for absolute mode only.
     /// </summary>
-    public Int32 OutExtX    { get { return m_logContext.lcOutExtX; }  set { m_logContext.lcOutExtX = value; } }
+    public Int32 OutExtX { get { return m_logContext.lcOutExtX; } set { m_logContext.lcOutExtX = value; } }
 
     /// <summary>
     /// Specifies the Y extent of the context's output area in context output coordinates.  Value is used 
     /// in coordinate scaling for absolute mode only.
     /// </summary>
-    public Int32 OutExtY    { get { return m_logContext.lcOutExtY; }  set { m_logContext.lcOutExtY = value; } }
+    public Int32 OutExtY { get { return m_logContext.lcOutExtY; } set { m_logContext.lcOutExtY = value; } }
 
     /// <summary>
     /// Specifies the Z extent of the context's output area in context output coordinates.  Value is used 
     /// in coordinate scaling for absolute mode only.
     /// </summary>
-    public Int32 OutExtZ    { get { return m_logContext.lcOutExtZ; }  set { m_logContext.lcOutExtZ = value; } }
+    public Int32 OutExtZ { get { return m_logContext.lcOutExtZ; } set { m_logContext.lcOutExtZ = value; } }
 
     /// <summary>
     /// Specifies the relative-mode sensitivity factor for the x axis.
     /// </summary>
-    public Structs.FIX32 SensX      { get { return m_logContext.lcSensX; }    set { m_logContext.lcSensX = value; } }
+    public Structs.FIX32 SensX { get { return m_logContext.lcSensX; } set { m_logContext.lcSensX = value; } }
 
     /// <summary>
     /// Specifies the relative-mode sensitivity factor for the y axis.
     /// </summary>
-    public Structs.FIX32 SensY      { get { return m_logContext.lcSensY; }    set { m_logContext.lcSensY = value; } }
+    public Structs.FIX32 SensY { get { return m_logContext.lcSensY; } set { m_logContext.lcSensY = value; } }
 
     /// <summary>
     /// Specifies the relative-mode sensitivity factor for the Z axis.
     /// </summary>
-    public Structs.FIX32 SensZ      { get { return m_logContext.lcSensZ; }    set { m_logContext.lcSensZ = value; } }
+    public Structs.FIX32 SensZ { get { return m_logContext.lcSensZ; } set { m_logContext.lcSensZ = value; } }
 
     /// <summary>
     /// Specifies the system cursor tracking mode. Zero specifies absolute; non-zero means relative.
     /// </summary>
-    public bool SysMode     { get { return m_logContext.lcSysMode; }  set { m_logContext.lcSysMode = value; } }
+    public bool SysMode { get { return m_logContext.lcSysMode; } set { m_logContext.lcSysMode = value; } }
 
     /// <summary>
     /// Specifies the X origin of the screen mapping area for system cursor tracking, in screen coordinates.
     /// </summary>
-    public Int32 SysOrgX    { get { return m_logContext.lcSysOrgX; }  set { m_logContext.lcSysOrgX = value; } }
+    public Int32 SysOrgX { get { return m_logContext.lcSysOrgX; } set { m_logContext.lcSysOrgX = value; } }
 
     /// <summary>
     /// Specifies the Y origin of the screen mapping area for system cursor tracking, in screen coordinates.
     /// </summary>
-    public Int32 SysOrgY    { get { return m_logContext.lcSysOrgY; }  set { m_logContext.lcSysOrgY = value; } }
+    public Int32 SysOrgY { get { return m_logContext.lcSysOrgY; } set { m_logContext.lcSysOrgY = value; } }
 
     /// <summary>
     /// Specifies the X extent of the screen mapping area for system cursor tracking, in screen coordinates.
     /// </summary>
-    public Int32 SysExtX    { get { return m_logContext.lcSysExtX; }  set { m_logContext.lcSysExtX = value; } }
+    public Int32 SysExtX { get { return m_logContext.lcSysExtX; } set { m_logContext.lcSysExtX = value; } }
 
     /// <summary>
     /// Specifies the Y extent of the screen mapping area for system cursor tracking, in screen coordinates.
     /// </summary>
-    public Int32 SysExtY    { get { return m_logContext.lcSysExtY; }  set { m_logContext.lcSysExtY = value; } }
+    public Int32 SysExtY { get { return m_logContext.lcSysExtY; } set { m_logContext.lcSysExtY = value; } }
 
     /// <summary>
     /// Specifies the system-cursor relative-mode sensitivity factor for the x axis.
     /// </summary>
-    public Structs.FIX32 SysSensX   { get { return m_logContext.lcSysSensX; } set { m_logContext.lcSysSensX = value; } }
+    public Structs.FIX32 SysSensX { get { return m_logContext.lcSysSensX; } set { m_logContext.lcSysSensX = value; } }
 
     /// <summary>
     /// Specifies the system-cursor relative-mode sensitivity factor for the y axis.
     /// </summary>
-    public Structs.FIX32 SysSensY   { get { return m_logContext.lcSysSensY; } set { m_logContext.lcSysSensY = value; } }
+    public Structs.FIX32 SysSensY { get { return m_logContext.lcSysSensY; } set { m_logContext.lcSysSensY = value; } }
 
 }
 
