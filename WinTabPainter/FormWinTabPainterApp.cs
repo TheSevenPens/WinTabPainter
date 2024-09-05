@@ -16,6 +16,7 @@ using System.Linq.Expressions;
 using WintabDN.Structs;
 using System.Security.Cryptography;
 using static System.Windows.Forms.Design.AxImporter;
+using System.Drawing;
 
 namespace WinTabPainter
 {
@@ -46,8 +47,14 @@ namespace WinTabPainter
             InitializeComponent();
         }
 
+        Graphics gfx_pressure_guage;
+        Pen np_pressure_guage = new Pen(Color.Black, 11);
+        Pen ep_pressure_guage = new Pen(Color.Red, 11);
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.gfx_pressure_guage = panelPressureGuage.CreateGraphics();
+
             this.old_paintdata = new Painting.PaintData();
 
             // All actual drawing will be done to this bitmap
@@ -130,6 +137,23 @@ namespace WinTabPainter
                 this.bitmap_doc.Dispose();
             }
 
+            if (this.gfx_pressure_guage != null)
+            {
+                this.gfx_pressure_guage.Dispose();
+            }
+
+
+            if (this.np_pressure_guage!= null)
+            {
+                this.np_pressure_guage.Dispose();
+            }
+
+            if (this.ep_pressure_guage != null)
+            {
+                this.ep_pressure_guage.Dispose();
+            }
+
+
             var s = Screen.FromControl(this);
 
             Properties.Settings.Default["Monitor"] = s.DeviceName;
@@ -190,6 +214,7 @@ namespace WinTabPainter
             };
         }
 
+        PaintData cur_paintdata;
         private void HandlePainting(PaintData paint_data)
         {
             double dist_from_last_canv_pos;
@@ -204,6 +229,7 @@ namespace WinTabPainter
             }
 
             // Update the UI 
+            this.cur_paintdata = paint_data;
             UpdateLivePaintStats(paint_data, paint_data.PosCanvas);
 
             if ((paint_data.PressureRaw > 0)
@@ -253,14 +279,14 @@ namespace WinTabPainter
         private string get_pressure_string(double pressure)
         {
             int pressure_digits = 8;
-            double pressure_rounded = Math.Round(pressure*100, pressure_digits);
+            double pressure_rounded = Math.Round(pressure * 100, pressure_digits);
             string str_pressure = string.Format("{0:00.00000}%", pressure_rounded);
             return str_pressure;
             // handle the case when we have rounded
             // but actually there is a little bit of pressure
             // we want to indidate that it is non-zero
 
-            if (pressure_rounded==0.0 && pressure > 0.0)
+            if (pressure_rounded == 0.0 && pressure > 0.0)
             {
                 return "00.00000+";
             }
@@ -274,7 +300,7 @@ namespace WinTabPainter
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();
             this.labelPressureValueInteger.Text = paint_data.PressureRaw.ToString();
-
+            this.panelPressureGuage.Invalidate();
 
             this.label_PressureValue.Text =
                 string.Format("{0} → {1}",
@@ -536,6 +562,25 @@ namespace WinTabPainter
         private void buttonSettings_Click(object sender, EventArgs e)
         {
             RunFormSettings();
+        }
+
+        private void panelPressureGuage_Paint(object sender, PaintEventArgs e)
+        {
+            if (this.gfx_pressure_guage == null) { return; }
+
+            int guage_width = this.panelPressureGuage.Width;
+            int guage_height = this.panelPressureGuage.Height;
+            int nx = (int)(guage_width * this.cur_paintdata.PressureNormalized);
+            gfx_pressure_guage.DrawLine(np_pressure_guage,nx, 0, nx, guage_height);
+
+            if (this.cur_paintdata.PressureEffective!=this.cur_paintdata.PressureNormalized)
+            {
+                int ex = (int)(guage_width * this.cur_paintdata.PressureEffective);
+                gfx_pressure_guage.DrawLine(ep_pressure_guage, ex, 0, ex, guage_height);
+
+            }
+
+
         }
     }
 }
