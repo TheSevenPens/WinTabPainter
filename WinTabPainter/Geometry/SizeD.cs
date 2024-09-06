@@ -1,19 +1,11 @@
 ﻿
+using System.DirectoryServices.ActiveDirectory;
 using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry;
 
-public readonly struct SizeD
+public readonly record struct SizeD( double Width, double Height )
 {
-    public readonly double Width;
-    public readonly double Height;
-
-    public SizeD(double w, double h)
-    {
-        this.Width = w;
-        this.Height = h;
-    }
-
     public SizeD Divide(double scale) => new SizeD(this.Width / scale, this.Height / scale);
 
     public SizeD Multiply(double scale) => new SizeD(this.Width * scale, this.Height * scale);
@@ -41,7 +33,4 @@ public readonly struct SizeD
 
     public static implicit operator SD.SizeF(SizeD s) => s.ToSDSizeF();
 
-    public static bool operator ==(SizeD lhs, SizeD rhs) => lhs.Equals(rhs);
-
-    public static bool operator !=(SizeD lhs, SizeD rhs) => !(lhs == rhs);
 }
