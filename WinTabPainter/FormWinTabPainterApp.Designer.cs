@@ -70,7 +70,6 @@
             buttonSettings = new System.Windows.Forms.Button();
             labelPressureValueInteger = new System.Windows.Forms.Label();
             labelMaxPressure = new System.Windows.Forms.Label();
-            panelPressureGuage = new System.Windows.Forms.Panel();
             pictureBoxPressureGuage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Canvas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_BrushSize).BeginInit();
@@ -459,15 +458,6 @@
             labelMaxPressure.TabIndex = 59;
             labelMaxPressure.Text = "---";
             // 
-            // panelPressureGuage
-            // 
-            panelPressureGuage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            panelPressureGuage.Location = new System.Drawing.Point(620, 1125);
-            panelPressureGuage.Name = "panelPressureGuage";
-            panelPressureGuage.Size = new System.Drawing.Size(1324, 52);
-            panelPressureGuage.TabIndex = 60;
-            panelPressureGuage.Paint += panelPressureGuage_Paint;
-            // 
             // pictureBoxPressureGuage
             // 
             pictureBoxPressureGuage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -484,7 +474,6 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1956, 1250);
             Controls.Add(pictureBoxPressureGuage);
-            Controls.Add(panelPressureGuage);
             Controls.Add(labelMaxPressure);
             Controls.Add(labelPressureValueInteger);
             Controls.Add(buttonSettings);
@@ -574,7 +563,6 @@
         private System.Windows.Forms.Button buttonSettings;
         private System.Windows.Forms.Label labelPressureValueInteger;
         private System.Windows.Forms.Label labelMaxPressure;
-        private System.Windows.Forms.Panel panelPressureGuage;
         private System.Windows.Forms.PictureBox pictureBoxPressureGuage;
     }
 }

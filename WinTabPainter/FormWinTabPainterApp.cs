@@ -55,7 +55,6 @@ namespace WinTabPainter
         private void Form1_Load(object sender, EventArgs e)
         {
             this.pictureBoxPressureGuage.Image = new System.Drawing.Bitmap(this.pictureBoxPressureGuage.Width, this.pictureBoxPressureGuage.Height);
-            this.gfx_pressure_guage = panelPressureGuage.CreateGraphics();
             this.gfx_pressure_guage2 = System.Drawing.Graphics.FromImage(this.pictureBoxPressureGuage.Image);
 
             this.old_paintdata = new Painting.PaintData();
@@ -563,7 +562,7 @@ namespace WinTabPainter
 
         private void pictureBoxPressureGuage_Paint(object sender, PaintEventArgs e)
         {
-            if (this.gfx_pressure_guage == null) { return; }
+            if (this.gfx_pressure_guage2 == null) { return; }
 
             int guage_width = this.pictureBoxPressureGuage.Width;
             int guage_height = this.pictureBoxPressureGuage.Height;
