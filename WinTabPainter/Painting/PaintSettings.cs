@@ -4,15 +4,15 @@
 public class PaintSettingsDynamics
 {
     // dynamics
-    public readonly Numerics.SimpleCurve pressure_curve;
-    public readonly Numerics.EMAPositionSmoother PositionSmoother;
+    public readonly Numerics.SimpleCurve PressureCurve;
     public readonly Numerics.EMASmoother PressureSmoother;
+    public readonly Numerics.EMAPositionSmoother PositionSmoother;
 
     public PaintSettingsDynamics()
     {
-        this.pressure_curve = new Numerics.SimpleCurve();
-        this.PositionSmoother = new Numerics.EMAPositionSmoother(0);
+        this.PressureCurve = new Numerics.SimpleCurve();
         this.PressureSmoother = new Numerics.EMASmoother(0);
+        this.PositionSmoother = new Numerics.EMAPositionSmoother(0);
     }
 }
 

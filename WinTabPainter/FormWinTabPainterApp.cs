@@ -324,7 +324,7 @@ namespace WinTabPainter
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(string.Format("Brush Size: {0}", paint_settings.BrushWidth));
-            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.Dynamics.pressure_curve.CurveAmount));
+            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.Dynamics.PressureCurve.CurveAmount));
             sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.Dynamics.PressureSmoother.SmoothingAmount));
             sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.Dynamics.PositionSmoother.SmoothingAmount));
             sb.AppendLine(string.Format("Pressure Quantization: {0}",
@@ -475,7 +475,7 @@ namespace WinTabPainter
         private void RunFormSettings()
         {
             var form = new FormBrushSettings();
-            form.CurveAmount = paint_settings.Dynamics.pressure_curve.CurveAmount;
+            form.CurveAmount = paint_settings.Dynamics.PressureCurve.CurveAmount;
             form.PressureSmoothingValue = paint_settings.Dynamics.PressureSmoother.SmoothingAmount;
             form.PositionSmoothingValue = paint_settings.Dynamics.PositionSmoother.SmoothingAmount;
             form.PressureQuantizeLevels = paint_settings.PressureQuantizeLevels;
@@ -487,7 +487,7 @@ namespace WinTabPainter
             if (r == DialogResult.OK)
             {
 
-                paint_settings.Dynamics.pressure_curve.CurveAmount = form.CurveAmount; //
+                paint_settings.Dynamics.PressureCurve.CurveAmount = form.CurveAmount; //
                 paint_settings.Dynamics.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue; //
                 paint_settings.Dynamics.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue; //
                 paint_settings.PressureQuantizeLevels = form.PressureQuantizeLevels;

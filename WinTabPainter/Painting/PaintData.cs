@@ -93,7 +93,7 @@ public struct PaintData
         }
         
         this.PressureSmoothed = paintsettings.Dynamics.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
-        this.PressureCurved = paintsettings.Dynamics.pressure_curve.ApplyCurve(this.PressureSmoothed);
+        this.PressureCurved = paintsettings.Dynamics.PressureCurve.ApplyCurve(this.PressureSmoothed);
         this.PressureEffective = this.PressureCurved;
 
         // BRUSH SIZE
