@@ -41,6 +41,8 @@ namespace WinTabPainter
         public double PositionSmoothingValue = 0;
         public bool AntiAliasing;
         int QuantizeLevels;
+        public int PositionXNoise = 0;
+        public int PositionYNoise = 0;
 
         public double CurveAmount
         {
@@ -105,6 +107,8 @@ namespace WinTabPainter
                     this.comboBox_PressureQuant.SelectedIndex = index; break;
                 }
             }
+
+            this.textBoxPositionNoise.Text = string.Format("{0},{1}",this.PositionXNoise,this.PositionYNoise);
         }
 
         private void render_curve()
@@ -201,6 +205,19 @@ namespace WinTabPainter
             state_position_smoothing_trackbar_value = this.trackBar_PositionSmoothing.Value;
             state_pressure_smoothing_trackbar_value = this.trackBar_PressureSmoothing.Value;
 
+            string noise_str = this.textBoxPositionNoise.Text.Trim();
+            if (noise_str.Length > 0)
+            {
+                var tokens = noise_str.Split(',');
+                if (tokens.Length >=2 )
+                {
+                    int xnoise = int.Parse(tokens[0]);
+                    int ynoise = int.Parse(tokens[1]);
+                    this.PositionXNoise = xnoise;
+                    this.PositionYNoise = ynoise;
+                }
+            }
+                
             this.Close();
             this.DialogResult = DialogResult.OK;
         }
@@ -251,6 +268,11 @@ namespace WinTabPainter
         private void checkBoxAntiAliasing_CheckedChanged(object sender, System.EventArgs e)
         {
             this.AntiAliasing = checkBoxAntiAliasing.Checked;
+        }
+
+        private void label6_Click(object sender, System.EventArgs e)
+        {
+
         }
     }
 }

@@ -9,12 +9,19 @@ public class PaintSettings
     // pressure settings
     public Numerics.SimpleCurve pressure_curve = new Numerics.SimpleCurve();
     public int PressureQuantizeLevels = -1;
+
+    // noise
+    public int PosXNoise;
+    public int PosYNoise;
+
+
     // smoothing settings
     public readonly Numerics.EMAPositionSmoother PositionSmoother;
     public readonly Numerics.EMASmoother PressureSmoother;
 
     public static readonly Numerics.OrderedRangeD SYS_SMOOTHING_RANGE = new Numerics.OrderedRangeD(0, 1);
     public static readonly Numerics.OrderedRangeD SYS_SMOOTHING_RANGE_LIMITED = new Numerics.OrderedRangeD(0.0, 0.995);
+
 
     public int BrushWidth { 
         get => brushWidth; 

@@ -44,6 +44,8 @@
             trackBar_PositionSmoothing = new System.Windows.Forms.TrackBar();
             label3 = new System.Windows.Forms.Label();
             checkBoxAntiAliasing = new System.Windows.Forms.CheckBox();
+            label6 = new System.Windows.Forms.Label();
+            textBoxPositionNoise = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).BeginInit();
@@ -215,11 +217,29 @@
             checkBoxAntiAliasing.UseVisualStyleBackColor = true;
             checkBoxAntiAliasing.CheckedChanged += checkBoxAntiAliasing_CheckedChanged;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(626, 445);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(216, 41);
+            label6.TabIndex = 58;
+            label6.Text = " Position Noise";
+            // 
+            // textBoxPositionNoise
+            // 
+            textBoxPositionNoise.Location = new System.Drawing.Point(869, 453);
+            textBoxPositionNoise.Name = "textBoxPositionNoise";
+            textBoxPositionNoise.Size = new System.Drawing.Size(250, 47);
+            textBoxPositionNoise.TabIndex = 59;
+            // 
             // FormBrushSettings
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1601, 965);
+            Controls.Add(textBoxPositionNoise);
+            Controls.Add(label6);
             Controls.Add(checkBoxAntiAliasing);
             Controls.Add(label5);
             Controls.Add(comboBox_PressureQuant);
@@ -267,5 +287,7 @@
         private System.Windows.Forms.TrackBar trackBar_PositionSmoothing;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox checkBoxAntiAliasing;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxPositionNoise;
     }
 }
