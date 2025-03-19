@@ -59,14 +59,10 @@ namespace WinTabPainter
             this.trackBar_PositionSmoothing.Value = state_position_smoothing_trackbar_value;
             this.trackBar_PressureSmoothing.Value = state_pressure_smoothing_trackbar_value;
 
-            double v;
 
-            update_smoothing_ui(this.trackBar_PositionSmoothing, label_position_smoothingval, out v);
-            this.paintsettings.PositionSmoothingAmount = v;
+            this.paintsettings.PositionSmoothingAmount = update_smoothing_ui(this.trackBar_PositionSmoothing, label_position_smoothingval);
 
-            update_smoothing_ui(this.trackBar_PressureSmoothing, label_pressure_smoothingval, out v);
-            this.paintsettings.PressureSmoothingAmount = v;
-
+            this.paintsettings.PressureSmoothingAmount = update_smoothing_ui(this.trackBar_PressureSmoothing, label_pressure_smoothingval);
 
 
 
@@ -221,9 +217,7 @@ namespace WinTabPainter
             var trackbar = this.trackBar_PositionSmoothing;
             var label = label_position_smoothingval;
 
-            double v;
-            update_smoothing_ui(trackbar, label, out v);
-            this.paintsettings.PositionSmoothingAmount = v;
+            this.paintsettings.PositionSmoothingAmount = update_smoothing_ui(trackbar, label);            
 
         }
 
@@ -232,17 +226,16 @@ namespace WinTabPainter
             var trackbar = this.trackBar_PressureSmoothing;
             var label = label_pressure_smoothingval;
 
-            double v;
-            update_smoothing_ui(trackbar, label, out v );
-            this.paintsettings.PressureSmoothingAmount = v;
+            this.paintsettings.PressureSmoothingAmount = update_smoothing_ui(trackbar, label);
 
         }
 
-        private void update_smoothing_ui(System.Windows.Forms.TrackBar trackbar, Label label, out double new_value)
+        private double update_smoothing_ui(System.Windows.Forms.TrackBar trackbar, Label label)
         {
-            new_value = get_smoothing_from_trackbar(trackbar);
+            double new_value = get_smoothing_from_trackbar(trackbar);
             string display_val = string.Format("{0:0.0###}", new_value);
             label.Text = display_val;
+            return new_value;
         }
 
         private double get_smoothing_from_trackbar(System.Windows.Forms.TrackBar trackbar)
