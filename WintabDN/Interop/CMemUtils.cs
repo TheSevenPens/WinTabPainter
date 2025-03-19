@@ -147,7 +147,7 @@ public class CMemUtils
     /// <param name="numPkts_I">number of packets to marshal</param>
     /// <param name="buf_I">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
-#if DOTNET_4_OR_LATER
+
     public static WintabDN.Structs.WintabPacket[] MarshalDataPackets(UInt32 numPkts_I, IntPtr buf_I)
     {
         if (numPkts_I == 0 || buf_I == IntPtr.Zero)
@@ -161,70 +161,11 @@ public class CMemUtils
 
         for (int pktsIdx = 0; pktsIdx < numPkts_I; pktsIdx++)
         {
-
-#if TRACE_RAW_BYTES
-        // Trace out the raw data bytes for each packet using a hex formatter.
-        int offset = pktsIdx * pktSize;
-
-        Debug.Write("Packet: [" + Convert.ToString(pktsIdx) + "] ");
-        for (int idx = 0; idx < pktSize; idx++)
-        {
-            byte val = Marshal.ReadByte(buf_I + offset + idx);
-            Debug.Write(String.Format( "{0,3:X2}", val));
-        }
-        Debug.WriteLine("");
-#endif //TRACE_RAW_BYTES
-
             packets[pktsIdx] = (WintabDN.Structs.WintabPacket)Marshal.PtrToStructure(IntPtr.Add(buf_I, pktsIdx * pktSize), typeof(WintabDN.Structs.WintabPacket));
         }
-
         return packets;
     }
 
-#else // Compile for .NET 3
-    public static WintabPacket[] MarshalDataPackets(UInt32 numPkts_I, IntPtr buf_I)
-    {
-        if (numPkts_I == 0 || buf_I == IntPtr.Zero)
-        {
-            return null;
-        }
-    
-        WintabPacket[] packets = new WintabPacket[numPkts_I];
-    
-        //
-        // Marshal each WintabPacket in the array separately.
-        // This is "necessary" because none of the other ways I tried to marshal
-        // seemed to work.  It's ugly, but it works.
-        //
-        int pktSize = Marshal.SizeOf(new WintabPacket());
-        Byte[] byteArray = new Byte[numPkts_I * pktSize];
-        Marshal.Copy(buf_I, byteArray, 0, (int)numPkts_I * pktSize);
-    
-        Byte[] byteArray2 = new Byte[pktSize];
-    
-        for (int pktsIdx = 0; pktsIdx < numPkts_I; pktsIdx++)
-        {
-#if TRACE_RAW_BYTES
-            // Trace out the raw data bytes for each packet using a hex formatter.
-            Debug.Write("Packet: [" + Convert.ToString(pktsIdx) + "] ");
-    
-            for (int idx = 0; idx < pktSize; idx++)
-            {
-                byteArray2[idx] = byteArray[(pktsIdx * pktSize) + idx];
-                Debug.Write(String.Format( "{0,3:X2}", byteArray2[idx]));
-            }
-            Debug.WriteLine("");
-#endif //TRACE_RAW_BYTES
-    
-            IntPtr tmp = CMemUtils.AllocUnmanagedBuf(pktSize);
-            Marshal.Copy(byteArray2, 0, tmp, pktSize);
-    
-            packets[pktsIdx] = CMemUtils.MarshalUnmanagedBuf<WintabPacket>(tmp, pktSize);
-        }
-    
-        return packets;
-    }
-#endif //DOTNET_4_OR_LATER
 
     /// <summary>
     /// Marshal unmanaged Extension data packets into managed WintabPacketExt data.
