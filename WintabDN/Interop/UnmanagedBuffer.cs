@@ -25,9 +25,10 @@ namespace WintabDN.Interop;
 
 public class UnmanagedBuffer : IDisposable
 {
-    private IntPtr buffer_pointer;
     private bool disposed;
-    private Type type;
+
+    private IntPtr buffer_pointer;
+    private Type expected_type;
 
     public nint Pointer
     {
@@ -35,7 +36,7 @@ public class UnmanagedBuffer : IDisposable
         private set => buffer_pointer = value;
     }
 
-    public UnmanagedBuffer()
+    protected UnmanagedBuffer()
     {
     }
 
@@ -45,7 +46,7 @@ public class UnmanagedBuffer : IDisposable
         var v = new T();
         ub.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(n);
         ub.disposed = false;
-        ub.type = null;
+        ub.expected_type = null;
         return ub;
     }
 
@@ -55,7 +56,7 @@ public class UnmanagedBuffer : IDisposable
         var v = new T();
         ub.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(v);
         ub.disposed = false;
-        ub.type = typeof(T);
+        ub.expected_type = typeof(T);
         return ub;
     }
     public static UnmanagedBuffer CreateForString()
@@ -63,7 +64,7 @@ public class UnmanagedBuffer : IDisposable
         var ub = new UnmanagedBuffer();
         ub.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
         ub.disposed = false;
-        ub.type = typeof(string);
+        ub.expected_type = typeof(string);
         return ub;
     }
 
@@ -83,7 +84,7 @@ public class UnmanagedBuffer : IDisposable
 
     private void assert_type(Type t)
     {
-        if (this.type != t)
+        if (this.expected_type != t)
         {
             throw new System.ArgumentOutOfRangeException("mismatch in types");
         }
