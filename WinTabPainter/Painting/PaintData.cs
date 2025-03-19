@@ -53,19 +53,19 @@ public struct PaintData
 
         // POSITION
         this.PosScreen = new Geometry.Point(pkt.pkX, pkt.pkY);
-        this.PosScreenEffective = paintsettings.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
+        this.PosScreenEffective = paintsettings.Dynamics.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
 
         this.PosCanvas = to_canv(this.PosScreen);
         this.PosCanvasEffective = to_canv(this.PosScreenEffective);
 
-        if (paintsettings.PosXNoise > 0)
+        if (paintsettings.PostionNoiseX > 0)
         {
-            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PosXNoise), this.PosCanvasEffective.Y);
+            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PostionNoiseX), this.PosCanvasEffective.Y);
         }
 
-        if (paintsettings.PosYNoise > 0)
+        if (paintsettings.PositionNoiseY > 0)
         {
-            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PosYNoise));
+            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PositionNoiseY));
         }
 
 
@@ -92,8 +92,8 @@ public struct PaintData
             this.PressureNormalized = HelperMethods.Quantize(this.PressureNormalized, paintsettings.PressureQuantizeLevels);
         }
         
-        this.PressureSmoothed = paintsettings.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
-        this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
+        this.PressureSmoothed = paintsettings.Dynamics.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
+        this.PressureCurved = paintsettings.Dynamics.PressureCurve.ApplyCurve(this.PressureSmoothed);
         this.PressureEffective = this.PressureCurved;
 
         // BRUSH SIZE

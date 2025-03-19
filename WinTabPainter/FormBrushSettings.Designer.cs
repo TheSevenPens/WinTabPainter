@@ -46,6 +46,7 @@
             checkBoxAntiAliasing = new System.Windows.Forms.CheckBox();
             label6 = new System.Windows.Forms.Label();
             textBoxPositionNoise = new System.Windows.Forms.TextBox();
+            label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Curve).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_Amount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar_PressureSmoothing).BeginInit();
@@ -66,7 +67,7 @@
             // 
             // pictureBox_Curve
             // 
-            pictureBox_Curve.Location = new System.Drawing.Point(26, 36);
+            pictureBox_Curve.Location = new System.Drawing.Point(33, 90);
             pictureBox_Curve.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             pictureBox_Curve.Name = "pictureBox_Curve";
             pictureBox_Curve.Size = new System.Drawing.Size(550, 550);
@@ -77,7 +78,7 @@
             // trackBar_Amount
             // 
             trackBar_Amount.AutoSize = false;
-            trackBar_Amount.Location = new System.Drawing.Point(29, 642);
+            trackBar_Amount.Location = new System.Drawing.Point(36, 696);
             trackBar_Amount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             trackBar_Amount.Maximum = 100;
             trackBar_Amount.Minimum = -100;
@@ -91,7 +92,7 @@
             // labelAmount
             // 
             labelAmount.AutoSize = true;
-            labelAmount.Location = new System.Drawing.Point(488, 637);
+            labelAmount.Location = new System.Drawing.Point(495, 691);
             labelAmount.Name = "labelAmount";
             labelAmount.Size = new System.Drawing.Size(84, 41);
             labelAmount.TabIndex = 3;
@@ -100,7 +101,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(462, 597);
+            label1.Location = new System.Drawing.Point(469, 651);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(97, 41);
             label1.TabIndex = 4;
@@ -109,7 +110,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(34, 597);
+            label2.Location = new System.Drawing.Point(41, 651);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(108, 41);
             label2.TabIndex = 5;
@@ -130,7 +131,7 @@
             // label_pressure_smoothingval
             // 
             label_pressure_smoothingval.AutoSize = true;
-            label_pressure_smoothingval.Location = new System.Drawing.Point(1354, 156);
+            label_pressure_smoothingval.Location = new System.Drawing.Point(493, 792);
             label_pressure_smoothingval.Name = "label_pressure_smoothingval";
             label_pressure_smoothingval.Size = new System.Drawing.Size(84, 41);
             label_pressure_smoothingval.TabIndex = 53;
@@ -139,7 +140,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(617, 156);
+            label4.Location = new System.Drawing.Point(41, 749);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(285, 41);
             label4.TabIndex = 52;
@@ -148,7 +149,7 @@
             // trackBar_PressureSmoothing
             // 
             trackBar_PressureSmoothing.AutoSize = false;
-            trackBar_PressureSmoothing.Location = new System.Drawing.Point(902, 158);
+            trackBar_PressureSmoothing.Location = new System.Drawing.Point(41, 794);
             trackBar_PressureSmoothing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             trackBar_PressureSmoothing.Maximum = 100;
             trackBar_PressureSmoothing.Name = "trackBar_PressureSmoothing";
@@ -161,7 +162,7 @@
             // 
             comboBox_PressureQuant.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             comboBox_PressureQuant.FormattingEnabled = true;
-            comboBox_PressureQuant.Location = new System.Drawing.Point(925, 219);
+            comboBox_PressureQuant.Location = new System.Drawing.Point(39, 904);
             comboBox_PressureQuant.Name = "comboBox_PressureQuant";
             comboBox_PressureQuant.Size = new System.Drawing.Size(302, 49);
             comboBox_PressureQuant.TabIndex = 55;
@@ -170,7 +171,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(616, 219);
+            label5.Location = new System.Drawing.Point(38, 855);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(303, 41);
             label5.TabIndex = 56;
@@ -179,7 +180,7 @@
             // label_position_smoothingval
             // 
             label_position_smoothingval.AutoSize = true;
-            label_position_smoothingval.Location = new System.Drawing.Point(1354, 41);
+            label_position_smoothingval.Location = new System.Drawing.Point(1076, 150);
             label_position_smoothingval.Name = "label_position_smoothingval";
             label_position_smoothingval.Size = new System.Drawing.Size(84, 41);
             label_position_smoothingval.TabIndex = 54;
@@ -188,7 +189,7 @@
             // trackBar_PositionSmoothing
             // 
             trackBar_PositionSmoothing.AutoSize = false;
-            trackBar_PositionSmoothing.Location = new System.Drawing.Point(902, 43);
+            trackBar_PositionSmoothing.Location = new System.Drawing.Point(633, 152);
             trackBar_PositionSmoothing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             trackBar_PositionSmoothing.Maximum = 100;
             trackBar_PositionSmoothing.Name = "trackBar_PositionSmoothing";
@@ -200,16 +201,16 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(617, 41);
+            label3.Location = new System.Drawing.Point(633, 95);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(279, 41);
+            label3.Size = new System.Drawing.Size(276, 41);
             label3.TabIndex = 50;
-            label3.Text = "Position Smoothing";
+            label3.Text = "Position smoothing";
             // 
             // checkBoxAntiAliasing
             // 
             checkBoxAntiAliasing.AutoSize = true;
-            checkBoxAntiAliasing.Location = new System.Drawing.Point(626, 336);
+            checkBoxAntiAliasing.Location = new System.Drawing.Point(633, 429);
             checkBoxAntiAliasing.Name = "checkBoxAntiAliasing";
             checkBoxAntiAliasing.Size = new System.Drawing.Size(224, 45);
             checkBoxAntiAliasing.TabIndex = 57;
@@ -220,7 +221,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(626, 445);
+            label6.Location = new System.Drawing.Point(633, 231);
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(216, 41);
             label6.TabIndex = 58;
@@ -228,16 +229,26 @@
             // 
             // textBoxPositionNoise
             // 
-            textBoxPositionNoise.Location = new System.Drawing.Point(869, 453);
+            textBoxPositionNoise.Location = new System.Drawing.Point(633, 286);
             textBoxPositionNoise.Name = "textBoxPositionNoise";
             textBoxPositionNoise.Size = new System.Drawing.Size(250, 47);
             textBoxPositionNoise.TabIndex = 59;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(33, 34);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(209, 41);
+            label7.TabIndex = 60;
+            label7.Text = "Pressure curve";
             // 
             // FormBrushSettings
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1601, 965);
+            Controls.Add(label7);
             Controls.Add(textBoxPositionNoise);
             Controls.Add(label6);
             Controls.Add(checkBoxAntiAliasing);
@@ -289,5 +300,6 @@
         private System.Windows.Forms.CheckBox checkBoxAntiAliasing;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBoxPositionNoise;
+        private System.Windows.Forms.Label label7;
     }
 }

@@ -24,9 +24,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-//using WintabDN.Structs;
-
-//TODO - generics should be used where possible -
 
 namespace WintabDN;
 

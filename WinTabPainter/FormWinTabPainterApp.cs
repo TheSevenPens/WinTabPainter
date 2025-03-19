@@ -96,8 +96,8 @@ namespace WinTabPainter
             this.UpdateRecStatus();
 
             // Default to no smoothing
-            paint_settings.PositionSmoother.SmoothingAmount = 0.0;
-            paint_settings.PressureSmoother.SmoothingAmount = 0.0;
+            paint_settings.PositionSmoothingAmount = 0.0;
+            paint_settings.PressureSmoothingAmount = 0.0;
 
             this.paint_settings.AntiAliasing = true;
             this.bitmap_doc.AntiAliasing = this.paint_settings.AntiAliasing;
@@ -252,8 +252,8 @@ namespace WinTabPainter
                     // whenever the pen tip touches the tablet
                     // if we don't do this the previous stroke will
                     // have influence on the new stroke
-                    paint_settings.PositionSmoother.Reset();
-                    paint_settings.PressureSmoother.Reset();
+                    paint_settings.Dynamics.PositionSmoother.Reset();
+                    paint_settings.Dynamics.PressureSmoother.Reset();
                 }
             }
 
@@ -324,13 +324,13 @@ namespace WinTabPainter
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(string.Format("Brush Size: {0}", paint_settings.BrushWidth));
-            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.pressure_curve.CurveAmount));
-            sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.PressureSmoother.SmoothingAmount));
-            sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.PositionSmoother.SmoothingAmount));
+            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.PressureCurveAmount));
+            sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.PressureSmoothingAmount));
+            sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.PositionSmoothingAmount));
             sb.AppendLine(string.Format("Pressure Quantization: {0}",
                 (paint_settings.PressureQuantizeLevels < 1) ? "NONE" : paint_settings.PressureQuantizeLevels.ToString()));
             sb.AppendLine(string.Format("Anit-Aliasing: {0}", paint_settings.AntiAliasing));
-            sb.AppendLine(string.Format("{0},{1}", paint_settings.PosXNoise, paint_settings.PosYNoise));
+            sb.AppendLine(string.Format("{0},{1}", paint_settings.PostionNoiseX, paint_settings.PositionNoiseY));
 
             this.textBox_config.Text = sb.ToString();
         }
@@ -474,28 +474,13 @@ namespace WinTabPainter
 
         private void RunFormSettings()
         {
-            var form = new FormBrushSettings(paint_settings.pressure_curve.CurveAmount);
-
-            form.CurveAmount = paint_settings.pressure_curve.CurveAmount;
-            form.PressureSmoothingValue = paint_settings.PressureSmoother.SmoothingAmount;
-            form.PositionSmoothingValue = paint_settings.PositionSmoother.SmoothingAmount;
-            form.PressureQuantizeLevels = paint_settings.PressureQuantizeLevels;
-            form.AntiAliasing = paint_settings.AntiAliasing;
-            form.PositionXNoise = paint_settings.PosXNoise;
-            form.PositionYNoise = paint_settings.PosYNoise;
+            var form = new FormBrushSettings();
+            this.paint_settings.CopyTo(form.paintsettings);
 
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {
-
-                paint_settings.pressure_curve.CurveAmount = form.CurveAmount; //
-                paint_settings.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue; //
-                paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue; //
-                paint_settings.PressureQuantizeLevels = form.PressureQuantizeLevels;
-                paint_settings.AntiAliasing = form.AntiAliasing;
-                paint_settings.PosXNoise = form.PositionXNoise;
-                paint_settings.PosYNoise = form.PositionYNoise;
-
+                form.paintsettings.CopyTo(this.paint_settings);
                 this.update_config();
                 this.bitmap_doc.AntiAliasing = paint_settings.AntiAliasing;
             }
