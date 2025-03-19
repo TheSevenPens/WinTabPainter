@@ -174,38 +174,41 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(System.Runtime.InteropServices.Marshal.SizeOf(typeof(Structs.WintabPacket)));
-        var packet = new Structs.WintabPacket();
-
-        if (pktID_I == 0)
+        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
         {
-            throw new Exception("GetDataPacket - invalid pktID");
+
+            //IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(System.Runtime.InteropServices.Marshal.SizeOf(typeof(Structs.WintabPacket)));
+            var packet = new Structs.WintabPacket();
+
+            if (pktID_I == 0)
+            {
+                throw new Exception("GetDataPacket - invalid pktID");
+            }
+
+            CheckForValidHCTX("GetDataPacket");
+
+            if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf2.BufferPointer))
+            {
+                packet = buf2.MarshallFromBuffer<Structs.WintabPacket>();
+            }
+            else
+            {
+                //
+                // If fails, make sure context is zero.
+                //
+                packet.pkContext = 0;
+
+            }
+
+            /**
+             * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
+             * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
+             * causing the app to crash now or later...
+             * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
+             */
+            //Interop.CMemUtils.FreeUnmanagedBuf(buf);
+            return packet;
         }
-
-        CheckForValidHCTX("GetDataPacket");
-
-        if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf))
-        {
-            packet = (Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(buf, typeof(Structs.WintabPacket));
-        }
-        else
-        {
-            //
-            // If fails, make sure context is zero.
-            //
-            packet.pkContext = 0;
-
-        }
-
-        /**
-         * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
-         * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
-         * causing the app to crash now or later...
-         * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
-         */
-        Interop.CMemUtils.FreeUnmanagedBuf(buf);
-
-        return packet;
     }
 
 

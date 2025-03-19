@@ -71,29 +71,31 @@ public class CWintabExtensions
     {
         UInt32 thisTag = 0;
         UInt32 extIndex = 0xFFFFFFFF;
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(thisTag);
-    
-        for (Int32 loopIdx = 0, size = -1; size != 0; loopIdx++)
+
+        using (var buf = Interop.UnmanagedBuffer.CreateForObject<UInt32>())
         {
-            size = (int)CWintabFuncs.WTInfoA(
-                (uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (UInt32)loopIdx,
-                (uint)Enums.EWTIExtensionIndex.EXT_TAG, buf);
-    
-            if (size > 0)
+
+            for (Int32 loopIdx = 0, size = -1; size != 0; loopIdx++)
             {
-                thisTag = Interop.CMemUtils.MarshalUnmanagedBuf<UInt32>(buf, size);
-    
-                if ((Enums.EWTXExtensionTag)thisTag == tag_I)
+                size = (int)CWintabFuncs.WTInfoA(
+                    (uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (UInt32)loopIdx,
+                    (uint)Enums.EWTIExtensionIndex.EXT_TAG, buf.BufferPointer);
+
+                if (size > 0)
                 {
-                    extIndex = (UInt32)loopIdx;
-                    break;
+                    thisTag = buf.MarshallFromBuffer<UInt32>();
+
+                    if ((Enums.EWTXExtensionTag)thisTag == tag_I)
+                    {
+                        extIndex = (UInt32)loopIdx;
+                        break;
+                    }
                 }
             }
-        }
 
-        Interop.CMemUtils.FreeUnmanagedBuf(buf);
-    
-        return extIndex;
+
+            return extIndex;
+        }
     }
 
 
@@ -120,30 +122,31 @@ public class CWintabExtensions
     {
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionProperty();
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
 
-        extProperty.extBase.version = 0;
-        extProperty.extBase.tabletIndex = tabletIndex_I;
-        extProperty.extBase.controlIndex = controlIndex_I;
-        extProperty.extBase.functionIndex = functionIndex_I;
-        extProperty.extBase.propertyID = propertyID_I;
-        extProperty.extBase.reserved = 0;
-        extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(result_O);
-
-        Marshal.StructureToPtr(extProperty, buf, false);
-
-        bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf);
-
-        if (status)
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<WintabDN.Structs.WTExtensionProperty>())
         {
-            var retProp = (Structs.WTExtensionProperty)Marshal.PtrToStructure(buf, typeof(Structs.WTExtensionProperty));
-            result_O = retProp.data[0];
-            retStatus = true;
+
+            extProperty.extBase.version = 0;
+            extProperty.extBase.tabletIndex = tabletIndex_I;
+            extProperty.extBase.controlIndex = controlIndex_I;
+            extProperty.extBase.functionIndex = functionIndex_I;
+            extProperty.extBase.propertyID = propertyID_I;
+            extProperty.extBase.reserved = 0;
+            extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(result_O);
+
+            buf.MarshallIntoBuffer(extProperty);
+
+            bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf.BufferPointer);
+
+            if (status)
+            {
+                var retProp = buf.MarshallFromBuffer<Structs.WTExtensionProperty>();
+                result_O = retProp.data[0];
+                retStatus = true;
+            }
+
+
         }
-
-
-        Interop.CMemUtils.FreeUnmanagedBuf(buf);
-
         return retStatus;
     }
 

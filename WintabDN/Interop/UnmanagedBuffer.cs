@@ -19,6 +19,7 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Runtime.InteropServices;
 
 namespace WintabDN.Interop;
 
@@ -79,6 +80,17 @@ public class UnmanagedBuffer : IDisposable
 
     }
 
+    public void MarshallIntoBuffer(object structure)
+    {
+        Marshal.StructureToPtr(structure, this.BufferPointer, false);
+    }
+
+    public T MarshallFromBuffer<T>()
+    {
+        var value = (T)Marshal.PtrToStructure(this.BufferPointer, typeof(T));
+        return value;
+
+    }
     public void Dispose()
     {
         if (this.disposed) return;
