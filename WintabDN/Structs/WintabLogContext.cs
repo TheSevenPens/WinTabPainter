@@ -31,7 +31,6 @@ namespace WintabDN.Structs;
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct WintabLogContext
 {
-    // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 40)]    //LCNAMELEN
     public string lcName;
     public uint lcOptions;
@@ -67,6 +66,5 @@ public struct WintabLogContext
     public int lcSysExtY;
     public FIX32 lcSysSensX;
     public FIX32 lcSysSensY;
-    // \endcond IGNORED_BY_DOXYGEN
 }
 

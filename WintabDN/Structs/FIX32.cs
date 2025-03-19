@@ -30,7 +30,6 @@ namespace WintabDN.Structs;
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct FIX32
 {
-    // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.U4)]
     uint value;
 
@@ -45,5 +44,4 @@ public struct FIX32
 
     public override string ToString()
     { return value.ToString(); }
-    // \endcond IGNORED_BY_DOXYGEN
 }

@@ -37,7 +37,6 @@ namespace WintabDN.Structs;
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct HWND
 {
-    // \cond IGNORED_BY_DOXYGEN
     [MarshalAs(UnmanagedType.I4)]
     public nint value;
 
@@ -61,5 +60,5 @@ public struct HWND
 
     public override int GetHashCode()
     { return 0; }
-    // \endcond IGNORED_BY_DOXYGEN
+
 }
