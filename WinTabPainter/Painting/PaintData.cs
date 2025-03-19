@@ -53,7 +53,7 @@ public struct PaintData
 
         // POSITION
         this.PosScreen = new Geometry.Point(pkt.pkX, pkt.pkY);
-        this.PosScreenEffective = paintsettings.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
+        this.PosScreenEffective = paintsettings.Dynamics.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
 
         this.PosCanvas = to_canv(this.PosScreen);
         this.PosCanvasEffective = to_canv(this.PosScreenEffective);
@@ -92,8 +92,8 @@ public struct PaintData
             this.PressureNormalized = HelperMethods.Quantize(this.PressureNormalized, paintsettings.PressureQuantizeLevels);
         }
         
-        this.PressureSmoothed = paintsettings.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
-        this.PressureCurved = paintsettings.pressure_curve.ApplyCurve(this.PressureSmoothed);
+        this.PressureSmoothed = paintsettings.Dynamics.PressureSmoother.GetNextSmoothed(this.PressureNormalized);
+        this.PressureCurved = paintsettings.Dynamics.pressure_curve.ApplyCurve(this.PressureSmoothed);
         this.PressureEffective = this.PressureCurved;
 
         // BRUSH SIZE

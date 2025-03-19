@@ -1,11 +1,31 @@
 ﻿namespace WinTabPainter.Painting;
 
+
+public class PaintSettingsDynamics
+{
+    // dynamics
+    public readonly Numerics.SimpleCurve pressure_curve;
+    public readonly Numerics.EMAPositionSmoother PositionSmoother;
+    public readonly Numerics.EMASmoother PressureSmoother;
+
+    public PaintSettingsDynamics()
+    {
+        this.pressure_curve = new Numerics.SimpleCurve();
+        this.PositionSmoother = new Numerics.EMAPositionSmoother(0);
+        this.PressureSmoother = new Numerics.EMASmoother(0);
+    }
+}
+
+
 public class PaintSettings
 {
     // statics
     public static readonly Numerics.OrderedRange SYS_BRUSHSIZE_RANGE = new Numerics.OrderedRange(1, 100);
     public static readonly Numerics.OrderedRangeD SYS_SMOOTHING_RANGE = new Numerics.OrderedRangeD(0, 1);
     public static readonly Numerics.OrderedRangeD SYS_SMOOTHING_RANGE_LIMITED = new Numerics.OrderedRangeD(0.0, 0.995);
+
+    // dynamics
+    public PaintSettingsDynamics Dynamics;
 
     // Brush Width
     private int brushWidth = 25;
@@ -16,7 +36,6 @@ public class PaintSettings
     }
 
     // pressure settings
-    public Numerics.SimpleCurve pressure_curve = new Numerics.SimpleCurve();
     public int PressureQuantizeLevels = -1;
 
     // Position Noise
@@ -24,8 +43,6 @@ public class PaintSettings
     public int PosYNoise;
 
     // Smoothing 
-    public readonly Numerics.EMAPositionSmoother PositionSmoother;
-    public readonly Numerics.EMASmoother PressureSmoother;
 
 
     // Anti-Aliasing
@@ -33,7 +50,6 @@ public class PaintSettings
 
     public PaintSettings()
     {
-        this.PositionSmoother = new Numerics.EMAPositionSmoother(0);
-        this.PressureSmoother = new Numerics.EMASmoother(0);
+        this.Dynamics = new PaintSettingsDynamics();
     }
 }
