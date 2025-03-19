@@ -19,6 +19,7 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
+using WintabDN.Interop;
 //using System.Runtime.InteropServices;
 
 namespace WintabDN;
@@ -229,17 +230,19 @@ public class CWintabData
         }
 
         // Packet array is used whether we're just looking or buying.
-        int size = (int)(maxPkts_I * System.Runtime.InteropServices.Marshal.SizeOf(new Structs.WintabPacket()));
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
+
+        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObjectArray<Structs.WintabPacket>((int)maxPkts_I))
+        {
+
 
         if (remove_I)
         {
             // Return data packets and remove packets from queue.
-            numPkts_O = CWintabFuncs.WTPacketsGet(m_context.HCtx, maxPkts_I, buf);
+            numPkts_O = CWintabFuncs.WTPacketsGet(m_context.HCtx, maxPkts_I, buf2.Pointer);
 
             if (numPkts_O > 0)
             {
-                packets = Interop.CMemUtils.MarshalDataPackets(numPkts_O, buf);
+                packets = Interop.CMemUtils.MarshalDataPackets(numPkts_O, buf2.Pointer);
             }
 
             //System.Diagnostics.Debug.WriteLine("GetDataPackets: numPkts_O: " + numPkts_O);
@@ -264,7 +267,7 @@ public class CWintabData
                 { throw new Exception("WTQueuePacketsEx reports zero end packet identifier"); }
 
                 // Peek up to the max number of packets specified.
-                UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, maxPkts_I, buf, ref numPkts_O);
+                UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, maxPkts_I, buf2.Pointer, ref numPkts_O);
 
                 System.Diagnostics.Debug.WriteLine("GetDataPackets: WTDataPeek - numFoundPkts: " + numFoundPkts + ", numPkts_O: " + numPkts_O);
 
@@ -273,13 +276,14 @@ public class CWintabData
                     throw new Exception("WTDataPeek reports more packets returned than actually exist in queue.");
                 }
 
-                packets = Interop.CMemUtils.MarshalDataPackets(numPkts_O, buf);
+                packets = Interop.CMemUtils.MarshalDataPackets(numPkts_O, buf2.Pointer);
             }
         }
 
 
 
         return packets;
+        }
     }
 
 

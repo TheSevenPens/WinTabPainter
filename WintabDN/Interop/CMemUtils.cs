@@ -53,98 +53,94 @@ public static class CMemUtils
     /// Marshals specified buf to the specified type.
     /// </summary>
     /// <typeparam name="T">type to which buf_I is marshalled</typeparam>
-    /// <param name="buf_I">unmanaged heap pointer</param>
-    /// <param name="size">expected size of buf_I</param>
+    /// <param name="buf_ptr">unmanaged heap pointer</param>
+    /// <param name="buf_size">expected size of buf_I</param>
     /// <returns>Managed object of specified type.</returns>
-    public static T MarshalBufferToObject<T>(IntPtr buf_I, int size)
+    public static T MarshalBufferToObject<T>(IntPtr buf_ptr, int buf_size)
     {
-        if (buf_I == IntPtr.Zero)
+        if (buf_ptr == IntPtr.Zero)
         {
             throw new Exception("MarshalUnmanagedBuf has NULL buf_I");
         }
         
         // If size doesn't match type size, then return a zeroed struct.
-        if (size != System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)))
+        if (buf_size != System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)))
         {
             int typeSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
-            Byte[] byteArray = new Byte[typeSize];
-            System.Runtime.InteropServices.Marshal.Copy(byteArray, 0, buf_I, typeSize);
+            var bytes = new Byte[typeSize];
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, buf_ptr, typeSize);
         }
 
-        return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(buf_I, typeof(T));
+        return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(buf_ptr, typeof(T));
     }
 
     /// <summary>
     /// Free unmanaged memory pointed to by buf_I.
     /// </summary>
-    /// <param name="buf_I">pointer to unmanaged heap memory</param>
-    public static void FreeUnmanagedBuf(IntPtr buf_I)
+    /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
+    public static void FreeUnmanagedBuf(IntPtr buf_ptr)
     {
-        if (buf_I != IntPtr.Zero)
-        {
-            System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_I);
-            buf_I = IntPtr.Zero;
-        }
+        if (buf_ptr == IntPtr.Zero) { return; }
+
+        System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_ptr);
+        buf_ptr = IntPtr.Zero;
+
     }
 
     /// <summary>
     /// Marshals a string from an unmanaged buffer.
     /// </summary>
-    /// <param name="buf_I">pointer to unmanaged heap memory</param>
-    /// <param name="size_I">size of ASCII string, includes null termination</param>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
+    /// <param name="buf_size">size of ASCII string, includes null termination</param>
     /// <returns></returns>
-    public static string MarshalBufferToString(IntPtr buf_I, int size_I)
+    public static string MarshalBufferToString(IntPtr buf_ptr, int buf_size)
     {
-        string retStr = null;
 
-        if (buf_I == IntPtr.Zero)
+        if (buf_ptr == IntPtr.Zero)
         {
-            throw new Exception("MarshalUnmanagedString has null buffer.");
+            throw new System.ArgumentNullException(nameof(buf_ptr));
         }
 
-        if (size_I <= 0)
+        if (buf_size <= 0)
         {
-            throw new Exception("MarshalUnmanagedString has zero size.");
+            throw new System.ArgumentOutOfRangeException(nameof(buf_size));
         }
 
-
-        Byte[] byteArray = new Byte[size_I];
-
-        System.Runtime.InteropServices.Marshal.Copy(buf_I, byteArray, 0, size_I);
-
-        System.Text.Encoding encoding = System.Text.Encoding.UTF8;
-        retStr = encoding.GetString(byteArray);
-        return retStr;
+        var bytes = new Byte[buf_size];
+        System.Runtime.InteropServices.Marshal.Copy(buf_ptr, bytes, 0, buf_size);
+        var encoding = System.Text.Encoding.UTF8;
+        string value = encoding.GetString(bytes);
+        return value;
     }
 
     /// <summary>
     /// Marshal unmanaged data packets into managed WintabPacket data.
     /// </summary>
-    /// <param name="numPkts_I">number of packets to marshal</param>
-    /// <param name="buf_I">pointer to unmanaged heap memory containing data packets</param>
+    /// <param name="num_pkts">number of packets to marshal</param>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
 
     /// <summary>
     /// Marshal unmanaged data packets into managed WintabPacket data.
     /// </summary>
-    /// <param name="numPkts_I">number of packets to marshal</param>
-    /// <param name="buf_I">pointer to unmanaged heap memory containing data packets</param>
+    /// <param name="num_pkts">number of packets to marshal</param>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
 
-    public static WintabDN.Structs.WintabPacket[] MarshalDataPackets(UInt32 numPkts_I, IntPtr buf_I)
+    public static WintabDN.Structs.WintabPacket[] MarshalDataPackets(UInt32 num_pkts, IntPtr buf_ptr)
     {
-        if (numPkts_I == 0 || buf_I == IntPtr.Zero)
+        if (num_pkts == 0 || buf_ptr == IntPtr.Zero)
         {
             return null;
         }
 
-        var packets = new WintabDN.Structs.WintabPacket[numPkts_I];
+        var packets = new WintabDN.Structs.WintabPacket[num_pkts];
 
-        int pktSize = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacket());
+        int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacket());
 
-        for (int pktsIdx = 0; pktsIdx < numPkts_I; pktsIdx++)
+        for (int i = 0; i < num_pkts; i++)
         {
-            packets[pktsIdx] = (WintabDN.Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(IntPtr.Add(buf_I, pktsIdx * pktSize), typeof(WintabDN.Structs.WintabPacket));
+            packets[i] = (WintabDN.Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(IntPtr.Add(buf_ptr, i * pkt_size), typeof(WintabDN.Structs.WintabPacket));
         }
         return packets;
     }
@@ -153,14 +149,14 @@ public static class CMemUtils
     /// <summary>
     /// Marshal unmanaged Extension data packets into managed WintabPacketExt data.
     /// </summary>
-    /// <param name="numPkts_I">number of packets to marshal</param>
-    /// <param name="buf_I">pointer to unmanaged heap memory containing data packets</param>
+    /// <param name="num_pkts">number of packets to marshal</param>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
-    public static WintabDN.Structs.WintabPacketExt[] MarshalDataExtPackets(UInt32 numPkts_I, IntPtr buf_I)
+    public static WintabDN.Structs.WintabPacketExt[] MarshalDataExtPackets(UInt32 num_pkts, IntPtr buf_ptr)
     {
-        var packets = new WintabDN.Structs.WintabPacketExt[numPkts_I];
+        var packets = new WintabDN.Structs.WintabPacketExt[num_pkts];
 
-        if (numPkts_I == 0 || buf_I == IntPtr.Zero)
+        if (num_pkts == 0 || buf_ptr == IntPtr.Zero)
         {
             return null;
         }
@@ -168,24 +164,23 @@ public static class CMemUtils
         // Marshal each WintabPacketExt in the array separately.
         // This is "necessary" because none of the other ways I tried to marshal
         // seemed to work.  It's ugly, but it works.
-        int pktSize = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacketExt());
-        Byte[] byteArray = new Byte[numPkts_I * pktSize];
-        System.Runtime.InteropServices.Marshal.Copy(buf_I, byteArray, 0, (int)numPkts_I * pktSize);
+        int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacketExt());
+        var bytes = new Byte[num_pkts * pkt_size];
+        System.Runtime.InteropServices.Marshal.Copy(buf_ptr, bytes, 0, (int)num_pkts * pkt_size);
 
-        Byte[] byteArray2 = new Byte[pktSize];
+        var temp_bytes = new Byte[pkt_size];
 
-        for (int pktsIdx = 0; pktsIdx < numPkts_I; pktsIdx++)
+        for (int pkt_i = 0; pkt_i < num_pkts; pkt_i++)
         {
-            for (int idx = 0; idx < pktSize; idx++)
+            for (int i = 0; i < pkt_size; i++)
             {
-                byteArray2[idx] = byteArray[(pktsIdx * pktSize) + idx];
+                temp_bytes[i] = bytes[(pkt_i * pkt_size) + i];
             }
-
 
             using (var tmpbuf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<WintabDN.Structs.WintabPacketExt>())
             {
-                System.Runtime.InteropServices.Marshal.Copy(byteArray2, 0, tmpbuf.Pointer, pktSize);
-                packets[pktsIdx] = tmpbuf.MarshallFromBuffer<WintabDN.Structs.WintabPacketExt>();
+                System.Runtime.InteropServices.Marshal.Copy(temp_bytes, 0, tmpbuf.Pointer, pkt_size);
+                packets[pkt_i] = tmpbuf.MarshallFromBuffer<WintabDN.Structs.WintabPacketExt>();
             }
         }
 

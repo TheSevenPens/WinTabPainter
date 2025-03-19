@@ -40,9 +40,15 @@ public class UnmanagedBuffer : IDisposable
     {
     }
 
-    public static UnmanagedBuffer CreateForSize<T>(int bufsize) where T : new()
+    public static UnmanagedBuffer CreateForObjectArray<T>(int numitems) where T : new()
     {
         var buf = new UnmanagedBuffer();
+
+        var temp_value = new T();
+        var item_size = System.Runtime.InteropServices.Marshal.SizeOf(temp_value);
+        int bufsize = item_size * numitems;
+
+
         buf.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(bufsize);
         buf.disposed = false;
         buf.expected_type = null;
