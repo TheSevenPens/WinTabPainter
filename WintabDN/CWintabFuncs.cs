@@ -193,7 +193,7 @@ public class CWintabFuncs
     {
         using (var ub = Interop.UnmanagedBuffer.CreateForString())
         {
-            int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+            int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.Pointer);
             string val = ub.GetValueString(size);
             return val;
         }
@@ -203,7 +203,7 @@ public class CWintabFuncs
     {
         using (var ub = Interop.UnmanagedBuffer.CreateForObject<T>())
         {
-            int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
+            int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.Pointer);
             T val = ub.GetValueObject<T>(size);
             return val;
         }

@@ -79,7 +79,7 @@ public class CWintabExtensions
             {
                 size = (int)CWintabFuncs.WTInfoA(
                     (uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (UInt32)loopIdx,
-                    (uint)Enums.EWTIExtensionIndex.EXT_TAG, buf.BufferPointer);
+                    (uint)Enums.EWTIExtensionIndex.EXT_TAG, buf.Pointer);
 
                 if (size > 0)
                 {
@@ -136,7 +136,7 @@ public class CWintabExtensions
 
             buf.MarshallIntoBuffer(extProperty);
 
-            bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf.BufferPointer);
+            bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
             if (status)
             {

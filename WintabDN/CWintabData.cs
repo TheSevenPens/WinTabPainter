@@ -186,7 +186,7 @@ public class CWintabData
 
             CheckForValidHCTX("GetDataPacket");
 
-            if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.BufferPointer))
+            if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer))
             {
                 packet = buf.MarshallFromBuffer<Structs.WintabPacket>();
             }

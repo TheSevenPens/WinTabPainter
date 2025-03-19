@@ -28,7 +28,7 @@ public class UnmanagedBuffer : IDisposable
     private bool disposed;
     private Type type;
 
-    public nint BufferPointer
+    public nint Pointer
     {
         get => buffer_pointer;
         private set => buffer_pointer = value;
@@ -42,7 +42,7 @@ public class UnmanagedBuffer : IDisposable
     {
         var ub = new UnmanagedBuffer();
         var v = new T();
-        ub.BufferPointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(v);
+        ub.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(v);
         ub.disposed = false;
         ub.type = typeof(T);
         return ub;
@@ -50,7 +50,7 @@ public class UnmanagedBuffer : IDisposable
     public static UnmanagedBuffer CreateForString()
     {
         var ub = new UnmanagedBuffer();
-        ub.BufferPointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+        ub.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
         ub.disposed = false;
         ub.type = typeof(string);
         return ub;
@@ -59,14 +59,14 @@ public class UnmanagedBuffer : IDisposable
     public T GetValueObject<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
-        var value = WintabDN.Interop.CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
+        var value = WintabDN.Interop.CMemUtils.MarshalUnmanagedBuf<T>(Pointer, size);
         return value;
     }
     public string GetValueString(int size)
     {
         this.assert_type(typeof(string));
         // Strip off final null character before marshalling.
-        var s = WintabDN.Interop.CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
+        var s = WintabDN.Interop.CMemUtils.MarshalUnmanagedString(this.Pointer, size - 1);
         return s;
     }
 
@@ -82,20 +82,20 @@ public class UnmanagedBuffer : IDisposable
     public void MarshallIntoBuffer(object structure)
     {
         this.assert_type(structure.GetType());
-        System.Runtime.InteropServices.Marshal.StructureToPtr(structure, this.BufferPointer, false);
+        System.Runtime.InteropServices.Marshal.StructureToPtr(structure, this.Pointer, false);
     }
 
     public T MarshallFromBuffer<T>()
     {
         this.assert_type(typeof(T));
-        var value = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(this.BufferPointer, typeof(T));
+        var value = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(this.Pointer, typeof(T));
         return value;
 
     }
     public void Dispose()
     {
         if (this.disposed) return;
-        if (this.BufferPointer == IntPtr.Zero) return;
-        WintabDN.Interop.CMemUtils.FreeUnmanagedBuf(this.BufferPointer);
+        if (this.Pointer == IntPtr.Zero) return;
+        WintabDN.Interop.CMemUtils.FreeUnmanagedBuf(this.Pointer);
     }
 }
