@@ -67,7 +67,7 @@ public class UnmanagedBuffer : IDisposable
     public static UnmanagedBuffer CreateForString()
     {
         var buf = new UnmanagedBuffer();
-        buf.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+        buf.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
         buf.disposed = false;
         buf.expected_type = typeof(string);
         return buf;
@@ -76,14 +76,14 @@ public class UnmanagedBuffer : IDisposable
     public T GetObjectFromBuffer<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
-        var value = WintabDN.Interop.CMemUtils.MarshalBufferToObject<T>(Pointer, size);
+        var value = UnmanagedBuffer.MarshalBufferToObject<T>(Pointer, size);
         return value;
     }
     public string GetStringFromBuffer(int size)
     {
         this.assert_type(typeof(string));
         // Strip off final null character before marshalling.
-        var s = WintabDN.Interop.CMemUtils.MarshalBufferToString(this.Pointer, size - 1);
+        var s = UnmanagedBuffer.MarshalBufferToString(this.Pointer, size - 1);
         return s;
     }
 
@@ -188,9 +188,15 @@ public class UnmanagedBuffer : IDisposable
 
     public void Dispose()
     {
-        if (this.disposed) return;
-        if (this.Pointer == IntPtr.Zero) return;
-        WintabDN.Interop.CMemUtils.FreeUnmanagedBuf(this.Pointer);
+        if (this.disposed)
+        {
+            return;
+        }
+        if (this.Pointer == IntPtr.Zero)
+        {
+            return;
+        }
+        UnmanagedBuffer.FreeUnmanagedBuf(this.Pointer);
     }
 
 
@@ -216,4 +222,101 @@ public class UnmanagedBuffer : IDisposable
         buf = Marshal.AllocHGlobal(size_I);
         return buf;
     }
+
+
+
+    /// <summary>
+    /// Allocates a pointer to unmanaged heap memory of given size.
+    /// </summary>
+    /// <param name="size_I">number of bytes to allocate</param>
+    /// <returns>Unmanaged buffer pointer.</returns>
+    private static IntPtr AllocUnmanagedBuf(int size_I)
+    {
+        IntPtr buf = IntPtr.Zero;
+
+        buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(size_I);
+
+
+        return buf;
+    }
+
+    /// <summary>
+    /// Marshals specified buf to the specified type.
+    /// </summary>
+    /// <typeparam name="T">type to which buf_I is marshalled</typeparam>
+    /// <param name="buf_ptr">unmanaged heap pointer</param>
+    /// <param name="buf_size">expected size of buf_I</param>
+    /// <returns>Managed object of specified type.</returns>
+    private static T MarshalBufferToObject<T>(IntPtr buf_ptr, int buf_size)
+    {
+        if (buf_ptr == IntPtr.Zero)
+        {
+            throw new Exception("MarshalUnmanagedBuf has NULL buf_I");
+        }
+
+        // If size doesn't match type size, then return a zeroed struct.
+        if (buf_size != System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)))
+        {
+            int typeSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
+            var bytes = new Byte[typeSize];
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, buf_ptr, typeSize);
+        }
+
+        return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(buf_ptr, typeof(T));
+    }
+
+    /// <summary>
+    /// Free unmanaged memory pointed to by buf_I.
+    /// </summary>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
+    private static void FreeUnmanagedBuf(IntPtr buf_ptr)
+    {
+        if (buf_ptr == IntPtr.Zero) { return; }
+
+        System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_ptr);
+        buf_ptr = IntPtr.Zero;
+
+    }
+
+    /// <summary>
+    /// Marshals a string from an unmanaged buffer.
+    /// </summary>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
+    /// <param name="buf_size">size of ASCII string, includes null termination</param>
+    /// <returns></returns>
+    private static string MarshalBufferToString(IntPtr buf_ptr, int buf_size)
+    {
+
+        if (buf_ptr == IntPtr.Zero)
+        {
+            throw new System.ArgumentNullException(nameof(buf_ptr));
+        }
+
+        if (buf_size <= 0)
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(buf_size));
+        }
+
+        var bytes = new Byte[buf_size];
+        System.Runtime.InteropServices.Marshal.Copy(buf_ptr, bytes, 0, buf_size);
+        var encoding = System.Text.Encoding.UTF8;
+        string value = encoding.GetString(bytes);
+        return value;
+    }
+
+    /// <summary>
+    /// Marshal unmanaged data packets into managed WintabPacket data.
+    /// </summary>
+    /// <param name="num_pkts">number of packets to marshal</param>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
+    /// <returns></returns>
+
+    /// <summary>
+    /// Marshal unmanaged data packets into managed WintabPacket data.
+    /// </summary>
+    /// <param name="num_pkts">number of packets to marshal</param>
+    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
+    /// <returns></returns>
+
+
 }
