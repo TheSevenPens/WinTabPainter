@@ -330,6 +330,7 @@ namespace WinTabPainter
             sb.AppendLine(string.Format("Pressure Quantization: {0}",
                 (paint_settings.PressureQuantizeLevels < 1) ? "NONE" : paint_settings.PressureQuantizeLevels.ToString()));
             sb.AppendLine(string.Format("Anit-Aliasing: {0}", paint_settings.AntiAliasing));
+            sb.AppendLine(string.Format("{0},{1}", paint_settings.PosXNoise, paint_settings.PosYNoise));
 
             this.textBox_config.Text = sb.ToString();
         }
@@ -480,6 +481,8 @@ namespace WinTabPainter
             form.PositionSmoothingValue = paint_settings.PositionSmoother.SmoothingAmount;
             form.PressureQuantizeLevels = paint_settings.PressureQuantizeLevels;
             form.AntiAliasing = paint_settings.AntiAliasing;
+            form.PositionXNoise = paint_settings.PosXNoise;
+            form.PositionYNoise = paint_settings.PosYNoise;
 
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
@@ -490,6 +493,8 @@ namespace WinTabPainter
                 paint_settings.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue; //
                 paint_settings.PressureQuantizeLevels = form.PressureQuantizeLevels;
                 paint_settings.AntiAliasing = form.AntiAliasing;
+                paint_settings.PosXNoise = form.PositionXNoise;
+                paint_settings.PosYNoise = form.PositionYNoise;
 
                 this.update_config();
                 this.bitmap_doc.AntiAliasing = paint_settings.AntiAliasing;

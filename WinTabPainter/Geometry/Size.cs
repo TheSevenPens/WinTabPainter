@@ -3,16 +3,8 @@ using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry;
 
-public readonly struct Size
+public readonly record struct Size( int Width, int Height )
 {
-    public readonly int Width;
-    public readonly int Height;
-
-    public Size(int w, int h)
-    {
-        this.Width = w;
-        this.Height = h;
-    }
 
     public SizeD Divide(double scale) => new SizeD(this.Width / scale, this.Height / scale);
 
@@ -25,7 +17,4 @@ public readonly struct Size
         return s;
     }
 
-    public static bool operator ==(Size lhs, Size rhs) => lhs.Equals(rhs);
-
-    public static bool operator !=(Size lhs, Size rhs) => !(lhs == rhs);
 }

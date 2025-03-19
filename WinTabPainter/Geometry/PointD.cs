@@ -3,18 +3,11 @@ using SD = System.Drawing;
 
 namespace WinTabPainter.Geometry;
 
-public readonly struct PointD
+public readonly record struct PointD(double X, double Y)
 {
-    public readonly double X;
-    public readonly double Y;
 
     public static PointD Empty => new PointD(0, 0);
 
-    public PointD(double x, double y)
-    {
-        this.X = x;
-        this.Y = y;
-    }
     public PointD Add(double dx, double dy) => new PointD(this.X + dx, this.Y + dy);
 
     public PointD Subtract(Point p) => new PointD(this.X + p.X, this.Y + p.Y);
@@ -48,9 +41,6 @@ public readonly struct PointD
 
     public string ToStringXY() => string.Format("({0}x{1})", this.X, this.Y);
     public static implicit operator SD.PointF(PointD p) => p.ToSDPointF();
-    public static bool operator ==(PointD lhs, PointD rhs) => lhs.Equals(rhs);
-
-    public static bool operator !=(PointD lhs, PointD rhs) => !(lhs == rhs);
 
     public double DistanceTo(PointD p)
     {

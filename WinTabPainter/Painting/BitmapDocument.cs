@@ -30,7 +30,7 @@ public class BitmapDocument : System.IDisposable
     public int Width => this._width;
     public int Height => this._height;
 
-    Painting.ColorARGB DefaultPageColor = new Painting.ColorARGB(255,255,255,255);
+    Painting.ColorARGB DefaultPageColor = new Painting.ColorARGB(0,255,255,255);
 
     public bool AntiAliasing
     {
@@ -77,7 +77,11 @@ public class BitmapDocument : System.IDisposable
     {
         using (var b = new SD.SolidBrush(this.DefaultPageColor))
         {
+            var old_composting_mode = this.background_layer.Graphics.CompositingMode;
+            this.background_layer.Graphics.CompositingMode = SD.Drawing2D.CompositingMode.SourceCopy;
             this.background_layer.Graphics.FillRectangle(b, 0, 0, this.background_layer.Width, this.background_layer.Height);
+            this.background_layer.Graphics.CompositingMode = old_composting_mode;
+
         }
     }
 

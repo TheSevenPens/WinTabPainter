@@ -460,6 +460,7 @@
             // 
             // pictureBoxPressureGuage
             // 
+            pictureBoxPressureGuage.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             pictureBoxPressureGuage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             pictureBoxPressureGuage.Location = new System.Drawing.Point(623, 1028);
             pictureBoxPressureGuage.Name = "pictureBoxPressureGuage";
