@@ -19,6 +19,7 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Runtime.InteropServices;
 
 namespace WintabDN.Interop;
 
@@ -42,7 +43,7 @@ public class UnmanagedBuffer : IDisposable
     {
         var ub = new UnmanagedBuffer();
         var v = new T();
-        ub.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(v);
+        ub.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(v);
         ub.disposed = false;
         ub.type = typeof(T);
         return ub;
@@ -97,5 +98,26 @@ public class UnmanagedBuffer : IDisposable
         if (this.disposed) return;
         if (this.Pointer == IntPtr.Zero) return;
         WintabDN.Interop.CMemUtils.FreeUnmanagedBuf(this.Pointer);
+    }
+
+
+    ///internals
+    ///
+    /// <summary>
+    /// Allocates a pointer to unmanaged heap memory of sizeof(val_I).
+    /// </summary>
+    /// <param name="val_I">managed object that determines #bytes of unmanaged buf</param>
+    /// <returns>Unmanaged buffer pointer.</returns>
+    private static IntPtr AllocUnmanagedBuf(Object val_I)
+    {
+        IntPtr buf = IntPtr.Zero;
+
+        int numBytes = Marshal.SizeOf(val_I);
+
+        // First allocate a buffer of the correct size.
+        buf = Marshal.AllocHGlobal(numBytes);
+
+
+        return buf;
     }
 }

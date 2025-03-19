@@ -33,23 +33,7 @@ namespace WintabDN.Interop;
 /// </summary>
 public class CMemUtils
 {
-    /// <summary>
-    /// Allocates a pointer to unmanaged heap memory of sizeof(val_I).
-    /// </summary>
-    /// <param name="val_I">managed object that determines #bytes of unmanaged buf</param>
-    /// <returns>Unmanaged buffer pointer.</returns>
-    public static IntPtr AllocUnmanagedBuf(Object val_I)
-    {
-        IntPtr buf = IntPtr.Zero;
 
-        int numBytes = Marshal.SizeOf(val_I);
-
-        // First allocate a buffer of the correct size.
-        buf = Marshal.AllocHGlobal(numBytes);
-
-
-        return buf;
-    }
 
     /// <summary>
     /// Allocates a pointer to unmanaged heap memory of given size.
