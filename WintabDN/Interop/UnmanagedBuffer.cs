@@ -24,61 +24,64 @@ namespace WintabDN.Interop;
 
 public class UnmanagedBuffer : IDisposable
 {
-    private IntPtr bufferPointer;
-    private bool _disposed;
-    private Type _type;
+    private IntPtr buffer_pointer;
+    private bool disposed;
+    private Type type;
 
     public nint BufferPointer
     {
-        get => bufferPointer;
-        private set => bufferPointer = value;
+        get => buffer_pointer;
+        private set => buffer_pointer = value;
     }
 
     public UnmanagedBuffer()
     {
     }
 
-    public static UnmanagedBuffer ForObjectType<T>() where T : new()
+    public static UnmanagedBuffer CreateForObject<T>() where T : new()
     {
         var ub = new UnmanagedBuffer();
         var v = new T();
         ub.BufferPointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(v);
-        ub._disposed = false;
-        ub._type = typeof(T);
+        ub.disposed = false;
+        ub.type = typeof(T);
         return ub;
     }
-    public static UnmanagedBuffer ForStringType()
+    public static UnmanagedBuffer CreateForString()
     {
         var ub = new UnmanagedBuffer();
         ub.BufferPointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
-        ub._disposed = false;
-        ub._type = typeof(string);
+        ub.disposed = false;
+        ub.type = typeof(string);
         return ub;
     }
 
     public T GetValueObject<T>(int size) where T : new()
     {
-        if (_type != typeof(T))
-        {
-            throw new System.ArgumentOutOfRangeException("mismatch in types");
-        }
-        var _value = WintabDN.Interop.CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
-        return _value;
+        this.assert_type(typeof(T));
+        var value = WintabDN.Interop.CMemUtils.MarshalUnmanagedBuf<T>(BufferPointer, size);
+        return value;
     }
     public string GetValueString(int size)
     {
-        if (_type != typeof(string))
-        {
-            throw new System.ArgumentOutOfRangeException("mismatch in types");
-        }
+        this.assert_type(typeof(string));
         // Strip off final null character before marshalling.
         var s = WintabDN.Interop.CMemUtils.MarshalUnmanagedString(this.BufferPointer, size - 1);
         return s;
     }
 
+    private void assert_type(Type t)
+    {
+        if (this.type != t)
+        {
+            throw new System.ArgumentOutOfRangeException("mismatch in types");
+        }
+
+    }
+
     public void Dispose()
     {
-        if (this._disposed) return;
+        if (this.disposed) return;
         if (this.BufferPointer == IntPtr.Zero) return;
         WintabDN.Interop.CMemUtils.FreeUnmanagedBuf(this.BufferPointer);
     }

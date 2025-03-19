@@ -191,7 +191,7 @@ public class CWintabFuncs
 
     public static string WTInfoAString(uint cat, uint index)
     {
-        using (var ub = WintabDN.Interop.UnmanagedBuffer.ForStringType())
+        using (var ub = Interop.UnmanagedBuffer.CreateForString())
         {
             int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
             string val = ub.GetValueString(size);
@@ -201,7 +201,7 @@ public class CWintabFuncs
 
     public static T WTInfoAObject<T>(uint cat, uint index) where T : new()
     {
-        using (var ub = WintabDN.Interop.UnmanagedBuffer.ForObjectType<T>())
+        using (var ub = Interop.UnmanagedBuffer.CreateForObject<T>())
         {
             int size = (int)CWintabFuncs.WTInfoA(cat, index, ub.BufferPointer);
             T val = ub.GetValueObject<T>(size);
