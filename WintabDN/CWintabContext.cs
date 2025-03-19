@@ -19,10 +19,8 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-//using WintabDN.Structs;
 
 namespace WintabDN;
-
 
 /// <summary>
 /// Class to support access to Wintab context management.

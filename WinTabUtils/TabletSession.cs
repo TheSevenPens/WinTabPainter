@@ -45,6 +45,7 @@ public class TabletSession
         this.TabletInfo.Initialize();
 
         // HANDLER
+
         if (this.PacketHandler != null)
         {
             this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
@@ -78,10 +79,7 @@ public class TabletSession
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
             if (button_info.Change != PenButtonPressChangeType.NoChange)
             {
-                if (this.ButtonChangedHandler != null)
-                {
-                    this.ButtonChangedHandler(wintab_pkt, button_info);
-                }
+                this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
 
             }
 

@@ -19,8 +19,7 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using System.Runtime.InteropServices;
-//using WintabDN.Structs;
+//using System.Runtime.InteropServices;
 
 namespace WintabDN;
 
@@ -117,7 +116,7 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        int size = (int)(Marshal.SizeOf(new Structs.WintabPacketExt()));
+        int size = (int)(System.Runtime.InteropServices.Marshal.SizeOf(new Structs.WintabPacketExt()));
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
         Structs.WintabPacketExt[] packets = null;
 
@@ -175,7 +174,7 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(Marshal.SizeOf(typeof(Structs.WintabPacket)));
+        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(System.Runtime.InteropServices.Marshal.SizeOf(typeof(Structs.WintabPacket)));
         var packet = new Structs.WintabPacket();
 
         if (pktID_I == 0)
@@ -187,7 +186,7 @@ public class CWintabData
 
         if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf))
         {
-            packet = (Structs.WintabPacket)Marshal.PtrToStructure(buf, typeof(Structs.WintabPacket));
+            packet = (Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(buf, typeof(Structs.WintabPacket));
         }
         else
         {
@@ -243,7 +242,7 @@ public class CWintabData
         }
 
         // Packet array is used whether we're just looking or buying.
-        int size = (int)(maxPkts_I * Marshal.SizeOf(new Structs.WintabPacket()));
+        int size = (int)(maxPkts_I * System.Runtime.InteropServices.Marshal.SizeOf(new Structs.WintabPacket()));
         IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
 
         if (remove_I)
