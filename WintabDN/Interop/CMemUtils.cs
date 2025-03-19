@@ -24,7 +24,6 @@
 #define DOTNET_4_OR_LATER 
 
 using System;
-using System.Runtime.InteropServices;
 
 namespace WintabDN.Interop;
 
@@ -44,7 +43,7 @@ public static class CMemUtils
     {
         IntPtr buf = IntPtr.Zero;
 
-        buf = Marshal.AllocHGlobal(size_I);
+        buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(size_I);
 
 
         return buf;
@@ -65,14 +64,14 @@ public static class CMemUtils
         }
         
         // If size doesn't match type size, then return a zeroed struct.
-        if (size != Marshal.SizeOf(typeof(T)))
+        if (size != System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)))
         {
-            int typeSize = Marshal.SizeOf(typeof(T));
+            int typeSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
             Byte[] byteArray = new Byte[typeSize];
-            Marshal.Copy(byteArray, 0, buf_I, typeSize);
+            System.Runtime.InteropServices.Marshal.Copy(byteArray, 0, buf_I, typeSize);
         }
 
-        return (T)Marshal.PtrToStructure(buf_I, typeof(T));
+        return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(buf_I, typeof(T));
     }
 
     /// <summary>
@@ -83,7 +82,7 @@ public static class CMemUtils
     {
         if (buf_I != IntPtr.Zero)
         {
-            Marshal.FreeHGlobal(buf_I);
+            System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_I);
             buf_I = IntPtr.Zero;
         }
     }
@@ -111,7 +110,7 @@ public static class CMemUtils
 
         Byte[] byteArray = new Byte[size_I];
 
-        Marshal.Copy(buf_I, byteArray, 0, size_I);
+        System.Runtime.InteropServices.Marshal.Copy(buf_I, byteArray, 0, size_I);
 
         System.Text.Encoding encoding = System.Text.Encoding.UTF8;
         retStr = encoding.GetString(byteArray);
@@ -141,11 +140,11 @@ public static class CMemUtils
 
         var packets = new WintabDN.Structs.WintabPacket[numPkts_I];
 
-        int pktSize = Marshal.SizeOf(new WintabDN.Structs.WintabPacket());
+        int pktSize = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacket());
 
         for (int pktsIdx = 0; pktsIdx < numPkts_I; pktsIdx++)
         {
-            packets[pktsIdx] = (WintabDN.Structs.WintabPacket)Marshal.PtrToStructure(IntPtr.Add(buf_I, pktsIdx * pktSize), typeof(WintabDN.Structs.WintabPacket));
+            packets[pktsIdx] = (WintabDN.Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(IntPtr.Add(buf_I, pktsIdx * pktSize), typeof(WintabDN.Structs.WintabPacket));
         }
         return packets;
     }
@@ -169,9 +168,9 @@ public static class CMemUtils
         // Marshal each WintabPacketExt in the array separately.
         // This is "necessary" because none of the other ways I tried to marshal
         // seemed to work.  It's ugly, but it works.
-        int pktSize = Marshal.SizeOf(new WintabDN.Structs.WintabPacketExt());
+        int pktSize = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacketExt());
         Byte[] byteArray = new Byte[numPkts_I * pktSize];
-        Marshal.Copy(buf_I, byteArray, 0, (int)numPkts_I * pktSize);
+        System.Runtime.InteropServices.Marshal.Copy(buf_I, byteArray, 0, (int)numPkts_I * pktSize);
 
         Byte[] byteArray2 = new Byte[pktSize];
 
@@ -185,7 +184,7 @@ public static class CMemUtils
 
             using (var tmpbuf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<WintabDN.Structs.WintabPacketExt>())
             {
-                Marshal.Copy(byteArray2, 0, tmpbuf.Pointer, pktSize);
+                System.Runtime.InteropServices.Marshal.Copy(byteArray2, 0, tmpbuf.Pointer, pktSize);
                 packets[pktsIdx] = tmpbuf.MarshallFromBuffer<WintabDN.Structs.WintabPacketExt>();
             }
         }
