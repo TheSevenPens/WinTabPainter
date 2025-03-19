@@ -116,40 +116,33 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        int size = (int)(System.Runtime.InteropServices.Marshal.SizeOf(new Structs.WintabPacketExt()));
-        IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(size);
-        Structs.WintabPacketExt[] packets = null;
-
-        bool status = false;
-
-        if (pktID_I == 0)
+        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
         {
-            throw new Exception("GetDataPacket - invalid pktID");
+
+            Structs.WintabPacketExt[] packets = null;
+
+            bool status = false;
+
+            if (pktID_I == 0)
+            {
+                throw new Exception("GetDataPacket - invalid pktID");
+            }
+
+            CheckForValidHCTX("GetDataPacket");
+            status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf2.Pointer);
+
+            if (status)
+            {
+                packets = Interop.CMemUtils.MarshalDataExtPackets(1, buf2.Pointer);
+            }
+            else
+            {
+                // If fails, make sure context is zero.
+                packets[0].pkBase.nContext = 0;
+            }
+
+            return packets[0];
         }
-
-        CheckForValidHCTX("GetDataPacket");
-        status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf);
-
-        if (status)
-        {
-            packets = Interop.CMemUtils.MarshalDataExtPackets(1, buf);
-        }
-        else
-        {
-            // If fails, make sure context is zero.
-            packets[0].pkBase.nContext = 0;
-        }
-
-
-        /**
-         * PERFORMANCE FIX: without this line, the memory consume of .NET apps increase
-         * exponentially when the PEN is used for long time (or worse when the pen is leaved alone on the tablet screen)
-         * causing the app to crash now or later...
-         * Author: Alessandro del Gobbo   (alessandro@delgobbo.com)
-         */
-        Interop.CMemUtils.FreeUnmanagedBuf(buf);
-
-        return packets[0];
     }
 
 
