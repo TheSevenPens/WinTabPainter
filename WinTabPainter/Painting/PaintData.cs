@@ -58,14 +58,14 @@ public struct PaintData
         this.PosCanvas = to_canv(this.PosScreen);
         this.PosCanvasEffective = to_canv(this.PosScreenEffective);
 
-        if (paintsettings.PosXNoise > 0)
+        if (paintsettings.PostionNoiseX > 0)
         {
-            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PosXNoise), this.PosCanvasEffective.Y);
+            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PostionNoiseX), this.PosCanvasEffective.Y);
         }
 
-        if (paintsettings.PosYNoise > 0)
+        if (paintsettings.PositionNoiseY > 0)
         {
-            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PosYNoise));
+            this.PosCanvasEffective = new Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PositionNoiseY));
         }
 
 

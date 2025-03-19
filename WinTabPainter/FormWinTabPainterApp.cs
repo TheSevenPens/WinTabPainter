@@ -96,8 +96,8 @@ namespace WinTabPainter
             this.UpdateRecStatus();
 
             // Default to no smoothing
-            paint_settings.Dynamics.PositionSmoother.SmoothingAmount = 0.0;
-            paint_settings.Dynamics.PressureSmoother.SmoothingAmount = 0.0;
+            paint_settings.PositionSmoothingAmount = 0.0;
+            paint_settings.PressureSmoothingAmount = 0.0;
 
             this.paint_settings.AntiAliasing = true;
             this.bitmap_doc.AntiAliasing = this.paint_settings.AntiAliasing;
@@ -324,13 +324,13 @@ namespace WinTabPainter
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(string.Format("Brush Size: {0}", paint_settings.BrushWidth));
-            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.Dynamics.PressureCurve.CurveAmount));
-            sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.Dynamics.PressureSmoother.SmoothingAmount));
-            sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.Dynamics.PositionSmoother.SmoothingAmount));
+            sb.AppendLine(string.Format("Pressure Curve: {0}", paint_settings.PressureCurveAmount));
+            sb.AppendLine(string.Format("Pressure Smoothing: {0}", paint_settings.PressureSmoothingAmount));
+            sb.AppendLine(string.Format("Position Smoothing: {0}", paint_settings.PositionSmoothingAmount));
             sb.AppendLine(string.Format("Pressure Quantization: {0}",
                 (paint_settings.PressureQuantizeLevels < 1) ? "NONE" : paint_settings.PressureQuantizeLevels.ToString()));
             sb.AppendLine(string.Format("Anit-Aliasing: {0}", paint_settings.AntiAliasing));
-            sb.AppendLine(string.Format("{0},{1}", paint_settings.PosXNoise, paint_settings.PosYNoise));
+            sb.AppendLine(string.Format("{0},{1}", paint_settings.PostionNoiseX, paint_settings.PositionNoiseY));
 
             this.textBox_config.Text = sb.ToString();
         }
@@ -475,25 +475,25 @@ namespace WinTabPainter
         private void RunFormSettings()
         {
             var form = new FormBrushSettings();
-            form.CurveAmount = paint_settings.Dynamics.PressureCurve.CurveAmount;
-            form.PressureSmoothingValue = paint_settings.Dynamics.PressureSmoother.SmoothingAmount;
-            form.PositionSmoothingValue = paint_settings.Dynamics.PositionSmoother.SmoothingAmount;
+            form.CurveAmount = paint_settings.PressureCurveAmount;
+            form.PressureSmoothingValue = paint_settings.PressureSmoothingAmount;
+            form.PositionSmoothingValue = paint_settings.PositionSmoothingAmount;
             form.PressureQuantizeLevels = paint_settings.PressureQuantizeLevels;
             form.AntiAliasing = paint_settings.AntiAliasing;
-            form.PositionXNoise = paint_settings.PosXNoise;
-            form.PositionYNoise = paint_settings.PosYNoise;
+            form.PositionXNoise = paint_settings.PostionNoiseX;
+            form.PositionYNoise = paint_settings.PositionNoiseY;
 
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {
 
-                paint_settings.Dynamics.PressureCurve.CurveAmount = form.CurveAmount; //
-                paint_settings.Dynamics.PressureSmoother.SmoothingAmount = form.PressureSmoothingValue; //
-                paint_settings.Dynamics.PositionSmoother.SmoothingAmount = form.PositionSmoothingValue; //
+                paint_settings.PressureCurveAmount = form.CurveAmount; //
+                paint_settings.PressureSmoothingAmount = form.PressureSmoothingValue; //
+                paint_settings.PositionSmoothingAmount = form.PositionSmoothingValue; //
                 paint_settings.PressureQuantizeLevels = form.PressureQuantizeLevels;
                 paint_settings.AntiAliasing = form.AntiAliasing;
-                paint_settings.PosXNoise = form.PositionXNoise;
-                paint_settings.PosYNoise = form.PositionYNoise;
+                paint_settings.PostionNoiseX = form.PositionXNoise;
+                paint_settings.PositionNoiseY = form.PositionYNoise;
 
                 this.update_config();
                 this.bitmap_doc.AntiAliasing = paint_settings.AntiAliasing;

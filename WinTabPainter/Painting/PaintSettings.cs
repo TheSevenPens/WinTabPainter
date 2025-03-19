@@ -1,4 +1,6 @@
-﻿namespace WinTabPainter.Painting;
+﻿using System;
+
+namespace WinTabPainter.Painting;
 
 
 public class PaintSettingsDynamics
@@ -39,10 +41,28 @@ public class PaintSettings
     public int PressureQuantizeLevels = -1;
 
     // Position Noise
-    public int PosXNoise;
-    public int PosYNoise;
+    public int PostionNoiseX;
+    public int PositionNoiseY;
 
     // Smoothing 
+    public double PositionSmoothingAmount
+    {
+        get => this.Dynamics.PositionSmoother.SmoothingAmount;
+        set => this.Dynamics.PositionSmoother.SmoothingAmount = PaintSettings.SYS_SMOOTHING_RANGE.Clamp(value);
+    }
+
+    public double PressureSmoothingAmount
+    {
+        get => this.Dynamics.PressureSmoother.SmoothingAmount;
+        set => this.Dynamics.PressureSmoother.SmoothingAmount = PaintSettings.SYS_SMOOTHING_RANGE.Clamp(value);
+    }
+
+    public double PressureCurveAmount
+    {
+        get => this.Dynamics.PressureCurve.CurveAmount;
+        set => this.Dynamics.PressureCurve.CurveAmount  = value;
+    }
+
 
 
     // Anti-Aliasing
