@@ -31,7 +31,7 @@ namespace WintabDN.Interop;
 /// <summary>
 /// Provide utility methods for unmanaged memory management.
 /// </summary>
-public class CMemUtils
+public static class CMemUtils
 {
 
 
