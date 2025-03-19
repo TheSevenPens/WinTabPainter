@@ -82,11 +82,13 @@ public class UnmanagedBuffer : IDisposable
 
     public void MarshallIntoBuffer(object structure)
     {
+        this.assert_type(structure.GetType());
         Marshal.StructureToPtr(structure, this.BufferPointer, false);
     }
 
     public T MarshallFromBuffer<T>()
     {
+        this.assert_type(typeof(T));
         var value = (T)Marshal.PtrToStructure(this.BufferPointer, typeof(T));
         return value;
 
