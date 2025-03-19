@@ -39,6 +39,16 @@ public class UnmanagedBuffer : IDisposable
     {
     }
 
+    public static UnmanagedBuffer CreateForSize<T>(int n) where T : new()
+    {
+        var ub = new UnmanagedBuffer();
+        var v = new T();
+        ub.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(n);
+        ub.disposed = false;
+        ub.type = null;
+        return ub;
+    }
+
     public static UnmanagedBuffer CreateForObject<T>() where T : new()
     {
         var ub = new UnmanagedBuffer();
@@ -111,13 +121,16 @@ public class UnmanagedBuffer : IDisposable
     private static IntPtr AllocUnmanagedBuf(Object val_I)
     {
         IntPtr buf = IntPtr.Zero;
-
         int numBytes = Marshal.SizeOf(val_I);
-
-        // First allocate a buffer of the correct size.
         buf = Marshal.AllocHGlobal(numBytes);
+        return buf;
+    }
 
-
+    /// <returns>Unmanaged buffer pointer.</returns>
+    private static IntPtr AllocUnmanagedBufSize(int size_I)
+    {
+        IntPtr buf = IntPtr.Zero;
+        buf = Marshal.AllocHGlobal(size_I);
         return buf;
     }
 }

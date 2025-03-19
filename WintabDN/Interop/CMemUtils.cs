@@ -182,10 +182,12 @@ public class CMemUtils
                 byteArray2[idx] = byteArray[(pktsIdx * pktSize) + idx];
             }
 
-            IntPtr tmp = CMemUtils.AllocUnmanagedBuf(pktSize);
-            Marshal.Copy(byteArray2, 0, tmp, pktSize);
 
-            packets[pktsIdx] = CMemUtils.MarshalBufferToObject<WintabDN.Structs.WintabPacketExt>(tmp, pktSize);
+            using (var tmpbuf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<WintabDN.Structs.WintabPacketExt>())
+            {
+                Marshal.Copy(byteArray2, 0, tmpbuf.Pointer, pktSize);
+                packets[pktsIdx] = tmpbuf.MarshallFromBuffer<WintabDN.Structs.WintabPacketExt>();
+            }
         }
 
         return packets;
