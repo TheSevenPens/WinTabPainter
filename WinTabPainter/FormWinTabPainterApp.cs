@@ -475,26 +475,12 @@ namespace WinTabPainter
         private void RunFormSettings()
         {
             var form = new FormBrushSettings();
-            form.CurveAmount = paint_settings.PressureCurveAmount;
-            form.PressureSmoothingValue = paint_settings.PressureSmoothingAmount;
-            form.PositionSmoothingValue = paint_settings.PositionSmoothingAmount;
-            form.PressureQuantizeLevels = paint_settings.PressureQuantizeLevels;
-            form.AntiAliasing = paint_settings.AntiAliasing;
-            form.PositionXNoise = paint_settings.PostionNoiseX;
-            form.PositionYNoise = paint_settings.PositionNoiseY;
+            this.paint_settings.CopyTo(form.paintsettings);
 
             var r = form.ShowDialog(this);
             if (r == DialogResult.OK)
             {
-
-                paint_settings.PressureCurveAmount = form.CurveAmount; //
-                paint_settings.PressureSmoothingAmount = form.PressureSmoothingValue; //
-                paint_settings.PositionSmoothingAmount = form.PositionSmoothingValue; //
-                paint_settings.PressureQuantizeLevels = form.PressureQuantizeLevels;
-                paint_settings.AntiAliasing = form.AntiAliasing;
-                paint_settings.PostionNoiseX = form.PositionXNoise;
-                paint_settings.PositionNoiseY = form.PositionYNoise;
-
+                form.paintsettings.CopyTo(this.paint_settings);
                 this.update_config();
                 this.bitmap_doc.AntiAliasing = paint_settings.AntiAliasing;
             }

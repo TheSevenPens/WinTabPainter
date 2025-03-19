@@ -12,15 +12,14 @@ namespace WinTabPainter
     public partial class FormBrushSettings : Form
     {
 
-        Numerics.SimpleCurve pressure_curve;
+        public PaintSettings paintsettings;
 
         public FormBrushSettings()
         {
             InitializeComponent();
-            this.pressure_curve = new Numerics.SimpleCurve();
-        }
+            this.paintsettings = new PaintSettings();
 
-        Numerics.SimpleCurve smoothing_adjustment_curve = new Numerics.SimpleCurve(0.9);
+        }
 
         
         Painting.BitmapLayer bitmaplayer;
@@ -34,18 +33,6 @@ namespace WinTabPainter
         static int state_pressure_smoothing_trackbar_value = 0;
         static int state_position_smoothing_trackbar_value = 0;
 
-        public double PressureSmoothingValue = 0;
-        public double PositionSmoothingValue = 0;
-        public bool AntiAliasing;
-        int QuantizeLevels;
-        public int PositionXNoise = 0;
-        public int PositionYNoise = 0;
-
-        public double CurveAmount
-        {
-            get => this.pressure_curve.CurveAmount;
-            set => this.pressure_curve.CurveAmount = value;
-        }
 
         private void button_Close_Click(object sender, System.EventArgs e)
         {
@@ -59,21 +46,28 @@ namespace WinTabPainter
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
-            this.labelAmount.Text = this.pressure_curve.CurveAmount.ToString();
+            this.labelAmount.Text = this.paintsettings.PressureCurveAmount.ToString();
             this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue, 5);
             this.frame_pen = new SD.Pen(SD.Color.Gray, 1);
-            this.checkBoxAntiAliasing.Checked = this.AntiAliasing;
+            this.checkBoxAntiAliasing.Checked = this.paintsettings.AntiAliasing;
             this.render_curve();
 
             var curve_slide_range = new Numerics.OrderedRangeD(-100.0, 100.0);
-            var slider_value = (int)curve_slide_range.Clamp(this.pressure_curve.CurveAmount * 100.0);
+            var slider_value = (int)curve_slide_range.Clamp(this.paintsettings.PressureCurveAmount * 100.0);
             this.trackBar_Amount.Value = slider_value;
 
             this.trackBar_PositionSmoothing.Value = state_position_smoothing_trackbar_value;
             this.trackBar_PressureSmoothing.Value = state_pressure_smoothing_trackbar_value;
 
-            update_smoothing_ui(this.trackBar_PositionSmoothing, label_position_smoothingval, out this.PositionSmoothingValue);
-            update_smoothing_ui(this.trackBar_PressureSmoothing, label_pressure_smoothingval, out this.PressureSmoothingValue);
+            double v;
+
+            update_smoothing_ui(this.trackBar_PositionSmoothing, label_position_smoothingval, out v);
+            this.paintsettings.PositionSmoothingAmount = v;
+
+            update_smoothing_ui(this.trackBar_PressureSmoothing, label_pressure_smoothingval, out v);
+            this.paintsettings.PressureSmoothingAmount = v;
+
+
 
 
             var l = new System.Collections.Generic.List<QuantItem>();
@@ -99,13 +93,13 @@ namespace WinTabPainter
 
             foreach (var (qitem, index) in l.Select((i, q) => (i, q)))
             {
-                if (qitem.Value == this.QuantizeLevels)
+                if (qitem.Value == this.paintsettings.PressureQuantizeLevels)
                 {
                     this.comboBox_PressureQuant.SelectedIndex = index; break;
                 }
             }
 
-            this.textBoxPositionNoise.Text = string.Format("{0},{1}",this.PositionXNoise,this.PositionYNoise);
+            this.textBoxPositionNoise.Text = string.Format("{0},{1}",this.paintsettings.PostionNoiseX,this.paintsettings.PositionNoiseY);
         }
 
         private void render_curve()
@@ -119,7 +113,7 @@ namespace WinTabPainter
             for (int i = 0; i <= i_max; i++)
             {
                 double x = i / (double)i_max;
-                double y = pressure_curve.ApplyCurve(x);
+                double y = this.paintsettings.Dynamics.PressureCurve.ApplyCurve(x);
 
                 double x_coord = x_coord_range.Clamp(x * i_max);
                 double y_coord = i_max - y_coord_range.Clamp(y * i_max);
@@ -180,7 +174,7 @@ namespace WinTabPainter
             double v = get_bend_amount_from_trackbar();
 
             this.labelAmount.Text = v.ToString();
-            this.pressure_curve.CurveAmount = v;
+            this.paintsettings.PressureCurveAmount = v;
         }
 
         private double get_bend_amount_from_trackbar()
@@ -194,10 +188,10 @@ namespace WinTabPainter
         private void button_OK_Click(object sender, System.EventArgs e)
         {
             double v = get_smoothing_from_trackbar(this.trackBar_PositionSmoothing);
-            this.PositionSmoothingValue = v;
-
+            this.paintsettings.PositionSmoothingAmount = v;
+ 
             double v2 = get_smoothing_from_trackbar(this.trackBar_PressureSmoothing);
-            this.PressureSmoothingValue = v2;
+            this.paintsettings.PressureSmoothingAmount = v2;
 
             state_position_smoothing_trackbar_value = this.trackBar_PositionSmoothing.Value;
             state_pressure_smoothing_trackbar_value = this.trackBar_PressureSmoothing.Value;
@@ -210,8 +204,9 @@ namespace WinTabPainter
                 {
                     int xnoise = int.Parse(tokens[0]);
                     int ynoise = int.Parse(tokens[1]);
-                    this.PositionXNoise = xnoise;
-                    this.PositionYNoise = ynoise;
+
+                    this.paintsettings.PostionNoiseX = xnoise;
+                    this.paintsettings.PositionNoiseY = ynoise;
                 }
             }
                 
@@ -226,7 +221,9 @@ namespace WinTabPainter
             var trackbar = this.trackBar_PositionSmoothing;
             var label = label_position_smoothingval;
 
-            update_smoothing_ui(trackbar, label, out PositionSmoothingValue);
+            double v;
+            update_smoothing_ui(trackbar, label, out v);
+            this.paintsettings.PositionSmoothingAmount = v;
 
         }
 
@@ -235,7 +232,9 @@ namespace WinTabPainter
             var trackbar = this.trackBar_PressureSmoothing;
             var label = label_pressure_smoothingval;
 
-            update_smoothing_ui(trackbar, label, out this.PressureSmoothingValue);
+            double v;
+            update_smoothing_ui(trackbar, label, out v );
+            this.paintsettings.PressureSmoothingAmount = v;
 
         }
 
@@ -249,7 +248,7 @@ namespace WinTabPainter
         private double get_smoothing_from_trackbar(System.Windows.Forms.TrackBar trackbar)
         {
             double normalized_slider_value = ((double)trackbar.Value / (double)trackbar.Maximum);
-            double curved_value = this.smoothing_adjustment_curve.ApplyCurve(normalized_slider_value);
+            double curved_value = this.paintsettings.Dynamics.PressureCurve.ApplyCurve(normalized_slider_value);
             double new_value = PaintSettings.SYS_SMOOTHING_RANGE_LIMITED.Clamp(curved_value);
             return new_value;
         }
@@ -264,7 +263,7 @@ namespace WinTabPainter
 
         private void checkBoxAntiAliasing_CheckedChanged(object sender, System.EventArgs e)
         {
-            this.AntiAliasing = checkBoxAntiAliasing.Checked;
+            this.paintsettings.AntiAliasing = checkBoxAntiAliasing.Checked;
         }
 
         private void label6_Click(object sender, System.EventArgs e)

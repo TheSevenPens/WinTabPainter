@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace WinTabPainter.Painting;
 
@@ -71,5 +72,16 @@ public class PaintSettings
     public PaintSettings()
     {
         this.Dynamics = new PaintSettingsDynamics();
+    }
+
+    public void CopyTo(PaintSettings to)
+    {
+        to.PressureCurveAmount = this.PressureCurveAmount;
+        to.PressureSmoothingAmount = this.PressureSmoothingAmount;
+        to.PositionSmoothingAmount = this.PositionSmoothingAmount;
+        to.PressureQuantizeLevels = this.PressureQuantizeLevels;
+        to.AntiAliasing = this.AntiAliasing;
+        to.PostionNoiseX = this.PostionNoiseX;
+        to.PositionNoiseY = this.PositionNoiseY;
     }
 }
