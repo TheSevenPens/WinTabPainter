@@ -40,11 +40,10 @@ public class UnmanagedBuffer : IDisposable
     {
     }
 
-    public static UnmanagedBuffer CreateForSize<T>(int n) where T : new()
+    public static UnmanagedBuffer CreateForSize<T>(int bufsize) where T : new()
     {
         var ub = new UnmanagedBuffer();
-        var v = new T();
-        ub.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(n);
+        ub.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(bufsize);
         ub.disposed = false;
         ub.expected_type = null;
         return ub;
