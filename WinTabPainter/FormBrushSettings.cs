@@ -12,6 +12,8 @@ namespace WinTabPainter
     public partial class FormBrushSettings : Form
     {
 
+        Numerics.SimpleCurve pressure_curve;
+
         public FormBrushSettings()
         {
             InitializeComponent();
@@ -25,7 +27,6 @@ namespace WinTabPainter
         SD.Pen curve_pen;
         SD.Pen frame_pen;
         SD.PointF[] points;
-        Numerics.SimpleCurve pressure_curve;
         SD.SolidBrush brush;
         int padding = 25;
         int num_points = 300;
