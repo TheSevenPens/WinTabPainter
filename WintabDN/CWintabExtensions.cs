@@ -176,7 +176,7 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionProperty();
 
-        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
         { 
 
 
@@ -194,9 +194,9 @@ public class CWintabExtensions
         // Send input value as an array of bytes.
         System.Buffer.BlockCopy(valueBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-        buf2.MarshallIntoBuffer(extProperty.data);
+        buf.MarshallIntoBuffer(extProperty.data);
 
-        retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf2.Pointer);
+        retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
         return retStatus;
         }
@@ -228,7 +228,7 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionProperty();
 
-        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
         {
 
             // Convert unicode string value_I to UTF8-encoded bytes
@@ -246,9 +246,9 @@ public class CWintabExtensions
             // Send input value as an array of UTF8-encoded bytes.
             System.Buffer.BlockCopy(utf8Bytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-            buf2.MarshallIntoBuffer(extProperty);
+            buf.MarshallIntoBuffer(extProperty);
 
-            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf2.Pointer);
+            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
         return retStatus;
         }
@@ -280,7 +280,7 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionImageProperty();
 
-        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionImageProperty>())
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionImageProperty>())
         {
 
             //IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);
@@ -313,9 +313,9 @@ public class CWintabExtensions
             // Send image as an array of bytes.
             System.Buffer.BlockCopy(imageBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-            buf2.MarshallIntoBuffer(extProperty);
+            buf.MarshallIntoBuffer(extProperty);
 
-            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf2.Pointer);
+            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
 
             return retStatus;

@@ -42,38 +42,38 @@ public class UnmanagedBuffer : IDisposable
 
     public static UnmanagedBuffer CreateForSize<T>(int bufsize) where T : new()
     {
-        var ub = new UnmanagedBuffer();
-        ub.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(bufsize);
-        ub.disposed = false;
-        ub.expected_type = null;
-        return ub;
+        var buf = new UnmanagedBuffer();
+        buf.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(bufsize);
+        buf.disposed = false;
+        buf.expected_type = null;
+        return buf;
     }
 
     public static UnmanagedBuffer CreateForObject<T>() where T : new()
     {
-        var ub = new UnmanagedBuffer();
-        var v = new T();
-        ub.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(v);
-        ub.disposed = false;
-        ub.expected_type = typeof(T);
-        return ub;
+        var buf = new UnmanagedBuffer();
+        var temp_value = new T();
+        buf.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(temp_value);
+        buf.disposed = false;
+        buf.expected_type = typeof(T);
+        return buf;
     }
     public static UnmanagedBuffer CreateForString()
     {
-        var ub = new UnmanagedBuffer();
-        ub.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
-        ub.disposed = false;
-        ub.expected_type = typeof(string);
-        return ub;
+        var buf = new UnmanagedBuffer();
+        buf.Pointer = WintabDN.Interop.CMemUtils.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+        buf.disposed = false;
+        buf.expected_type = typeof(string);
+        return buf;
     }
 
-    public T GetValueObject<T>(int size) where T : new()
+    public T GetObjectFromBuffer<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
         var value = WintabDN.Interop.CMemUtils.MarshalBufferToObject<T>(Pointer, size);
         return value;
     }
-    public string GetValueString(int size)
+    public string GetStringFromBuffer(int size)
     {
         this.assert_type(typeof(string));
         // Strip off final null character before marshalling.
