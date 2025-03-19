@@ -474,8 +474,7 @@ namespace WinTabPainter
 
         private void RunFormSettings()
         {
-            var form = new FormBrushSettings(paint_settings.pressure_curve.CurveAmount);
-
+            var form = new FormBrushSettings();
             form.CurveAmount = paint_settings.pressure_curve.CurveAmount;
             form.PressureSmoothingValue = paint_settings.PressureSmoother.SmoothingAmount;
             form.PositionSmoothingValue = paint_settings.PositionSmoother.SmoothingAmount;

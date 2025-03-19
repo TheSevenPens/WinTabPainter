@@ -12,24 +12,20 @@ namespace WinTabPainter
     public partial class FormBrushSettings : Form
     {
 
-        public FormBrushSettings(double amt)
+        public FormBrushSettings()
         {
             InitializeComponent();
-            this.curve = new Numerics.SimpleCurve();
-            this.curve.CurveAmount = amt;
-
-
-
-
-
+            this.pressure_curve = new Numerics.SimpleCurve();
         }
+
         Numerics.SimpleCurve smoothing_adjustment_curve = new Numerics.SimpleCurve(0.9);
 
+        
         Painting.BitmapLayer bitmaplayer;
         SD.Pen curve_pen;
         SD.Pen frame_pen;
         SD.PointF[] points;
-        Numerics.SimpleCurve curve;
+        Numerics.SimpleCurve pressure_curve;
         SD.SolidBrush brush;
         int padding = 25;
         int num_points = 300;
@@ -46,8 +42,8 @@ namespace WinTabPainter
 
         public double CurveAmount
         {
-            get => this.curve.CurveAmount;
-            set => this.curve.CurveAmount = value;
+            get => this.pressure_curve.CurveAmount;
+            set => this.pressure_curve.CurveAmount = value;
         }
 
         private void button_Close_Click(object sender, System.EventArgs e)
@@ -62,14 +58,14 @@ namespace WinTabPainter
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
             this.points = new SD.PointF[num_points];
-            this.labelAmount.Text = this.curve.CurveAmount.ToString();
+            this.labelAmount.Text = this.pressure_curve.CurveAmount.ToString();
             this.curve_pen = new SD.Pen(SD.Color.CornflowerBlue, 5);
             this.frame_pen = new SD.Pen(SD.Color.Gray, 1);
             this.checkBoxAntiAliasing.Checked = this.AntiAliasing;
             this.render_curve();
 
             var curve_slide_range = new Numerics.OrderedRangeD(-100.0, 100.0);
-            var slider_value = (int)curve_slide_range.Clamp(this.curve.CurveAmount * 100.0);
+            var slider_value = (int)curve_slide_range.Clamp(this.pressure_curve.CurveAmount * 100.0);
             this.trackBar_Amount.Value = slider_value;
 
             this.trackBar_PositionSmoothing.Value = state_position_smoothing_trackbar_value;
@@ -122,7 +118,7 @@ namespace WinTabPainter
             for (int i = 0; i <= i_max; i++)
             {
                 double x = i / (double)i_max;
-                double y = curve.ApplyCurve(x);
+                double y = pressure_curve.ApplyCurve(x);
 
                 double x_coord = x_coord_range.Clamp(x * i_max);
                 double y_coord = i_max - y_coord_range.Clamp(y * i_max);
@@ -183,7 +179,7 @@ namespace WinTabPainter
             double v = get_bend_amount_from_trackbar();
 
             this.labelAmount.Text = v.ToString();
-            this.curve.CurveAmount = v;
+            this.pressure_curve.CurveAmount = v;
         }
 
         private double get_bend_amount_from_trackbar()
