@@ -57,7 +57,7 @@ public class CMemUtils
     /// <param name="buf_I">unmanaged heap pointer</param>
     /// <param name="size">expected size of buf_I</param>
     /// <returns>Managed object of specified type.</returns>
-    public static T MarshalUnmanagedBuf<T>(IntPtr buf_I, int size)
+    public static T MarshalBufferToObject<T>(IntPtr buf_I, int size)
     {
         if (buf_I == IntPtr.Zero)
         {
@@ -94,7 +94,7 @@ public class CMemUtils
     /// <param name="buf_I">pointer to unmanaged heap memory</param>
     /// <param name="size_I">size of ASCII string, includes null termination</param>
     /// <returns></returns>
-    public static string MarshalUnmanagedString(IntPtr buf_I, int size_I)
+    public static string MarshalBufferToString(IntPtr buf_I, int size_I)
     {
         string retStr = null;
 
@@ -185,7 +185,7 @@ public class CMemUtils
             IntPtr tmp = CMemUtils.AllocUnmanagedBuf(pktSize);
             Marshal.Copy(byteArray2, 0, tmp, pktSize);
 
-            packets[pktsIdx] = CMemUtils.MarshalUnmanagedBuf<WintabDN.Structs.WintabPacketExt>(tmp, pktSize);
+            packets[pktsIdx] = CMemUtils.MarshalBufferToObject<WintabDN.Structs.WintabPacketExt>(tmp, pktSize);
         }
 
         return packets;

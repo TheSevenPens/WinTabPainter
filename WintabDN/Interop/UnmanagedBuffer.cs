@@ -60,14 +60,14 @@ public class UnmanagedBuffer : IDisposable
     public T GetValueObject<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
-        var value = WintabDN.Interop.CMemUtils.MarshalUnmanagedBuf<T>(Pointer, size);
+        var value = WintabDN.Interop.CMemUtils.MarshalBufferToObject<T>(Pointer, size);
         return value;
     }
     public string GetValueString(int size)
     {
         this.assert_type(typeof(string));
         // Strip off final null character before marshalling.
-        var s = WintabDN.Interop.CMemUtils.MarshalUnmanagedString(this.Pointer, size - 1);
+        var s = WintabDN.Interop.CMemUtils.MarshalBufferToString(this.Pointer, size - 1);
         return s;
     }
 
