@@ -84,18 +84,51 @@ public class UnmanagedBuffer : IDisposable
 
     }
 
-    public T GetObjectFromBuffer<T>(int size) where T : new()
+    public T MarshallObjectFromBuffer<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
-        var value = UnmanagedBuffer.marshal_buffer_to_object<T>(Pointer, size);
+
+        if (this.Pointer == IntPtr.Zero)
+        {
+            throw new ArgumentNullException(nameof(this.Pointer));
+        }
+
+        // If size doesn't match type size, then return a zeroed struct.
+        if (size != System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)))
+        {
+            int typeSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
+            var bytes = new Byte[typeSize];
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, this.Pointer, typeSize);
+        }
+
+        T value = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(this.Pointer, typeof(T));
+
         return value;
     }
-    public string GetStringFromBuffer(int size)
+
+    public string MarshalStringFromBuffer(int size)
     {
         this.assert_type(typeof(string));
+        
         // Strip off final null character before marshalling.
-        var s = UnmanagedBuffer.marshal_buffer_to_string(this.Pointer, size - 1);
-        return s;
+        int buf_size = size - 1;
+
+        if (this.Pointer == IntPtr.Zero)
+        {
+            throw new System.ArgumentNullException(nameof(this.Pointer));
+        }
+
+        if (size <= 0)
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(size));
+        }
+
+        var bytes = new Byte[buf_size];
+        System.Runtime.InteropServices.Marshal.Copy(this.Pointer, bytes, 0, buf_size);
+        var encoding = System.Text.Encoding.UTF8;
+        string value = encoding.GetString(bytes);
+        return value;
+
     }
 
     public void MarshalObjectlIntoBuffer(object structure)
@@ -108,73 +141,6 @@ public class UnmanagedBuffer : IDisposable
     {
         this.assert_type(typeof(T));
         var value = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(this.Pointer, typeof(T));
-        return value;
-    }
-
-
-    public void Dispose()
-    {
-        if (this.disposed)
-        {
-            return;
-        }
-        if (this.Pointer == IntPtr.Zero)
-        {
-            return;
-        }
-      
-        System.Runtime.InteropServices.Marshal.FreeHGlobal(this.Pointer);
-        this.Pointer = IntPtr.Zero;
-    }
-
-    /// <summary>
-    /// Marshals specified buf to the specified type.
-    /// </summary>
-    /// <typeparam name="T">type to which buf_I is marshalled</typeparam>
-    /// <param name="buf_ptr">unmanaged heap pointer</param>
-    /// <param name="buf_size">expected size of buf_I</param>
-    /// <returns>Managed object of specified type.</returns>
-    private static T marshal_buffer_to_object<T>(IntPtr buf_ptr, int buf_size)
-    {
-        if (buf_ptr == IntPtr.Zero)
-        {
-            throw new ArgumentNullException(nameof(buf_ptr));
-        }
-
-        // If size doesn't match type size, then return a zeroed struct.
-        if (buf_size != System.Runtime.InteropServices.Marshal.SizeOf(typeof(T)))
-        {
-            int typeSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(T));
-            var bytes = new Byte[typeSize];
-            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, buf_ptr, typeSize);
-        }
-
-        return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(buf_ptr, typeof(T));
-    }
-
-    /// <summary>
-    /// Marshals a string from an unmanaged buffer.
-    /// </summary>
-    /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
-    /// <param name="buf_size">size of ASCII string, includes null termination</param>
-    /// <returns></returns>
-    private static string marshal_buffer_to_string(IntPtr buf_ptr, int buf_size)
-    {
-
-        if (buf_ptr == IntPtr.Zero)
-        {
-            throw new System.ArgumentNullException(nameof(buf_ptr));
-        }
-
-        if (buf_size <= 0)
-        {
-            throw new System.ArgumentOutOfRangeException(nameof(buf_size));
-        }
-
-        var bytes = new Byte[buf_size];
-        System.Runtime.InteropServices.Marshal.Copy(buf_ptr, bytes, 0, buf_size);
-        var encoding = System.Text.Encoding.UTF8;
-        string value = encoding.GetString(bytes);
         return value;
     }
 
@@ -259,4 +225,20 @@ public class UnmanagedBuffer : IDisposable
 
         return packets;
     }
+
+    public void Dispose()
+    {
+        if (this.disposed)
+        {
+            return;
+        }
+        if (this.Pointer == IntPtr.Zero)
+        {
+            return;
+        }
+
+        System.Runtime.InteropServices.Marshal.FreeHGlobal(this.Pointer);
+        this.Pointer = IntPtr.Zero;
+    }
+
 }
