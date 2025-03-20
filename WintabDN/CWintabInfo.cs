@@ -115,7 +115,7 @@ public class CWintabInfo
     private static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex contextIndex_I)
     {
         var context = new CWintabContext();
-        context.LogContext = CWintabFuncs.WTInfoAObject<Structs.WintabLogContext>((uint)contextIndex_I, 0);
+        context.LogicalContext = CWintabFuncs.WTInfoAObject<Structs.WintabLogContext>((uint)contextIndex_I, 0);
         return context;
     }
 
