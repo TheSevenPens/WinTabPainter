@@ -135,7 +135,8 @@ public class UnmanagedBuffer : IDisposable
 
         var packets = new WintabDN.Structs.WintabPacket[num_pkts];
 
-        int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacket());
+        var temp_packet = new WintabDN.Structs.WintabPacket();
+        int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(temp_packet);
 
         for (int i = 0; i < num_pkts; i++)
         {
@@ -163,7 +164,9 @@ public class UnmanagedBuffer : IDisposable
         // Marshal each WintabPacketExt in the array separately.
         // This is "necessary" because none of the other ways I tried to marshal
         // seemed to work.  It's ugly, but it works.
-        int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(new WintabDN.Structs.WintabPacketExt());
+
+        var temp_pkt_ext = new WintabDN.Structs.WintabPacketExt();
+        int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(temp_pkt_ext);
         var bytes = new Byte[num_pkts * pkt_size];
         System.Runtime.InteropServices.Marshal.Copy(this.Pointer, bytes, 0, (int)num_pkts * pkt_size);
 
