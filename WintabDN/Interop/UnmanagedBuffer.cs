@@ -75,6 +75,15 @@ public class UnmanagedBuffer : IDisposable
         return buf;
     }
 
+    private void assert_type(Type t)
+    {
+        if (this.expected_type != t)
+        {
+            throw new System.ArgumentOutOfRangeException("mismatch in types");
+        }
+
+    }
+
     public T GetObjectFromBuffer<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
@@ -89,22 +98,13 @@ public class UnmanagedBuffer : IDisposable
         return s;
     }
 
-    private void assert_type(Type t)
-    {
-        if (this.expected_type != t)
-        {
-            throw new System.ArgumentOutOfRangeException("mismatch in types");
-        }
-
-    }
-
-    public void MarshallIntoBuffer(object structure)
+    public void MarshalObjectlIntoBuffer(object structure)
     {
         this.assert_type(structure.GetType());
         System.Runtime.InteropServices.Marshal.StructureToPtr(structure, this.Pointer, false);
     }
 
-    public T MarshallFromBuffer<T>()
+    public T MarshalObjectFromBuffer<T>()
     {
         this.assert_type(typeof(T));
         var value = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(this.Pointer, typeof(T));
@@ -253,7 +253,7 @@ public class UnmanagedBuffer : IDisposable
             using (var tmpbuf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<WintabDN.Structs.WintabPacketExt>())
             {
                 System.Runtime.InteropServices.Marshal.Copy(temp_bytes, 0, tmpbuf.Pointer, pkt_size);
-                packets[pkt_i] = tmpbuf.MarshallFromBuffer<WintabDN.Structs.WintabPacketExt>();
+                packets[pkt_i] = tmpbuf.MarshalObjectFromBuffer<WintabDN.Structs.WintabPacketExt>();
             }
         }
 

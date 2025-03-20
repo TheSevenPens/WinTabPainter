@@ -180,7 +180,7 @@ public class CWintabData
 
             if (status)
             {
-                packet = buf.MarshallFromBuffer<Structs.WintabPacket>();
+                packet = buf.MarshalObjectFromBuffer<Structs.WintabPacket>();
             }
             else
             {
