@@ -117,11 +117,6 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
-
-            Structs.WintabPacketExt[] packets = null;
-
-            bool status = false;
-
             if (pktID_I == 0)
             {
                 throw new Exception("GetDataPacket - invalid pktID");
@@ -132,8 +127,9 @@ public class CWintabData
             using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
             {
 
-            status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer);
+            bool status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer);
 
+            Structs.WintabPacketExt[] packets = null;
             if (status)
             {
                 packets = buf.MarshalDataExtPacketsFromBuffer(1);
@@ -182,7 +178,9 @@ public class CWintabData
 
         using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
         {
-            if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer))
+            bool status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer);
+
+            if (status)
             {
                 packet = buf.MarshallFromBuffer<Structs.WintabPacket>();
             }
