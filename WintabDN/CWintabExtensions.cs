@@ -123,17 +123,16 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionProperty();
 
+        extProperty.extBase.version = 0;
+        extProperty.extBase.tabletIndex = tabletIndex_I;
+        extProperty.extBase.controlIndex = controlIndex_I;
+        extProperty.extBase.functionIndex = functionIndex_I;
+        extProperty.extBase.propertyID = propertyID_I;
+        extProperty.extBase.reserved = 0;
+        extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(result_O);
+
         using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<WintabDN.Structs.WTExtensionProperty>())
         {
-
-            extProperty.extBase.version = 0;
-            extProperty.extBase.tabletIndex = tabletIndex_I;
-            extProperty.extBase.controlIndex = controlIndex_I;
-            extProperty.extBase.functionIndex = functionIndex_I;
-            extProperty.extBase.propertyID = propertyID_I;
-            extProperty.extBase.reserved = 0;
-            extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(result_O);
-
             buf.MarshallIntoBuffer(extProperty);
 
             bool status = CWintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
@@ -144,8 +143,6 @@ public class CWintabExtensions
                 result_O = retProp.data[0];
                 retStatus = true;
             }
-
-
         }
         return retStatus;
     }
@@ -176,8 +173,6 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionProperty();
 
-        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
-        { 
 
 
         byte[] valueBytes = BitConverter.GetBytes(value_I);
@@ -194,11 +189,12 @@ public class CWintabExtensions
         // Send input value as an array of bytes.
         System.Buffer.BlockCopy(valueBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-        buf.MarshallIntoBuffer(extProperty.data);
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
+        {
 
-        retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
-
-        return retStatus;
+            buf.MarshallIntoBuffer(extProperty.data);
+            retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
+            return retStatus;
         }
     }
 

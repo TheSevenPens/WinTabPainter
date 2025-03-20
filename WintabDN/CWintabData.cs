@@ -117,8 +117,6 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
-        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
-        {
 
             Structs.WintabPacketExt[] packets = null;
 
@@ -130,11 +128,15 @@ public class CWintabData
             }
 
             CheckForValidHCTX("GetDataPacket");
-            status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf2.Pointer);
+
+            using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
+            {
+
+            status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer);
 
             if (status)
             {
-                packets = buf2.MarshalDataExtPacketsFromBuffer(1);
+                packets = buf.MarshalDataExtPacketsFromBuffer(1);
             }
             else
             {
@@ -168,18 +170,18 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacket GetDataPacket(UInt32 hCtx_I, UInt32 pktID_I)
     {
+
+        var packet = new Structs.WintabPacket();
+
+        if (pktID_I == 0)
+        {
+            throw new Exception("GetDataPacket - invalid pktID");
+        }
+
+        CheckForValidHCTX("GetDataPacket");
+
         using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
         {
-
-            var packet = new Structs.WintabPacket();
-
-            if (pktID_I == 0)
-            {
-                throw new Exception("GetDataPacket - invalid pktID");
-            }
-
-            CheckForValidHCTX("GetDataPacket");
-
             if (CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer))
             {
                 packet = buf.MarshallFromBuffer<Structs.WintabPacket>();
@@ -231,18 +233,18 @@ public class CWintabData
 
         // Packet array is used whether we're just looking or buying.
 
-        using (var buf2 = WintabDN.Interop.UnmanagedBuffer.CreateForObjectArray<Structs.WintabPacket>((int)max_pkts))
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObjectArray<Structs.WintabPacket>((int)max_pkts))
         {
 
 
         if (remove_I)
         {
             // Return data packets and remove packets from queue.
-            num_pkts = CWintabFuncs.WTPacketsGet(m_context.HCtx, max_pkts, buf2.Pointer);
+            num_pkts = CWintabFuncs.WTPacketsGet(m_context.HCtx, max_pkts, buf.Pointer);
 
             if (num_pkts > 0)
             {
-                packets = buf2.MarshalDataPacketsFromBuffer(num_pkts);
+                packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
             }
 
             //System.Diagnostics.Debug.WriteLine("GetDataPackets: numPkts_O: " + numPkts_O);
@@ -267,7 +269,7 @@ public class CWintabData
                 { throw new Exception("WTQueuePacketsEx reports zero end packet identifier"); }
 
                 // Peek up to the max number of packets specified.
-                UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, max_pkts, buf2.Pointer, ref num_pkts);
+                UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, max_pkts, buf.Pointer, ref num_pkts);
 
                 System.Diagnostics.Debug.WriteLine("GetDataPackets: WTDataPeek - numFoundPkts: " + numFoundPkts + ", numPkts_O: " + num_pkts);
 
@@ -276,7 +278,7 @@ public class CWintabData
                     throw new Exception("WTDataPeek reports more packets returned than actually exist in queue.");
                 }
 
-                packets = buf2.MarshalDataPacketsFromBuffer(num_pkts);
+                packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
             }
         }
 
