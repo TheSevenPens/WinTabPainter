@@ -119,7 +119,7 @@ public class CWintabData
     {
             if (pktID_I == 0)
             {
-                throw new Exception("GetDataPacket - invalid pktID");
+                throw new System.ArgumentOutOfRangeException("GetDataPacket - invalid pktID");
             }
 
             CheckForValidHCTX("GetDataPacket");
@@ -171,7 +171,7 @@ public class CWintabData
 
         if (pktID_I == 0)
         {
-            throw new Exception("GetDataPacket - invalid pktID");
+            throw new System.ArgumentOutOfRangeException(nameof(pktID_I));
         }
 
         CheckForValidHCTX("GetDataPacket");
@@ -226,7 +226,7 @@ public class CWintabData
 
         if (max_pkts == 0)
         {
-            throw new Exception("GetDataPackets - maxPkts_I is zero.");
+            throw new System.ArgumentOutOfRangeException(nameof(max_pkts));
         }
 
         // Packet array is used whether we're just looking or buying.
@@ -261,10 +261,14 @@ public class CWintabData
                 UInt32 pktIDEnd = pktIDNewest;
 
                 if (pktIDStart == 0)
-                { throw new Exception("WTQueuePacketsEx reports zero start packet identifier"); }
+                { 
+                        throw new System.ArgumentOutOfRangeException("WTQueuePacketsEx reports zero start packet identifier"); 
+                    }
 
                 if (pktIDEnd == 0)
-                { throw new Exception("WTQueuePacketsEx reports zero end packet identifier"); }
+                { 
+                        throw new System.ArgumentOutOfRangeException("WTQueuePacketsEx reports zero end packet identifier"); 
+                    }
 
                 // Peek up to the max number of packets specified.
                 UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, max_pkts, buf.Pointer, ref num_pkts);
@@ -273,7 +277,7 @@ public class CWintabData
 
                 if (numFoundPkts > 0 && numFoundPkts < num_pkts)
                 {
-                    throw new Exception("WTDataPeek reports more packets returned than actually exist in queue.");
+                    throw new System.Exception("WTDataPeek reports more packets returned than actually exist in queue.");
                 }
 
                 packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
@@ -294,7 +298,7 @@ public class CWintabData
     {
         if (m_context.HCtx == 0)
         { 
-            throw new Exception(msg + " - Bad Context"); 
+            throw new System.ArgumentOutOfRangeException(msg + " - Bad Context"); 
         }
     }
 }
