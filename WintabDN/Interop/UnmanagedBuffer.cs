@@ -197,6 +197,7 @@ public class UnmanagedBuffer : IDisposable
             return;
         }
         UnmanagedBuffer.FreeUnmanagedBuf(this.Pointer);
+        this.Pointer = IntPtr.Zero;
     }
 
 
@@ -205,38 +206,33 @@ public class UnmanagedBuffer : IDisposable
     /// <summary>
     /// Allocates a pointer to unmanaged heap memory of sizeof(val_I).
     /// </summary>
-    /// <param name="val_I">managed object that determines #bytes of unmanaged buf</param>
+    /// <param name="obj">managed object that determines #bytes of unmanaged buf</param>
     /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr AllocUnmanagedBuf(Object val_I)
+    private static IntPtr AllocUnmanagedBuf(Object obj)
     {
         IntPtr buf = IntPtr.Zero;
-        int numBytes = Marshal.SizeOf(val_I);
-        buf = Marshal.AllocHGlobal(numBytes);
+        int num_bytes = Marshal.SizeOf(obj);
+        buf = Marshal.AllocHGlobal(num_bytes);
         return buf;
     }
 
     /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr AllocUnmanagedBufSize(int size_I)
+    private static IntPtr AllocUnmanagedBufSize(int size)
     {
         IntPtr buf = IntPtr.Zero;
-        buf = Marshal.AllocHGlobal(size_I);
+        buf = Marshal.AllocHGlobal(size);
         return buf;
     }
-
-
 
     /// <summary>
     /// Allocates a pointer to unmanaged heap memory of given size.
     /// </summary>
-    /// <param name="size_I">number of bytes to allocate</param>
+    /// <param name="bufsize">number of bytes to allocate</param>
     /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr AllocUnmanagedBuf(int size_I)
+    private static IntPtr AllocUnmanagedBuf(int bufsize)
     {
         IntPtr buf = IntPtr.Zero;
-
-        buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(size_I);
-
-
+        buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(bufsize);
         return buf;
     }
 
