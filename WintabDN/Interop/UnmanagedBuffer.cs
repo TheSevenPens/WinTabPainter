@@ -47,9 +47,7 @@ public class UnmanagedBuffer : IDisposable
         var temp_value = new T();
         var item_size = System.Runtime.InteropServices.Marshal.SizeOf(temp_value);
         int bufsize = item_size * numitems;
-
-
-        buf.Pointer = UnmanagedBuffer.alloc_unmanaged_buffer_by_size(bufsize);
+        buf.Pointer = System.Runtime.InteropServices.Marshal.AllocHGlobal(bufsize);
         buf.disposed = false;
         buf.expected_type = null;
         return buf;
@@ -58,16 +56,20 @@ public class UnmanagedBuffer : IDisposable
     public static UnmanagedBuffer CreateForObject<T>() where T : new()
     {
         var buf = new UnmanagedBuffer();
+        
         var temp_value = new T();
-        buf.Pointer = UnmanagedBuffer.alloc_unmanaged_bufer(temp_value);
+        int num_bytes = Marshal.SizeOf(temp_value);
+
+        buf.Pointer = Marshal.AllocHGlobal(num_bytes);
         buf.disposed = false;
         buf.expected_type = typeof(T);
+
         return buf;
     }
     public static UnmanagedBuffer CreateForString()
     {
         var buf = new UnmanagedBuffer();
-        buf.Pointer = UnmanagedBuffer.alloc_unmanaged_buffer_by_size(CWintabInfo.MAX_STRING_SIZE);
+        buf.Pointer = System.Runtime.InteropServices.Marshal.AllocHGlobal(CWintabInfo.MAX_STRING_SIZE);
         buf.disposed = false;
         buf.expected_type = typeof(string);
         return buf;
@@ -195,30 +197,6 @@ public class UnmanagedBuffer : IDisposable
         }
         UnmanagedBuffer.free_unmanaged_buffer(this.Pointer);
         this.Pointer = IntPtr.Zero;
-    }
-
-
-    ///internals
-    ///
-    /// <summary>
-    /// Allocates a pointer to unmanaged heap memory of sizeof(val_I).
-    /// </summary>
-    /// <param name="obj">managed object that determines #bytes of unmanaged buf</param>
-    /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr alloc_unmanaged_bufer(Object obj)
-    {
-        IntPtr buf = IntPtr.Zero;
-        int num_bytes = Marshal.SizeOf(obj);
-        buf = Marshal.AllocHGlobal(num_bytes);
-        return buf;
-    }
-
-    /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr alloc_unmanaged_buffer_by_size(int bufsize)
-    {
-        IntPtr buf = IntPtr.Zero;
-        buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(bufsize);
-        return buf;
     }
 
     /// <summary>
