@@ -250,7 +250,7 @@ public class UnmanagedBuffer : IDisposable
     {
         if (buf_ptr == IntPtr.Zero)
         {
-            throw new Exception("MarshalUnmanagedBuf has NULL buf_I");
+            throw new ArgumentNullException(nameof(buf_ptr));
         }
 
         // If size doesn't match type size, then return a zeroed struct.
@@ -270,11 +270,13 @@ public class UnmanagedBuffer : IDisposable
     /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
     private static void FreeUnmanagedBuf(IntPtr buf_ptr)
     {
-        if (buf_ptr == IntPtr.Zero) { return; }
+        if (buf_ptr == IntPtr.Zero) 
+        { 
+            return; 
+        }
 
         System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_ptr);
         buf_ptr = IntPtr.Zero;
-
     }
 
     /// <summary>
