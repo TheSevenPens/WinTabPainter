@@ -35,7 +35,7 @@ public class CWintabInfo
     /// <returns></returns>
     public static bool IsWintabAvailable()
     {
-        IntPtr v = CWintabFuncs.WTInfoAObject<IntPtr>(0, 0);            
+        IntPtr v = CWintabFuncs.WTInfoAObject<IntPtr>(0, 0);
         bool status = v > 0;
         return status;
     }
@@ -68,20 +68,20 @@ public class CWintabInfo
         // EWTICategoryIndex.WTI_DEFSYSCTX = System context
         // EWTICategoryIndex.WTI_DEFCONTEXT = Digitizer context
 
-        if ( cat != Enums.EWTICategoryIndex.WTI_DEFSYSCTX && cat != Enums.EWTICategoryIndex.WTI_DEFCONTEXT)
+        if (cat != Enums.EWTICategoryIndex.WTI_DEFSYSCTX && cat != Enums.EWTICategoryIndex.WTI_DEFCONTEXT)
         {
             throw new System.ArgumentOutOfRangeException(nameof(cat));
         }
 
         var context = GetDefaultContext(cat);
 
-        if ( context == null)
+        if (context == null)
         {
             return context;
         }
 
         // Add caller's options.
-        context.Options |= (uint)options_I; 
+        context.Options |= (uint)options_I;
 
         if (cat == Enums.EWTICategoryIndex.WTI_DEFSYSCTX)
         {
@@ -93,13 +93,13 @@ public class CWintabInfo
         // This is redundant with CWintabContext initialization, which
         // also inits with PK_PKTBITS_ALL.
         uint PACKETDATA = (uint)Enums.EWintabPacketBit.PK_PKTBITS_ALL;  // The Full Monty 
-        uint PACKETMODE = (uint)Enums.EWintabPacketBit.PK_BUTTONS; 
+        uint PACKETMODE = (uint)Enums.EWintabPacketBit.PK_BUTTONS;
 
         // Set the context data bits.
-        context.PktData = PACKETDATA; 
-        context.PktMode = PACKETMODE; 
-        context.MoveMask = PACKETDATA; 
-        context.BtnUpMask = context.BtnDnMask; 
+        context.PktData = PACKETDATA;
+        context.PktMode = PACKETMODE;
+        context.MoveMask = PACKETDATA;
+        context.BtnUpMask = context.BtnDnMask;
 
         // Name the context
         context.Name = (cat == Enums.EWTICategoryIndex.WTI_DEFSYSCTX) ? "SYSTEM CONTEXT" : "DIGITIZER CONTEXT";
@@ -112,7 +112,7 @@ public class CWintabInfo
     /// </summary>
     /// <param name="contextType_I">Use WTI_DEFCONTEXT for digital context or WTI_DEFSYSCTX for system context</param>
     /// <returns>Returns the default context or null on error.</returns>
-    private static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex contextIndex_I)        
+    private static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex contextIndex_I)
     {
         var context = new CWintabContext();
         context.LogContext = CWintabFuncs.WTInfoAObject<Structs.WintabLogContext>((uint)contextIndex_I, 0);
@@ -152,7 +152,7 @@ public class CWintabInfo
     /// Returns a 3-element array describing the tablet's orientation range and resolution capabilities.
     /// </summary>
     /// <returns></returns>
-    public static Structs.WintabAxisArray GetDeviceOrientation( out bool tiltSupported_O )
+    public static Structs.WintabAxisArray GetDeviceOrientation(out bool tiltSupported_O)
     {
         tiltSupported_O = false;
 
@@ -177,7 +177,7 @@ public class CWintabInfo
         var axis_array = CWintabFuncs.WTInfoAObject<Structs.WintabAxisArray>(
             (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
             (uint)Enums.EWTIDevicesIndex.DVC_ROTATION);
-        
+
         rotationSupported_O = (axis_array.array[0].axResolution != 0 && axis_array.array[1].axResolution != 0);
         return axis_array;
     }

@@ -117,15 +117,15 @@ public class CWintabData
     /// <returns>Returns a data packet with non-null context if successful.</returns>
     public Structs.WintabPacketExt GetDataPacketExt(UInt32 hCtx_I, UInt32 pktID_I)
     {
-            if (pktID_I == 0)
-            {
-                throw new System.ArgumentOutOfRangeException("GetDataPacket - invalid pktID");
-            }
+        if (pktID_I == 0)
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(pktID_I), "Cannot be zero");
+        }
 
-            CheckForValidHCTX("GetDataPacket");
+        CheckForValidHCTX("GetDataPacket");
 
-            using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
-            {
+        using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
+        {
 
             bool status = CWintabFuncs.WTPacket(hCtx_I, pktID_I, buf.Pointer);
 
@@ -171,7 +171,7 @@ public class CWintabData
 
         if (pktID_I == 0)
         {
-            throw new System.ArgumentOutOfRangeException(nameof(pktID_I));
+            throw new System.ArgumentOutOfRangeException(nameof(pktID_I), "Cannot be zero");
         }
 
         CheckForValidHCTX("GetDataPacket");
@@ -226,7 +226,7 @@ public class CWintabData
 
         if (max_pkts == 0)
         {
-            throw new System.ArgumentOutOfRangeException(nameof(max_pkts));
+            throw new System.ArgumentOutOfRangeException(nameof(max_pkts), "Cannot be zero");
         }
 
         // Packet array is used whether we're just looking or buying.
@@ -235,58 +235,51 @@ public class CWintabData
         {
 
 
-        if (remove_I)
-        {
-            // Return data packets and remove packets from queue.
-            num_pkts = CWintabFuncs.WTPacketsGet(m_context.HCtx, max_pkts, buf.Pointer);
-
-            if (num_pkts > 0)
+            if (remove_I)
             {
-                packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
-            }
+                // Return data packets and remove packets from queue.
+                num_pkts = CWintabFuncs.WTPacketsGet(m_context.HCtx, max_pkts, buf.Pointer);
 
-            //System.Diagnostics.Debug.WriteLine("GetDataPackets: numPkts_O: " + numPkts_O);
-        }
-        else
-        {
-            // Return data packets, but leave on queue.  (Peek mode)
-            UInt32 pktIDOldest = 0;
-            UInt32 pktIDNewest = 0;
-
-            // Get oldest and newest packet identifiers in the queue.  These will bound the
-            // packets that are actually returned.
-            if (CWintabFuncs.WTQueuePacketsEx(m_context.HCtx, ref pktIDOldest, ref pktIDNewest))
-            {
-                UInt32 pktIDStart = pktIDOldest;
-                UInt32 pktIDEnd = pktIDNewest;
-
-                if (pktIDStart == 0)
-                { 
-                        throw new System.ArgumentOutOfRangeException("WTQueuePacketsEx reports zero start packet identifier"); 
-                    }
-
-                if (pktIDEnd == 0)
-                { 
-                        throw new System.ArgumentOutOfRangeException("WTQueuePacketsEx reports zero end packet identifier"); 
-                    }
-
-                // Peek up to the max number of packets specified.
-                UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, max_pkts, buf.Pointer, ref num_pkts);
-
-                System.Diagnostics.Debug.WriteLine("GetDataPackets: WTDataPeek - numFoundPkts: " + numFoundPkts + ", numPkts_O: " + num_pkts);
-
-                if (numFoundPkts > 0 && numFoundPkts < num_pkts)
+                if (num_pkts > 0)
                 {
-                    throw new System.Exception("WTDataPeek reports more packets returned than actually exist in queue.");
+                    packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
                 }
-
-                packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
             }
-        }
+            else
+            {
+                // Return data packets, but leave on queue.  (Peek mode)
+                UInt32 pktIDOldest = 0;
+                UInt32 pktIDNewest = 0;
 
+                // Get oldest and newest packet identifiers in the queue.  These will bound the
+                // packets that are actually returned.
+                if (CWintabFuncs.WTQueuePacketsEx(m_context.HCtx, ref pktIDOldest, ref pktIDNewest))
+                {
+                    UInt32 pktIDStart = pktIDOldest;
+                    UInt32 pktIDEnd = pktIDNewest;
 
+                    if (pktIDStart == 0)
+                    {
+                        throw new System.ArgumentOutOfRangeException(nameof(pktIDStart), "WTQueuePacketsEx reports zero start packet identifier");
+                    }
 
-        return packets;
+                    if (pktIDEnd == 0)
+                    {
+                        throw new System.ArgumentOutOfRangeException(nameof(pktIDEnd), "WTQueuePacketsEx reports zero end packet identifier");
+                    }
+
+                    // Peek up to the max number of packets specified.
+                    UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, max_pkts, buf.Pointer, ref num_pkts);
+
+                    if (numFoundPkts > 0 && numFoundPkts < num_pkts)
+                    {
+                        throw new System.Exception("WTDataPeek reports more packets returned than actually exist in queue.");
+                    }
+
+                    packets = buf.MarshalDataPacketsFromBuffer(num_pkts);
+                }
+            }
+            return packets;
         }
     }
 
@@ -297,8 +290,8 @@ public class CWintabData
     private void CheckForValidHCTX(string msg)
     {
         if (m_context.HCtx == 0)
-        { 
-            throw new System.ArgumentOutOfRangeException(msg + " - Bad Context"); 
+        {
+            throw new System.ArgumentOutOfRangeException(nameof(m_context.HCtx), msg + " - Bad Context");
         }
     }
 }

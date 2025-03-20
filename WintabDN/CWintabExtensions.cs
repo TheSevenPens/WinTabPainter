@@ -49,16 +49,16 @@ public class CWintabExtensions
     /// <returns>0xFFFFFFFF on error</returns>
     public static UInt32 GetWTExtensionMask(Enums.EWTXExtensionTag tag_I)
     {
-        UInt32 extMask = 0;           
+        UInt32 extMask = 0;
         UInt32 extIndex = FindWTExtensionIndex(tag_I);
-    
+
         // Supported if extIndex != -1
         if (extIndex != 0xFFFFFFFF)
         {
             extMask = CWintabFuncs.WTInfoAObject<UInt32>((uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
                 (uint)Enums.EWTIExtensionIndex.EXT_MASK);
         }
-            
+
         return extMask;
     }
 
@@ -246,7 +246,7 @@ public class CWintabExtensions
 
             retStatus = CWintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
-        return retStatus;
+            return retStatus;
         }
     }
 

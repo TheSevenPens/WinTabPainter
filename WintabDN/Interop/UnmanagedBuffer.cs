@@ -270,9 +270,9 @@ public class UnmanagedBuffer : IDisposable
     /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
     private static void FreeUnmanagedBuf(IntPtr buf_ptr)
     {
-        if (buf_ptr == IntPtr.Zero) 
-        { 
-            return; 
+        if (buf_ptr == IntPtr.Zero)
+        {
+            return;
         }
 
         System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_ptr);

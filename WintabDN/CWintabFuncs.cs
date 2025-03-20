@@ -124,7 +124,7 @@ public class CWintabFuncs
     /// <param name="pktBuf_O">Buffer to receive the event packets.</param>
     /// <returns>The return value is the number of packets copied in the buffer.</returns>
     [DllImport("Wintab32.dll", CharSet = CharSet.Auto)]
-    public static extern UInt32 WTPacketsGet(P_HCTX hctx_I, UInt32 maxPkts_I, IntPtr pktBuf_O);     
+    public static extern UInt32 WTPacketsGet(P_HCTX hctx_I, UInt32 maxPkts_I, IntPtr pktBuf_O);
 
     /// <summary>A
     /// This function copies all packets with Identifiers between pktIDStart_I and pktIDEnd_I 
