@@ -195,7 +195,8 @@ public class UnmanagedBuffer : IDisposable
         {
             return;
         }
-        UnmanagedBuffer.free_unmanaged_buffer(this.Pointer);
+      
+        System.Runtime.InteropServices.Marshal.FreeHGlobal(this.Pointer);
         this.Pointer = IntPtr.Zero;
     }
 
@@ -222,21 +223,6 @@ public class UnmanagedBuffer : IDisposable
         }
 
         return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(buf_ptr, typeof(T));
-    }
-
-    /// <summary>
-    /// Free unmanaged memory pointed to by buf_I.
-    /// </summary>
-    /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
-    private static void free_unmanaged_buffer(IntPtr buf_ptr)
-    {
-        if (buf_ptr == IntPtr.Zero)
-        {
-            return;
-        }
-
-        System.Runtime.InteropServices.Marshal.FreeHGlobal(buf_ptr);
-        buf_ptr = IntPtr.Zero;
     }
 
     /// <summary>
