@@ -83,7 +83,7 @@ public class CWintabData
     {
         bool status = false;
 
-        CheckForValidHCTX("SetPacketQueueSize");
+        CheckForValidHCTX(nameof(SetPacketQueueSize));
         status = CWintabFuncs.WTQueueSizeSet(m_context.HCtx, num_pkts);
 
 
@@ -98,7 +98,7 @@ public class CWintabData
     {
         UInt32 numPkts = 0;
 
-        CheckForValidHCTX("GetPacketQueueSize");
+        CheckForValidHCTX(nameof(GetPacketQueueSize));
         numPkts = CWintabFuncs.WTQueueSizeGet(m_context.HCtx);
 
 
@@ -120,7 +120,7 @@ public class CWintabData
             throw new System.ArgumentOutOfRangeException(nameof(pkt_id), "Cannot be zero");
         }
 
-        CheckForValidHCTX("GetDataPacket");
+        CheckForValidHCTX(nameof(GetDataPacket));
 
         using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
         {
@@ -172,7 +172,7 @@ public class CWintabData
             throw new System.ArgumentOutOfRangeException(nameof(pkt_id), "Cannot be zero");
         }
 
-        CheckForValidHCTX("GetDataPacket");
+        CheckForValidHCTX(nameof(GetDataPacket));
 
         using (var buf = WintabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
         {
@@ -201,7 +201,7 @@ public class CWintabData
     /// </summary>
     public void FlushDataPackets(uint num_pkts)
     {
-        CheckForValidHCTX("FlushDataPackets");
+        CheckForValidHCTX(nameof(FlushDataPackets));
         CWintabFuncs.WTPacketsGet(m_context.HCtx, num_pkts, IntPtr.Zero);
     }
 
@@ -220,7 +220,7 @@ public class CWintabData
     {
         Structs.WintabPacket[] packets = null;
 
-        CheckForValidHCTX("GetDataPackets");
+        CheckForValidHCTX(nameof(GetDataPackets));
 
         if (max_pkts == 0)
         {
