@@ -49,7 +49,7 @@ public class UnmanagedBuffer : IDisposable
         int bufsize = item_size * numitems;
 
 
-        buf.Pointer = UnmanagedBuffer.AllocUnmanagedBufSize(bufsize);
+        buf.Pointer = UnmanagedBuffer.alloc_unmanaged_buffer_by_size(bufsize);
         buf.disposed = false;
         buf.expected_type = null;
         return buf;
@@ -59,7 +59,7 @@ public class UnmanagedBuffer : IDisposable
     {
         var buf = new UnmanagedBuffer();
         var temp_value = new T();
-        buf.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(temp_value);
+        buf.Pointer = UnmanagedBuffer.alloc_unmanaged_bufer(temp_value);
         buf.disposed = false;
         buf.expected_type = typeof(T);
         return buf;
@@ -67,7 +67,7 @@ public class UnmanagedBuffer : IDisposable
     public static UnmanagedBuffer CreateForString()
     {
         var buf = new UnmanagedBuffer();
-        buf.Pointer = UnmanagedBuffer.AllocUnmanagedBuf(CWintabInfo.MAX_STRING_SIZE);
+        buf.Pointer = UnmanagedBuffer.alloc_unmanaged_buffer_by_size(CWintabInfo.MAX_STRING_SIZE);
         buf.disposed = false;
         buf.expected_type = typeof(string);
         return buf;
@@ -76,14 +76,14 @@ public class UnmanagedBuffer : IDisposable
     public T GetObjectFromBuffer<T>(int size) where T : new()
     {
         this.assert_type(typeof(T));
-        var value = UnmanagedBuffer.MarshalBufferToObject<T>(Pointer, size);
+        var value = UnmanagedBuffer.marshal_buffer_to_object<T>(Pointer, size);
         return value;
     }
     public string GetStringFromBuffer(int size)
     {
         this.assert_type(typeof(string));
         // Strip off final null character before marshalling.
-        var s = UnmanagedBuffer.MarshalBufferToString(this.Pointer, size - 1);
+        var s = UnmanagedBuffer.marshal_buffer_to_string(this.Pointer, size - 1);
         return s;
     }
 
@@ -199,7 +199,7 @@ public class UnmanagedBuffer : IDisposable
         {
             return;
         }
-        UnmanagedBuffer.FreeUnmanagedBuf(this.Pointer);
+        UnmanagedBuffer.free_unmanaged_buffer(this.Pointer);
         this.Pointer = IntPtr.Zero;
     }
 
@@ -211,7 +211,7 @@ public class UnmanagedBuffer : IDisposable
     /// </summary>
     /// <param name="obj">managed object that determines #bytes of unmanaged buf</param>
     /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr AllocUnmanagedBuf(Object obj)
+    private static IntPtr alloc_unmanaged_bufer(Object obj)
     {
         IntPtr buf = IntPtr.Zero;
         int num_bytes = Marshal.SizeOf(obj);
@@ -220,19 +220,7 @@ public class UnmanagedBuffer : IDisposable
     }
 
     /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr AllocUnmanagedBufSize(int size)
-    {
-        IntPtr buf = IntPtr.Zero;
-        buf = Marshal.AllocHGlobal(size);
-        return buf;
-    }
-
-    /// <summary>
-    /// Allocates a pointer to unmanaged heap memory of given size.
-    /// </summary>
-    /// <param name="bufsize">number of bytes to allocate</param>
-    /// <returns>Unmanaged buffer pointer.</returns>
-    private static IntPtr AllocUnmanagedBuf(int bufsize)
+    private static IntPtr alloc_unmanaged_buffer_by_size(int bufsize)
     {
         IntPtr buf = IntPtr.Zero;
         buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(bufsize);
@@ -246,7 +234,7 @@ public class UnmanagedBuffer : IDisposable
     /// <param name="buf_ptr">unmanaged heap pointer</param>
     /// <param name="buf_size">expected size of buf_I</param>
     /// <returns>Managed object of specified type.</returns>
-    private static T MarshalBufferToObject<T>(IntPtr buf_ptr, int buf_size)
+    private static T marshal_buffer_to_object<T>(IntPtr buf_ptr, int buf_size)
     {
         if (buf_ptr == IntPtr.Zero)
         {
@@ -268,7 +256,7 @@ public class UnmanagedBuffer : IDisposable
     /// Free unmanaged memory pointed to by buf_I.
     /// </summary>
     /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
-    private static void FreeUnmanagedBuf(IntPtr buf_ptr)
+    private static void free_unmanaged_buffer(IntPtr buf_ptr)
     {
         if (buf_ptr == IntPtr.Zero)
         {
@@ -285,7 +273,7 @@ public class UnmanagedBuffer : IDisposable
     /// <param name="buf_ptr">pointer to unmanaged heap memory</param>
     /// <param name="buf_size">size of ASCII string, includes null termination</param>
     /// <returns></returns>
-    private static string MarshalBufferToString(IntPtr buf_ptr, int buf_size)
+    private static string marshal_buffer_to_string(IntPtr buf_ptr, int buf_size)
     {
 
         if (buf_ptr == IntPtr.Zero)
