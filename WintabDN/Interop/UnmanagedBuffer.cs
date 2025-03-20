@@ -250,20 +250,4 @@ public class UnmanagedBuffer : IDisposable
         string value = encoding.GetString(bytes);
         return value;
     }
-
-    /// <summary>
-    /// Marshal unmanaged data packets into managed WintabPacket data.
-    /// </summary>
-    /// <param name="num_pkts">number of packets to marshal</param>
-    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
-    /// <returns></returns>
-
-    /// <summary>
-    /// Marshal unmanaged data packets into managed WintabPacket data.
-    /// </summary>
-    /// <param name="num_pkts">number of packets to marshal</param>
-    /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
-    /// <returns></returns>
-
-
 }
