@@ -7,21 +7,26 @@ namespace WinTabPressureTester
         {
             InitializeComponent();
             this.wintabsession = new WinTabUtils.TabletSession();
-
         }
+
+        Graphics gfx_picbox1;
+        Pen np_pressure_guage = new Pen(Color.Black, 11);
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             this.wintabsession.PacketHandler = PacketHandler;
             this.wintabsession.Open(WinTabUtils.TabletContextType.System);
+            this.pictureBox1.Image = new System.Drawing.Bitmap(this.pictureBox1.Width, this.pictureBox1.Height);
+            this.gfx_picbox1 = System.Drawing.Graphics.FromImage(this.pictureBox1.Image);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.wintabsession?.Close();
+            this.np_pressure_guage?.Dispose();
+            this.pictureBox1.Image?.Dispose();
+            this.pictureBox1?.Dispose();
         }
-
 
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {

@@ -36,6 +36,8 @@
             label_or_azimuth = new Label();
             label4 = new Label();
             label_or_altitude = new Label();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // label_pressure_raw
@@ -72,9 +74,9 @@
             label_pressure_level.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label_pressure_level.Location = new Point(387, 64);
             label_pressure_level.Name = "label_pressure_level";
-            label_pressure_level.Size = new Size(187, 102);
+            label_pressure_level.Size = new Size(379, 102);
             label_pressure_level.TabIndex = 2;
-            label_pressure_level.Text = "---";
+            label_pressure_level.Text = "-------";
             // 
             // label2
             // 
@@ -114,11 +116,20 @@
             label_or_altitude.TabIndex = 4;
             label_or_altitude.Text = "---";
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(1098, 64);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(600, 500);
+            pictureBox1.TabIndex = 8;
+            pictureBox1.TabStop = false;
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2023, 1388);
+            Controls.Add(pictureBox1);
             Controls.Add(label2);
             Controls.Add(label_or_azimuth);
             Controls.Add(label4);
@@ -131,6 +142,7 @@
             Text = "WinTabPressureTester";
             FormClosed += Form1_FormClosed;
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -145,5 +157,6 @@
         private Label label_or_azimuth;
         private Label label4;
         private Label label_or_altitude;
+        private PictureBox pictureBox1;
     }
 }
