@@ -76,7 +76,7 @@ public struct PaintData
         this.TiltAltitude = pkt.pkOrientation.orAltitude / 10.0;
         this.TiltAzimuth = pkt.pkOrientation.orAzimuth / 10.0;
 
-        (this.TiltX, this.TiltY) = WinTabUtils.Numerics.Angles.AzimuthAndAltudeToTiltDeg(this.TiltAzimuth, this.TiltAltitude);
+        (this.TiltX, this.TiltY) = WinTabUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(this.TiltAzimuth, this.TiltAltitude);
 
         // PRESSURE
         this.PressureRaw = pkt.pkNormalPressure;

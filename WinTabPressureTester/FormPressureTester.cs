@@ -37,7 +37,7 @@ namespace WinTabPressureTester
 
             string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure* 100.0);
 
-            (double TiltX, double TiltY) = WinTabUtils.Numerics.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth/10.0, wintab_pkt.pkOrientation.orAltitude/ 10.0);
+            (double TiltX, double TiltY) = WinTabUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth/10.0, wintab_pkt.pkOrientation.orAltitude/ 10.0);
 
             this.label_pressure_raw.Text = wintab_pkt.pkNormalPressure.ToString();
             this.label_pressure_level.Text = str_pressure.ToString();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinTabUtils.Numerics
+namespace WinTabUtils.Trigonometry
 {
     public static class Angles
     {
