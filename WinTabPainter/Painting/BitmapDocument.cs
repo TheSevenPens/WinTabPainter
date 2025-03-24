@@ -37,13 +37,13 @@ public class BitmapDocument : System.IDisposable
         get => this.background_layer.Graphics.SmoothingMode == SD.Drawing2D.SmoothingMode.AntiAlias ;
         set => this.background_layer.Graphics.SmoothingMode = value ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
     }
-    public Geometry.Size Size
+    public WinTabUtils.Geometry.Size Size
     {
-        get { return new Geometry.Size(this._width,this._height); }
+        get { return new WinTabUtils.Geometry.Size(this._width,this._height); }
     }
     public BitmapDocument(int width, int height)
     {
-        this.background_layer = new BitmapLayer(new Geometry.Size(width,height));
+        this.background_layer = new BitmapLayer(new WinTabUtils.Geometry.Size(width,height));
         this._width= width; 
         this._height = height;
         this.paint_brush = new SD.SolidBrush(SD.Color.Black);
@@ -90,11 +90,11 @@ public class BitmapDocument : System.IDisposable
         this.background_layer.Bitmap.Save(filename);
     }
 
-    public void DrawDabCenteredAt(Painting.ColorARGB color, Geometry.Point p, double width)
+    public void DrawDabCenteredAt(Painting.ColorARGB color, WinTabUtils.Geometry.Point p, double width)
     {
         double half_width = System.Math.Max(1.0, width / 2.0);
-        var halfsize = new Geometry.SizeD(half_width, half_width);
-        var fullsize = new Geometry.SizeD(width, width);
+        var halfsize = new WinTabUtils.Geometry.SizeD(half_width, half_width);
+        var fullsize = new WinTabUtils.Geometry.SizeD(width, width);
 
         var r1 = new SD.RectangleF(p.ToPointD().Subtract(halfsize), fullsize);
         this.background_layer.Graphics.FillEllipse(this.paint_brush, r1);
@@ -117,7 +117,7 @@ public class BitmapDocument : System.IDisposable
         this._height = background_layer.Height;
     }
 
-    public bool Contains(Geometry.Point p)
+    public bool Contains(WinTabUtils.Geometry.Point p)
     {
         if (p.X < 0) { return false; }
         if (p.Y < 0) { return false; }

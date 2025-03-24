@@ -38,7 +38,7 @@ namespace WinTabPainter
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
-        Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new Numerics.OrderedRange(-100, 100);
+        WinTabUtils.Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new WinTabUtils.Numerics.OrderedRange(-100, 100);
 
 
 
@@ -258,7 +258,7 @@ namespace WinTabPainter
             }
 
         }
-        public Geometry.Point Screen_loc_to_canvas_loc(Geometry.Point screen_loc)
+        public WinTabUtils.Geometry.Point Screen_loc_to_canvas_loc(WinTabUtils.Geometry.Point screen_loc)
         {
             var canv_loc = this.pictureBox_Canvas.Location.ToPoint();
             var adjusted_pos = screen_loc.Subtract(canv_loc);
@@ -285,7 +285,7 @@ namespace WinTabPainter
                 return str_pressure;
             }
         }
-        private void UpdateLivePaintStats(Painting.PaintData paint_data, Geometry.Point penpos_canvas)
+        private void UpdateLivePaintStats(Painting.PaintData paint_data, WinTabUtils.Geometry.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();

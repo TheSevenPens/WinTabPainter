@@ -1,4 +1,4 @@
-﻿namespace WinTabPainter.Numerics;
+﻿namespace WinTabUtils.Numerics;
 
 public class EMASmoother
 {
