@@ -37,6 +37,10 @@
             label4 = new Label();
             label_or_altitude = new Label();
             pictureBox1 = new PictureBox();
+            label3 = new Label();
+            label_tilty = new Label();
+            label6 = new Label();
+            label_tiltx = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -124,11 +128,53 @@
             pictureBox1.TabIndex = 8;
             pictureBox1.TabStop = false;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(62, 648);
+            label3.Name = "label3";
+            label3.Size = new Size(233, 41);
+            label3.TabIndex = 12;
+            label3.Text = "Orientation tilt y";
+            // 
+            // label_tilty
+            // 
+            label_tilty.AutoSize = true;
+            label_tilty.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_tilty.Location = new Point(71, 689);
+            label_tilty.Name = "label_tilty";
+            label_tilty.Size = new Size(379, 102);
+            label_tilty.TabIndex = 11;
+            label_tilty.Text = "-------";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(62, 492);
+            label6.Name = "label6";
+            label6.Size = new Size(232, 41);
+            label6.TabIndex = 10;
+            label6.Text = "Orientation tilt x";
+            // 
+            // label_tiltx
+            // 
+            label_tiltx.AutoSize = true;
+            label_tiltx.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_tiltx.Location = new Point(71, 533);
+            label_tiltx.Name = "label_tiltx";
+            label_tiltx.Size = new Size(379, 102);
+            label_tiltx.TabIndex = 9;
+            label_tiltx.Text = "-------";
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2023, 1388);
+            Controls.Add(label3);
+            Controls.Add(label_tilty);
+            Controls.Add(label6);
+            Controls.Add(label_tiltx);
             Controls.Add(pictureBox1);
             Controls.Add(label2);
             Controls.Add(label_or_azimuth);
@@ -158,5 +204,9 @@
         private Label label4;
         private Label label_or_altitude;
         private PictureBox pictureBox1;
+        private Label label3;
+        private Label label_tilty;
+        private Label label6;
+        private Label label_tiltx;
     }
 }
