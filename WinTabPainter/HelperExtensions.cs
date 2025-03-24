@@ -1,5 +1,5 @@
 ﻿using System;
-using WinTabPainter.Geometry;
+using WinTabUtils.Geometry;
 using SD = System.Drawing;
 
 namespace WinTabPainter;
@@ -11,9 +11,9 @@ public static class HelperExtensions
         var s = string.Format(format, args);
         sb.AppendLine(s);
     }
-    public static Geometry.Point ToPoint(this SD.Point p)
+    public static WinTabUtils.Geometry.Point ToPoint(this SD.Point p)
     {
-        var np = new Geometry.Point(p.X, p.Y);
+        var np = new WinTabUtils.Geometry.Point(p.X, p.Y);
         return np;
     }
     public static string ToStringXY(this SD.Point p)
@@ -21,12 +21,12 @@ public static class HelperExtensions
         return string.Format("({0}x{1})", p.X, p.Y);
     }
 
-    public static PointD Smooth(this PointD p, Numerics.EMAPositionSmoother smoother)
+    public static WinTabUtils.Geometry.PointD Smooth(this WinTabUtils.Geometry.PointD p, WinTabUtils.Numerics.EMAPositionSmoother smoother)
     {
         return smoother.GetNextSmoothed(p);
     }
 
-    public static double Smooth(this double v, Numerics.EMASmoother smoother)
+    public static double Smooth(this double v, WinTabUtils.Numerics.EMASmoother smoother)
     {
         return smoother.GetNextSmoothed(v);
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinTabPainter.Numerics;
+namespace WinTabUtils.Numerics;
 
 public class EMAPositionSmoother
 {
