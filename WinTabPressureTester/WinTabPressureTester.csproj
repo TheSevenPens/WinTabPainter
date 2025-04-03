@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WintabDN\WintabDN.csproj" />
     <ProjectReference Include="..\WinTabUtils\WinTabUtils.csproj" />
   </ItemGroup>
