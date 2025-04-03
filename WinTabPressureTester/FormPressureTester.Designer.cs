@@ -51,6 +51,7 @@
             button2 = new Button();
             label_recordcount = new Label();
             button_clearlog = new Button();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -212,11 +213,17 @@
             // 
             // textBox_log
             // 
-            textBox_log.Location = new Point(1435, 99);
+            textBox_log.BorderStyle = BorderStyle.FixedSingle;
+            textBox_log.Enabled = false;
+            textBox_log.Location = new Point(1435, 226);
             textBox_log.Multiline = true;
             textBox_log.Name = "textBox_log";
-            textBox_log.Size = new Size(684, 902);
+            textBox_log.ReadOnly = true;
+            textBox_log.ScrollBars = ScrollBars.Vertical;
+            textBox_log.Size = new Size(684, 775);
             textBox_log.TabIndex = 15;
+            textBox_log.TabStop = false;
+            textBox_log.Enter += textBox_log_Enter;
             // 
             // button_start
             // 
@@ -272,11 +279,11 @@
             // label_recordcount
             // 
             label_recordcount.AutoSize = true;
-            label_recordcount.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_recordcount.Location = new Point(832, 940);
+            label_recordcount.Font = new Font("Consolas", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_recordcount.Location = new Point(1636, 151);
             label_recordcount.Margin = new Padding(2, 0, 2, 0);
             label_recordcount.Name = "label_recordcount";
-            label_recordcount.Size = new Size(225, 82);
+            label_recordcount.Size = new Size(119, 43);
             label_recordcount.TabIndex = 21;
             label_recordcount.Text = "-----";
             // 
@@ -290,11 +297,22 @@
             button_clearlog.UseVisualStyleBackColor = true;
             button_clearlog.Click += button_clearlog_Click;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(1435, 151);
+            label7.Margin = new Padding(2, 0, 2, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(155, 32);
+            label7.TabIndex = 23;
+            label7.Text = "Record count";
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2201, 1063);
+            Controls.Add(label7);
             Controls.Add(button_clearlog);
             Controls.Add(label_recordcount);
             Controls.Add(button2);
@@ -356,5 +374,6 @@
         private Button button2;
         private Label label_recordcount;
         private Button button_clearlog;
+        private Label label7;
     }
 }

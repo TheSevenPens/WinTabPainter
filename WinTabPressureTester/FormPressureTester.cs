@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Text;
 
 namespace WinTabPressureTester
 {
@@ -18,7 +19,7 @@ namespace WinTabPressureTester
         double physi_force;
         double log_force;
 
-        int recordcount;
+        RecordCollection record_collection;
 
         int px = 0;
 
@@ -31,6 +32,7 @@ namespace WinTabPressureTester
             serialPort = new SerialPort("COM6");
             cts = new CancellationTokenSource();
 
+            this.record_collection = new RecordCollection();
             this.button_start.Select();
         }
 
@@ -235,12 +237,14 @@ namespace WinTabPressureTester
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string phys = this.physi_force.ToString();
-            string log = this.log_force.ToString();
-            this.textBox_log.AppendText("[ " + phys + " , " + log + " ] , \r\n");
+            this.record_collection.Add(physi_force, log_force);
 
-            this.recordcount++;
-            this.label_recordcount.Text = this.recordcount.ToString();
+            this.textBox_log.Text = this.record_collection.GetText();
+
+            textBox_log.SelectionStart = textBox_log.TextLength;
+            textBox_log.ScrollToCaret();
+
+            this.label_recordcount.Text = this.record_collection.Count.ToString();
         }
 
         private void FormPressureTester_KeyDown(object sender, KeyEventArgs e)
@@ -259,9 +263,61 @@ namespace WinTabPressureTester
 
         private void button_clearlog_Click(object sender, EventArgs e)
         {
-            this.recordcount = 0;
-            this.label_recordcount.Text = this.recordcount.ToString();
+            this.record_collection.Clear();
+            this.label_recordcount.Text = this.record_collection.Count.ToString();
             this.textBox_log.Text = string.Empty;
+        }
+
+        private void textBox_log_Enter(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    public class PressureRecord
+    {
+        public readonly double PhysicalPressure;
+        public readonly double LogicalPressure;
+        public PressureRecord(double physical, double logical)
+        {
+            this.PhysicalPressure = physical;
+            this.LogicalPressure = logical; 
+        }
+    }
+
+    public class RecordCollection
+    {
+        List<PressureRecord> records;
+
+        public RecordCollection()
+        {
+            this.records = new List<PressureRecord>();
+        }
+        public int Count { get { return this.records.Count; } }
+
+        public string GetText()
+        {
+            var sb = new StringBuilder();
+            foreach (var record  in records)
+            {
+                string p = string.Format("{0:0.0}", record.PhysicalPressure );
+                string l = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
+
+
+                sb.Append("[ " + p + " , " + l + " ] , " + "\r\n");
+            }
+            return sb.ToString();
+        }
+
+        public void Add(double physical, double logical)
+        {
+            var r = new PressureRecord(physical, logical);
+            this.records.Add(r);
+        }
+
+        public void Clear()
+        {
+            this.records.Clear();
         }
     }
 }
