@@ -49,6 +49,8 @@
             label_force = new Label();
             button1 = new Button();
             button2 = new Button();
+            label_recordcount = new Label();
+            button_clearlog = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -265,12 +267,36 @@
             button2.TabIndex = 20;
             button2.Text = "copy";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // label_recordcount
+            // 
+            label_recordcount.AutoSize = true;
+            label_recordcount.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_recordcount.Location = new Point(832, 940);
+            label_recordcount.Margin = new Padding(2, 0, 2, 0);
+            label_recordcount.Name = "label_recordcount";
+            label_recordcount.Size = new Size(225, 82);
+            label_recordcount.TabIndex = 21;
+            label_recordcount.Text = "-----";
+            // 
+            // button_clearlog
+            // 
+            button_clearlog.Location = new Point(1185, 716);
+            button_clearlog.Name = "button_clearlog";
+            button_clearlog.Size = new Size(150, 46);
+            button_clearlog.TabIndex = 22;
+            button_clearlog.Text = "clear";
+            button_clearlog.UseVisualStyleBackColor = true;
+            button_clearlog.Click += button_clearlog_Click;
             // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2201, 1063);
+            Controls.Add(button_clearlog);
+            Controls.Add(label_recordcount);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(label_force);
@@ -328,5 +354,7 @@
         private Label label_force;
         private Button button1;
         private Button button2;
+        private Label label_recordcount;
+        private Button button_clearlog;
     }
 }

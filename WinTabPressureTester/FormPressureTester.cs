@@ -18,6 +18,8 @@ namespace WinTabPressureTester
         double physi_force;
         double log_force;
 
+        int recordcount;
+
         int px = 0;
 
         public FormPressureTester()
@@ -28,6 +30,8 @@ namespace WinTabPressureTester
 
             serialPort = new SerialPort("COM6");
             cts = new CancellationTokenSource();
+
+            this.button_start.Select();
         }
 
         Graphics gfx_picbox1;
@@ -101,6 +105,7 @@ namespace WinTabPressureTester
 
         private async void button_start_Click(object sender, EventArgs e)
         {
+
             if (!isReading)
             {
                 try
@@ -174,7 +179,7 @@ namespace WinTabPressureTester
                         str_force = this.TrimLastCharIf(str_force, 'M');
                         str_force = this.TrimLastCharIf(str_force, 'g');
 
-                         physi_force = double.Parse(str_force);
+                        physi_force = double.Parse(str_force);
 
                         str_force += " gf";
 
@@ -232,7 +237,10 @@ namespace WinTabPressureTester
         {
             string phys = this.physi_force.ToString();
             string log = this.log_force.ToString();
-            this.textBox_log.AppendText("[ " + phys + " , " + log  + " ], \r\n");
+            this.textBox_log.AppendText("[ " + phys + " , " + log + " ] , \r\n");
+
+            this.recordcount++;
+            this.label_recordcount.Text = this.recordcount.ToString();
         }
 
         private void FormPressureTester_KeyDown(object sender, KeyEventArgs e)
@@ -242,6 +250,18 @@ namespace WinTabPressureTester
         private void FormPressureTester_KeyPress(object sender, KeyPressEventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetText(this.textBox_log.Text);
+        }
+
+        private void button_clearlog_Click(object sender, EventArgs e)
+        {
+            this.recordcount = 0;
+            this.label_recordcount.Text = this.recordcount.ToString();
+            this.textBox_log.Text = string.Empty;
         }
     }
 }
