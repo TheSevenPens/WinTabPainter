@@ -1,25 +1,24 @@
 using System.Diagnostics;
 using System.IO.Ports;
-using System.Text;
 
 namespace WinTabPressureTester
 {
     public partial class FormPressureTester : Form
     {
         WinTabUtils.TabletSession wintabsession;
-        WinTabUtils.Numerics.MovingAverage ma;
+
+        WinTabUtils.Numerics.MovingAverage logical_pressur_moving_average;
 
 
         private System.IO.Ports.SerialPort serialPort;
         private CancellationTokenSource cts;
         private bool isReading = false;
 
-        int num_measuremnts;
         Stopwatch stopwatch;
         double physi_force;
         double log_force;
 
-        RecordCollection record_collection;
+        PressureRecordCollection record_collection;
 
         int px = 0;
 
@@ -27,12 +26,12 @@ namespace WinTabPressureTester
         {
             InitializeComponent();
             this.wintabsession = new WinTabUtils.TabletSession();
-            this.ma = new WinTabUtils.Numerics.MovingAverage(600);
+            this.logical_pressur_moving_average = new WinTabUtils.Numerics.MovingAverage(600);
 
             serialPort = new SerialPort("COM6");
             cts = new CancellationTokenSource();
 
-            this.record_collection = new RecordCollection();
+            this.record_collection = new PressureRecordCollection();
             this.button_start.Select();
         }
 
@@ -79,8 +78,8 @@ namespace WinTabPressureTester
 
 
 
-            this.ma.AddSample(normalized_raw_pressure);
-            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", ma.GetAverage() * 100.0);
+            this.logical_pressur_moving_average.AddSample(normalized_raw_pressure);
+            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", logical_pressur_moving_average.GetAverage() * 100.0);
 
             int py = this.pictureBox1.Height - 10 - (int)(4 * 100 * normalized_raw_pressure);
             this.gfx_picbox1.DrawLine(this.np_pen_black,
@@ -101,7 +100,7 @@ namespace WinTabPressureTester
         {
             if (buttonchange.Change == WinTabUtils.PenButtonPressChangeType.Released)
             {
-                this.ma.Clear();
+                this.logical_pressur_moving_average.Clear();
             }
         }
 
@@ -112,7 +111,6 @@ namespace WinTabPressureTester
             {
                 try
                 {
-                    num_measuremnts = 0;
                     this.stopwatch = Stopwatch.StartNew();
 
                     if (!serialPort.IsOpen)
@@ -163,7 +161,6 @@ namespace WinTabPressureTester
                     if (serialPort.BytesToRead > 0)
                     {
                         string line = await Task.Run(() => serialPort.ReadLine());
-                        this.num_measuremnts++;
 
                         // Update UI (e.g., append to a TextBox)
                         if (line == null) { continue; }
@@ -175,8 +172,6 @@ namespace WinTabPressureTester
 
                         if (tokens.Length == 0) { continue; }
 
-                        string str_nm = this.num_measuremnts.ToString();
-                        string str_mps = (this.num_measuremnts / this.stopwatch.Elapsed.TotalSeconds).ToString();
                         string str_force = tokens[^1];
                         str_force = this.TrimLastCharIf(str_force, 'M');
                         str_force = this.TrimLastCharIf(str_force, 'g');
@@ -271,53 +266,6 @@ namespace WinTabPressureTester
         private void textBox_log_Enter(object sender, EventArgs e)
         {
 
-        }
-    }
-
-    public class PressureRecord
-    {
-        public readonly double PhysicalPressure;
-        public readonly double LogicalPressure;
-        public PressureRecord(double physical, double logical)
-        {
-            this.PhysicalPressure = physical;
-            this.LogicalPressure = logical; 
-        }
-    }
-
-    public class RecordCollection
-    {
-        List<PressureRecord> records;
-
-        public RecordCollection()
-        {
-            this.records = new List<PressureRecord>();
-        }
-        public int Count { get { return this.records.Count; } }
-
-        public string GetText()
-        {
-            var sb = new StringBuilder();
-            foreach (var record  in records)
-            {
-                string p = string.Format("{0:0.0}", record.PhysicalPressure );
-                string l = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
-
-
-                sb.Append("[ " + p + " , " + l + " ] , " + "\r\n");
-            }
-            return sb.ToString();
-        }
-
-        public void Add(double physical, double logical)
-        {
-            var r = new PressureRecord(physical, logical);
-            this.records.Add(r);
-        }
-
-        public void Clear()
-        {
-            this.records.Clear();
         }
     }
 }
