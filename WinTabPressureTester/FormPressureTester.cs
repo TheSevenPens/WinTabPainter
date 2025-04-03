@@ -7,7 +7,7 @@ namespace WinTabPressureTester
     {
         WinTabUtils.TabletSession wintabsession;
 
-        WinTabUtils.Numerics.MovingAverage logical_pressur_moving_average;
+        WinTabUtils.Numerics.MovingAverage logical_pressure_moving_average;
 
 
         private System.IO.Ports.SerialPort serialPort;
@@ -26,7 +26,7 @@ namespace WinTabPressureTester
         {
             InitializeComponent();
             this.wintabsession = new WinTabUtils.TabletSession();
-            this.logical_pressur_moving_average = new WinTabUtils.Numerics.MovingAverage(600);
+            this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
 
             serialPort = new SerialPort("COM6");
             cts = new CancellationTokenSource();
@@ -78,8 +78,8 @@ namespace WinTabPressureTester
 
 
 
-            this.logical_pressur_moving_average.AddSample(normalized_raw_pressure);
-            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", logical_pressur_moving_average.GetAverage() * 100.0);
+            this.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
+            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", logical_pressure_moving_average.GetAverage() * 100.0);
 
             int py = this.pictureBox1.Height - 10 - (int)(4 * 100 * normalized_raw_pressure);
             this.gfx_picbox1.DrawLine(this.np_pen_black,
@@ -100,7 +100,7 @@ namespace WinTabPressureTester
         {
             if (buttonchange.Change == WinTabUtils.PenButtonPressChangeType.Released)
             {
-                this.logical_pressur_moving_average.Clear();
+                this.logical_pressure_moving_average.Clear();
             }
         }
 

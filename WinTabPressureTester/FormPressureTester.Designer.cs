@@ -52,6 +52,7 @@
             label_recordcount = new Label();
             button_clearlog = new Button();
             label7 = new Label();
+            label8 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -82,9 +83,9 @@
             label1.Location = new Point(47, 151);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(229, 32);
+            label1.Size = new Size(185, 32);
             label1.TabIndex = 3;
-            label1.Text = "Pressure normalized";
+            label1.Text = "Logical pressure";
             // 
             // label_normalized_pressure
             // 
@@ -141,7 +142,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(840, 50);
+            pictureBox1.Location = new Point(1363, 83);
             pictureBox1.Margin = new Padding(2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(459, 390);
@@ -193,21 +194,23 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(41, 285);
+            label5.Location = new Point(748, 117);
             label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(287, 32);
+            label5.Size = new Size(243, 32);
             label5.TabIndex = 14;
-            label5.Text = "Pressure normalized (MA)";
+            label5.Text = "Logical pressure (MA)";
             // 
             // label_normalizedpressure_ma
             // 
             label_normalizedpressure_ma.AutoSize = true;
+            label_normalizedpressure_ma.BackColor = SystemColors.Info;
+            label_normalizedpressure_ma.BorderStyle = BorderStyle.FixedSingle;
             label_normalizedpressure_ma.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_normalizedpressure_ma.Location = new Point(326, 285);
+            label_normalizedpressure_ma.Location = new Point(748, 149);
             label_normalizedpressure_ma.Margin = new Padding(2, 0, 2, 0);
             label_normalizedpressure_ma.Name = "label_normalizedpressure_ma";
-            label_normalizedpressure_ma.Size = new Size(301, 82);
+            label_normalizedpressure_ma.Size = new Size(303, 84);
             label_normalizedpressure_ma.TabIndex = 13;
             label_normalizedpressure_ma.Text = "-------";
             // 
@@ -215,19 +218,19 @@
             // 
             textBox_log.BorderStyle = BorderStyle.FixedSingle;
             textBox_log.Enabled = false;
-            textBox_log.Location = new Point(1435, 226);
+            textBox_log.Location = new Point(1363, 565);
             textBox_log.Multiline = true;
             textBox_log.Name = "textBox_log";
             textBox_log.ReadOnly = true;
             textBox_log.ScrollBars = ScrollBars.Vertical;
-            textBox_log.Size = new Size(684, 775);
+            textBox_log.Size = new Size(684, 475);
             textBox_log.TabIndex = 15;
             textBox_log.TabStop = false;
             textBox_log.Enter += textBox_log_Enter;
             // 
             // button_start
             // 
-            button_start.Location = new Point(908, 576);
+            button_start.Location = new Point(1363, 513);
             button_start.Name = "button_start";
             button_start.Size = new Size(150, 46);
             button_start.TabIndex = 16;
@@ -237,7 +240,7 @@
             // 
             // button_stop
             // 
-            button_stop.Location = new Point(908, 671);
+            button_stop.Location = new Point(1519, 513);
             button_stop.Name = "button_stop";
             button_stop.Size = new Size(150, 46);
             button_stop.TabIndex = 17;
@@ -248,17 +251,19 @@
             // label_force
             // 
             label_force.AutoSize = true;
+            label_force.BackColor = SystemColors.Info;
+            label_force.BorderStyle = BorderStyle.FixedSingle;
             label_force.Font = new Font("Consolas", 26.1F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_force.Location = new Point(908, 462);
+            label_force.Location = new Point(748, 285);
             label_force.Margin = new Padding(2, 0, 2, 0);
             label_force.Name = "label_force";
-            label_force.Size = new Size(149, 82);
+            label_force.Size = new Size(151, 84);
             label_force.TabIndex = 18;
             label_force.Text = "---";
             // 
             // button1
             // 
-            button1.Location = new Point(908, 762);
+            button1.Location = new Point(1363, 1060);
             button1.Name = "button1";
             button1.Size = new Size(150, 46);
             button1.TabIndex = 19;
@@ -268,7 +273,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(908, 851);
+            button2.Location = new Point(1533, 1060);
             button2.Name = "button2";
             button2.Size = new Size(150, 46);
             button2.TabIndex = 20;
@@ -280,7 +285,7 @@
             // 
             label_recordcount.AutoSize = true;
             label_recordcount.Font = new Font("Consolas", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_recordcount.Location = new Point(1636, 151);
+            label_recordcount.Location = new Point(1564, 1132);
             label_recordcount.Margin = new Padding(2, 0, 2, 0);
             label_recordcount.Name = "label_recordcount";
             label_recordcount.Size = new Size(119, 43);
@@ -289,7 +294,7 @@
             // 
             // button_clearlog
             // 
-            button_clearlog.Location = new Point(1185, 716);
+            button_clearlog.Location = new Point(1689, 1060);
             button_clearlog.Name = "button_clearlog";
             button_clearlog.Size = new Size(150, 46);
             button_clearlog.TabIndex = 22;
@@ -300,18 +305,29 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(1435, 151);
+            label7.Location = new Point(1363, 1132);
             label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
             label7.Size = new Size(155, 32);
             label7.TabIndex = 23;
             label7.Text = "Record count";
             // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(748, 253);
+            label8.Margin = new Padding(2, 0, 2, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(195, 32);
+            label8.TabIndex = 24;
+            label8.Text = "Physical pressure";
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2201, 1063);
+            ClientSize = new Size(2155, 1250);
+            Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(button_clearlog);
             Controls.Add(label_recordcount);
@@ -375,5 +391,6 @@
         private Label label_recordcount;
         private Button button_clearlog;
         private Label label7;
+        private Label label8;
     }
 }
