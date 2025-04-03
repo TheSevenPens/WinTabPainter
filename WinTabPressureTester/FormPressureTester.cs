@@ -4,6 +4,9 @@ namespace WinTabPressureTester
     {
         WinTabUtils.TabletSession wintabsession;
         WinTabUtils.Numerics.MovingAverage ma;
+
+        int px = 0;
+
         public FormPressureTester()
         {
             InitializeComponent();
@@ -12,8 +15,8 @@ namespace WinTabPressureTester
         }
 
         Graphics gfx_picbox1;
-        Pen np_pressure_guage = new Pen(Color.Black, 11);
-
+        Pen np_pen_black = new Pen(Color.Black, 11);
+        Pen np_pen_red = new Pen(Color.Red, 11);
         private void Form1_Load(object sender, EventArgs e)
         {
             this.wintabsession.PacketHandler = this.PacketHandler;
@@ -21,12 +24,13 @@ namespace WinTabPressureTester
             this.wintabsession.Open(WinTabUtils.TabletContextType.System);
             this.pictureBox1.Image = new System.Drawing.Bitmap(this.pictureBox1.Width, this.pictureBox1.Height);
             this.gfx_picbox1 = System.Drawing.Graphics.FromImage(this.pictureBox1.Image);
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.wintabsession?.Close();
-            this.np_pressure_guage?.Dispose();
+            this.np_pen_black?.Dispose();
             this.pictureBox1.Image?.Dispose();
             this.pictureBox1?.Dispose();
         }
@@ -54,6 +58,19 @@ namespace WinTabPressureTester
 
             this.ma.AddSample(normalized_raw_pressure);
             this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", ma.GetAverage() * 100.0);
+
+            int py = this.pictureBox1.Height-10 - (int)(4* 100 * normalized_raw_pressure);
+            this.gfx_picbox1.DrawLine(this.np_pen_black,
+                new WinTabUtils.Geometry.Point(px, py),
+                new WinTabUtils.Geometry.Point(px, py+1) );
+
+            this.px = this.px + 1;
+            if (this.px > this.pictureBox1.Width)
+            {
+                this.px = 0;
+            }
+
+            this.pictureBox1.Invalidate();
 
         }
 
