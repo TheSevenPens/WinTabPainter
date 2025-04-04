@@ -36,5 +36,10 @@ namespace WinTabPressureTester
         {
             this.records.Clear();
         }
+
+        public void ClearLast()
+        {
+            this.records.RemoveAt(this.records.Count - 1);
+        }
     }
 }

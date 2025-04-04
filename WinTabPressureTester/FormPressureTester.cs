@@ -20,10 +20,9 @@ namespace WinTabPressureTester
 
         PressureRecordCollection record_collection;
 
-        int px = 0;
 
         int q_logical_bufsize = 400;
-        WinTabUtils.Numerics.IndexedQueue <double> q_logical;
+        WinTabUtils.Numerics.IndexedQueue<double> q_logical;
 
         public FormPressureTester()
         {
@@ -41,27 +40,18 @@ namespace WinTabPressureTester
             this.button_start.Select();
         }
 
-        Graphics gfx_picbox1;
-        Pen np_pen_black = new Pen(Color.Black, 11);
-        Pen np_pen_red = new Pen(Color.Red, 11);
-        Brush bg_white = new SolidBrush(Color.White);
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.wintabsession.PacketHandler = this.PacketHandler;
             this.wintabsession.ButtonChangedHandler = this.ButtonChangeHandler;
             this.wintabsession.Open(WinTabUtils.TabletContextType.System);
-            this.pictureBox1.Image = new System.Drawing.Bitmap(this.pictureBox1.Width, this.pictureBox1.Height);
-            this.gfx_picbox1 = System.Drawing.Graphics.FromImage(this.pictureBox1.Image);
 
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.wintabsession?.Close();
-            this.np_pen_black?.Dispose();
-            this.pictureBox1.Image?.Dispose();
-            this.pictureBox1?.Dispose();
         }
 
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
@@ -98,20 +88,6 @@ namespace WinTabPressureTester
                 }
             }
             this.q_logical.Enqueue(cur_logical_pressure_ma);
-
-
-            this.gfx_picbox1.FillRectangle(bg_white, new Rectangle(0, 0, this.pictureBox1.Width, this.pictureBox1.Height));
-
-            for (int i=0;i<this.q_logical.Count;i++)
-            {
-                int px = i;
-                int py = this.pictureBox1.Height - 10 - (int)(3 * 100 * this.q_logical[i]);
-                this.gfx_picbox1.DrawLine(this.np_pen_black,
-                    new WinTabUtils.Geometry.Point(px, py-2),
-                    new WinTabUtils.Geometry.Point(px, py+2) );
-
-            }
-            this.pictureBox1.Invalidate();
 
         }
 
@@ -289,6 +265,19 @@ namespace WinTabPressureTester
 
         private void textBox_log_TextChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void button_clearlast_Click(object sender, EventArgs e)
+        {
+            if (this.record_collection.Count<1)
+            { 
+                return;
+            }
+
+            this.record_collection.ClearLast();
+            this.label_recordcount.Text = this.record_collection.Count.ToString();
+            this.textBox_log.Text = this.record_collection.GetText();
 
         }
     }
