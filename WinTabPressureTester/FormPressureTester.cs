@@ -22,11 +22,17 @@ namespace WinTabPressureTester
 
         int px = 0;
 
+        int q_logical_bufsize = 400;
+        WinTabUtils.Numerics.IndexedQueue <double> q_logical;
+
         public FormPressureTester()
         {
             InitializeComponent();
             this.wintabsession = new WinTabUtils.TabletSession();
             this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
+
+
+            this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_bufsize);
 
             serialPort = new SerialPort("COM6");
             cts = new CancellationTokenSource();
@@ -81,22 +87,30 @@ namespace WinTabPressureTester
 
 
             this.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
-            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", logical_pressure_moving_average.GetAverage() * 100.0);
+            double cur_logical_pressure_ma = logical_pressure_moving_average.GetAverage();
+            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", cur_logical_pressure_ma * 100.0);
 
-            int py = this.pictureBox1.Height - 10 - (int)(4 * 100 * normalized_raw_pressure);
+            if (this.q_logical.Count >= this.q_logical_bufsize)
+            {
+                if (this.q_logical.Count > 0)
+                {
+                    this.q_logical.Dequeue();
+                }
+            }
+            this.q_logical.Enqueue(cur_logical_pressure_ma);
+
 
             this.gfx_picbox1.FillRectangle(bg_white, new Rectangle(0, 0, this.pictureBox1.Width, this.pictureBox1.Height));
 
-            this.gfx_picbox1.DrawLine(this.np_pen_black,
-                new WinTabUtils.Geometry.Point(px, py),
-                new WinTabUtils.Geometry.Point(px, py + 1));
-
-            this.px = this.px + 1;
-            if (this.px > this.pictureBox1.Width)
+            for (int i=0;i<this.q_logical.Count;i++)
             {
-                this.px = 0;
-            }
+                int px = i;
+                int py = this.pictureBox1.Height - 10 - (int)(3 * 100 * this.q_logical[i]);
+                this.gfx_picbox1.DrawLine(this.np_pen_black,
+                    new WinTabUtils.Geometry.Point(px, py-2),
+                    new WinTabUtils.Geometry.Point(px, py+2) );
 
+            }
             this.pictureBox1.Invalidate();
 
         }
