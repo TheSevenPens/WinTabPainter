@@ -226,6 +226,7 @@
             textBox_log.Size = new Size(684, 475);
             textBox_log.TabIndex = 15;
             textBox_log.TabStop = false;
+            textBox_log.TextChanged += textBox_log_TextChanged;
             textBox_log.Enter += textBox_log_Enter;
             // 
             // button_start

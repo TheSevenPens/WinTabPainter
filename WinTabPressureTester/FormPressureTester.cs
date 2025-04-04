@@ -267,5 +267,10 @@ namespace WinTabPressureTester
         {
 
         }
+
+        private void textBox_log_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
