@@ -53,6 +53,8 @@
             label7 = new Label();
             label8 = new Label();
             button_clearlast = new Button();
+            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            button_load_sample_data = new Button();
             SuspendLayout();
             // 
             // label_pressure_raw
@@ -260,7 +262,7 @@
             button1.TabIndex = 19;
             button1.Text = "&record";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button1.Click += button_record_Click;
             // 
             // button2
             // 
@@ -323,11 +325,31 @@
             button_clearlast.UseVisualStyleBackColor = true;
             button_clearlast.Click += button_clearlast_Click;
             // 
+            // formsPlot1
+            // 
+            formsPlot1.DisplayScale = 2F;
+            formsPlot1.Location = new Point(68, 724);
+            formsPlot1.Name = "formsPlot1";
+            formsPlot1.Size = new Size(2051, 453);
+            formsPlot1.TabIndex = 26;
+            // 
+            // button_load_sample_data
+            // 
+            button_load_sample_data.Location = new Point(1598, 56);
+            button_load_sample_data.Name = "button_load_sample_data";
+            button_load_sample_data.Size = new Size(403, 46);
+            button_load_sample_data.TabIndex = 27;
+            button_load_sample_data.Text = "load sample data";
+            button_load_sample_data.UseVisualStyleBackColor = true;
+            button_load_sample_data.Click += button_load_sample_data_Click;
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2155, 1250);
+            Controls.Add(button_load_sample_data);
+            Controls.Add(formsPlot1);
             Controls.Add(button_clearlast);
             Controls.Add(label8);
             Controls.Add(label7);
@@ -392,5 +414,7 @@
         private Label label7;
         private Label label8;
         private Button button_clearlast;
+        private ScottPlot.WinForms.FormsPlot formsPlot1;
+        private Button button_load_sample_data;
     }
 }

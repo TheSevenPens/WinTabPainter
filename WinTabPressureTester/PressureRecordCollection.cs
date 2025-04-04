@@ -4,18 +4,18 @@ namespace WinTabPressureTester
 {
     public class PressureRecordCollection
     {
-        List<PressureRecord> records;
+        public List<PressureRecord> items;
 
         public PressureRecordCollection()
         {
-            this.records = new List<PressureRecord>();
+            this.items = new List<PressureRecord>();
         }
-        public int Count { get { return this.records.Count; } }
+        public int Count { get { return this.items.Count; } }
 
         public string GetText()
         {
             var sb = new StringBuilder();
-            foreach (var record  in records)
+            foreach (var record  in items)
             {
                 string p = string.Format("{0:0.0}", record.PhysicalPressure );
                 string l = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
@@ -29,17 +29,20 @@ namespace WinTabPressureTester
         public void Add(double physical, double logical)
         {
             var r = new PressureRecord(physical, logical);
-            this.records.Add(r);
+            this.items.Add(r);
         }
 
         public void Clear()
         {
-            this.records.Clear();
+            this.items.Clear();
         }
 
         public void ClearLast()
         {
-            this.records.RemoveAt(this.records.Count - 1);
+            this.items.RemoveAt(this.items.Count - 1);
         }
+
+        
+
     }
 }

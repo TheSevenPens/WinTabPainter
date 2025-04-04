@@ -1,3 +1,4 @@
+using ScottPlot;
 using System.Diagnostics;
 using System.IO.Ports;
 
@@ -30,6 +31,7 @@ namespace WinTabPressureTester
             this.wintabsession = new WinTabUtils.TabletSession();
             this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
 
+            formsPlot1.Plot.Axes.SetLimits(0, 1000, 0, 110);
 
             this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_bufsize);
 
@@ -225,16 +227,14 @@ namespace WinTabPressureTester
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_record_Click(object sender, EventArgs e)
         {
             this.record_collection.Add(physi_force, log_force);
 
-            this.textBox_log.Text = this.record_collection.GetText();
+            this.updatedata();
 
-            textBox_log.SelectionStart = textBox_log.TextLength;
-            textBox_log.ScrollToCaret();
 
-            this.label_recordcount.Text = this.record_collection.Count.ToString();
+
         }
 
         private void FormPressureTester_KeyDown(object sender, KeyEventArgs e)
@@ -254,8 +254,7 @@ namespace WinTabPressureTester
         private void button_clearlog_Click(object sender, EventArgs e)
         {
             this.record_collection.Clear();
-            this.label_recordcount.Text = this.record_collection.Count.ToString();
-            this.textBox_log.Text = string.Empty;
+            this.updatedata();
         }
 
         private void textBox_log_Enter(object sender, EventArgs e)
@@ -270,15 +269,42 @@ namespace WinTabPressureTester
 
         private void button_clearlast_Click(object sender, EventArgs e)
         {
-            if (this.record_collection.Count<1)
-            { 
+            if (this.record_collection.Count < 1)
+            {
                 return;
             }
 
             this.record_collection.ClearLast();
+
+            this.updatedata();
+
+        }
+
+        private void button_load_sample_data_Click(object sender, EventArgs e)
+        {
+            this.record_collection.Add(10, 0.01);
+            this.record_collection.Add(100, 0.40);
+            this.record_collection.Add(150, 0.50);
+            this.record_collection.Add(400, 0.85);
+            this.record_collection.Add(500, 1.00);
+            this.updatedata();
+        }
+
+        public void updatedata()
+        {
             this.label_recordcount.Text = this.record_collection.Count.ToString();
             this.textBox_log.Text = this.record_collection.GetText();
 
+            textBox_log.SelectionStart = textBox_log.TextLength;
+            textBox_log.ScrollToCaret();
+
+
+            double[] dataX = this.record_collection.items.Select(i => i.PhysicalPressure).ToArray();
+            double[] dataY = this.record_collection.items.Select(i => i.LogicalPressure * 100).ToArray();
+
+            formsPlot1.Plot.Clear();
+            formsPlot1.Plot.Add.Scatter(dataX, dataY);
+            formsPlot1.Refresh();
         }
     }
 }
