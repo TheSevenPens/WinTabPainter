@@ -38,6 +38,8 @@ namespace WinTabPressureTester
         Graphics gfx_picbox1;
         Pen np_pen_black = new Pen(Color.Black, 11);
         Pen np_pen_red = new Pen(Color.Red, 11);
+        Brush bg_white = new SolidBrush(Color.White);
+
         private void Form1_Load(object sender, EventArgs e)
         {
             this.wintabsession.PacketHandler = this.PacketHandler;
@@ -82,6 +84,9 @@ namespace WinTabPressureTester
             this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", logical_pressure_moving_average.GetAverage() * 100.0);
 
             int py = this.pictureBox1.Height - 10 - (int)(4 * 100 * normalized_raw_pressure);
+
+            this.gfx_picbox1.FillRectangle(bg_white, new Rectangle(0, 0, this.pictureBox1.Width, this.pictureBox1.Height));
+
             this.gfx_picbox1.DrawLine(this.np_pen_black,
                 new WinTabUtils.Geometry.Point(px, py),
                 new WinTabUtils.Geometry.Point(px, py + 1));
