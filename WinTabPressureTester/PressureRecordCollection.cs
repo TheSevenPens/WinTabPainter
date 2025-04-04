@@ -15,13 +15,16 @@ namespace WinTabPressureTester
         public string GetText()
         {
             var sb = new StringBuilder();
+            int i = 0;
             foreach (var record  in items)
             {
                 string p = string.Format("{0:0.0}", record.PhysicalPressure );
                 string l = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
 
+                string comma = i==(items.Count-1) ? "" : ",";
 
-                sb.Append("[ " + p + " , " + l + " ] , " + "\r\n");
+                sb.Append("[ " + p + " , " + l + " ] " + comma + "\r\n");
+                i++;
             }
             return sb.ToString();
         }

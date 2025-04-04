@@ -1,6 +1,7 @@
 using ScottPlot;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Text;
 
 namespace WinTabPressureTester
 {
@@ -248,7 +249,25 @@ namespace WinTabPressureTester
 
         private void button2_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Clipboard.SetText(this.textBox_log.Text);
+            string t = this.textBox_log.Text;
+
+            var sb = new StringBuilder();
+            sb.AppendLine("{");
+            sb.AppendLine("    \"brand\": \"XXXXX\" , ");
+            sb.AppendLine("    \"pen\": \"XXXXX\" , ");
+            sb.AppendLine("    \"penfamily\": \"\" , ");
+            sb.AppendLine("    \"inventoryid\": \"XX000000\" , ");
+            sb.AppendLine("    \"date\": \"2025-04-04\" , ");
+            sb.AppendLine("    \"user\": \"sevenpens\" , ");
+            sb.AppendLine("    \"tablet\": \"PXX-000\" , ");
+            sb.AppendLine("    \"driver\": \"XXX\" , ");
+            sb.AppendLine("    \"os\": \"WINDOWS\" , ");
+            sb.AppendLine("    \"notes\": \"\" , ");
+            sb.AppendLine("    \"records\": [  ");
+            sb.AppendLine(t);
+            sb.AppendLine("    ]");
+            sb.AppendLine("}");
+            System.Windows.Forms.Clipboard.SetText(sb.ToString());
         }
 
         private void button_clearlog_Click(object sender, EventArgs e)
