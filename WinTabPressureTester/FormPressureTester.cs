@@ -32,6 +32,9 @@ namespace WinTabPressureTester
             this.wintabsession = new WinTabUtils.TabletSession();
             this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
 
+            this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
+
             formsPlot1.Plot.Axes.SetLimits(0, 1000, 0, 110);
 
             this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_bufsize);
@@ -249,25 +252,33 @@ namespace WinTabPressureTester
 
         private void button2_Click(object sender, EventArgs e)
         {
+            string text_content = CreateJSONContent();
+            System.Windows.Forms.Clipboard.SetText(text_content);
+        }
+
+        private string CreateJSONContent()
+        {
             string t = this.textBox_log.Text;
 
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.AppendLine("    \"brand\": \"XXXXX\" , ");
-            sb.AppendLine("    \"pen\": \"XXXXX\" , ");
-            sb.AppendLine("    \"penfamily\": \"\" , ");
-            sb.AppendLine("    \"inventoryid\": \"XX000000\" , ");
-            sb.AppendLine("    \"date\": \"2025-04-04\" , ");
-            sb.AppendLine("    \"user\": \"sevenpens\" , ");
-            sb.AppendLine("    \"tablet\": \"PXX-000\" , ");
-            sb.AppendLine("    \"driver\": \"XXX\" , ");
-            sb.AppendLine("    \"os\": \"WINDOWS\" , ");
-            sb.AppendLine("    \"notes\": \"\" , ");
+            sb.AppendLine($@"    ""brand"": ""{textBox_brand.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""pen"": ""{textBox_Pen.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""penfamily"": ""{string.Empty.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""inventoryid"": ""{textBox_inventoryid.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""date"": ""{this.textBox_date.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""user"": ""{this.textBox_User.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""tablet"": ""{this.textBox_Tablet.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""driver"": ""{this.textBox_driver.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""os"": ""{this.textBox_OS.Text.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""notes"": ""{string.Empty}"" , ");
             sb.AppendLine("    \"records\": [  ");
             sb.AppendLine(t);
             sb.AppendLine("    ]");
             sb.AppendLine("}");
-            System.Windows.Forms.Clipboard.SetText(sb.ToString());
+
+            string text_content = sb.ToString();
+            return text_content;
         }
 
         private void button_clearlog_Click(object sender, EventArgs e)
@@ -324,6 +335,29 @@ namespace WinTabPressureTester
             formsPlot1.Plot.Clear();
             formsPlot1.Plot.Add.Scatter(dataX, dataY);
             formsPlot1.Refresh();
+        }
+
+        private void button_export_Click(object sender, EventArgs e)
+        {
+            string json = this.CreateJSONContent();
+            string datestring = this.textBox_date.Text.Trim().ToUpper();
+            string inventoryid = this.textBox_inventoryid.Text.Trim().ToUpper();
+            string filename = $"{inventoryid}_{datestring}.json";
+
+
+
+            string myDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string filePath = Path.Combine(myDocumentsPath, filename);
+
+            try
+            {
+                File.WriteAllText(filePath, json);
+                MessageBox.Show("File saved " + filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving file: {ex.Message}");
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace WinTabPressureTester
         {
             this.items = new List<PressureRecord>();
         }
-        public int Count { get { return this.items.Count; } }
+        public int Count => this.items.Count;
 
         public string GetText()
         {
@@ -18,12 +18,12 @@ namespace WinTabPressureTester
             int i = 0;
             foreach (var record  in items)
             {
-                string p = string.Format("{0:0.0}", record.PhysicalPressure );
-                string l = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
+                string str_physical = string.Format("{0:0.0}", record.PhysicalPressure );
+                string str_logical = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
 
                 string comma = i==(items.Count-1) ? "" : ",";
 
-                sb.Append("[ " + p + " , " + l + " ] " + comma + "\r\n");
+                sb.Append($"[ {str_physical} , {str_logical} ] {comma}\r\n");
                 i++;
             }
             return sb.ToString();
@@ -44,8 +44,5 @@ namespace WinTabPressureTester
         {
             this.items.RemoveAt(this.items.Count - 1);
         }
-
-        
-
     }
 }
