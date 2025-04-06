@@ -408,22 +408,15 @@ public class CWintabExtensions
         UInt32 functionIndex_I,
         String imageFilePath_I)
     {
-        try
-        {
-            if (!CWintabExtensions.ControlPropertySetImage(
-                context_I.HCtx,
-                (byte)extTagIndex_I,
-                (byte)tabletIndex_I,
-                (byte)controlIndex_I,
-                (byte)functionIndex_I,
-                (ushort)Enums.EWTExtensionTabletProperty.TABLET_PROPERTY_OVERRIDE_ICON,
-                imageFilePath_I))
-            { throw new Exception("Oops - FAILED ControlPropertySet for TABLET_PROPERTY_OVERRIDE"); }
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+        if (!CWintabExtensions.ControlPropertySetImage(
+            context_I.HCtx,
+            (byte)extTagIndex_I,
+            (byte)tabletIndex_I,
+            (byte)controlIndex_I,
+            (byte)functionIndex_I,
+            (ushort)Enums.EWTExtensionTabletProperty.TABLET_PROPERTY_OVERRIDE_ICON,
+            imageFilePath_I))
+        { throw new Exception("Oops - FAILED ControlPropertySet for TABLET_PROPERTY_OVERRIDE"); }
 
         return true;
     }

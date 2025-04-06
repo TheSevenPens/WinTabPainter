@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ScottPlot.WinForms" Version="5.0.55" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WintabDN\WintabDN.csproj" />
     <ProjectReference Include="..\WinTabUtils\WinTabUtils.csproj" />
   </ItemGroup>
