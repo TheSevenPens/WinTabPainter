@@ -351,7 +351,7 @@ namespace WinTabPressureTester
         public void updatedata()
         {
             this.label_recordcount.Text = this.record_collection.Count.ToString();
-            this.textBox_log.Text = this.record_collection.GetText();
+            this.textBox_log.Text = this.record_collection.GetRecordsText();
 
             textBox_log.SelectionStart = textBox_log.TextLength;
             textBox_log.ScrollToCaret();

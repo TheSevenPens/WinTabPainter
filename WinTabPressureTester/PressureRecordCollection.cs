@@ -12,7 +12,20 @@ namespace WinTabPressureTester
         }
         public int Count => this.items.Count;
 
-        public string GetText()
+        public string GetRecordsText()
+        {
+            var sb = new StringBuilder();
+            foreach (var record in items)
+            {
+                string str_physical = string.Format("{0:0.0}", record.PhysicalPressure);
+                string str_logical = string.Format("{0:0.0000}", record.LogicalPressure * 100.0);
+
+                sb.Append($"{str_physical} gf → {str_logical}% \r\n");
+            }
+            return sb.ToString();
+        }
+
+        public string GetRecordsJSON()
         {
             var sb = new StringBuilder();
             int i = 0;
