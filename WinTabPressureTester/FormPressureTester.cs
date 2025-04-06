@@ -233,7 +233,7 @@ namespace WinTabPressureTester
 
         private void button_record_Click(object sender, EventArgs e)
         {
-            this.record_collection.Add(physi_force, log_force);
+            this.record_collection.Add(physi_force, logical_pressure_moving_average.GetAverage());
 
             this.updatedata();
 
