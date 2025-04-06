@@ -43,8 +43,22 @@ namespace WinTabPressureTester
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
 
 
+            //formsPlot1.Plot.Title("Pressure response");
+            formsPlot1.Plot.XLabel("Physical pressure (gf)");
+            formsPlot1.Plot.YLabel("Logical pressure (%)");
+            //formsPlot1.Plot.Axes.Left.Label.FontName = "Consolas";
+            formsPlot1.Plot.Axes.Left.Label.FontSize= 27;
+            //formsPlot1.Plot.Axes.Bottom.Label.FontName = "Segoe";
+            formsPlot1.Plot.Axes.Bottom.Label.FontSize = 27;
+
             formsPlot1.Plot.Axes.SetLimits(0, 1000, 0, 110);
             formsPlot1.UserInputProcessor.IsEnabled = false; // prevent the user from scrolling or panning the plot
+
+            formsPlot1.Plot.Grid.MajorLineColor = Colors.Black.WithOpacity(.1);
+            formsPlot1.Plot.Grid.MajorLineWidth = 2;
+
+            formsPlot1.Plot.Axes.Left.TickLabelStyle.FontSize = 27;
+            formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 27;
 
 
             this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_pressure_bufsize);
