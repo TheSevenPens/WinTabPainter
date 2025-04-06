@@ -82,7 +82,7 @@ namespace WinTabPressureTester
         }
 
         Graphics gfx_picbox1;
-        Pen np_pressure_guage = new Pen(Color.Black, 11);
+        Pen np_pressure_guage = new Pen(System.Drawing.Color.Black, 11);
 
         private void Form1_Load(object sender, EventArgs e)
         {
