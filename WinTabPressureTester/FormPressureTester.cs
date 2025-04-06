@@ -8,22 +8,28 @@ namespace WinTabPressureTester
 
     public partial class FormPressureTester : Form
     {
+        // Sessions to held with our two datasources
+        // the tablet and the scale
         WinTabUtils.TabletSession wintabsession;
         ScaleSession scalesession;
 
 
+        // move to scalesession
         private System.IO.Ports.SerialPort serialPort;
+
+        // move to scalesession ???
         private CancellationTokenSource cts;
         private bool isReading = false;
 
+        // get rid of this
         Stopwatch stopwatch;
-        double physi_force;
-        double log_force;
+
+        // store in a different place?
+        double physi_pressure;
+        double log_pressure;
 
         PressureRecordCollection record_collection;
-
-
-        int q_logical_bufsize = 400;
+        int q_logical_pressure_bufsize = 400;
         WinTabUtils.Numerics.IndexedQueue<double> q_logical;
 
         public FormPressureTester()
@@ -36,9 +42,12 @@ namespace WinTabPressureTester
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
 
-            formsPlot1.Plot.Axes.SetLimits(0, 1000, 0, 110);
 
-            this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_bufsize);
+            formsPlot1.Plot.Axes.SetLimits(0, 1000, 0, 110);
+            formsPlot1.UserInputProcessor.IsEnabled = false; // prevent the user from scrolling or panning the plot
+
+
+            this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_pressure_bufsize);
 
             serialPort = new SerialPort("COM6");
             cts = new CancellationTokenSource();
@@ -69,7 +78,7 @@ namespace WinTabPressureTester
             double normalized_raw_pressure = (raw_pressure / (1.0 * this.wintabsession.TabletInfo.MaxPressure));
 
             string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure * 100.0);
-            this.log_force = normalized_raw_pressure;
+            this.log_pressure = normalized_raw_pressure;
 
             (double TiltX, double TiltY) = WinTabUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
 
@@ -87,7 +96,7 @@ namespace WinTabPressureTester
             double cur_logical_pressure_ma = this.scalesession.logical_pressure_moving_average.GetAverage();
             this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", cur_logical_pressure_ma * 100.0);
 
-            if (this.q_logical.Count >= this.q_logical_bufsize)
+            if (this.q_logical.Count >= this.q_logical_pressure_bufsize)
             {
                 if (this.q_logical.Count > 0)
                 {
@@ -180,7 +189,7 @@ namespace WinTabPressureTester
             str_force = this.TrimLastCharIf(str_force, 'M');
             str_force = this.TrimLastCharIf(str_force, 'g');
 
-            physi_force = double.Parse(str_force);
+            physi_pressure = double.Parse(str_force);
 
             var sr = new ScaleRecord();
             sr.Line = line;
@@ -201,7 +210,7 @@ namespace WinTabPressureTester
                         var sr = this.ParseScaleLine(line);
                         if (sr != null)
                         {
-                            physi_force = sr.ReadingAsDouble;
+                            physi_pressure = sr.ReadingAsDouble;
                             Update_Scale_UI_Elements(sr.ReadingAsString);
                         }
 
@@ -261,7 +270,7 @@ namespace WinTabPressureTester
 
         private void button_record_Click(object sender, EventArgs e)
         {
-            this.record_collection.Add(physi_force, this.scalesession.logical_pressure_moving_average.GetAverage());
+            this.record_collection.Add(physi_pressure, this.scalesession.logical_pressure_moving_average.GetAverage());
 
             this.updatedata();
 
