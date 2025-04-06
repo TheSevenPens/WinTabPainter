@@ -72,6 +72,8 @@
             textBox_OS = new TextBox();
             label16 = new Label();
             button_export = new Button();
+            button3 = new Button();
+            button4 = new Button();
             SuspendLayout();
             // 
             // label_pressure_raw
@@ -272,12 +274,12 @@
             // 
             // button2
             // 
-            button2.Location = new Point(771, 397);
+            button2.Location = new Point(567, 857);
             button2.Margin = new Padding(4);
             button2.Name = "button2";
-            button2.Size = new Size(196, 59);
+            button2.Size = new Size(222, 59);
             button2.TabIndex = 20;
-            button2.Text = "copy";
+            button2.Text = "copy text";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
@@ -372,6 +374,9 @@
             textBox_brand.Size = new Size(250, 43);
             textBox_brand.TabIndex = 29;
             textBox_brand.Text = "BRAND";
+            textBox_brand.TextChanged += textBox_brand_TextChanged;
+            textBox_brand.KeyDown += textBox_brand_KeyDown;
+            textBox_brand.KeyUp += textBox_brand_KeyUp;
             // 
             // textBox_Pen
             // 
@@ -516,11 +521,35 @@
             button_export.UseVisualStyleBackColor = true;
             button_export.Click += button_export_Click;
             // 
+            // button3
+            // 
+            button3.Location = new Point(567, 758);
+            button3.Margin = new Padding(4);
+            button3.Name = "button3";
+            button3.Size = new Size(298, 59);
+            button3.TabIndex = 45;
+            button3.Text = "Update chart title";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(567, 952);
+            button4.Margin = new Padding(4);
+            button4.Name = "button4";
+            button4.Size = new Size(222, 59);
+            button4.TabIndex = 46;
+            button4.Text = "copy chart";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2346, 1602);
+            Controls.Add(button4);
+            Controls.Add(button3);
             Controls.Add(button_export);
             Controls.Add(textBox_OS);
             Controls.Add(label16);
@@ -622,5 +651,7 @@
         private TextBox textBox_OS;
         private Label label16;
         private Button button_export;
+        private Button button3;
+        private Button button4;
     }
 }

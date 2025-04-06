@@ -32,6 +32,13 @@ namespace WinTabPressureTester
         int q_logical_pressure_bufsize = 400;
         WinTabUtils.Numerics.IndexedQueue<double> q_logical;
 
+
+        public void UpdateCharTitle()
+        {
+            formsPlot1.Plot.Title($"Pressure response {this.textBox_brand.Text} {this.textBox_Pen.Text} ({this.textBox_date.Text}) ");
+            formsPlot1.Refresh();
+
+        }
         public FormPressureTester()
         {
             InitializeComponent();
@@ -43,11 +50,15 @@ namespace WinTabPressureTester
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
 
 
-            //formsPlot1.Plot.Title("Pressure response");
+            this.UpdateCharTitle();
+
             formsPlot1.Plot.XLabel("Physical pressure (gf)");
             formsPlot1.Plot.YLabel("Logical pressure (%)");
+
+            formsPlot1.Plot.Axes.Title.Label.FontSize = 27;
+
             //formsPlot1.Plot.Axes.Left.Label.FontName = "Consolas";
-            formsPlot1.Plot.Axes.Left.Label.FontSize= 27;
+            formsPlot1.Plot.Axes.Left.Label.FontSize = 27;
             //formsPlot1.Plot.Axes.Bottom.Label.FontName = "Segoe";
             formsPlot1.Plot.Axes.Bottom.Label.FontSize = 27;
 
@@ -384,7 +395,8 @@ namespace WinTabPressureTester
             double[] dataY = this.record_collection.items.Select(i => i.LogicalPressure * 100).ToArray();
 
             formsPlot1.Plot.Clear();
-            formsPlot1.Plot.Add.Scatter(dataX, dataY);
+            var scatter = formsPlot1.Plot.Add.Scatter(dataX, dataY);
+            scatter.LineWidth = 3;
             formsPlot1.Refresh();
         }
 
@@ -409,6 +421,32 @@ namespace WinTabPressureTester
             {
                 MessageBox.Show($"Error saving file: {ex.Message}");
             }
+        }
+
+        private void textBox_brand_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_brand_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void textBox_brand_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.UpdateCharTitle();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // not implemented yet
+
         }
     }
 }
