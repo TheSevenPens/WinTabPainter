@@ -5,11 +5,23 @@ using System.Text;
 
 namespace WinTabPressureTester
 {
+
+    public class ScaleSession
+    {
+        public WinTabUtils.Numerics.MovingAverage logical_pressure_moving_average;
+
+        public ScaleSession()
+        {
+            this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
+
+        }
+
+    }
+
     public partial class FormPressureTester : Form
     {
         WinTabUtils.TabletSession wintabsession;
-
-        WinTabUtils.Numerics.MovingAverage logical_pressure_moving_average;
+        ScaleSession scalesession;
 
 
         private System.IO.Ports.SerialPort serialPort;
@@ -30,7 +42,8 @@ namespace WinTabPressureTester
         {
             InitializeComponent();
             this.wintabsession = new WinTabUtils.TabletSession();
-            this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
+            this.scalesession = new ScaleSession();
+
 
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
@@ -82,8 +95,8 @@ namespace WinTabPressureTester
 
 
 
-            this.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
-            double cur_logical_pressure_ma = logical_pressure_moving_average.GetAverage();
+            this.scalesession.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
+            double cur_logical_pressure_ma = this.scalesession.logical_pressure_moving_average.GetAverage();
             this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", cur_logical_pressure_ma * 100.0);
 
             if (this.q_logical.Count >= this.q_logical_bufsize)
@@ -101,7 +114,7 @@ namespace WinTabPressureTester
         {
             if (buttonchange.Change == WinTabUtils.PenButtonPressChangeType.Released)
             {
-                this.logical_pressure_moving_average.Clear();
+                this.scalesession.logical_pressure_moving_average.Clear();
             }
         }
 
@@ -233,7 +246,7 @@ namespace WinTabPressureTester
 
         private void button_record_Click(object sender, EventArgs e)
         {
-            this.record_collection.Add(physi_force, logical_pressure_moving_average.GetAverage());
+            this.record_collection.Add(physi_force, this.scalesession.logical_pressure_moving_average.GetAverage());
 
             this.updatedata();
 
