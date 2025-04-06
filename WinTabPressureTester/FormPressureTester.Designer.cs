@@ -199,7 +199,6 @@
             // 
             // label_normalizedpressure_ma
             // 
-            label_normalizedpressure_ma.AutoSize = true;
             label_normalizedpressure_ma.BackColor = SystemColors.Info;
             label_normalizedpressure_ma.BorderStyle = BorderStyle.FixedSingle;
             label_normalizedpressure_ma.Font = new Font("Consolas", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -213,7 +212,7 @@
             // 
             textBox_log.BorderStyle = BorderStyle.FixedSingle;
             textBox_log.Enabled = false;
-            textBox_log.Location = new Point(1280, 116);
+            textBox_log.Location = new Point(1420, 117);
             textBox_log.Margin = new Padding(4);
             textBox_log.Multiline = true;
             textBox_log.Name = "textBox_log";
@@ -227,7 +226,7 @@
             // 
             // button_start
             // 
-            button_start.Location = new Point(1280, 50);
+            button_start.Location = new Point(1420, 51);
             button_start.Margin = new Padding(4);
             button_start.Name = "button_start";
             button_start.Size = new Size(196, 59);
@@ -238,7 +237,7 @@
             // 
             // button_stop
             // 
-            button_stop.Location = new Point(1484, 50);
+            button_stop.Location = new Point(1624, 51);
             button_stop.Margin = new Padding(4);
             button_stop.Name = "button_stop";
             button_stop.Size = new Size(196, 59);
@@ -249,19 +248,18 @@
             // 
             // label_force
             // 
-            label_force.AutoSize = true;
             label_force.BackColor = SystemColors.Info;
             label_force.BorderStyle = BorderStyle.FixedSingle;
             label_force.Font = new Font("Consolas", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_force.Location = new Point(970, 108);
+            label_force.Location = new Point(962, 108);
             label_force.Name = "label_force";
-            label_force.Size = new Size(131, 72);
+            label_force.Size = new Size(342, 72);
             label_force.TabIndex = 18;
             label_force.Text = "---";
             // 
             // button1
             // 
-            button1.Location = new Point(1280, 751);
+            button1.Location = new Point(1420, 752);
             button1.Margin = new Padding(4);
             button1.Name = "button1";
             button1.Size = new Size(196, 59);
@@ -272,7 +270,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(1502, 751);
+            button2.Location = new Point(1642, 752);
             button2.Margin = new Padding(4);
             button2.Name = "button2";
             button2.Size = new Size(196, 59);
@@ -285,7 +283,7 @@
             // 
             label_recordcount.AutoSize = true;
             label_recordcount.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_recordcount.Location = new Point(1542, 843);
+            label_recordcount.Location = new Point(1682, 844);
             label_recordcount.Name = "label_recordcount";
             label_recordcount.Size = new Size(95, 36);
             label_recordcount.TabIndex = 21;
@@ -293,7 +291,7 @@
             // 
             // button_clearlog
             // 
-            button_clearlog.Location = new Point(1706, 751);
+            button_clearlog.Location = new Point(1846, 752);
             button_clearlog.Margin = new Padding(4);
             button_clearlog.Name = "button_clearlog";
             button_clearlog.Size = new Size(196, 59);
@@ -305,7 +303,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(1280, 843);
+            label7.Location = new Point(1420, 844);
             label7.Name = "label7";
             label7.Size = new Size(195, 41);
             label7.TabIndex = 23;
@@ -322,7 +320,7 @@
             // 
             // button_clearlast
             // 
-            button_clearlast.Location = new Point(1932, 751);
+            button_clearlast.Location = new Point(2072, 752);
             button_clearlast.Margin = new Padding(4);
             button_clearlast.Name = "button_clearlast";
             button_clearlast.Size = new Size(196, 59);
@@ -342,7 +340,7 @@
             // 
             // button_load_sample_data
             // 
-            button_load_sample_data.Location = new Point(1748, 50);
+            button_load_sample_data.Location = new Point(1888, 51);
             button_load_sample_data.Margin = new Padding(4);
             button_load_sample_data.Name = "button_load_sample_data";
             button_load_sample_data.Size = new Size(298, 59);
@@ -488,7 +486,7 @@
             // 
             // button_export
             // 
-            button_export.Location = new Point(1932, 834);
+            button_export.Location = new Point(2072, 835);
             button_export.Margin = new Padding(4);
             button_export.Name = "button_export";
             button_export.Size = new Size(196, 59);
@@ -501,7 +499,7 @@
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2210, 1602);
+            ClientSize = new Size(2346, 1602);
             Controls.Add(button_export);
             Controls.Add(textBox_OS);
             Controls.Add(label16);

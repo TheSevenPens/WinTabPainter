@@ -6,18 +6,6 @@ using System.Text;
 namespace WinTabPressureTester
 {
 
-    public class ScaleSession
-    {
-        public WinTabUtils.Numerics.MovingAverage logical_pressure_moving_average;
-
-        public ScaleSession()
-        {
-            this.logical_pressure_moving_average = new WinTabUtils.Numerics.MovingAverage(200);
-
-        }
-
-    }
-
     public partial class FormPressureTester : Form
     {
         WinTabUtils.TabletSession wintabsession;
@@ -166,6 +154,41 @@ namespace WinTabPressureTester
             }
 
         }
+
+        public ScaleRecord ParseScaleLine(string line)
+        {
+            if (line == null)
+            {
+                return null;
+            }
+
+            line = line.Trim();
+
+            if (line.Length == 0)
+            {
+                return null;
+            }
+
+            var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (tokens.Length == 0)
+            {
+                return null;
+            }
+
+            string str_force = tokens[^1];
+            str_force = this.TrimLastCharIf(str_force, 'M');
+            str_force = this.TrimLastCharIf(str_force, 'g');
+
+            physi_force = double.Parse(str_force);
+
+            var sr = new ScaleRecord();
+            sr.Line = line;
+            sr.ReadingAsString = str_force;
+            sr.ReadingAsDouble = double.Parse(str_force);
+            return sr;
+        }
+
         private async Task ReadSerialPortAsync(CancellationToken cancellationToken)
         {
             try
@@ -175,37 +198,11 @@ namespace WinTabPressureTester
                     if (serialPort.BytesToRead > 0)
                     {
                         string line = await Task.Run(() => serialPort.ReadLine());
-
-                        // Update UI (e.g., append to a TextBox)
-                        if (line == null) { continue; }
-                        line = line.Trim();
-
-                        if (line.Length == 0) { continue; }
-
-                        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-                        if (tokens.Length == 0) { continue; }
-
-                        string str_force = tokens[^1];
-                        str_force = this.TrimLastCharIf(str_force, 'M');
-                        str_force = this.TrimLastCharIf(str_force, 'g');
-
-                        physi_force = double.Parse(str_force);
-
-                        str_force += " gf";
-
-                        if (InvokeRequired)
+                        var sr = this.ParseScaleLine(line);
+                        if (sr != null)
                         {
-                            //Invoke(new Action(() => this.textBox_Log.AppendText(line + Environment.NewLine)));
-                            //Invoke(new Action(() => this.label_mps.Text = str_mps));
-                            //Invoke(new Action(() => this.label_num_measuremnts.Text = str_force));
-                        }
-                        else
-                        {
-                            //this.textBox_Log.AppendText(line + Environment.NewLine);
-                            //this.label_mps.Text = str_mps;
-                            //this.label_num_measuremnts.Text = str_nm;
-                            this.label_force.Text = str_force;
+                            physi_force = sr.ReadingAsDouble;
+                            Update_Scale_UI_Elements(sr.ReadingAsString);
                         }
 
                     }
@@ -221,6 +218,24 @@ namespace WinTabPressureTester
             catch (Exception ex)
             {
                 MessageBox.Show($"Serial port error: {ex.Message}");
+            }
+        }
+
+        private void Update_Scale_UI_Elements(string str_force)
+        {
+            if (InvokeRequired)
+            {
+                //Invoke(new Action(() => this.textBox_Log.AppendText(line + Environment.NewLine)));
+                //Invoke(new Action(() => this.label_mps.Text = str_mps));
+                //Invoke(new Action(() => this.label_num_measuremnts.Text = str_force));
+            }
+            else
+            {
+                //this.textBox_Log.AppendText(line + Environment.NewLine);
+                //this.label_mps.Text = str_mps;
+                //this.label_num_measuremnts.Text = str_nm;
+                string str_force_with_unit = str_force + " gf";
+                this.label_force.Text = str_force_with_unit;
             }
         }
 
