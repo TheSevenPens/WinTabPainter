@@ -75,6 +75,7 @@
             button_export = new Button();
             button3 = new Button();
             button4 = new Button();
+            comboBoxcomport = new ComboBox();
             SuspendLayout();
             // 
             // label_pressure_raw
@@ -552,11 +553,22 @@
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
+            // comboBoxcomport
+            // 
+            comboBoxcomport.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxcomport.FormattingEnabled = true;
+            comboBoxcomport.Items.AddRange(new object[] { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6" });
+            comboBoxcomport.Location = new Point(567, 1111);
+            comboBoxcomport.Name = "comboBoxcomport";
+            comboBoxcomport.Size = new Size(302, 49);
+            comboBoxcomport.TabIndex = 47;
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2346, 1602);
+            Controls.Add(comboBoxcomport);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button_export);
@@ -664,5 +676,6 @@
         private Button button_export;
         private Button button3;
         private Button button4;
+        private ComboBox comboBoxcomport;
     }
 }

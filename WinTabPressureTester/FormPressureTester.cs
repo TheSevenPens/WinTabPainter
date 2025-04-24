@@ -15,7 +15,7 @@ namespace WinTabPressureTester
 
 
         // move to scalesession
-        private System.IO.Ports.SerialPort serialPort;
+        private System.IO.Ports.SerialPort serial_port;
 
         // move to scalesession ???
         private CancellationTokenSource cts;
@@ -74,11 +74,21 @@ namespace WinTabPressureTester
 
             this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_pressure_bufsize);
 
-            serialPort = new SerialPort("COM6");
+            string comportname = GetSelectedComPortName();
+            this.serial_port = new SerialPort(comportname);
             cts = new CancellationTokenSource();
 
             this.record_collection = new PressureRecordCollection();
             this.button_start.Select();
+        }
+
+        private string GetSelectedComPortName()
+        {
+            var lastitem = this.comboBoxcomport.Items[this.comboBoxcomport.Items.Count - 1];
+            this.comboBoxcomport.Text = lastitem.ToString();
+
+            string comport = this.comboBoxcomport.Text.ToUpper();
+            return comport;
         }
 
         Graphics gfx_picbox1;
@@ -115,10 +125,10 @@ namespace WinTabPressureTester
             this.label_pressure_raw.Text = wintab_pkt.pkNormalPressure.ToString();
             this.label_normalized_pressure.Text = str_pressure.ToString();
 
-            this.label_or_altitude.Text = (wintab_pkt.pkOrientation.orAltitude / 10.0).ToString() + "°";
-            this.label_or_azimuth.Text = (wintab_pkt.pkOrientation.orAzimuth / 10.0).ToString() + "°";
-            this.label_tiltx.Text = string.Format("{0:00.000}°", TiltX);
-            this.label_tilty.Text = string.Format("{0:00.000}°", TiltY);
+            this.label_or_altitude.Text = (wintab_pkt.pkOrientation.orAltitude / 10.0).ToString() + "Â°";
+            this.label_or_azimuth.Text = (wintab_pkt.pkOrientation.orAzimuth / 10.0).ToString() + "Â°";
+            this.label_tiltx.Text = string.Format("{0:00.000}Â°", TiltX);
+            this.label_tilty.Text = string.Format("{0:00.000}Â°", TiltY);
 
 
 
@@ -154,9 +164,9 @@ namespace WinTabPressureTester
                 {
                     this.stopwatch = Stopwatch.StartNew();
 
-                    if (!serialPort.IsOpen)
+                    if (!serial_port.IsOpen)
                     {
-                        serialPort.Open();
+                        serial_port.Open();
                     }
 
                     isReading = true;
@@ -164,13 +174,15 @@ namespace WinTabPressureTester
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error: {ex.Message}");
+                    MessageBox.Show($"ERROR Failed to open COM Port\r\n" +
+                        $"{ex.GetType().FullName}\r\n" +
+                    $"{ex.Message}");
                 }
                 finally
                 {
-                    if (serialPort.IsOpen)
+                    if (serial_port.IsOpen)
                     {
-                        serialPort.Close();
+                        serial_port.Close();
                     }
                     isReading = false;
                 }
@@ -234,9 +246,9 @@ namespace WinTabPressureTester
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (serialPort.BytesToRead > 0)
+                    if (serial_port.BytesToRead > 0)
                     {
-                        string line = await Task.Run(() => serialPort.ReadLine());
+                        string line = await Task.Run(() => serial_port.ReadLine());
                         var sr = this.ParseScaleLine(line);
                         if (sr != null)
                         {
@@ -290,10 +302,10 @@ namespace WinTabPressureTester
         {
 
             cts.Cancel();
-            if (serialPort != null && serialPort.IsOpen)
+            if (serial_port != null && serial_port.IsOpen)
             {
-                serialPort.Close();
-                serialPort.Dispose();
+                serial_port.Close();
+                serial_port.Dispose();
             }
 
         }
@@ -325,7 +337,6 @@ namespace WinTabPressureTester
 
         private string CreateJSONContent()
         {
-            string t = this.textBox_log.Text;
 
             var sb = new StringBuilder();
             sb.AppendLine("{");
@@ -340,7 +351,7 @@ namespace WinTabPressureTester
             sb.AppendLine($@"    ""os"": ""{this.textBox_OS.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""notes"": ""{string.Empty}"" , ");
             sb.AppendLine("    \"records\": [  ");
-            sb.AppendLine(t);
+            sb.AppendLine( this.record_collection.GetRecordsJSON());
             sb.AppendLine("    ]");
             sb.AppendLine("}");
 
