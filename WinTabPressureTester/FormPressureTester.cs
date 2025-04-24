@@ -24,7 +24,7 @@ namespace WinTabPressureTester
         // get rid of this
         Stopwatch stopwatch;
 
-        // store in a different place?
+        // store in a different place? ???
         double physi_pressure;
         double log_pressure;
 
