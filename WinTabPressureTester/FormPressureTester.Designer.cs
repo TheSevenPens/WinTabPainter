@@ -36,6 +36,7 @@
             label_or_azimuth = new Label();
             label4 = new Label();
             label_or_altitude = new Label();
+            pictureBox1 = new PictureBox();
             label3 = new Label();
             label_tilty = new Label();
             label6 = new Label();
@@ -152,6 +153,14 @@
             label_or_altitude.Size = new Size(63, 36);
             label_or_altitude.TabIndex = 4;
             label_or_altitude.Text = "---";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(1098, 64);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(600, 500);
+            pictureBox1.TabIndex = 8;
+            pictureBox1.TabStop = false;
             // 
             // label3
             // 
@@ -598,6 +607,7 @@
             Controls.Add(label_tilty);
             Controls.Add(label6);
             Controls.Add(label_tiltx);
+            Controls.Add(pictureBox1);
             Controls.Add(label2);
             Controls.Add(label_or_azimuth);
             Controls.Add(label4);
@@ -627,6 +637,7 @@
         private Label label_or_azimuth;
         private Label label4;
         private Label label_or_altitude;
+        private PictureBox pictureBox1;
         private Label label3;
         private Label label_tilty;
         private Label label6;

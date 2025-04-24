@@ -91,6 +91,9 @@ namespace WinTabPressureTester
             return comport;
         }
 
+        Graphics gfx_picbox1;
+        Pen np_pressure_guage = new Pen(System.Drawing.Color.Black, 11);
+
         private void Form1_Load(object sender, EventArgs e)
         {
             this.wintabsession.PacketHandler = this.PacketHandler;
@@ -102,6 +105,9 @@ namespace WinTabPressureTester
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.wintabsession?.Close();
+            this.np_pressure_guage?.Dispose();
+            this.pictureBox1.Image?.Dispose();
+            this.pictureBox1?.Dispose();
         }
 
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
@@ -119,10 +125,10 @@ namespace WinTabPressureTester
             this.label_pressure_raw.Text = wintab_pkt.pkNormalPressure.ToString();
             this.label_normalized_pressure.Text = str_pressure.ToString();
 
-            this.label_or_altitude.Text = (wintab_pkt.pkOrientation.orAltitude / 10.0).ToString() + "°";
-            this.label_or_azimuth.Text = (wintab_pkt.pkOrientation.orAzimuth / 10.0).ToString() + "°";
-            this.label_tiltx.Text = string.Format("{0:00.000}°", TiltX);
-            this.label_tilty.Text = string.Format("{0:00.000}°", TiltY);
+            this.label_or_altitude.Text = (wintab_pkt.pkOrientation.orAltitude / 10.0).ToString() + "Â°";
+            this.label_or_azimuth.Text = (wintab_pkt.pkOrientation.orAzimuth / 10.0).ToString() + "Â°";
+            this.label_tiltx.Text = string.Format("{0:00.000}Â°", TiltX);
+            this.label_tilty.Text = string.Format("{0:00.000}Â°", TiltY);
 
 
 
