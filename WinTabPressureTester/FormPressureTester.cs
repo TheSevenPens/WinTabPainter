@@ -299,12 +299,20 @@ namespace WinTabPressureTester
                         string line = await Task.Run(() => serial_port.ReadLine());
                         var sr_parse = ParseScaleLine(line);
 
-
-                        var sr = sr_parse.ScaleRecord;
-                        if (sr != null)
+                        if (sr_parse.Parsed == false)
                         {
-                            physi_pressure = sr.ReadingAsDouble;
-                            Update_Scale_UI_Elements(sr.ReadingAsString);
+                            // line was not parsed
+
+                        }
+                        else
+                        {
+                            // line was parsed
+                            var sr = sr_parse.ScaleRecord;
+                            if (sr != null)
+                            {
+                                physi_pressure = sr.ReadingAsDouble;
+                                Update_Scale_UI_Elements(sr.ReadingAsString);
+                            }
                         }
 
                     }
