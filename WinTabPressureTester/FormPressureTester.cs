@@ -189,7 +189,7 @@ namespace WinTabPressureTester
             }
         }
 
-        public string TrimLastCharIf(string s, char c)
+        public static string TrimLastCharIf(string s, char c)
         {
             if (s == null) { return s; }
             if (s.Length == 0) { return s; }
@@ -206,39 +206,87 @@ namespace WinTabPressureTester
 
         }
 
-        public ScaleRecord ParseScaleLine(string line)
+        public class ScaleParsedLine
+        {
+            public string Input;
+            public bool Parsed;
+            public ScaleRecord ScaleRecord;
+            public string Error;
+
+        }
+
+        public static ScaleParsedLine ParseScaleLine(string line)
         {
             if (line == null)
             {
-                return null;
+                var r1 = new ScaleParsedLine();
+                r1.Input = line;
+                r1.Parsed = false;
+                r1.ScaleRecord = null;
+                r1.Error = "Line was null";
+                return r1;
             }
 
             line = line.Trim();
 
             if (line.Length == 0)
             {
-                return null;
+                var r2 = new ScaleParsedLine();
+                r2.Input = line;
+                r2.Parsed = false;
+                r2.ScaleRecord = null;
+                r2.Error = "Line was empty";
+
+                return r2;
             }
 
             var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             if (tokens.Length == 0)
             {
-                return null;
+                var r3 = new ScaleParsedLine();
+                r3.Input = line;
+                r3.Parsed = false;
+                r3.ScaleRecord = null;
+                r3.Error = "No tokens in line";
+                return r3;
             }
 
             string str_force = tokens[^1];
-            str_force = this.TrimLastCharIf(str_force, 'M');
-            str_force = this.TrimLastCharIf(str_force, 'g');
+            str_force = TrimLastCharIf(str_force, 'M');
+            str_force = TrimLastCharIf(str_force, 'g');
 
-            physi_pressure = double.Parse(str_force);
+            //physi_pressure = double.Parse(str_force);
+
 
             var sr = new ScaleRecord();
+
+
             sr.Line = line;
             sr.ReadingAsString = str_force;
-            sr.ReadingAsDouble = double.Parse(str_force);
-            return sr;
-        }
+
+
+            try
+            {
+                sr.ReadingAsDouble = double.Parse(str_force);
+            }
+            catch (Exception ex)             {
+                var r4 = new ScaleParsedLine();
+                r4.Input = line;
+                r4.Parsed = false;
+                r4.ScaleRecord = null;
+                r4.Error = "Failed to parse force \"" + str_force + "\"";
+                return r4;
+            }
+
+
+            var r = new ScaleParsedLine();
+            r.Input = line;
+            r.Parsed = true;
+            r.ScaleRecord = sr;
+            r.Error = string.Empty;
+            return r;
+            }
 
         private async Task ReadSerialPortAsync(CancellationToken cancellationToken)
         {
@@ -249,7 +297,10 @@ namespace WinTabPressureTester
                     if (serial_port.BytesToRead > 0)
                     {
                         string line = await Task.Run(() => serial_port.ReadLine());
-                        var sr = this.ParseScaleLine(line);
+                        var sr_parse = ParseScaleLine(line);
+
+
+                        var sr = sr_parse.ScaleRecord;
                         if (sr != null)
                         {
                             physi_pressure = sr.ReadingAsDouble;
