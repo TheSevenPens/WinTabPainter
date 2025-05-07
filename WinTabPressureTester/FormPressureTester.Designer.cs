@@ -77,8 +77,8 @@
             button4 = new Button();
             comboBoxcomport = new ComboBox();
             checkBox_tipdown = new CheckBox();
-            checkBox_button1down = new CheckBox();
-            checkBox_button2down = new CheckBox();
+            checkBox_lowerbuttondown = new CheckBox();
+            checkBox_upperbuttondown = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -577,33 +577,33 @@
             checkBox_tipdown.Text = "TipDown";
             checkBox_tipdown.UseVisualStyleBackColor = true;
             // 
-            // checkBox_button1down
+            // checkBox_lowerbuttondown
             // 
-            checkBox_button1down.AutoSize = true;
-            checkBox_button1down.Location = new Point(584, 1380);
-            checkBox_button1down.Name = "checkBox_button1down";
-            checkBox_button1down.Size = new Size(247, 45);
-            checkBox_button1down.TabIndex = 49;
-            checkBox_button1down.Text = "Button1 Down";
-            checkBox_button1down.UseVisualStyleBackColor = true;
+            checkBox_lowerbuttondown.AutoSize = true;
+            checkBox_lowerbuttondown.Location = new Point(584, 1380);
+            checkBox_lowerbuttondown.Name = "checkBox_lowerbuttondown";
+            checkBox_lowerbuttondown.Size = new Size(311, 45);
+            checkBox_lowerbuttondown.TabIndex = 49;
+            checkBox_lowerbuttondown.Text = "LowerButton Down";
+            checkBox_lowerbuttondown.UseVisualStyleBackColor = true;
             // 
-            // checkBox_button2down
+            // checkBox_upperbuttondown
             // 
-            checkBox_button2down.AutoSize = true;
-            checkBox_button2down.Location = new Point(583, 1431);
-            checkBox_button2down.Name = "checkBox_button2down";
-            checkBox_button2down.Size = new Size(247, 45);
-            checkBox_button2down.TabIndex = 50;
-            checkBox_button2down.Text = "Button2 Down";
-            checkBox_button2down.UseVisualStyleBackColor = true;
+            checkBox_upperbuttondown.AutoSize = true;
+            checkBox_upperbuttondown.Location = new Point(583, 1431);
+            checkBox_upperbuttondown.Name = "checkBox_upperbuttondown";
+            checkBox_upperbuttondown.Size = new Size(314, 45);
+            checkBox_upperbuttondown.TabIndex = 50;
+            checkBox_upperbuttondown.Text = "UpperButton Down";
+            checkBox_upperbuttondown.UseVisualStyleBackColor = true;
             // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2346, 1602);
-            Controls.Add(checkBox_button2down);
-            Controls.Add(checkBox_button1down);
+            Controls.Add(checkBox_upperbuttondown);
+            Controls.Add(checkBox_lowerbuttondown);
             Controls.Add(checkBox_tipdown);
             Controls.Add(comboBoxcomport);
             Controls.Add(button4);
@@ -716,7 +716,7 @@
         private Button button4;
         private ComboBox comboBoxcomport;
         private CheckBox checkBox_tipdown;
-        private CheckBox checkBox_button1down;
-        private CheckBox checkBox_button2down;
+        private CheckBox checkBox_lowerbuttondown;
+        private CheckBox checkBox_upperbuttondown;
     }
 }

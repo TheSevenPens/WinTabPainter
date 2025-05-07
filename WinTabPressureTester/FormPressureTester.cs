@@ -124,7 +124,7 @@ namespace WinTabPressureTester
         {
 
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change!=0)
+            if (button_info.Change != WinTabUtils.PenButtonPressChangeType.NoChange)
             {
                 if (button_info.ButtonId== WinTabUtils.PenButtonIdentifier.Tip)
                 {
@@ -132,11 +132,11 @@ namespace WinTabPressureTester
                 }
                 else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.LowerButton)
                 {
-                    this.checkBox_button1down.Checked = get_press_change_as_letter(button_info.Change);
+                    this.checkBox_lowerbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
                 else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.UpperButton)
                 {
-                    this.checkBox_button2down.Checked = get_press_change_as_letter(button_info.Change);
+                    this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
                 else
                 { 

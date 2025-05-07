@@ -176,7 +176,7 @@ namespace WinTabPainter
 
         private void Update_UI_Button_status(WinTabUtils.PenButtonPressChange button_info)
         {
-            if (button_info.Change != 0)
+            if (button_info.Change != WinTabUtils.PenButtonPressChangeType.NoChange)
             {
                 int index = button_info.ButtonId switch
                 {
