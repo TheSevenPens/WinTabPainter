@@ -2,6 +2,7 @@ using ScottPlot;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Text;
+using WinTabUtils;
 
 namespace WinTabPressureTester
 {
@@ -110,10 +111,40 @@ namespace WinTabPressureTester
             this.pictureBox1?.Dispose();
         }
 
+        private static bool get_press_change_as_letter(PenButtonPressChangeType change)
+        {
+            return change switch
+            {
+                WinTabUtils.PenButtonPressChangeType.Pressed => true,
+                WinTabUtils.PenButtonPressChangeType.Released => false,
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
+        }
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {
-            // var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
 
+            var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+            if (button_info.Change!=0)
+            {
+                if (button_info.ButtonId== WinTabUtils.PenButtonIdentifier.Tip)
+                {
+                    this.checkBox_tipdown.Checked = get_press_change_as_letter(button_info.Change);
+                }
+                else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.LowerButton)
+                {
+                    this.checkBox_button1down.Checked = get_press_change_as_letter(button_info.Change);
+                }
+                else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.UpperButton)
+                {
+                    this.checkBox_button2down.Checked = get_press_change_as_letter(button_info.Change);
+                }
+                else
+                { 
+                    // do Nothing
+                }
+            }
+
+            
             uint raw_pressure = wintab_pkt.pkNormalPressure;
             double normalized_raw_pressure = (raw_pressure / (1.0 * this.wintabsession.TabletInfo.MaxPressure));
 

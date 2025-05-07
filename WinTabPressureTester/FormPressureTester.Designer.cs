@@ -76,6 +76,10 @@
             button3 = new Button();
             button4 = new Button();
             comboBoxcomport = new ComboBox();
+            checkBox_tipdown = new CheckBox();
+            checkBox_button1down = new CheckBox();
+            checkBox_button2down = new CheckBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // label_pressure_raw
@@ -563,11 +567,44 @@
             comboBoxcomport.Size = new Size(302, 49);
             comboBoxcomport.TabIndex = 47;
             // 
+            // checkBox_tipdown
+            // 
+            checkBox_tipdown.AutoSize = true;
+            checkBox_tipdown.Location = new Point(584, 1329);
+            checkBox_tipdown.Name = "checkBox_tipdown";
+            checkBox_tipdown.Size = new Size(175, 45);
+            checkBox_tipdown.TabIndex = 48;
+            checkBox_tipdown.Text = "TipDown";
+            checkBox_tipdown.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_button1down
+            // 
+            checkBox_button1down.AutoSize = true;
+            checkBox_button1down.Location = new Point(584, 1380);
+            checkBox_button1down.Name = "checkBox_button1down";
+            checkBox_button1down.Size = new Size(247, 45);
+            checkBox_button1down.TabIndex = 49;
+            checkBox_button1down.Text = "Button1 Down";
+            checkBox_button1down.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_button2down
+            // 
+            checkBox_button2down.AutoSize = true;
+            checkBox_button2down.Location = new Point(583, 1431);
+            checkBox_button2down.Name = "checkBox_button2down";
+            checkBox_button2down.Size = new Size(247, 45);
+            checkBox_button2down.TabIndex = 50;
+            checkBox_button2down.Text = "Button2 Down";
+            checkBox_button2down.UseVisualStyleBackColor = true;
+            // 
             // FormPressureTester
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2346, 1602);
+            Controls.Add(checkBox_button2down);
+            Controls.Add(checkBox_button1down);
+            Controls.Add(checkBox_tipdown);
             Controls.Add(comboBoxcomport);
             Controls.Add(button4);
             Controls.Add(button3);
@@ -623,6 +660,7 @@
             Load += Form1_Load;
             KeyDown += FormPressureTester_KeyDown;
             KeyPress += FormPressureTester_KeyPress;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -677,5 +715,8 @@
         private Button button3;
         private Button button4;
         private ComboBox comboBoxcomport;
+        private CheckBox checkBox_tipdown;
+        private CheckBox checkBox_button1down;
+        private CheckBox checkBox_button2down;
     }
 }
