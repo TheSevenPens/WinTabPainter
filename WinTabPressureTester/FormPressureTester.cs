@@ -126,7 +126,7 @@ namespace WinTabPressureTester
             var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
             if (button_info.Change != WinTabUtils.PenButtonPressChangeType.NoChange)
             {
-                if (button_info.ButtonId== WinTabUtils.PenButtonIdentifier.Tip)
+                if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.Tip)
                 {
                     this.checkBox_tipdown.Checked = get_press_change_as_letter(button_info.Change);
                 }
@@ -139,12 +139,12 @@ namespace WinTabPressureTester
                     this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
                 else
-                { 
+                {
                     // do Nothing
                 }
             }
 
-            
+
             uint raw_pressure = wintab_pkt.pkNormalPressure;
             double normalized_raw_pressure = (raw_pressure / (1.0 * this.wintabsession.TabletInfo.MaxPressure));
 
@@ -301,7 +301,8 @@ namespace WinTabPressureTester
             {
                 sr.ReadingAsDouble = double.Parse(str_force);
             }
-            catch (Exception ex)             {
+            catch (Exception ex)
+            {
                 var r4 = new ScaleParsedLine();
                 r4.Input = line;
                 r4.Parsed = false;
@@ -317,7 +318,7 @@ namespace WinTabPressureTester
             r.ScaleRecord = sr;
             r.Error = string.Empty;
             return r;
-            }
+        }
 
         private async Task ReadSerialPortAsync(CancellationToken cancellationToken)
         {
@@ -441,7 +442,7 @@ namespace WinTabPressureTester
             sb.AppendLine($@"    ""os"": ""{this.textBox_OS.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""notes"": ""{string.Empty}"" , ");
             sb.AppendLine("    \"records\": [  ");
-            sb.AppendLine( this.record_collection.GetRecordsJSON());
+            sb.AppendLine(this.record_collection.GetRecordsJSON());
             sb.AppendLine("    ]");
             sb.AppendLine("}");
 
@@ -552,6 +553,11 @@ namespace WinTabPressureTester
         private void button4_Click(object sender, EventArgs e)
         {
             // not implemented yet
+
+        }
+
+        private void textBox_inventoryid_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }

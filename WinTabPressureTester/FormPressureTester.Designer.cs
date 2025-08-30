@@ -47,8 +47,8 @@
             button_start = new Button();
             button_stop = new Button();
             label_force = new Label();
-            button1 = new Button();
-            button2 = new Button();
+            button_record = new Button();
+            button_copytext = new Button();
             label_recordcount = new Label();
             button_clearlog = new Button();
             label7 = new Label();
@@ -73,8 +73,8 @@
             textBox_OS = new TextBox();
             label16 = new Label();
             button_export = new Button();
-            button3 = new Button();
-            button4 = new Button();
+            button_update_chart_title = new Button();
+            button_copy_chart = new Button();
             comboBoxcomport = new ComboBox();
             checkBox_tipdown = new CheckBox();
             checkBox_lowerbuttondown = new CheckBox();
@@ -86,27 +86,30 @@
             // 
             label_pressure_raw.AutoSize = true;
             label_pressure_raw.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_pressure_raw.Location = new Point(361, 58);
+            label_pressure_raw.Location = new Point(212, 35);
+            label_pressure_raw.Margin = new Padding(2, 0, 2, 0);
             label_pressure_raw.Name = "label_pressure_raw";
-            label_pressure_raw.Size = new Size(95, 36);
+            label_pressure_raw.Size = new Size(60, 22);
             label_pressure_raw.TabIndex = 0;
             label_pressure_raw.Text = "-----";
             // 
             // label_raw_pressure_txt
             // 
             label_raw_pressure_txt.AutoSize = true;
-            label_raw_pressure_txt.Location = new Point(21, 53);
+            label_raw_pressure_txt.Location = new Point(12, 32);
+            label_raw_pressure_txt.Margin = new Padding(2, 0, 2, 0);
             label_raw_pressure_txt.Name = "label_raw_pressure_txt";
-            label_raw_pressure_txt.Size = new Size(193, 41);
+            label_raw_pressure_txt.Size = new Size(116, 25);
             label_raw_pressure_txt.TabIndex = 1;
             label_raw_pressure_txt.Text = "Raw Pressure";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(21, 106);
+            label1.Location = new Point(12, 65);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(232, 41);
+            label1.Size = new Size(139, 25);
             label1.TabIndex = 3;
             label1.Text = "Logical pressure";
             // 
@@ -114,18 +117,20 @@
             // 
             label_normalized_pressure.AutoSize = true;
             label_normalized_pressure.Font = new Font("Consolas", 9F);
-            label_normalized_pressure.Location = new Point(361, 110);
+            label_normalized_pressure.Location = new Point(212, 67);
+            label_normalized_pressure.Margin = new Padding(2, 0, 2, 0);
             label_normalized_pressure.Name = "label_normalized_pressure";
-            label_normalized_pressure.Size = new Size(127, 36);
+            label_normalized_pressure.Size = new Size(80, 22);
             label_normalized_pressure.TabIndex = 2;
             label_normalized_pressure.Text = "-------";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(21, 212);
+            label2.Location = new Point(12, 129);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(282, 41);
+            label2.Size = new Size(169, 25);
             label2.TabIndex = 7;
             label2.Text = "Orientation azimuth";
             // 
@@ -133,18 +138,20 @@
             // 
             label_or_azimuth.AutoSize = true;
             label_or_azimuth.Font = new Font("Consolas", 9F);
-            label_or_azimuth.Location = new Point(361, 214);
+            label_or_azimuth.Location = new Point(212, 130);
+            label_or_azimuth.Margin = new Padding(2, 0, 2, 0);
             label_or_azimuth.Name = "label_or_azimuth";
-            label_or_azimuth.Size = new Size(63, 36);
+            label_or_azimuth.Size = new Size(40, 22);
             label_or_azimuth.TabIndex = 6;
             label_or_azimuth.Text = "---";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(21, 159);
+            label4.Location = new Point(12, 97);
+            label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(276, 41);
+            label4.Size = new Size(165, 25);
             label4.TabIndex = 5;
             label4.Text = "Orientation altitude";
             // 
@@ -152,26 +159,29 @@
             // 
             label_or_altitude.AutoSize = true;
             label_or_altitude.Font = new Font("Consolas", 9F);
-            label_or_altitude.Location = new Point(361, 162);
+            label_or_altitude.Location = new Point(212, 99);
+            label_or_altitude.Margin = new Padding(2, 0, 2, 0);
             label_or_altitude.Name = "label_or_altitude";
-            label_or_altitude.Size = new Size(63, 36);
+            label_or_altitude.Size = new Size(40, 22);
             label_or_altitude.TabIndex = 4;
             label_or_altitude.Text = "---";
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(1098, 64);
+            pictureBox1.Location = new Point(646, 39);
+            pictureBox1.Margin = new Padding(2, 2, 2, 2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(600, 500);
+            pictureBox1.Size = new Size(353, 305);
             pictureBox1.TabIndex = 8;
             pictureBox1.TabStop = false;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(21, 318);
+            label3.Location = new Point(12, 194);
+            label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(233, 41);
+            label3.Size = new Size(140, 25);
             label3.TabIndex = 12;
             label3.Text = "Orientation tilt y";
             // 
@@ -179,18 +189,20 @@
             // 
             label_tilty.AutoSize = true;
             label_tilty.Font = new Font("Consolas", 9F);
-            label_tilty.Location = new Point(361, 318);
+            label_tilty.Location = new Point(212, 194);
+            label_tilty.Margin = new Padding(2, 0, 2, 0);
             label_tilty.Name = "label_tilty";
-            label_tilty.Size = new Size(127, 36);
+            label_tilty.Size = new Size(80, 22);
             label_tilty.TabIndex = 11;
             label_tilty.Text = "-------";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(21, 265);
+            label6.Location = new Point(12, 162);
+            label6.Margin = new Padding(2, 0, 2, 0);
             label6.Name = "label6";
-            label6.Size = new Size(232, 41);
+            label6.Size = new Size(139, 25);
             label6.TabIndex = 10;
             label6.Text = "Orientation tilt x";
             // 
@@ -198,18 +210,20 @@
             // 
             label_tiltx.AutoSize = true;
             label_tiltx.Font = new Font("Consolas", 9F);
-            label_tiltx.Location = new Point(361, 266);
+            label_tiltx.Location = new Point(212, 162);
+            label_tiltx.Margin = new Padding(2, 0, 2, 0);
             label_tiltx.Name = "label_tiltx";
-            label_tiltx.Size = new Size(127, 36);
+            label_tiltx.Size = new Size(80, 22);
             label_tiltx.TabIndex = 9;
             label_tiltx.Text = "-------";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(559, 28);
+            label5.Location = new Point(329, 17);
+            label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(304, 41);
+            label5.Size = new Size(182, 25);
             label5.TabIndex = 14;
             label5.Text = "Logical pressure (MA)";
             // 
@@ -218,9 +232,10 @@
             label_normalizedpressure_ma.BackColor = SystemColors.Info;
             label_normalizedpressure_ma.BorderStyle = BorderStyle.FixedSingle;
             label_normalizedpressure_ma.Font = new Font("Consolas", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_normalizedpressure_ma.Location = new Point(567, 83);
+            label_normalizedpressure_ma.Location = new Point(334, 51);
+            label_normalizedpressure_ma.Margin = new Padding(2, 0, 2, 0);
             label_normalizedpressure_ma.Name = "label_normalizedpressure_ma";
-            label_normalizedpressure_ma.Size = new Size(263, 72);
+            label_normalizedpressure_ma.Size = new Size(156, 45);
             label_normalizedpressure_ma.TabIndex = 13;
             label_normalizedpressure_ma.Text = "-------";
             // 
@@ -230,13 +245,13 @@
             textBox_log.BorderStyle = BorderStyle.FixedSingle;
             textBox_log.Enabled = false;
             textBox_log.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox_log.Location = new Point(41, 924);
-            textBox_log.Margin = new Padding(4);
+            textBox_log.Location = new Point(24, 563);
+            textBox_log.Margin = new Padding(2, 2, 2, 2);
             textBox_log.Multiline = true;
             textBox_log.Name = "textBox_log";
             textBox_log.ReadOnly = true;
             textBox_log.ScrollBars = ScrollBars.Vertical;
-            textBox_log.Size = new Size(447, 424);
+            textBox_log.Size = new Size(264, 259);
             textBox_log.TabIndex = 15;
             textBox_log.TabStop = false;
             textBox_log.TextChanged += textBox_log_TextChanged;
@@ -244,10 +259,10 @@
             // 
             // button_start
             // 
-            button_start.Location = new Point(567, 309);
-            button_start.Margin = new Padding(4);
+            button_start.Location = new Point(334, 188);
+            button_start.Margin = new Padding(2, 2, 2, 2);
             button_start.Name = "button_start";
-            button_start.Size = new Size(196, 59);
+            button_start.Size = new Size(115, 36);
             button_start.TabIndex = 16;
             button_start.Text = "start";
             button_start.UseVisualStyleBackColor = true;
@@ -255,10 +270,10 @@
             // 
             // button_stop
             // 
-            button_stop.Location = new Point(771, 309);
-            button_stop.Margin = new Padding(4);
+            button_stop.Location = new Point(454, 188);
+            button_stop.Margin = new Padding(2, 2, 2, 2);
             button_stop.Name = "button_stop";
-            button_stop.Size = new Size(196, 59);
+            button_stop.Size = new Size(115, 36);
             button_stop.TabIndex = 17;
             button_stop.Text = "stop";
             button_stop.UseVisualStyleBackColor = true;
@@ -269,41 +284,43 @@
             label_force.BackColor = SystemColors.Info;
             label_force.BorderStyle = BorderStyle.FixedSingle;
             label_force.Font = new Font("Consolas", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_force.Location = new Point(567, 233);
+            label_force.Location = new Point(334, 142);
+            label_force.Margin = new Padding(2, 0, 2, 0);
             label_force.Name = "label_force";
-            label_force.Size = new Size(342, 72);
+            label_force.Size = new Size(202, 45);
             label_force.TabIndex = 18;
             label_force.Text = "---";
             // 
-            // button1
+            // button_record
             // 
-            button1.Location = new Point(567, 399);
-            button1.Margin = new Padding(4);
-            button1.Name = "button1";
-            button1.Size = new Size(196, 59);
-            button1.TabIndex = 19;
-            button1.Text = "&record";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button_record_Click;
+            button_record.Location = new Point(334, 243);
+            button_record.Margin = new Padding(2, 2, 2, 2);
+            button_record.Name = "button_record";
+            button_record.Size = new Size(115, 36);
+            button_record.TabIndex = 19;
+            button_record.Text = "&record (R)";
+            button_record.UseVisualStyleBackColor = true;
+            button_record.Click += button_record_Click;
             // 
-            // button2
+            // button_copytext
             // 
-            button2.Location = new Point(567, 857);
-            button2.Margin = new Padding(4);
-            button2.Name = "button2";
-            button2.Size = new Size(222, 59);
-            button2.TabIndex = 20;
-            button2.Text = "copy text";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            button_copytext.Location = new Point(334, 523);
+            button_copytext.Margin = new Padding(2, 2, 2, 2);
+            button_copytext.Name = "button_copytext";
+            button_copytext.Size = new Size(131, 36);
+            button_copytext.TabIndex = 20;
+            button_copytext.Text = "copy text";
+            button_copytext.UseVisualStyleBackColor = true;
+            button_copytext.Click += button2_Click;
             // 
             // label_recordcount
             // 
             label_recordcount.AutoSize = true;
             label_recordcount.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label_recordcount.Location = new Point(303, 1378);
+            label_recordcount.Location = new Point(178, 840);
+            label_recordcount.Margin = new Padding(2, 0, 2, 0);
             label_recordcount.Name = "label_recordcount";
-            label_recordcount.Size = new Size(95, 36);
+            label_recordcount.Size = new Size(60, 22);
             label_recordcount.TabIndex = 21;
             label_recordcount.Text = "-----";
             // 
@@ -311,10 +328,10 @@
             // 
             button_clearlog.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_clearlog.ForeColor = Color.IndianRed;
-            button_clearlog.Location = new Point(567, 576);
-            button_clearlog.Margin = new Padding(4);
+            button_clearlog.Location = new Point(334, 351);
+            button_clearlog.Margin = new Padding(2, 2, 2, 2);
             button_clearlog.Name = "button_clearlog";
-            button_clearlog.Size = new Size(196, 59);
+            button_clearlog.Size = new Size(115, 36);
             button_clearlog.TabIndex = 22;
             button_clearlog.Text = "clear all";
             button_clearlog.UseVisualStyleBackColor = true;
@@ -323,29 +340,31 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(41, 1378);
+            label7.Location = new Point(24, 840);
+            label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
-            label7.Size = new Size(195, 41);
+            label7.Size = new Size(117, 25);
             label7.TabIndex = 23;
             label7.Text = "Record count";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(567, 178);
+            label8.Location = new Point(334, 109);
+            label8.Margin = new Padding(2, 0, 2, 0);
             label8.Name = "label8";
-            label8.Size = new Size(244, 41);
+            label8.Size = new Size(146, 25);
             label8.TabIndex = 24;
             label8.Text = "Physical pressure";
             // 
             // button_clearlast
             // 
-            button_clearlast.Location = new Point(567, 490);
-            button_clearlast.Margin = new Padding(4);
+            button_clearlast.Location = new Point(334, 299);
+            button_clearlast.Margin = new Padding(2, 2, 2, 2);
             button_clearlast.Name = "button_clearlast";
-            button_clearlast.Size = new Size(196, 59);
+            button_clearlast.Size = new Size(115, 36);
             button_clearlast.TabIndex = 25;
-            button_clearlast.Text = "clear last";
+            button_clearlast.Text = "clear &last (L)";
             button_clearlast.UseVisualStyleBackColor = true;
             button_clearlast.Click += button_clearlast_Click;
             // 
@@ -353,18 +372,18 @@
             // 
             formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             formsPlot1.DisplayScale = 2F;
-            formsPlot1.Location = new Point(1004, 28);
-            formsPlot1.Margin = new Padding(4);
+            formsPlot1.Location = new Point(591, 17);
+            formsPlot1.Margin = new Padding(2, 2, 2, 2);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(1316, 1534);
+            formsPlot1.Size = new Size(774, 935);
             formsPlot1.TabIndex = 26;
             // 
             // button_load_sample_data
             // 
-            button_load_sample_data.Location = new Point(567, 657);
-            button_load_sample_data.Margin = new Padding(4);
+            button_load_sample_data.Location = new Point(334, 401);
+            button_load_sample_data.Margin = new Padding(2, 2, 2, 2);
             button_load_sample_data.Name = "button_load_sample_data";
-            button_load_sample_data.Size = new Size(298, 59);
+            button_load_sample_data.Size = new Size(175, 36);
             button_load_sample_data.TabIndex = 27;
             button_load_sample_data.Text = "load sample data";
             button_load_sample_data.UseVisualStyleBackColor = true;
@@ -373,9 +392,10 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(32, 401);
+            label9.Location = new Point(19, 245);
+            label9.Margin = new Padding(2, 0, 2, 0);
             label9.Name = "label9";
-            label9.Size = new Size(95, 41);
+            label9.Size = new Size(58, 25);
             label9.TabIndex = 28;
             label9.Text = "Brand";
             // 
@@ -383,9 +403,10 @@
             // 
             textBox_brand.BorderStyle = BorderStyle.FixedSingle;
             textBox_brand.Font = new Font("Consolas", 9F);
-            textBox_brand.Location = new Point(225, 405);
+            textBox_brand.Location = new Point(132, 247);
+            textBox_brand.Margin = new Padding(2, 2, 2, 2);
             textBox_brand.Name = "textBox_brand";
-            textBox_brand.Size = new Size(250, 43);
+            textBox_brand.Size = new Size(148, 29);
             textBox_brand.TabIndex = 29;
             textBox_brand.Text = "BRAND";
             textBox_brand.TextChanged += textBox_brand_TextChanged;
@@ -396,18 +417,20 @@
             // 
             textBox_Pen.BorderStyle = BorderStyle.FixedSingle;
             textBox_Pen.Font = new Font("Consolas", 9F);
-            textBox_Pen.Location = new Point(225, 466);
+            textBox_Pen.Location = new Point(132, 284);
+            textBox_Pen.Margin = new Padding(2, 2, 2, 2);
             textBox_Pen.Name = "textBox_Pen";
-            textBox_Pen.Size = new Size(250, 43);
+            textBox_Pen.Size = new Size(148, 29);
             textBox_Pen.TabIndex = 31;
             textBox_Pen.Text = "XX-000E";
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(32, 462);
+            label10.Location = new Point(19, 282);
+            label10.Margin = new Padding(2, 0, 2, 0);
             label10.Name = "label10";
-            label10.Size = new Size(67, 41);
+            label10.Size = new Size(40, 25);
             label10.TabIndex = 30;
             label10.Text = "Pen";
             // 
@@ -415,18 +438,21 @@
             // 
             textBox_inventoryid.BorderStyle = BorderStyle.FixedSingle;
             textBox_inventoryid.Font = new Font("Consolas", 9F);
-            textBox_inventoryid.Location = new Point(225, 527);
+            textBox_inventoryid.Location = new Point(132, 321);
+            textBox_inventoryid.Margin = new Padding(2, 2, 2, 2);
             textBox_inventoryid.Name = "textBox_inventoryid";
-            textBox_inventoryid.Size = new Size(250, 43);
+            textBox_inventoryid.Size = new Size(148, 29);
             textBox_inventoryid.TabIndex = 33;
-            textBox_inventoryid.Text = "AA0000";
+            textBox_inventoryid.Text = "--P..0000";
+            textBox_inventoryid.TextChanged += textBox_inventoryid_TextChanged;
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(32, 523);
+            label11.Location = new Point(19, 319);
+            label11.Margin = new Padding(2, 0, 2, 0);
             label11.Name = "label11";
-            label11.Size = new Size(172, 41);
+            label11.Size = new Size(105, 25);
             label11.TabIndex = 32;
             label11.Text = "InventoryID";
             // 
@@ -434,17 +460,19 @@
             // 
             textBox_date.BorderStyle = BorderStyle.FixedSingle;
             textBox_date.Font = new Font("Consolas", 9F);
-            textBox_date.Location = new Point(225, 588);
+            textBox_date.Location = new Point(132, 359);
+            textBox_date.Margin = new Padding(2, 2, 2, 2);
             textBox_date.Name = "textBox_date";
-            textBox_date.Size = new Size(250, 43);
+            textBox_date.Size = new Size(148, 29);
             textBox_date.TabIndex = 35;
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(32, 584);
+            label12.Location = new Point(19, 356);
+            label12.Margin = new Padding(2, 0, 2, 0);
             label12.Name = "label12";
-            label12.Size = new Size(80, 41);
+            label12.Size = new Size(49, 25);
             label12.TabIndex = 34;
             label12.Text = "Date";
             // 
@@ -452,18 +480,20 @@
             // 
             textBox_User.BorderStyle = BorderStyle.FixedSingle;
             textBox_User.Font = new Font("Consolas", 9F);
-            textBox_User.Location = new Point(225, 649);
+            textBox_User.Location = new Point(132, 396);
+            textBox_User.Margin = new Padding(2, 2, 2, 2);
             textBox_User.Name = "textBox_User";
-            textBox_User.Size = new Size(250, 43);
+            textBox_User.Size = new Size(148, 29);
             textBox_User.TabIndex = 37;
             textBox_User.Text = "USERNAME";
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(32, 645);
+            label13.Location = new Point(19, 393);
+            label13.Margin = new Padding(2, 0, 2, 0);
             label13.Name = "label13";
-            label13.Size = new Size(78, 41);
+            label13.Size = new Size(47, 25);
             label13.TabIndex = 36;
             label13.Text = "User";
             // 
@@ -471,18 +501,20 @@
             // 
             textBox_Tablet.BorderStyle = BorderStyle.FixedSingle;
             textBox_Tablet.Font = new Font("Consolas", 9F);
-            textBox_Tablet.Location = new Point(225, 710);
+            textBox_Tablet.Location = new Point(132, 433);
+            textBox_Tablet.Margin = new Padding(2, 2, 2, 2);
             textBox_Tablet.Name = "textBox_Tablet";
-            textBox_Tablet.Size = new Size(250, 43);
+            textBox_Tablet.Size = new Size(148, 29);
             textBox_Tablet.TabIndex = 39;
-            textBox_Tablet.Text = "AAA-000";
+            textBox_Tablet.Text = "--T.0000";
             // 
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(32, 706);
+            label14.Location = new Point(19, 430);
+            label14.Margin = new Padding(2, 0, 2, 0);
             label14.Name = "label14";
-            label14.Size = new Size(97, 41);
+            label14.Size = new Size(58, 25);
             label14.TabIndex = 38;
             label14.Text = "Tablet";
             // 
@@ -490,18 +522,20 @@
             // 
             textBox_driver.BorderStyle = BorderStyle.FixedSingle;
             textBox_driver.Font = new Font("Consolas", 9F);
-            textBox_driver.Location = new Point(225, 771);
+            textBox_driver.Location = new Point(132, 470);
+            textBox_driver.Margin = new Padding(2, 2, 2, 2);
             textBox_driver.Name = "textBox_driver";
-            textBox_driver.Size = new Size(250, 43);
+            textBox_driver.Size = new Size(148, 29);
             textBox_driver.TabIndex = 41;
             textBox_driver.Text = "DRIVER";
             // 
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(32, 767);
+            label15.Location = new Point(19, 468);
+            label15.Margin = new Padding(2, 0, 2, 0);
             label15.Name = "label15";
-            label15.Size = new Size(96, 41);
+            label15.Size = new Size(59, 25);
             label15.TabIndex = 40;
             label15.Text = "Driver";
             // 
@@ -509,70 +543,74 @@
             // 
             textBox_OS.BorderStyle = BorderStyle.FixedSingle;
             textBox_OS.Font = new Font("Consolas", 9F);
-            textBox_OS.Location = new Point(225, 832);
+            textBox_OS.Location = new Point(132, 507);
+            textBox_OS.Margin = new Padding(2, 2, 2, 2);
             textBox_OS.Name = "textBox_OS";
-            textBox_OS.Size = new Size(250, 43);
+            textBox_OS.Size = new Size(148, 29);
             textBox_OS.TabIndex = 43;
             textBox_OS.Text = "WINDOWS";
             // 
             // label16
             // 
             label16.AutoSize = true;
-            label16.Location = new Point(32, 828);
+            label16.Location = new Point(19, 505);
+            label16.Margin = new Padding(2, 0, 2, 0);
             label16.Name = "label16";
-            label16.Size = new Size(57, 41);
+            label16.Size = new Size(36, 25);
             label16.TabIndex = 42;
             label16.Text = "OS";
             // 
             // button_export
             // 
-            button_export.Location = new Point(781, 490);
-            button_export.Margin = new Padding(4);
+            button_export.Location = new Point(459, 299);
+            button_export.Margin = new Padding(2, 2, 2, 2);
             button_export.Name = "button_export";
-            button_export.Size = new Size(196, 59);
+            button_export.Size = new Size(115, 36);
             button_export.TabIndex = 44;
             button_export.Text = "export";
             button_export.UseVisualStyleBackColor = true;
             button_export.Click += button_export_Click;
             // 
-            // button3
+            // button_update_chart_title
             // 
-            button3.Location = new Point(567, 758);
-            button3.Margin = new Padding(4);
-            button3.Name = "button3";
-            button3.Size = new Size(298, 59);
-            button3.TabIndex = 45;
-            button3.Text = "Update chart title";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            button_update_chart_title.Location = new Point(334, 462);
+            button_update_chart_title.Margin = new Padding(2, 2, 2, 2);
+            button_update_chart_title.Name = "button_update_chart_title";
+            button_update_chart_title.Size = new Size(175, 36);
+            button_update_chart_title.TabIndex = 45;
+            button_update_chart_title.Text = "Update chart title";
+            button_update_chart_title.UseVisualStyleBackColor = true;
+            button_update_chart_title.Click += button3_Click;
             // 
-            // button4
+            // button_copy_chart
             // 
-            button4.Location = new Point(567, 952);
-            button4.Margin = new Padding(4);
-            button4.Name = "button4";
-            button4.Size = new Size(222, 59);
-            button4.TabIndex = 46;
-            button4.Text = "copy chart";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
+            button_copy_chart.Location = new Point(334, 580);
+            button_copy_chart.Margin = new Padding(2, 2, 2, 2);
+            button_copy_chart.Name = "button_copy_chart";
+            button_copy_chart.Size = new Size(131, 36);
+            button_copy_chart.TabIndex = 46;
+            button_copy_chart.Text = "copy chart";
+            button_copy_chart.UseVisualStyleBackColor = true;
+            button_copy_chart.Click += button4_Click;
             // 
             // comboBoxcomport
             // 
             comboBoxcomport.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxcomport.FormattingEnabled = true;
             comboBoxcomport.Items.AddRange(new object[] { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6" });
-            comboBoxcomport.Location = new Point(567, 1111);
+            comboBoxcomport.Location = new Point(334, 677);
+            comboBoxcomport.Margin = new Padding(2, 2, 2, 2);
             comboBoxcomport.Name = "comboBoxcomport";
-            comboBoxcomport.Size = new Size(302, 49);
+            comboBoxcomport.Size = new Size(179, 33);
             comboBoxcomport.TabIndex = 47;
             // 
             // checkBox_tipdown
             // 
             checkBox_tipdown.AutoSize = true;
-            checkBox_tipdown.Location = new Point(584, 1329);
+            checkBox_tipdown.Location = new Point(344, 810);
+            checkBox_tipdown.Margin = new Padding(2, 2, 2, 2);
             checkBox_tipdown.Name = "checkBox_tipdown";
-            checkBox_tipdown.Size = new Size(175, 45);
+            checkBox_tipdown.Size = new Size(109, 29);
             checkBox_tipdown.TabIndex = 48;
             checkBox_tipdown.Text = "TipDown";
             checkBox_tipdown.UseVisualStyleBackColor = true;
@@ -580,9 +618,10 @@
             // checkBox_lowerbuttondown
             // 
             checkBox_lowerbuttondown.AutoSize = true;
-            checkBox_lowerbuttondown.Location = new Point(584, 1380);
+            checkBox_lowerbuttondown.Location = new Point(344, 841);
+            checkBox_lowerbuttondown.Margin = new Padding(2, 2, 2, 2);
             checkBox_lowerbuttondown.Name = "checkBox_lowerbuttondown";
-            checkBox_lowerbuttondown.Size = new Size(311, 45);
+            checkBox_lowerbuttondown.Size = new Size(190, 29);
             checkBox_lowerbuttondown.TabIndex = 49;
             checkBox_lowerbuttondown.Text = "LowerButton Down";
             checkBox_lowerbuttondown.UseVisualStyleBackColor = true;
@@ -590,24 +629,25 @@
             // checkBox_upperbuttondown
             // 
             checkBox_upperbuttondown.AutoSize = true;
-            checkBox_upperbuttondown.Location = new Point(583, 1431);
+            checkBox_upperbuttondown.Location = new Point(343, 873);
+            checkBox_upperbuttondown.Margin = new Padding(2, 2, 2, 2);
             checkBox_upperbuttondown.Name = "checkBox_upperbuttondown";
-            checkBox_upperbuttondown.Size = new Size(314, 45);
+            checkBox_upperbuttondown.Size = new Size(192, 29);
             checkBox_upperbuttondown.TabIndex = 50;
             checkBox_upperbuttondown.Text = "UpperButton Down";
             checkBox_upperbuttondown.UseVisualStyleBackColor = true;
             // 
             // FormPressureTester
             // 
-            AutoScaleDimensions = new SizeF(17F, 41F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2346, 1602);
+            ClientSize = new Size(1380, 977);
             Controls.Add(checkBox_upperbuttondown);
             Controls.Add(checkBox_lowerbuttondown);
             Controls.Add(checkBox_tipdown);
             Controls.Add(comboBoxcomport);
-            Controls.Add(button4);
-            Controls.Add(button3);
+            Controls.Add(button_copy_chart);
+            Controls.Add(button_update_chart_title);
             Controls.Add(button_export);
             Controls.Add(textBox_OS);
             Controls.Add(label16);
@@ -632,8 +672,8 @@
             Controls.Add(label7);
             Controls.Add(button_clearlog);
             Controls.Add(label_recordcount);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(button_copytext);
+            Controls.Add(button_record);
             Controls.Add(label_force);
             Controls.Add(button_stop);
             Controls.Add(button_start);
@@ -653,6 +693,7 @@
             Controls.Add(label_normalized_pressure);
             Controls.Add(label_raw_pressure_txt);
             Controls.Add(label_pressure_raw);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "FormPressureTester";
             Text = "WinTabPressureTester";
             FormClosing += FormPressureTester_FormClosing;
@@ -686,8 +727,8 @@
         private Button button_start;
         private Button button_stop;
         private Label label_force;
-        private Button button1;
-        private Button button2;
+        private Button button_record;
+        private Button button_copytext;
         private Label label_recordcount;
         private Button button_clearlog;
         private Label label7;
@@ -712,8 +753,8 @@
         private TextBox textBox_OS;
         private Label label16;
         private Button button_export;
-        private Button button3;
-        private Button button4;
+        private Button button_update_chart_title;
+        private Button button_copy_chart;
         private ComboBox comboBoxcomport;
         private CheckBox checkBox_tipdown;
         private CheckBox checkBox_lowerbuttondown;
