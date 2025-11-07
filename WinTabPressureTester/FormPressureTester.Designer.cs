@@ -598,7 +598,6 @@
             // 
             comboBoxcomport.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxcomport.FormattingEnabled = true;
-            comboBoxcomport.Items.AddRange(new object[] { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6" });
             comboBoxcomport.Location = new Point(401, 812);
             comboBoxcomport.Margin = new Padding(2);
             comboBoxcomport.Name = "comboBoxcomport";

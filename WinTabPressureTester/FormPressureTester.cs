@@ -50,6 +50,11 @@ namespace WinTabPressureTester
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
 
+            if (this.comboBoxcomport.Items!=null)
+            {
+                var portnames = SerialPort.GetPortNames();
+                this.comboBoxcomport.Items.AddRange(portnames);
+            }
 
             this.UpdateCharTitle();
 
@@ -85,9 +90,9 @@ namespace WinTabPressureTester
 
         private string GetSelectedComPortName()
         {
-            var x= SerialPort.GetPortNames();
+            var portnames= SerialPort.GetPortNames();
             var lastitem = this.comboBoxcomport.Items[this.comboBoxcomport.Items.Count - 1];
-            this.comboBoxcomport.Text = "COM4"; //lastitem.ToString();
+            this.comboBoxcomport.Text = lastitem.ToString();
 
             string comport = this.comboBoxcomport.Text.ToUpper();
             return comport;
