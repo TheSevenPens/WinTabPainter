@@ -85,8 +85,9 @@ namespace WinTabPressureTester
 
         private string GetSelectedComPortName()
         {
+            var x= SerialPort.GetPortNames();
             var lastitem = this.comboBoxcomport.Items[this.comboBoxcomport.Items.Count - 1];
-            this.comboBoxcomport.Text = lastitem.ToString();
+            this.comboBoxcomport.Text = "COM4"; //lastitem.ToString();
 
             string comport = this.comboBoxcomport.Text.ToUpper();
             return comport;
