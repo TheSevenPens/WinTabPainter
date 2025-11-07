@@ -560,5 +560,10 @@ namespace WinTabPressureTester
         {
 
         }
+
+        private void formsPlot1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

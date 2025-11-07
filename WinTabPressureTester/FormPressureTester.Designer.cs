@@ -169,7 +169,7 @@
             // pictureBox1
             // 
             pictureBox1.Location = new Point(646, 39);
-            pictureBox1.Margin = new Padding(2, 2, 2, 2);
+            pictureBox1.Margin = new Padding(2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(353, 305);
             pictureBox1.TabIndex = 8;
@@ -246,7 +246,7 @@
             textBox_log.Enabled = false;
             textBox_log.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox_log.Location = new Point(24, 563);
-            textBox_log.Margin = new Padding(2, 2, 2, 2);
+            textBox_log.Margin = new Padding(2);
             textBox_log.Multiline = true;
             textBox_log.Name = "textBox_log";
             textBox_log.ReadOnly = true;
@@ -260,7 +260,7 @@
             // button_start
             // 
             button_start.Location = new Point(334, 188);
-            button_start.Margin = new Padding(2, 2, 2, 2);
+            button_start.Margin = new Padding(2);
             button_start.Name = "button_start";
             button_start.Size = new Size(115, 36);
             button_start.TabIndex = 16;
@@ -271,7 +271,7 @@
             // button_stop
             // 
             button_stop.Location = new Point(454, 188);
-            button_stop.Margin = new Padding(2, 2, 2, 2);
+            button_stop.Margin = new Padding(2);
             button_stop.Name = "button_stop";
             button_stop.Size = new Size(115, 36);
             button_stop.TabIndex = 17;
@@ -294,7 +294,7 @@
             // button_record
             // 
             button_record.Location = new Point(334, 243);
-            button_record.Margin = new Padding(2, 2, 2, 2);
+            button_record.Margin = new Padding(2);
             button_record.Name = "button_record";
             button_record.Size = new Size(115, 36);
             button_record.TabIndex = 19;
@@ -305,7 +305,7 @@
             // button_copytext
             // 
             button_copytext.Location = new Point(334, 523);
-            button_copytext.Margin = new Padding(2, 2, 2, 2);
+            button_copytext.Margin = new Padding(2);
             button_copytext.Name = "button_copytext";
             button_copytext.Size = new Size(131, 36);
             button_copytext.TabIndex = 20;
@@ -329,7 +329,7 @@
             button_clearlog.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_clearlog.ForeColor = Color.IndianRed;
             button_clearlog.Location = new Point(334, 351);
-            button_clearlog.Margin = new Padding(2, 2, 2, 2);
+            button_clearlog.Margin = new Padding(2);
             button_clearlog.Name = "button_clearlog";
             button_clearlog.Size = new Size(115, 36);
             button_clearlog.TabIndex = 22;
@@ -360,7 +360,7 @@
             // button_clearlast
             // 
             button_clearlast.Location = new Point(334, 299);
-            button_clearlast.Margin = new Padding(2, 2, 2, 2);
+            button_clearlast.Margin = new Padding(2);
             button_clearlast.Name = "button_clearlast";
             button_clearlast.Size = new Size(115, 36);
             button_clearlast.TabIndex = 25;
@@ -373,15 +373,16 @@
             formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             formsPlot1.DisplayScale = 2F;
             formsPlot1.Location = new Point(591, 17);
-            formsPlot1.Margin = new Padding(2, 2, 2, 2);
+            formsPlot1.Margin = new Padding(2);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(774, 935);
+            formsPlot1.Size = new Size(774, 699);
             formsPlot1.TabIndex = 26;
+            formsPlot1.Load += formsPlot1_Load;
             // 
             // button_load_sample_data
             // 
             button_load_sample_data.Location = new Point(334, 401);
-            button_load_sample_data.Margin = new Padding(2, 2, 2, 2);
+            button_load_sample_data.Margin = new Padding(2);
             button_load_sample_data.Name = "button_load_sample_data";
             button_load_sample_data.Size = new Size(175, 36);
             button_load_sample_data.TabIndex = 27;
@@ -404,7 +405,7 @@
             textBox_brand.BorderStyle = BorderStyle.FixedSingle;
             textBox_brand.Font = new Font("Consolas", 9F);
             textBox_brand.Location = new Point(132, 247);
-            textBox_brand.Margin = new Padding(2, 2, 2, 2);
+            textBox_brand.Margin = new Padding(2);
             textBox_brand.Name = "textBox_brand";
             textBox_brand.Size = new Size(148, 29);
             textBox_brand.TabIndex = 29;
@@ -418,11 +419,11 @@
             textBox_Pen.BorderStyle = BorderStyle.FixedSingle;
             textBox_Pen.Font = new Font("Consolas", 9F);
             textBox_Pen.Location = new Point(132, 284);
-            textBox_Pen.Margin = new Padding(2, 2, 2, 2);
+            textBox_Pen.Margin = new Padding(2);
             textBox_Pen.Name = "textBox_Pen";
             textBox_Pen.Size = new Size(148, 29);
             textBox_Pen.TabIndex = 31;
-            textBox_Pen.Text = "XX-000E";
+            textBox_Pen.Text = "KP-504E";
             // 
             // label10
             // 
@@ -439,11 +440,11 @@
             textBox_inventoryid.BorderStyle = BorderStyle.FixedSingle;
             textBox_inventoryid.Font = new Font("Consolas", 9F);
             textBox_inventoryid.Location = new Point(132, 321);
-            textBox_inventoryid.Margin = new Padding(2, 2, 2, 2);
+            textBox_inventoryid.Margin = new Padding(2);
             textBox_inventoryid.Name = "textBox_inventoryid";
             textBox_inventoryid.Size = new Size(148, 29);
             textBox_inventoryid.TabIndex = 33;
-            textBox_inventoryid.Text = "--P..0000";
+            textBox_inventoryid.Text = "--P.0000";
             textBox_inventoryid.TextChanged += textBox_inventoryid_TextChanged;
             // 
             // label11
@@ -461,7 +462,7 @@
             textBox_date.BorderStyle = BorderStyle.FixedSingle;
             textBox_date.Font = new Font("Consolas", 9F);
             textBox_date.Location = new Point(132, 359);
-            textBox_date.Margin = new Padding(2, 2, 2, 2);
+            textBox_date.Margin = new Padding(2);
             textBox_date.Name = "textBox_date";
             textBox_date.Size = new Size(148, 29);
             textBox_date.TabIndex = 35;
@@ -481,7 +482,7 @@
             textBox_User.BorderStyle = BorderStyle.FixedSingle;
             textBox_User.Font = new Font("Consolas", 9F);
             textBox_User.Location = new Point(132, 396);
-            textBox_User.Margin = new Padding(2, 2, 2, 2);
+            textBox_User.Margin = new Padding(2);
             textBox_User.Name = "textBox_User";
             textBox_User.Size = new Size(148, 29);
             textBox_User.TabIndex = 37;
@@ -502,11 +503,11 @@
             textBox_Tablet.BorderStyle = BorderStyle.FixedSingle;
             textBox_Tablet.Font = new Font("Consolas", 9F);
             textBox_Tablet.Location = new Point(132, 433);
-            textBox_Tablet.Margin = new Padding(2, 2, 2, 2);
+            textBox_Tablet.Margin = new Padding(2);
             textBox_Tablet.Name = "textBox_Tablet";
             textBox_Tablet.Size = new Size(148, 29);
             textBox_Tablet.TabIndex = 39;
-            textBox_Tablet.Text = "--T.0000";
+            textBox_Tablet.Text = "PTH-660";
             // 
             // label14
             // 
@@ -523,7 +524,7 @@
             textBox_driver.BorderStyle = BorderStyle.FixedSingle;
             textBox_driver.Font = new Font("Consolas", 9F);
             textBox_driver.Location = new Point(132, 470);
-            textBox_driver.Margin = new Padding(2, 2, 2, 2);
+            textBox_driver.Margin = new Padding(2);
             textBox_driver.Name = "textBox_driver";
             textBox_driver.Size = new Size(148, 29);
             textBox_driver.TabIndex = 41;
@@ -544,7 +545,7 @@
             textBox_OS.BorderStyle = BorderStyle.FixedSingle;
             textBox_OS.Font = new Font("Consolas", 9F);
             textBox_OS.Location = new Point(132, 507);
-            textBox_OS.Margin = new Padding(2, 2, 2, 2);
+            textBox_OS.Margin = new Padding(2);
             textBox_OS.Name = "textBox_OS";
             textBox_OS.Size = new Size(148, 29);
             textBox_OS.TabIndex = 43;
@@ -563,7 +564,7 @@
             // button_export
             // 
             button_export.Location = new Point(459, 299);
-            button_export.Margin = new Padding(2, 2, 2, 2);
+            button_export.Margin = new Padding(2);
             button_export.Name = "button_export";
             button_export.Size = new Size(115, 36);
             button_export.TabIndex = 44;
@@ -574,7 +575,7 @@
             // button_update_chart_title
             // 
             button_update_chart_title.Location = new Point(334, 462);
-            button_update_chart_title.Margin = new Padding(2, 2, 2, 2);
+            button_update_chart_title.Margin = new Padding(2);
             button_update_chart_title.Name = "button_update_chart_title";
             button_update_chart_title.Size = new Size(175, 36);
             button_update_chart_title.TabIndex = 45;
@@ -585,7 +586,7 @@
             // button_copy_chart
             // 
             button_copy_chart.Location = new Point(334, 580);
-            button_copy_chart.Margin = new Padding(2, 2, 2, 2);
+            button_copy_chart.Margin = new Padding(2);
             button_copy_chart.Name = "button_copy_chart";
             button_copy_chart.Size = new Size(131, 36);
             button_copy_chart.TabIndex = 46;
@@ -599,7 +600,7 @@
             comboBoxcomport.FormattingEnabled = true;
             comboBoxcomport.Items.AddRange(new object[] { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6" });
             comboBoxcomport.Location = new Point(334, 677);
-            comboBoxcomport.Margin = new Padding(2, 2, 2, 2);
+            comboBoxcomport.Margin = new Padding(2);
             comboBoxcomport.Name = "comboBoxcomport";
             comboBoxcomport.Size = new Size(179, 33);
             comboBoxcomport.TabIndex = 47;
@@ -608,7 +609,7 @@
             // 
             checkBox_tipdown.AutoSize = true;
             checkBox_tipdown.Location = new Point(344, 810);
-            checkBox_tipdown.Margin = new Padding(2, 2, 2, 2);
+            checkBox_tipdown.Margin = new Padding(2);
             checkBox_tipdown.Name = "checkBox_tipdown";
             checkBox_tipdown.Size = new Size(109, 29);
             checkBox_tipdown.TabIndex = 48;
@@ -619,7 +620,7 @@
             // 
             checkBox_lowerbuttondown.AutoSize = true;
             checkBox_lowerbuttondown.Location = new Point(344, 841);
-            checkBox_lowerbuttondown.Margin = new Padding(2, 2, 2, 2);
+            checkBox_lowerbuttondown.Margin = new Padding(2);
             checkBox_lowerbuttondown.Name = "checkBox_lowerbuttondown";
             checkBox_lowerbuttondown.Size = new Size(190, 29);
             checkBox_lowerbuttondown.TabIndex = 49;
@@ -630,7 +631,7 @@
             // 
             checkBox_upperbuttondown.AutoSize = true;
             checkBox_upperbuttondown.Location = new Point(343, 873);
-            checkBox_upperbuttondown.Margin = new Padding(2, 2, 2, 2);
+            checkBox_upperbuttondown.Margin = new Padding(2);
             checkBox_upperbuttondown.Name = "checkBox_upperbuttondown";
             checkBox_upperbuttondown.Size = new Size(192, 29);
             checkBox_upperbuttondown.TabIndex = 50;
@@ -641,7 +642,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1380, 977);
+            ClientSize = new Size(1380, 875);
             Controls.Add(checkBox_upperbuttondown);
             Controls.Add(checkBox_lowerbuttondown);
             Controls.Add(checkBox_tipdown);
@@ -693,7 +694,7 @@
             Controls.Add(label_normalized_pressure);
             Controls.Add(label_raw_pressure_txt);
             Controls.Add(label_pressure_raw);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "FormPressureTester";
             Text = "WinTabPressureTester";
             FormClosing += FormPressureTester_FormClosing;
