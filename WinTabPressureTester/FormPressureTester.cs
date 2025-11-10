@@ -188,8 +188,6 @@ namespace WinTabPressureTester
             {
                 try
                 {
-                    this.appstate.stopwatch = Stopwatch.StartNew();
-
                     if (!appstate.serial_port.IsOpen)
                     {
                         appstate.serial_port.Open();
@@ -378,6 +376,11 @@ namespace WinTabPressureTester
         }
 
         private void button_stop_Click(object sender, EventArgs e)
+        {
+            StopScaleSession();
+        }
+
+        private void StopScaleSession()
         {
             // Cancel the reading operation
             appstate.scale_cts.Cancel();

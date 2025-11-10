@@ -8,8 +8,7 @@ namespace WinTabPressureTester
         public WinTabUtils.TabletSession wintab_session;
         public ScaleSession scale_session;
 
-        // get rid of this
-        public Stopwatch stopwatch;
+
         // store in a different place? ???
         public double physi_pressure;
         public double log_pressure;
