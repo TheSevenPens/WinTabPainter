@@ -89,6 +89,7 @@ namespace WinTabPressureTester
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             StopWinTabSession();
+            StopScaleSession();
             this.np_pressure_guage?.Dispose();
             this.pictureBox1.Image?.Dispose();
             this.pictureBox1?.Dispose();
