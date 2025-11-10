@@ -11,16 +11,16 @@ namespace WinTabPressureTester
     {
         // Sessions to held with our two datasources
         // the tablet and the scale
-        WinTabUtils.TabletSession wintabsession;
-        ScaleSession scalesession;
+        WinTabUtils.TabletSession wintab_session;
+        ScaleSession scale_session;
 
 
         // move to scalesession
         private System.IO.Ports.SerialPort serial_port;
 
-        // move to scalesession ???
-        private CancellationTokenSource cts;
-        private bool isReading = false;
+
+        private CancellationTokenSource scale_cts;
+        private bool scale_isReading = false;
 
         // get rid of this
         Stopwatch stopwatch;
@@ -30,8 +30,8 @@ namespace WinTabPressureTester
         double log_pressure;
 
         PressureRecordCollection record_collection;
-        int q_logical_pressure_bufsize = 400;
-        WinTabUtils.Numerics.IndexedQueue<double> q_logical;
+        int logical_pressure_queue_size = 400;
+        WinTabUtils.Numerics.IndexedQueue<double> queue_logical;
 
 
         public void UpdateCharTitle()
@@ -43,8 +43,8 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.wintabsession = new WinTabUtils.TabletSession();
-            this.scalesession = new ScaleSession();
+            this.wintab_session = new WinTabUtils.TabletSession();
+            this.scale_session = new ScaleSession();
 
 
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -78,11 +78,11 @@ namespace WinTabPressureTester
             formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 27;
 
 
-            this.q_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.q_logical_pressure_bufsize);
+            this.queue_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.logical_pressure_queue_size);
 
             string comportname = GetSelectedComPortName();
             this.serial_port = new SerialPort(comportname);
-            cts = new CancellationTokenSource();
+            scale_cts = new CancellationTokenSource();
 
             this.record_collection = new PressureRecordCollection();
             this.button_start.Select();
@@ -103,15 +103,15 @@ namespace WinTabPressureTester
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.wintabsession.PacketHandler = this.PacketHandler;
-            this.wintabsession.ButtonChangedHandler = this.ButtonChangeHandler;
-            this.wintabsession.Open(WinTabUtils.TabletContextType.System);
+            this.wintab_session.PacketHandler = this.PacketHandler;
+            this.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
+            this.wintab_session.Open(WinTabUtils.TabletContextType.System);
 
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.wintabsession?.Close();
+            this.wintab_session?.Close();
             this.np_pressure_guage?.Dispose();
             this.pictureBox1.Image?.Dispose();
             this.pictureBox1?.Dispose();
@@ -152,7 +152,7 @@ namespace WinTabPressureTester
 
 
             uint raw_pressure = wintab_pkt.pkNormalPressure;
-            double normalized_raw_pressure = (raw_pressure / (1.0 * this.wintabsession.TabletInfo.MaxPressure));
+            double normalized_raw_pressure = (raw_pressure / (1.0 * this.wintab_session.TabletInfo.MaxPressure));
 
             string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure * 100.0);
             this.log_pressure = normalized_raw_pressure;
@@ -169,18 +169,18 @@ namespace WinTabPressureTester
 
 
 
-            this.scalesession.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
-            double cur_logical_pressure_ma = this.scalesession.logical_pressure_moving_average.GetAverage();
+            this.scale_session.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
+            double cur_logical_pressure_ma = this.scale_session.logical_pressure_moving_average.GetAverage();
             this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", cur_logical_pressure_ma * 100.0);
 
-            if (this.q_logical.Count >= this.q_logical_pressure_bufsize)
+            if (this.queue_logical.Count >= this.logical_pressure_queue_size)
             {
-                if (this.q_logical.Count > 0)
+                if (this.queue_logical.Count > 0)
                 {
-                    this.q_logical.Dequeue();
+                    this.queue_logical.Dequeue();
                 }
             }
-            this.q_logical.Enqueue(cur_logical_pressure_ma);
+            this.queue_logical.Enqueue(cur_logical_pressure_ma);
 
         }
 
@@ -188,14 +188,14 @@ namespace WinTabPressureTester
         {
             if (buttonchange.Change == WinTabUtils.PenButtonPressChangeType.Released)
             {
-                this.scalesession.logical_pressure_moving_average.Clear();
+                this.scale_session.logical_pressure_moving_average.Clear();
             }
         }
 
         private async void button_start_Click(object sender, EventArgs e)
         {
 
-            if (!isReading)
+            if (!scale_isReading)
             {
                 try
                 {
@@ -206,8 +206,8 @@ namespace WinTabPressureTester
                         serial_port.Open();
                     }
 
-                    isReading = true;
-                    await ReadSerialPortAsync(cts.Token);
+                    scale_isReading = true;
+                    await ReadSerialPortAsync(scale_cts.Token);
                 }
                 catch (Exception ex)
                 {
@@ -221,7 +221,7 @@ namespace WinTabPressureTester
                     {
                         serial_port.Close();
                     }
-                    isReading = false;
+                    scale_isReading = false;
                 }
             }
         }
@@ -390,15 +390,15 @@ namespace WinTabPressureTester
         private void button_stop_Click(object sender, EventArgs e)
         {
             // Cancel the reading operation
-            cts.Cancel();
+            scale_cts.Cancel();
             // Create new CancellationTokenSource for next operation
-            cts = new CancellationTokenSource();
+            scale_cts = new CancellationTokenSource();
         }
 
         private void FormPressureTester_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            cts.Cancel();
+            scale_cts.Cancel();
             if (serial_port != null && serial_port.IsOpen)
             {
                 serial_port.Close();
@@ -409,7 +409,7 @@ namespace WinTabPressureTester
 
         private void button_record_Click(object sender, EventArgs e)
         {
-            this.record_collection.Add(physi_pressure, this.scalesession.logical_pressure_moving_average.GetAverage());
+            this.record_collection.Add(physi_pressure, this.scale_session.logical_pressure_moving_average.GetAverage());
 
             this.updatedata();
 
