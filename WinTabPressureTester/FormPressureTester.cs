@@ -6,32 +6,10 @@ using WinTabUtils;
 
 namespace WinTabPressureTester
 {
-
     public partial class FormPressureTester : Form
     {
-        // Sessions to held with our two datasources
-        // the tablet and the scale
-        WinTabUtils.TabletSession wintab_session;
-        ScaleSession scale_session;
+        AppState appstate = new AppState();
 
-
-        // move to scalesession
-        private System.IO.Ports.SerialPort serial_port;
-
-
-        private CancellationTokenSource scale_cts;
-        private bool scale_isReading = false;
-
-        // get rid of this
-        Stopwatch stopwatch;
-
-        // store in a different place? ???
-        double physi_pressure;
-        double log_pressure;
-
-        PressureRecordCollection record_collection;
-        int logical_pressure_queue_size = 400;
-        WinTabUtils.Numerics.IndexedQueue<double> queue_logical;
 
 
         public void UpdateCharTitle()
@@ -43,8 +21,8 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.wintab_session = new WinTabUtils.TabletSession();
-            this.scale_session = new ScaleSession();
+            this.appstate.wintab_session = new WinTabUtils.TabletSession();
+            this.appstate.scale_session = new ScaleSession();
 
 
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
@@ -78,13 +56,13 @@ namespace WinTabPressureTester
             formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 27;
 
 
-            this.queue_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.logical_pressure_queue_size);
+            this.appstate.queue_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.appstate.logical_pressure_queue_size);
 
             string comportname = GetSelectedComPortName();
-            this.serial_port = new SerialPort(comportname);
-            scale_cts = new CancellationTokenSource();
+            this.appstate.serial_port = new SerialPort(comportname);
+            this.appstate.scale_cts = new CancellationTokenSource();
 
-            this.record_collection = new PressureRecordCollection();
+            this.appstate.record_collection = new PressureRecordCollection();
             this.button_start.Select();
         }
 
@@ -103,15 +81,15 @@ namespace WinTabPressureTester
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.wintab_session.PacketHandler = this.PacketHandler;
-            this.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
-            this.wintab_session.Open(WinTabUtils.TabletContextType.System);
+            this.appstate.wintab_session.PacketHandler = this.PacketHandler;
+            this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
+            this.appstate.wintab_session.Open(WinTabUtils.TabletContextType.System);
 
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.wintab_session?.Close();
+            this.appstate.wintab_session?.Close();
             this.np_pressure_guage?.Dispose();
             this.pictureBox1.Image?.Dispose();
             this.pictureBox1?.Dispose();
@@ -152,10 +130,10 @@ namespace WinTabPressureTester
 
 
             uint raw_pressure = wintab_pkt.pkNormalPressure;
-            double normalized_raw_pressure = (raw_pressure / (1.0 * this.wintab_session.TabletInfo.MaxPressure));
+            double normalized_raw_pressure = (raw_pressure / (1.0 * this.appstate.wintab_session.TabletInfo.MaxPressure));
 
             string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure * 100.0);
-            this.log_pressure = normalized_raw_pressure;
+            this.appstate.log_pressure = normalized_raw_pressure;
 
             (double TiltX, double TiltY) = WinTabUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
 
@@ -169,18 +147,18 @@ namespace WinTabPressureTester
 
 
 
-            this.scale_session.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
-            double cur_logical_pressure_ma = this.scale_session.logical_pressure_moving_average.GetAverage();
+            this.appstate.scale_session.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
+            double cur_logical_pressure_ma = this.appstate.scale_session.logical_pressure_moving_average.GetAverage();
             this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", cur_logical_pressure_ma * 100.0);
 
-            if (this.queue_logical.Count >= this.logical_pressure_queue_size)
+            if (this.appstate.queue_logical.Count >= this.appstate.logical_pressure_queue_size)
             {
-                if (this.queue_logical.Count > 0)
+                if (this.appstate.queue_logical.Count > 0)
                 {
-                    this.queue_logical.Dequeue();
+                    this.appstate.queue_logical.Dequeue();
                 }
             }
-            this.queue_logical.Enqueue(cur_logical_pressure_ma);
+            this.appstate.queue_logical.Enqueue(cur_logical_pressure_ma);
 
         }
 
@@ -188,26 +166,26 @@ namespace WinTabPressureTester
         {
             if (buttonchange.Change == WinTabUtils.PenButtonPressChangeType.Released)
             {
-                this.scale_session.logical_pressure_moving_average.Clear();
+                this.appstate.scale_session.logical_pressure_moving_average.Clear();
             }
         }
 
         private async void button_start_Click(object sender, EventArgs e)
         {
 
-            if (!scale_isReading)
+            if (!appstate.scale_isReading)
             {
                 try
                 {
-                    this.stopwatch = Stopwatch.StartNew();
+                    this.appstate.stopwatch = Stopwatch.StartNew();
 
-                    if (!serial_port.IsOpen)
+                    if (!appstate.serial_port.IsOpen)
                     {
-                        serial_port.Open();
+                        appstate.serial_port.Open();
                     }
 
-                    scale_isReading = true;
-                    await ReadSerialPortAsync(scale_cts.Token);
+                    appstate.scale_isReading = true;
+                    await ReadSerialPortAsync(appstate.scale_cts.Token);
                 }
                 catch (Exception ex)
                 {
@@ -217,11 +195,12 @@ namespace WinTabPressureTester
                 }
                 finally
                 {
-                    if (serial_port.IsOpen)
+                    await ReadSerialPortAsync(appstate.scale_cts.Token);
+                    if (appstate.serial_port.IsOpen)
                     {
-                        serial_port.Close();
+                        appstate.serial_port.Close();
                     }
-                    scale_isReading = false;
+                    appstate.scale_isReading = false;
                 }
             }
         }
@@ -332,9 +311,9 @@ namespace WinTabPressureTester
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (serial_port.BytesToRead > 0)
+                    if (appstate.serial_port.BytesToRead > 0)
                     {
-                        string line = await Task.Run(() => serial_port.ReadLine());
+                        string line = await Task.Run(() => appstate.serial_port.ReadLine());
                         var sr_parse = ParseScaleLine(line);
 
                         if (sr_parse.Parsed == false)
@@ -348,7 +327,7 @@ namespace WinTabPressureTester
                             var sr = sr_parse.ScaleRecord;
                             if (sr != null)
                             {
-                                physi_pressure = sr.ReadingAsDouble;
+                                this.appstate.physi_pressure = sr.ReadingAsDouble;
                                 Update_Scale_UI_Elements(sr.ReadingAsString);
                             }
                         }
@@ -390,26 +369,26 @@ namespace WinTabPressureTester
         private void button_stop_Click(object sender, EventArgs e)
         {
             // Cancel the reading operation
-            scale_cts.Cancel();
+            appstate.scale_cts.Cancel();
             // Create new CancellationTokenSource for next operation
-            scale_cts = new CancellationTokenSource();
+            appstate.scale_cts = new CancellationTokenSource();
         }
 
         private void FormPressureTester_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            scale_cts.Cancel();
-            if (serial_port != null && serial_port.IsOpen)
+            appstate.scale_cts.Cancel();
+            if (appstate.serial_port != null && appstate.serial_port.IsOpen)
             {
-                serial_port.Close();
-                serial_port.Dispose();
+                appstate.serial_port.Close();
+                appstate.serial_port.Dispose();
             }
 
         }
 
         private void button_record_Click(object sender, EventArgs e)
         {
-            this.record_collection.Add(physi_pressure, this.scale_session.logical_pressure_moving_average.GetAverage());
+            this.appstate.record_collection.Add(this.appstate.physi_pressure, this.appstate.scale_session.logical_pressure_moving_average.GetAverage());
 
             this.updatedata();
 
@@ -448,7 +427,7 @@ namespace WinTabPressureTester
             sb.AppendLine($@"    ""os"": ""{this.textBox_OS.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""notes"": ""{string.Empty}"" , ");
             sb.AppendLine("    \"records\": [  ");
-            sb.AppendLine(this.record_collection.GetRecordsJSON());
+            sb.AppendLine(this.appstate.record_collection.GetRecordsJSON());
             sb.AppendLine("    ]");
             sb.AppendLine("}");
 
@@ -458,7 +437,7 @@ namespace WinTabPressureTester
 
         private void button_clearlog_Click(object sender, EventArgs e)
         {
-            this.record_collection.Clear();
+            this.appstate.record_collection.Clear();
             this.updatedata();
         }
 
@@ -474,12 +453,12 @@ namespace WinTabPressureTester
 
         private void button_clearlast_Click(object sender, EventArgs e)
         {
-            if (this.record_collection.Count < 1)
+            if (this.appstate.record_collection.Count < 1)
             {
                 return;
             }
 
-            this.record_collection.ClearLast();
+            this.appstate.record_collection.ClearLast();
 
             this.updatedata();
 
@@ -487,25 +466,25 @@ namespace WinTabPressureTester
 
         private void button_load_sample_data_Click(object sender, EventArgs e)
         {
-            this.record_collection.Add(10, 0.01);
-            this.record_collection.Add(100, 0.40);
-            this.record_collection.Add(150, 0.50);
-            this.record_collection.Add(400, 0.85);
-            this.record_collection.Add(500, 1.00);
+            this.appstate.record_collection.Add(10, 0.01);
+            this.appstate.record_collection.Add(100, 0.40);
+            this.appstate.record_collection.Add(150, 0.50);
+            this.appstate.record_collection.Add(400, 0.85);
+            this.appstate.record_collection.Add(500, 1.00);
             this.updatedata();
         }
 
         public void updatedata()
         {
-            this.label_recordcount.Text = this.record_collection.Count.ToString();
-            this.textBox_log.Text = this.record_collection.GetRecordsText();
+            this.label_recordcount.Text = this.appstate.record_collection.Count.ToString();
+            this.textBox_log.Text = this.appstate.record_collection.GetRecordsText();
 
             textBox_log.SelectionStart = textBox_log.TextLength;
             textBox_log.ScrollToCaret();
 
 
-            double[] dataX = this.record_collection.items.Select(i => i.PhysicalPressure).ToArray();
-            double[] dataY = this.record_collection.items.Select(i => i.LogicalPressure * 100).ToArray();
+            double[] dataX = this.appstate.record_collection.items.Select(i => i.PhysicalPressure).ToArray();
+            double[] dataY = this.appstate.record_collection.items.Select(i => i.LogicalPressure * 100).ToArray();
 
             formsPlot1.Plot.Clear();
             var scatter = formsPlot1.Plot.Add.Scatter(dataX, dataY);
