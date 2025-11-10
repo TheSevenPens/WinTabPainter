@@ -94,17 +94,7 @@ namespace WinTabPressureTester
             this.pictureBox1?.Dispose();
         }
 
-        private void StartWinTabSession()
-        {
-            this.appstate.wintab_session.PacketHandler = this.PacketHandler;
-            this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(WinTabUtils.TabletContextType.System);
-        }
 
-        private void StopWinTabSession()
-        {
-            this.appstate.wintab_session?.Close();
-        }
 
         private static bool get_press_change_as_letter(PenButtonPressChangeType change)
         {
@@ -186,11 +176,23 @@ namespace WinTabPressureTester
 
             if (!appstate.scale_isReading)
             {
-                await StartScaleSessionEX();
+                await StartScaleSession();
             }
         }
 
-        private async Task StartScaleSessionEX()
+        private void StartWinTabSession()
+        {
+            this.appstate.wintab_session.PacketHandler = this.PacketHandler;
+            this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
+            this.appstate.wintab_session.Open(WinTabUtils.TabletContextType.System);
+        }
+
+        private void StopWinTabSession()
+        {
+            this.appstate.wintab_session?.Close();
+        }
+
+        private async Task StartScaleSession()
         {
             try
             {
@@ -217,6 +219,14 @@ namespace WinTabPressureTester
                 }
                 appstate.scale_isReading = false;
             }
+        }
+
+        private void StopScaleSession()
+        {
+            // Cancel the reading operation
+            appstate.scale_cts.Cancel();
+            // Create new CancellationTokenSource for next operation
+            appstate.scale_cts = new CancellationTokenSource();
         }
 
         public static string TrimLastCharIf(string s, char c)
@@ -385,13 +395,7 @@ namespace WinTabPressureTester
             StopScaleSession();
         }
 
-        private void StopScaleSession()
-        {
-            // Cancel the reading operation
-            appstate.scale_cts.Cancel();
-            // Create new CancellationTokenSource for next operation
-            appstate.scale_cts = new CancellationTokenSource();
-        }
+
 
         private void FormPressureTester_FormClosing(object sender, FormClosingEventArgs e)
         {
