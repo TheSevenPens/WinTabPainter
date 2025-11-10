@@ -81,18 +81,29 @@ namespace WinTabPressureTester
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.appstate.wintab_session.PacketHandler = this.PacketHandler;
-            this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(WinTabUtils.TabletContextType.System);
-
+            StartWinTabSession();
         }
+
+
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.appstate.wintab_session?.Close();
+            StopWinTabSession();
             this.np_pressure_guage?.Dispose();
             this.pictureBox1.Image?.Dispose();
             this.pictureBox1?.Dispose();
+        }
+
+        private void StartWinTabSession()
+        {
+            this.appstate.wintab_session.PacketHandler = this.PacketHandler;
+            this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
+            this.appstate.wintab_session.Open(WinTabUtils.TabletContextType.System);
+        }
+
+        private void StopWinTabSession()
+        {
+            this.appstate.wintab_session?.Close();
         }
 
         private static bool get_press_change_as_letter(PenButtonPressChangeType change)
