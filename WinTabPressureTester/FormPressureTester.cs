@@ -186,31 +186,36 @@ namespace WinTabPressureTester
 
             if (!appstate.scale_isReading)
             {
-                try
-                {
-                    if (!appstate.serial_port.IsOpen)
-                    {
-                        appstate.serial_port.Open();
-                    }
+                await StartScaleSessionEX();
+            }
+        }
 
-                    appstate.scale_isReading = true;
-                    await ReadSerialPortAsync(appstate.scale_cts.Token);
-                }
-                catch (Exception ex)
+        private async Task StartScaleSessionEX()
+        {
+            try
+            {
+                if (!appstate.serial_port.IsOpen)
                 {
-                    MessageBox.Show($"ERROR Failed to open COM Port\r\n" +
-                        $"{ex.GetType().FullName}\r\n" +
-                    $"{ex.Message}");
+                    appstate.serial_port.Open();
                 }
-                finally
+
+                appstate.scale_isReading = true;
+                await ReadSerialPortAsync(appstate.scale_cts.Token);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR Failed to open COM Port\r\n" +
+                    $"{ex.GetType().FullName}\r\n" +
+                $"{ex.Message}");
+            }
+            finally
+            {
+                await ReadSerialPortAsync(appstate.scale_cts.Token);
+                if (appstate.serial_port.IsOpen)
                 {
-                    await ReadSerialPortAsync(appstate.scale_cts.Token);
-                    if (appstate.serial_port.IsOpen)
-                    {
-                        appstate.serial_port.Close();
-                    }
-                    appstate.scale_isReading = false;
+                    appstate.serial_port.Close();
                 }
+                appstate.scale_isReading = false;
             }
         }
 
