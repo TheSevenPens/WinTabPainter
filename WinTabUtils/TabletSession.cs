@@ -33,7 +33,7 @@ public class TabletSession
 
         this.Context.Options |= (uint)WintabDN.Enums.ECTXOptionValues.CXO_SYSTEM;
 
-        // Move origin from lower-left to upper left to it matches screen origin
+        // Move origin from lower-left to upper left so it matches screen origin
         this.Context.OutExtY = -this.Context.OutExtY;
         var status = this.Context.Open();
 
