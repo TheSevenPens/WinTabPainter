@@ -2,7 +2,7 @@
 
 namespace WinTabUtils;
 
-public class TabletSession
+public class TabletSession : IDisposable
 {
 
     public WintabDN.CWintabContext Context = null;
@@ -92,16 +92,31 @@ public class TabletSession
 
     public void Close()
     {
-        if (this.Data != null)
-        {
-            this.Data.ClearWTPacketEventHandler();
-            this.Data = null;
-        }
+        Dispose();
+    }
 
-        if (this.Context != null)
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            this.Context.Close();
-            this.Context = null;
+            if (this.Data != null)
+            {
+                this.Data.ClearWTPacketEventHandler();
+                this.Data.Dispose();
+                this.Data = null;
+            }
+
+            if (this.Context != null)
+            {
+                this.Context.Close(); // Close() calls Dispose() internally now
+                this.Context = null;
+            }
         }
     }
 }

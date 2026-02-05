@@ -70,7 +70,7 @@ public static partial class MessageEvents
 
     public static void ClearMessageEvents()
     {
-        MessageEvents.MessageReceived -= null;
+        MessageReceived = null;
     }
 
     private static void EnsureInitialized()
