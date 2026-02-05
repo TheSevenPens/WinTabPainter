@@ -1,7 +1,8 @@
 using System;
 using SD = System.Drawing;
 
-namespace WinTabUtils.Geometry.SDextensions;
+
+namespace WinTabPainter.GeometryExtensions;
 
 public static class GeometryExtensions
 {

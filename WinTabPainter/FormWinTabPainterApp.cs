@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using WinTabPainter.Painting;
 using WinTabUtils;
-using WinTabUtils.Geometry.SDextensions;
+using WinTabPainter.GeometryExtensions;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl

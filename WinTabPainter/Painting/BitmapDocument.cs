@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using SD = System.Drawing;
-using WinTabUtils.Geometry.SDextensions;
+using WinTabPainter.GeometryExtensions;
 
 namespace WinTabPainter.Painting;
 
