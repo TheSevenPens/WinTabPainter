@@ -1,8 +1,4 @@
-﻿
-using System.DirectoryServices.ActiveDirectory;
-using SD = System.Drawing;
-
-namespace WinTabUtils.Geometry;
+﻿namespace WinTabUtils.Geometry;
 
 public readonly record struct SizeD( double Width, double Height )
 {

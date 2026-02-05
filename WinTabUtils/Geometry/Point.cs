@@ -1,7 +1,4 @@
-﻿using System;
-using SD = System.Drawing;
-
-namespace WinTabUtils.Geometry;
+﻿namespace WinTabUtils.Geometry;
 
 public readonly record struct Point(int X, int Y)
 {

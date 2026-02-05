@@ -1,7 +1,4 @@
-﻿
-using SD = System.Drawing;
-
-namespace WinTabUtils.Geometry;
+﻿namespace WinTabUtils.Geometry;
 
 public readonly record struct Size( int Width, int Height )
 {
