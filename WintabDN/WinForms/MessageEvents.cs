@@ -1,30 +1,7 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-// MessageEvents.cs - native Windows message handling for WintabDN
-//
-// This code in this file is based on the example given at:
-//  http://msdn.microsoft.com/en-us/magazine/cc163417.aspx
-//  by Steven Toub.
-//
-// Copyright (c) 2010, Wacom Technology Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-///////////////////////////////////////////////////////////////////////////////
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WintabDN.WinForms;
@@ -35,7 +12,7 @@ namespace WintabDN.WinForms;
 /// </summary>
 public static partial class MessageEvents
 {
-    private static object _lock = new object();
+    private static readonly object _lock = new object();
     private static MessageWindow _window;
     private static IntPtr _windowHandle;
     private static SynchronizationContext _context;
@@ -80,21 +57,28 @@ public static partial class MessageEvents
             if (_window == null)
             {
                 _context = AsyncOperationManager.SynchronizationContext;
-                using (ManualResetEvent mre = new ManualResetEvent(false))
+                
+                var tcs = new TaskCompletionSource<IntPtr>();
+                var t = new Thread(() =>
                 {
-                    Thread t = new Thread((ThreadStart)delegate
-                    {
-                        _window = new MessageWindow();
-                        _windowHandle = _window.Handle;
-                        mre.Set();
-                        Application.Run();
-                    });
-                    t.Name = "MessageEvents message loop";
-                    t.IsBackground = true;
-                    t.Start();
+                    // Create the native window on this thread
+                    var win = new MessageWindow();
+                    _window = win;
+                    
+                    // Signal the handle is ready
+                    tcs.SetResult(win.Handle);
 
-                    mre.WaitOne();
-                }
+                    // Start the standard Windows message loop
+                    Application.Run();
+                });
+                
+                t.Name = "MessageEvents message loop";
+                t.IsBackground = true;
+                t.SetApartmentState(ApartmentState.STA);
+                t.Start();
+
+                // Wait for the window creation to complete before returning
+                _windowHandle = tcs.Task.GetAwaiter().GetResult();
             }
         }
     }
