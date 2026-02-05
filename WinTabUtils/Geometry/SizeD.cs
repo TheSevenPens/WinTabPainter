@@ -31,6 +31,4 @@ public readonly record struct SizeD( double Width, double Height )
         return s;
     }
 
-    public static implicit operator SD.SizeF(SizeD s) => s.ToSDSizeF();
-
 }

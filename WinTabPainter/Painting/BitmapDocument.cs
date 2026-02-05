@@ -96,7 +96,7 @@ public class BitmapDocument : System.IDisposable
         var halfsize = new WinTabUtils.Geometry.SizeD(half_width, half_width);
         var fullsize = new WinTabUtils.Geometry.SizeD(width, width);
 
-        var r1 = new SD.RectangleF(p.ToPointD().Subtract(halfsize), fullsize);
+        var r1 = new SD.RectangleF(p.ToPointD().Subtract(halfsize).ToSDPointF(), fullsize.ToSDSizeF() );
         this.background_layer.Graphics.FillEllipse(this.paint_brush, r1);
     }
 

@@ -40,7 +40,6 @@ public readonly record struct PointD(double X, double Y)
     }
 
     public string ToStringXY() => string.Format("({0}x{1})", this.X, this.Y);
-    public static implicit operator SD.PointF(PointD p) => p.ToSDPointF();
 
     public double DistanceTo(PointD p)
     {

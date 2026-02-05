@@ -278,7 +278,7 @@ namespace WinTabPainter
         {
             var canv_loc = this.pictureBox_Canvas.Location.ToPoint();
             var adjusted_pos = screen_loc.Subtract(canv_loc);
-            var penpos_canvas = this.PointToClient(adjusted_pos).ToPoint();
+            var penpos_canvas = this.PointToClient(adjusted_pos.ToSDPoint()).ToPoint();
             return penpos_canvas;
         }
 
