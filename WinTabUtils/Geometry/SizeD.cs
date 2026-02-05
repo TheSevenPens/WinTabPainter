@@ -25,10 +25,5 @@ public readonly record struct SizeD( double Width, double Height )
         return s;
     }
 
-    public SD.SizeF ToSDSizeF()
-    {
-        var s = new SD.SizeF((float)this.Width, (float)this.Height);
-        return s;
-    }
 
 }

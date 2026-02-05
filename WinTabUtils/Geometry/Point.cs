@@ -18,12 +18,6 @@ public readonly record struct Point(int X, int Y)
 
     public string ToStringXY() => string.Format("{0},{1}", this.X, this.Y);
 
-    public SD.Point ToSDPoint()
-    {
-        var p = new SD.Point(this.X, this.Y);
-        return p;
-    }
-
     public Geometry.Point ToPointD()
     {
         var p = new Geometry.Point(this.X, this.Y);

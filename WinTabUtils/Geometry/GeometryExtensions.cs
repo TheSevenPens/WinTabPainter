@@ -1,7 +1,7 @@
 using System;
 using SD = System.Drawing;
 
-namespace WinTabUtils.Geometry;
+namespace WinTabUtils.Geometry.SDextensions;
 
 public static class GeometryExtensions
 {
@@ -24,6 +24,28 @@ public static class GeometryExtensions
         {
             var p = new SD.PointF((float)this_p.X, (float)this_p.Y);
             return p;
+        }
+
+    }
+
+    extension(WinTabUtils.Geometry.SizeD this_s)
+    {
+
+        public SD.SizeF ToSDSizeF()
+        {
+            var s = new SD.SizeF((float)this_s.Width, (float)this_s.Height);
+            return s;
+        }
+
+    }
+
+    extension(WinTabUtils.Geometry.Size this_s)
+    {
+
+        public SD.Size ToSDSize()
+        {
+            var s = new SD.Size(this_s.Width, this_s.Height);
+            return s;
         }
 
     }

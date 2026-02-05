@@ -33,12 +33,6 @@ public readonly record struct PointD(double X, double Y)
         return p;
     }
 
-    public SD.PointF ToSDPointF()
-    {
-        var p = new SD.PointF((float)this.X, (float)this.Y);
-        return p;
-    }
-
     public string ToStringXY() => string.Format("({0}x{1})", this.X, this.Y);
 
     public double DistanceTo(PointD p)
