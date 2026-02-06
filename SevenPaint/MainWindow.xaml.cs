@@ -23,8 +23,8 @@ namespace SevenPaint
         
         private BrushSettings _brushSettings = new BrushSettings();
 
-        private WintabInput _wintabInput;
-        private InkInput _inkInput;
+        private WinTabStyusProvider _wintabInput;
+        private WinInkStylusProvider _inkInput;
         private bool _useWintab = false;
 
         // Zoom
@@ -60,10 +60,10 @@ namespace SevenPaint
             Clear(Colors.White);
 
             // Initialize Inputs
-            _wintabInput = new WintabInput(RenderImage);
+            _wintabInput = new WinTabStyusProvider(RenderImage);
             _wintabInput.InputMove += OnInputMove;
             
-            _inkInput = new InkInput(RenderImage);
+            _inkInput = new WinInkStylusProvider(RenderImage);
             _inkInput.InputMove += OnInputMove;
             _inkInput.InputDown += OnInputMove; // Treat Down as Move for painting
             

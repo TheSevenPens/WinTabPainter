@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace SevenPaint
 {
-    public class InkInput : IInputProvider
+    public class WinInkStylusProvider : IStylusProvider
     {
         private FrameworkElement _targetElement;
         private bool _isActive;
@@ -26,7 +26,7 @@ namespace SevenPaint
             }
         }
 
-        public InkInput(FrameworkElement targetElement)
+        public WinInkStylusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
         }

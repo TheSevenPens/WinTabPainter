@@ -15,15 +15,4 @@ namespace SevenPaint
         public int Buttons { get; set; }
         public long Timestamp { get; set; } // Ticks
     }
-
-    public interface IInputProvider
-    {
-        event Action<DrawInputArgs> InputDown;
-        event Action<DrawInputArgs> InputMove;
-        event Action<DrawInputArgs> InputUp;
-
-        bool IsActive { get; set; }
-        void Open();
-        void Close();
-    }
 }

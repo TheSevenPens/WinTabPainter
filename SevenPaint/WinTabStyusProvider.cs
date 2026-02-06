@@ -4,7 +4,7 @@ using WinTabUtils;
 
 namespace SevenPaint
 {
-    public class WintabInput : IInputProvider
+    public class WinTabStyusProvider : IStylusProvider
     {
         private TabletSession _session;
         private FrameworkElement _targetElement;
@@ -15,7 +15,7 @@ namespace SevenPaint
 
         public bool IsActive { get; set; } = false;
 
-        public WintabInput(FrameworkElement targetElement)
+        public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
             _session = new TabletSession();
