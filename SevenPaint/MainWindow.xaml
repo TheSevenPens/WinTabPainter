@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SevenPaint"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SevenPaint - Wintab &amp; Realtime Stylus Demo" Height="600" Width="800"
+        Closing="MainWindow_Closing"
+        KeyDown="Window_KeyDown"
+        Focusable="True">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Input API">
@@ -17,6 +20,8 @@
         <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="Auto"/>
@@ -90,6 +95,14 @@
                     <TextBlock x:Name="TxtTiltAzimuth" Text="Tilt azimuth: 0.0"/>
                     <TextBlock x:Name="TxtTiltAltitude" Text="Tilt altitude: 0.0"/>
                     <TextBlock x:Name="TxtBarrelRotation" Text="Barrel rotation: 0"/>
+                </StackPanel>
+
+                <Rectangle Grid.Column="5" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+
+                <!-- SECTION 4: ACTIONS -->
+                <StackPanel Grid.Column="6">
+                    <TextBlock Text="ACTIONS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <Button Content="Clear Canvas" Width="80" Height="25" HorizontalAlignment="Left" Click="ButtonClear_Click"/>
                 </StackPanel>
             </Grid>
         </Border>

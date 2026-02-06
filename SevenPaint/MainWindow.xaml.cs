@@ -137,6 +137,19 @@ namespace SevenPaint
             }
         }
 
+        private void ButtonClear_Click(object sender, RoutedEventArgs e)
+        {
+            Clear(Colors.White);
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete || e.Key == Key.Back)
+            {
+                Clear(Colors.White);
+            }
+        }
+
         private void Clear(System.Windows.Media.Color color)
         {
             _wbmp.Lock();
@@ -338,10 +351,42 @@ namespace SevenPaint
                 if (p.HasProperty(StylusPointProperties.XTiltOrientation)) tiltX = p.GetPropertyValue(StylusPointProperties.XTiltOrientation);
                 if (p.HasProperty(StylusPointProperties.YTiltOrientation)) tiltY = p.GetPropertyValue(StylusPointProperties.YTiltOrientation);
                 
-                // Estimate Azimuth/Altitude from TiltX/TiltY?
-                // Let's just pass what we have
+                // Calculate Azimuth/Altitude from Tilt X/Y
+                double azimuth = 0;
+                double altitude = 90;
+
+                // Only calculate if there is some tilt (otherwise vertical 90)
+                if (Math.Abs(tiltX) > 0.1 || Math.Abs(tiltY) > 0.1)
+                {
+                    double txRad = tiltX * Math.PI / 180.0;
+                    double tyRad = tiltY * Math.PI / 180.0;
+                    
+                    double tanX = Math.Tan(txRad);
+                    double tanY = Math.Tan(tyRad);
+                    
+                    // Azimuth
+                    double azRad = Math.Atan2(tanY, tanX);
+                    azimuth = azRad * 180.0 / Math.PI;
+                    if (azimuth < 0) azimuth += 360.0;
+                    
+                    // Altitude
+                    // Angle from surface. 
+                    // Vector is (tanX, tanY, 1). Angle with Z (vertical) is theta. Alt is 90 - theta.
+                    // Or simple conversion used in HID:
+                    // Altitude = Atan( 1 / Sqrt(tanX^2 + tanY^2) )
+                    double denom = Math.Sqrt(tanX * tanX + tanY * tanY);
+                    if (denom > 0.001)
+                    {
+                        double altRad = Math.Atan(1.0 / denom);
+                        altitude = altRad * 180.0 / Math.PI;
+                    }
+                    else
+                    {
+                        altitude = 90.0;
+                    }
+                }
                 
-                UpdateRibbon(new System.Windows.Point(p.X, p.Y), p.PressureFactor, tiltX, tiltY, 0, 0, 0, 0);
+                UpdateRibbon(new System.Windows.Point(p.X, p.Y), p.PressureFactor, tiltX, tiltY, azimuth, altitude, 0, 0);
             }
 
             _wbmp.Lock();
@@ -357,6 +402,43 @@ namespace SevenPaint
                     float pressure = point.PressureFactor;
                     float scaleFactor = pressure;
 
+                    // If we need per-point azimuth/altitude, we'd need to re-calc here or fetch properties
+                    // For now, let's look for standard properties on the point if _scaleType requires it
+                    // Or lazily, use the values computed from the last point above for the whole stroke chunk?
+                    // "stylusPoints" is a small chunk of moves. Sharing the 'latest' Az/Alt is a reasonable approximation for this chunk.
+                    // Let's refine:
+                    double ptAzimuth = 0;
+                    double ptAltitude = 90;
+                    
+                    // Optimization: if scaling by Az/Alt, try to compute for this point or use cached
+                    if (_scaleType == ScaleType.Azimuth || _scaleType == ScaleType.Altitude)
+                    {
+                         // Redo extraction just to be safe if point varies?
+                         // StylusPoint properties access is fast?
+                         double pTx = 0, pTy = 0;
+                         if (point.HasProperty(StylusPointProperties.XTiltOrientation)) pTx = point.GetPropertyValue(StylusPointProperties.XTiltOrientation);
+                         if (point.HasProperty(StylusPointProperties.YTiltOrientation)) pTy = point.GetPropertyValue(StylusPointProperties.YTiltOrientation);
+                         
+                         if (Math.Abs(pTx) > 0.1 || Math.Abs(pTy) > 0.1)
+                         {
+                            double txR = pTx * Math.PI / 180.0;
+                            double tyR = pTy * Math.PI / 180.0;
+                            double tX = Math.Tan(txR);
+                            double tY = Math.Tan(tyR);
+                            if (_scaleType == ScaleType.Azimuth) 
+                            {
+                                 double az = Math.Atan2(tY, tX) * 180.0 / Math.PI;
+                                 if (az < 0) az += 360.0;
+                                 ptAzimuth = az;
+                            }
+                            if (_scaleType == ScaleType.Altitude)
+                            {
+                                double d = Math.Sqrt(tX*tX + tY*tY);
+                                if (d > 0.001) ptAltitude = Math.Atan(1.0/d) * 180.0 / Math.PI;
+                            }
+                         }
+                    }
+
                     switch (_scaleType)
                     {
                          case ScaleType.None:
@@ -366,13 +448,13 @@ namespace SevenPaint
                             scaleFactor = pressure;
                             break;
                          case ScaleType.Azimuth:
+                            scaleFactor = (float)(ptAzimuth / 360.0);
+                            break;
                          case ScaleType.Altitude:
+                            scaleFactor = (float)(ptAltitude / 90.0);
+                            break;
                          case ScaleType.Rotation:
-                            // Try to get properties from StylusPoint
-                            scaleFactor = 0.5f; // Default if not found
-                            
-                            // Note: Getting these properties from StylusPoint in WPF can be tricky if not natively supported or exposed
-                            // We will use 0.5f as fallback for now
+                            scaleFactor = 0.5f; // Rotation rarely on StylusPoint without Wintab
                             break;
                         default:
                              break;
