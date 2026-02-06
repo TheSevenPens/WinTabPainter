@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="SevenPaint" Height="600" Width="800"
         Closing="MainWindow_Closing"
-        KeyDown="Window_KeyDown"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        PreviewKeyUp="Window_PreviewKeyUp"
         Stylus.IsFlicksEnabled="False"
         Stylus.IsPressAndHoldEnabled="False"
         Stylus.IsTapFeedbackEnabled="False"
@@ -170,7 +171,11 @@
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
         </StatusBar>
-        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                      PreviewMouseDown="ScrollViewer_PreviewMouseDown"
+                      PreviewMouseMove="ScrollViewer_PreviewMouseMove"
+                      PreviewMouseUp="ScrollViewer_PreviewMouseUp">
             <Grid>
                 <Grid.LayoutTransform>
                     <ScaleTransform x:Name="CanvasScale" ScaleX="1.0" ScaleY="1.0"/>

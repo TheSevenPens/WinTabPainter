@@ -35,6 +35,11 @@ namespace SevenPaint
         private const int MinZoom = 1;
         private const int MaxZoom = 20;
         
+        // Panning
+        private bool _isSpaceDown = false;
+        private bool _isPanning = false;
+        private System.Windows.Point _lastMousePosition;
+
         // Ribbon Tracking
         private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
         private long _lastTime = 0;
@@ -161,11 +166,78 @@ namespace SevenPaint
             Clear(Colors.White);
         }
 
-        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Delete || e.Key == Key.Back)
             {
                 Clear(Colors.White);
+            }
+            
+            if (e.Key == Key.Space && !_isSpaceDown && !_isPanning)
+            {
+                _isSpaceDown = true;
+                System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
+            }
+        }
+
+        private void Window_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                _isSpaceDown = false;
+                
+                // If we are NOT currently dragging mouse, we can reset cursor immediately
+                if (!_isPanning)
+                {
+                    System.Windows.Input.Mouse.OverrideCursor = null; 
+                }
+                // If we ARE panning, we usually want to stop panning mode as well, 
+                // or at least stop the "Hand" mode. 
+                else
+                {
+                   _isPanning = false;
+                   MainScrollViewer.ReleaseMouseCapture();
+                   System.Windows.Input.Mouse.OverrideCursor = null; 
+                }
+            }
+        }
+
+        private void ScrollViewer_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // Only start pan if space is held AND it's left click
+            if (_isSpaceDown && e.ChangedButton == MouseButton.Left)
+            {
+                _isPanning = true;
+                _lastMousePosition = e.GetPosition(MainScrollViewer);
+                MainScrollViewer.CaptureMouse();
+                System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.ScrollAll; // Grabbing look
+                e.Handled = true; 
+            }
+        }
+
+        private void ScrollViewer_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (_isPanning)
+            {
+                System.Windows.Point currentPos = e.GetPosition(MainScrollViewer);
+                double dx = currentPos.X - _lastMousePosition.X;
+                double dy = currentPos.Y - _lastMousePosition.Y;
+                
+                MainScrollViewer.ScrollToHorizontalOffset(MainScrollViewer.HorizontalOffset - dx);
+                MainScrollViewer.ScrollToVerticalOffset(MainScrollViewer.VerticalOffset - dy);
+                
+                _lastMousePosition = currentPos;
+            }
+        }
+
+        private void ScrollViewer_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_isPanning && e.ChangedButton == MouseButton.Left)
+            {
+                _isPanning = false;
+                MainScrollViewer.ReleaseMouseCapture();
+                // If space is still down, go back to Hand, otherwise normal
+                System.Windows.Input.Mouse.OverrideCursor = _isSpaceDown ? System.Windows.Input.Cursors.Hand : null;
             }
         }
 
@@ -230,9 +302,9 @@ namespace SevenPaint
             PerformZoom(_zoomLevel - 1);
         }
 
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        private void ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            if (Keyboard.Modifiers == ModifierKeys.Control)
+            if (System.Windows.Input.Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
             {
                 int delta = (e.Delta > 0) ? 1 : -1;
                 System.Windows.Point mousePos = e.GetPosition(MainScrollViewer);
@@ -436,6 +508,7 @@ namespace SevenPaint
         private void RenderImage_StylusDown(object sender, StylusEventArgs e)
         {
             if (_useWintab) return;
+            if (_isSpaceDown || _isPanning) return; // Allow bubbling/promotion for Panning
             e.Handled = true;
             Draw(e);
         }
@@ -443,12 +516,14 @@ namespace SevenPaint
         private void RenderImage_StylusMove(object sender, StylusEventArgs e)
         {
             if (_useWintab) return;
+            if (_isSpaceDown || _isPanning) return;
             Draw(e);
         }
 
         private void RenderImage_StylusUp(object sender, StylusEventArgs e)
         {
             if (_useWintab) return;
+            if (_isSpaceDown || _isPanning) return;
             e.Handled = true;
             Draw(e);
         }
