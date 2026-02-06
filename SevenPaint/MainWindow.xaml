@@ -14,11 +14,7 @@
         Stylus.IsTouchFeedbackEnabled="False"
         Focusable="True">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Input API">
-                <MenuItem x:Name="MenuUseWintab" Header="Use Wintab" IsCheckable="True" Click="MenuUseWintab_Click"/>
-            </MenuItem>
-        </Menu>
+
         
         <!-- Ribbon UI -->
         <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
@@ -160,6 +156,7 @@
                 <!-- SECTION 4: ACTIONS -->
                 <StackPanel Grid.Column="6">
                     <TextBlock Text="ACTIONS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <CheckBox x:Name="CheckUseWintab" Content="Use Wintab" Margin="0,0,0,5" Click="CheckUseWintab_Click"/>
                     <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click"/>
                 </StackPanel>
             </Grid>

@@ -60,9 +60,9 @@ namespace SevenPaint
             _wintabSession?.Close();
         }
 
-        private void MenuUseWintab_Click(object sender, RoutedEventArgs e)
+        private void CheckUseWintab_Click(object sender, RoutedEventArgs e)
         {
-            _useWintab = MenuUseWintab.IsChecked;
+            _useWintab = CheckUseWintab.IsChecked ?? false;
 
             if (_useWintab)
             {
@@ -79,7 +79,7 @@ namespace SevenPaint
                 {
                     System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
                     _useWintab = false;
-                    MenuUseWintab.IsChecked = false;
+                    CheckUseWintab.IsChecked = false;
                 }
             }
             else
