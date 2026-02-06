@@ -4,7 +4,7 @@ namespace SevenPaint
 {
     public class WinTabStyusProvider : IStylusProvider
     {
-        private SevenUtils.TabletSession _session;
+        private SevenUtils.WinTab.TabletSession _session;
         private FrameworkElement _targetElement;
         
         public event Action<DrawInputArgs>? InputDown; // Wintab packets usually don't distinguish Down/Move easily without logic, but we treat non-zero pressure as active
@@ -16,7 +16,7 @@ namespace SevenPaint
         public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
-            _session = new SevenUtils.TabletSession();
+            _session = new SevenUtils.WinTab.TabletSession();
             _session.PacketHandler = OnWintabPacket;
         }
 
@@ -24,7 +24,7 @@ namespace SevenPaint
         {
             try
             {
-                _session.Open(SevenUtils.TabletContextType.System);
+                _session.Open(SevenUtils.WinTab.TabletContextType.System);
                 IsActive = true;
             }
             catch (Exception)

@@ -26,7 +26,7 @@ namespace WinTabPainter
 
 
 
-        private SevenUtils.TabletSession tabsession;
+        private SevenUtils.WinTab.TabletSession tabsession;
         public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
         Painting.PaintData old_paintdata;
 
@@ -79,9 +79,9 @@ namespace WinTabPainter
             this.EraseCanvas();
 
 
-            this.tabsession = new SevenUtils.TabletSession();
+            this.tabsession = new SevenUtils.WinTab.TabletSession();
             this.tabsession.PacketHandler = this.PacketHandler;
-            this.tabsession.Open(SevenUtils.TabletContextType.System);
+            this.tabsession.Open(SevenUtils.WinTab.TabletContextType.System);
 
             this.tabsession.ButtonChangedHandler = this.HandleButtonChange;
 
@@ -168,9 +168,9 @@ namespace WinTabPainter
         }
 
         char[] button_status = new char[3] {
-            get_press_change_as_letter(PenButtonPressChangeType.Released),
-            get_press_change_as_letter(PenButtonPressChangeType.Released),
-            get_press_change_as_letter(PenButtonPressChangeType.Released)};
+            get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType.Released),
+            get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType.Released),
+            get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType.Released)};
 
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {
@@ -178,7 +178,7 @@ namespace WinTabPainter
             {
                 RecordPacket(wintab_pkt);
             }
-            var button_info = new SevenUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+            var button_info = new SevenUtils.WinTab.PenButtonPressChange(wintab_pkt.pkButtons);
 
             Update_UI_Button_status(button_info);
 
@@ -191,15 +191,15 @@ namespace WinTabPainter
 
 
 
-        private void Update_UI_Button_status(SevenUtils.PenButtonPressChange button_info)
+        private void Update_UI_Button_status(SevenUtils.WinTab.PenButtonPressChange button_info)
         {
-            if (button_info.Change != SevenUtils.PenButtonPressChangeType.NoChange)
+            if (button_info.Change != SevenUtils.WinTab.PenButtonPressChangeType.NoChange)
             {
                 int index = button_info.ButtonId switch
                 {
-                    SevenUtils.PenButtonIdentifier.Tip => 0,
-                    SevenUtils.PenButtonIdentifier.LowerButton => 1,
-                    SevenUtils.PenButtonIdentifier.UpperButton => 2,
+                    SevenUtils.WinTab.PenButtonIdentifier.Tip => 0,
+                    SevenUtils.WinTab.PenButtonIdentifier.LowerButton => 1,
+                    SevenUtils.WinTab.PenButtonIdentifier.UpperButton => 2,
                     _ => throw new System.ArgumentOutOfRangeException()
                 };
 
@@ -210,12 +210,12 @@ namespace WinTabPainter
             this.label_ButtonsValue.Text = new string(this.button_status);
         }
 
-        private static char get_press_change_as_letter(PenButtonPressChangeType change)
+        private static char get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType change)
         {
             return change switch
             {
-                SevenUtils.PenButtonPressChangeType.Pressed => 'D',
-                SevenUtils.PenButtonPressChangeType.Released => 'U',
+                SevenUtils.WinTab.PenButtonPressChangeType.Pressed => 'D',
+                SevenUtils.WinTab.PenButtonPressChangeType.Released => 'U',
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
@@ -259,11 +259,11 @@ namespace WinTabPainter
 
         }
 
-        public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, SevenUtils.PenButtonPressChange change)
+        public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, SevenUtils.WinTab.PenButtonPressChange change)
         {
-            if (change.ButtonId == PenButtonIdentifier.Tip)
+            if (change.ButtonId == SevenUtils.WinTab.PenButtonIdentifier.Tip)
             {
-                if (change.Change == PenButtonPressChangeType.Pressed)
+                if (change.Change == SevenUtils.WinTab.PenButtonPressChangeType.Pressed)
                 {
                     // we need to reset the smoothing 
                     // whenever the pen tip touches the tablet

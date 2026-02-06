@@ -17,7 +17,7 @@ namespace WinTabPainter
             InitializeComponent();
         }
 
-        public SevenUtils.TabletInfo tablet_info;
+        public SevenUtils.WinTab.TabletInfo tablet_info;
 
         private void FormTablet_Load(object sender, EventArgs e)
         {

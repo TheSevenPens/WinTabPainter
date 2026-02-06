@@ -1,4 +1,4 @@
-﻿namespace SevenUtils;
+﻿namespace SevenUtils.WinTab;
 
 public enum TabletContextType
 {
