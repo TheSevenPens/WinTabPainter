@@ -182,9 +182,6 @@
                 </Grid.LayoutTransform>
                 <Image x:Name="RenderImage" Stretch="None" 
                        RenderOptions.BitmapScalingMode="NearestNeighbor"
-                       StylusDown="RenderImage_StylusDown"
-                       StylusMove="RenderImage_StylusMove"
-                       StylusUp="RenderImage_StylusUp" 
                        Stylus.IsFlicksEnabled="False"
                        Stylus.IsPressAndHoldEnabled="False"
                        Stylus.IsTapFeedbackEnabled="False"
