@@ -20,7 +20,8 @@ namespace SevenPaint
         private WriteableBitmap _wbmp;
         private const int ImageWidth = 1920;
         private const int ImageHeight = 1080;
-        private int _maxRadius = 25; // Default 50px diameter / 2
+        private double _maxRadius = 25.0; // Default 50px diameter / 2
+        private double _minRadius = 0.0;
         private System.Windows.Media.Color _currentColor = Colors.Black;
 
         private WinTabUtils.TabletSession? _wintabSession;
@@ -113,10 +114,23 @@ namespace SevenPaint
             {
                 // Format is "50px". Remove "px" and parse.
                 string raw = sizeText.Replace("px", "");
-                if (int.TryParse(raw, out int size))
+                if (double.TryParse(raw, out double size))
                 {
-                    _maxRadius = size / 2;
-                    if (_maxRadius < 1) _maxRadius = 1;
+                    _maxRadius = size / 2.0;
+                    if (_maxRadius < 0.1) _maxRadius = 0.1;
+                }
+            }
+        }
+
+        private void ComboMinSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboMinSize.SelectedItem is ComboBoxItem item && item.Content is string sizeText)
+            {
+                string raw = sizeText.Replace("px", "");
+                if (double.TryParse(raw, out double size))
+                {
+                    _minRadius = size / 2.0;
+                    if (_minRadius < 0) _minRadius = 0;
                 }
             }
         }
@@ -281,6 +295,10 @@ namespace SevenPaint
                 if (scaleFactor > 1.0) scaleFactor = 1.0;
                 if (scaleFactor < 0.0) scaleFactor = 0.0;
 
+                // Radius calculation with Min Size
+                double radius = _minRadius + (_maxRadius - _minRadius) * scaleFactor;
+                if (radius < 0.1) radius = 0.1;
+
                 UpdateRibbon(visualPoint, pressureFactor, 0, 0, azimuth, altitude, twist, (int)packet.pkButtons);
 
                 DrawDabCore((int)visualPoint.X, (int)visualPoint.Y, (float)scaleFactor);
@@ -297,10 +315,19 @@ namespace SevenPaint
                 int* pBackBuffer = (int*)_wbmp.BackBuffer;
                 int stride = _wbmp.BackBufferStride;
 
-                int radius = (int)(_maxRadius * pressureFactor);
-                if (radius < 1) radius = 1;
-
-                if (radius < 1) radius = 1;
+                // Recalculate radius here if needed, but we need the 'scaleFactor' logic again or pass calculated radius
+                // NOTE: The previous call passed 'scaleFactor' as 'pressureFactor' argument mistakenly in implementation above? 
+                // Ah, DrawDabCore signature is (x, y, pressureFactor). 
+                // Let's fix DrawDabCore to take calculated radius or calculate it consistently.
+                // Ideally DrawDabCore should just take the final radius logic.
+                
+                // Let's just duplicate the radius logic for now to avoid changing signature too much or fix it.
+                // Actually, let's fix the call site in WintabPacketHandler to pass the radius or move logic here.
+                // But wait, the Wintab handler calls DrawDabCore with 'scaleFactor'. 
+                // Let's use that 'pressureFactor' argument as the interpolation factor.
+                
+                double radius = _minRadius + (_maxRadius - _minRadius) * pressureFactor;
+                if (radius < 0.1) radius = 0.1;
 
                 DrawDab(pBackBuffer, stride, x, y, radius, _currentColor);
             }
@@ -463,10 +490,10 @@ namespace SevenPaint
                     if (scaleFactor > 1.0f) scaleFactor = 1.0f;
                     if (scaleFactor < 0.0f) scaleFactor = 0.0f;
 
-                    int radius = (int)(_maxRadius * scaleFactor);
-                    if (radius < 1) radius = 1;
+                    double radius = _minRadius + (_maxRadius - _minRadius) * scaleFactor;
+                    if (radius < 0.1) radius = 0.1;
 
-                DrawDab(pBackBuffer, stride, point.X, point.Y, radius, _currentColor);
+                    DrawDab(pBackBuffer, stride, point.X, point.Y, radius, _currentColor);
                 }
             }
             _wbmp.AddDirtyRect(new Int32Rect(0, 0, ImageWidth, ImageHeight));

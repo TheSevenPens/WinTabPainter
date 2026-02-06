@@ -69,8 +69,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Min size " VerticalAlignment="Center"/>
-                        <ComboBox Width="60" Padding="2,0,2,0" SelectedIndex="0">
+                        <ComboBox x:Name="ComboMinSize" Width="60" Padding="2,0,2,0" SelectedIndex="2" SelectionChanged="ComboMinSize_SelectionChanged">
+                            <ComboBoxItem Content="0.25px"/>
+                            <ComboBoxItem Content="0.5px"/>
                             <ComboBoxItem Content="1px"/>
+                            <ComboBoxItem Content="2px"/>
+                            <ComboBoxItem Content="3px"/>
+                            <ComboBoxItem Content="4px"/>
+                            <ComboBoxItem Content="5px"/>
                         </ComboBox>
                     </StackPanel>
                 </StackPanel>
