@@ -1,14 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SevenPaint
 {
@@ -176,12 +168,12 @@ namespace SevenPaint
 
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Delete || e.Key == Key.Back)
+            if (e.Key == System.Windows.Input.Key.Delete || e.Key == System.Windows.Input.Key.Back)
             {
                 _canvas.Clear(Colors.White);
             }
             
-            if (e.Key == Key.Space && !_isSpaceDown && !_isPanning)
+            if (e.Key == System.Windows.Input.Key.Space && !_isSpaceDown && !_isPanning)
             {
                 _isSpaceDown = true;
                 System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
@@ -190,7 +182,7 @@ namespace SevenPaint
 
         private void Window_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
+            if (e.Key == System.Windows.Input.Key.Space)
             {
                 _isSpaceDown = false;
                 
@@ -213,7 +205,7 @@ namespace SevenPaint
         private void ScrollViewer_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // Only start pan if space is held AND it's left click
-            if (_isSpaceDown && e.ChangedButton == MouseButton.Left)
+            if (_isSpaceDown && e.ChangedButton == System.Windows.Input.MouseButton.Left)
             {
                 _isPanning = true;
                 _lastMousePosition = e.GetPosition(MainScrollViewer);
@@ -240,7 +232,7 @@ namespace SevenPaint
 
         private void ScrollViewer_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (_isPanning && e.ChangedButton == MouseButton.Left)
+            if (_isPanning && e.ChangedButton == System.Windows.Input.MouseButton.Left)
             {
                 _isPanning = false;
                 MainScrollViewer.ReleaseMouseCapture();

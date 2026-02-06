@@ -1,5 +1,3 @@
-using System;
-
 namespace SevenPaint
 {
     public struct DrawInputArgs

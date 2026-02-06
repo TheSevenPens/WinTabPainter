@@ -1,6 +1,4 @@
-using System;
 using System.Windows;
-using System.Windows.Input;
 
 namespace SevenPaint
 {
@@ -57,12 +55,12 @@ namespace SevenPaint
             }
         }
 
-        private void OnStylusDown(object sender, StylusEventArgs e)
+        private void OnStylusDown(object sender, System.Windows.Input.StylusEventArgs e)
         {
             ProcessStylusEvent(e, InputDown);
         }
 
-        private void OnStylusMove(object sender, StylusEventArgs e)
+        private void OnStylusMove(object sender, System.Windows.Input.StylusEventArgs e)
         {
             // Windows Ink can fire move events even when pen is up (hover).
             // We usually only want to paint when pressure > 0 or "InAir" handling.
@@ -74,12 +72,12 @@ namespace SevenPaint
             ProcessStylusEvent(e, InputMove);
         }
 
-        private void OnStylusUp(object sender, StylusEventArgs e)
+        private void OnStylusUp(object sender, System.Windows.Input.StylusEventArgs e)
         {
             ProcessStylusEvent(e, InputUp);
         }
 
-        private void ProcessStylusEvent(StylusEventArgs e, Action<DrawInputArgs>? eventHandler)
+        private void ProcessStylusEvent(System.Windows.Input.StylusEventArgs e, Action<DrawInputArgs>? eventHandler)
         {
             if (eventHandler == null) return;
 
@@ -89,8 +87,8 @@ namespace SevenPaint
                 // Calculate Tilt/Azimuth/Altitude
                 double tiltX = 0;
                 double tiltY = 0;
-                if (p.HasProperty(StylusPointProperties.XTiltOrientation)) tiltX = p.GetPropertyValue(StylusPointProperties.XTiltOrientation);
-                if (p.HasProperty(StylusPointProperties.YTiltOrientation)) tiltY = p.GetPropertyValue(StylusPointProperties.YTiltOrientation);
+                if (p.HasProperty(System.Windows.Input.StylusPointProperties.XTiltOrientation)) tiltX = p.GetPropertyValue(System.Windows.Input.StylusPointProperties.XTiltOrientation);
+                if (p.HasProperty(System.Windows.Input.StylusPointProperties.YTiltOrientation)) tiltY = p.GetPropertyValue(System.Windows.Input.StylusPointProperties.YTiltOrientation);
 
                 double azimuth = 0;
                 double altitude = 90;
