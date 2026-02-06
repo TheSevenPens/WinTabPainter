@@ -1,7 +1,4 @@
-﻿using System;
-using SD = System.Drawing;
-
-namespace WinTabUtils.Geometry;
+﻿namespace WinTabUtils.Geometry;
 
 public readonly record struct PointD(double X, double Y)
 {
@@ -33,14 +30,7 @@ public readonly record struct PointD(double X, double Y)
         return p;
     }
 
-    public SD.PointF ToSDPointF()
-    {
-        var p = new SD.PointF((float)this.X, (float)this.Y);
-        return p;
-    }
-
     public string ToStringXY() => string.Format("({0}x{1})", this.X, this.Y);
-    public static implicit operator SD.PointF(PointD p) => p.ToSDPointF();
 
     public double DistanceTo(PointD p)
     {

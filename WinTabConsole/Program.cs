@@ -9,34 +9,39 @@ namespace MyApp
         static void Main(string[] args)
         {
             ConsoleWindow.QuickEditMode(false);
-            session = new WinTabUtils.TabletSession();
-            session.PacketHandler = PacketHandler;
-            session.Open(WinTabUtils.TabletContextType.System);
-
-            while (true)
+            using (session = new WinTabUtils.TabletSession())
             {
-                uint num_pkts_received = 0;
-                var pkts = session.Data.GetDataPackets(50, true, ref num_pkts_received);
-                if (num_pkts_received != 0)
+                session.PacketHandler = PacketHandler;
+                session.Open(WinTabUtils.TabletContextType.System);
+
+                while (true)
                 {
-                    //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
-                    foreach (var pkt in pkts)
+                    uint num_pkts_received = 0;
+                    var pkts = session.Data.GetDataPackets(50, true, ref num_pkts_received);
+                    if (num_pkts_received != 0)
                     {
-                        var button_info = new WinTabUtils.PenButtonPressChange(pkt.pkButtons);
-
-                        if (button_info.Change != 0)
+                        //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
+                        foreach (var pkt in pkts)
                         {
+                            var button_info = new WinTabUtils.PenButtonPressChange(pkt.pkButtons);
 
-                            Console.WriteLine("XY={0},{1}, SP={2}, NP={3}, Z={4} , B={5}, B2={6}", pkt.pkX, pkt.pkY, pkt.SPACING, pkt.pkNormalPressure, pkt.pkZ, button_info, button_info.Change);
+                            if (button_info.Change != 0)
+                            {
+
+                                Console.WriteLine("XY={0},{1}, SP={2}, NP={3}, Z={4} , B={5}, B2={6}", pkt.pkX, pkt.pkY, pkt.SPACING, pkt.pkNormalPressure, pkt.pkZ, button_info, button_info.Change);
+                            }
+                            //Console.WriteLine("({0},{1} | {2}", pkt.pkX, pkt.pkY, pkt.pkButtons);
                         }
-                        //Console.WriteLine("({0},{1} | {2}", pkt.pkX, pkt.pkY, pkt.pkButtons);
+                        session.Data.FlushDataPackets(50);
+
                     }
-                    session.Data.FlushDataPackets(50);
-
+                    
+                    if (Console.KeyAvailable)
+                    {
+                        break;
+                    }
                 }
-
             }
-            session.Close();
 
         }
 

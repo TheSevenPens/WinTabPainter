@@ -1,0 +1,193 @@
+﻿<Window x:Class="SevenPaint.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SevenPaint"
+        mc:Ignorable="d"
+        Title="SevenPaint" Height="600" Width="800"
+        Closing="MainWindow_Closing"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        PreviewKeyUp="Window_PreviewKeyUp"
+        Stylus.IsFlicksEnabled="False"
+        Stylus.IsPressAndHoldEnabled="False"
+        Stylus.IsTapFeedbackEnabled="False"
+        Stylus.IsTouchFeedbackEnabled="False"
+        Focusable="True">
+    <DockPanel>
+
+        
+        <!-- Ribbon UI -->
+        <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SECTION 1: STROKE FORMAT -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="STROKE FORMAT" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Size " VerticalAlignment="Center"/>
+                        <ComboBox x:Name="ComboSize" Width="60" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="3" SelectionChanged="ComboSize_SelectionChanged">
+                            <ComboBoxItem Content="1px"/>
+                            <ComboBoxItem Content="5px"/>
+                            <ComboBoxItem Content="10px"/>
+                            <ComboBoxItem Content="50px"/>
+                            <ComboBoxItem Content="100px"/>
+                            <ComboBoxItem Content="300px"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Scale size by " VerticalAlignment="Center"/>
+                        <ComboBox x:Name="ComboScale" Width="100" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="1" SelectionChanged="ComboScale_SelectionChanged">
+                            <ComboBoxItem Content="Don't scale"/>
+                            <ComboBoxItem Content="Pressure"/>
+                            <ComboBoxItem Content="Tilt Azimuth"/>
+                            <ComboBoxItem Content="Tilt Altitude"/>
+                            <ComboBoxItem Content="Barrel Rotation"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Color " VerticalAlignment="Center"/>
+                        <ComboBox x:Name="ComboColor" Width="80" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="0" SelectionChanged="ComboColor_SelectionChanged">
+                            <ComboBoxItem Content="Black"/>
+                            <ComboBoxItem Content="Red"/>
+                            <ComboBoxItem Content="Green"/>
+                            <ComboBoxItem Content="Blue"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Min size " VerticalAlignment="Center"/>
+                        <ComboBox x:Name="ComboMinSize" Width="60" Padding="2,0,2,0" SelectedIndex="2" SelectionChanged="ComboMinSize_SelectionChanged">
+                            <ComboBoxItem Content="0.25px"/>
+                            <ComboBoxItem Content="0.5px"/>
+                            <ComboBoxItem Content="1px"/>
+                            <ComboBoxItem Content="2px"/>
+                            <ComboBoxItem Content="3px"/>
+                            <ComboBoxItem Content="4px"/>
+                            <ComboBoxItem Content="5px"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <Rectangle Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+
+                <!-- SECTION 2: POINTER -->
+                <StackPanel Grid.Column="2" Width="140">
+                    <TextBlock Text="POINTER" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Buttons: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtButtons" Text="0 (none)"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="X: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtX" Text="0.0"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Y: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtY" Text="0.0"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Velocity: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtVelocity" Text="0.0"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Direction: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtDirection" Text="0.0"/>
+                    </Grid>
+                </StackPanel>
+
+                <Rectangle Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+
+                <!-- SECTION 3: SENSORS -->
+                <StackPanel Grid.Column="4" Width="150">
+                    <TextBlock Text="SENSORS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Pressure: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtPressure" Text="0.0000"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Tilt x: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtTiltX" Text="0.0"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Tilt y: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtTiltY" Text="0.0"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Tilt azimuth: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtTiltAzimuth" Text="0.0"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Tilt altitude: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtTiltAltitude" Text="0.0"/>
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Barrel rotation: " Margin="0,0,5,0"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="TxtBarrelRotation" Text="0"/>
+                    </Grid>
+                </StackPanel>
+
+                <Rectangle Grid.Column="5" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+
+                <!-- SECTION 4: ACTIONS -->
+                <StackPanel Grid.Column="6">
+                    <TextBlock Text="ACTIONS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <CheckBox x:Name="CheckUseWintab" Content="Use Wintab" Margin="0,0,0,5" Click="CheckUseWintab_Click"/>
+                    <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                         <Button Content="-" Width="20" Click="ButtonZoomOut_Click"/>
+                         <TextBlock x:Name="TxtZoomLevel" Text="Zoom: 1x" VerticalAlignment="Center" Margin="5,0,5,0" Width="60" TextAlignment="Center"/>
+                         <Button Content="+" Width="20" Click="ButtonZoomIn_Click"/>
+                         <Button Content="Reset" Click="ButtonResetZoom_Click" Padding="4,0" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
+        </StatusBar>
+        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                      PreviewMouseDown="ScrollViewer_PreviewMouseDown"
+                      PreviewMouseMove="ScrollViewer_PreviewMouseMove"
+                      PreviewMouseUp="ScrollViewer_PreviewMouseUp">
+            <Grid>
+                <Grid.LayoutTransform>
+                    <ScaleTransform x:Name="CanvasScale" ScaleX="1.0" ScaleY="1.0"/>
+                </Grid.LayoutTransform>
+                <Image x:Name="RenderImage" Stretch="None" 
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       Stylus.IsFlicksEnabled="False"
+                       Stylus.IsPressAndHoldEnabled="False"
+                       Stylus.IsTapFeedbackEnabled="False"
+                       Stylus.IsTouchFeedbackEnabled="False"
+                       Cursor="Pen"/>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

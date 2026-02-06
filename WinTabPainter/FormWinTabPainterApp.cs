@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using WinTabPainter.Painting;
 using WinTabUtils;
+using WinTabPainter.GeometryExtensions;
 
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -133,21 +134,37 @@ namespace WinTabPainter
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.tabsession.Close();
-
-            this.bitmap_doc?.Dispose();
-            this.gfx_pressure_guage?.Dispose();
-            this.gfx_pressure_guage2?.Dispose();
-            this.np_pressure_guage?.Dispose();
-            this.ep_pressure_guage?.Dispose();
-            this.pictureBoxPressureGuage.Image?.Dispose();
-
-
+            // Resource cleanup moved to Dispose()
+            
             var s = Screen.FromControl(this);
 
             Properties.Settings.Default["Monitor"] = s.DeviceName;
             Properties.Settings.Default.Save();
 
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                 if (components != null)
+                 {
+                    components.Dispose();
+                 }
+
+                 this.tabsession?.Dispose();
+                 this.bitmap_doc?.Dispose();
+                 this.gfx_pressure_guage?.Dispose();
+                 this.gfx_pressure_guage2?.Dispose();
+                 this.np_pressure_guage?.Dispose();
+                 this.ep_pressure_guage?.Dispose();
+                 this.pictureBoxPressureGuage.Image?.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         char[] button_status = new char[3] {
@@ -262,7 +279,7 @@ namespace WinTabPainter
         {
             var canv_loc = this.pictureBox_Canvas.Location.ToPoint();
             var adjusted_pos = screen_loc.Subtract(canv_loc);
-            var penpos_canvas = this.PointToClient(adjusted_pos).ToPoint();
+            var penpos_canvas = this.PointToClient(adjusted_pos.ToSDPoint()).ToPoint();
             return penpos_canvas;
         }
 

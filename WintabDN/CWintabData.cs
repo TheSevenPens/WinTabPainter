@@ -26,7 +26,7 @@ namespace WintabDN;
 /// <summary>
 /// Class to support capture and management of Wintab daa.
 /// </summary>
-public class CWintabData
+public class CWintabData : IDisposable
 {
     private CWintabContext m_context;
 
@@ -47,7 +47,7 @@ public class CWintabData
     {
         if (context == null)
         {
-            throw new Exception("Trying to init CWintabData with null context.");
+            throw new ArgumentNullException("context", "Trying to init CWintabData with null context.");
         }
         m_context = context;
 
@@ -59,13 +59,16 @@ public class CWintabData
 
     }
 
+    private EventHandler<WinForms.MessageReceivedEventArgs> _wtPacketEventHandler;
+
     /// <summary>
     /// Set the handler to be called when WT_PACKET events are received.
     /// </summary>
     /// <param name="handler_I">WT_PACKET event handler supplied by the client.</param>
     public void SetWTPacketEventHandler(EventHandler<WinForms.MessageReceivedEventArgs> handler_I)
     {
-        WinForms.MessageEvents.MessageReceived += handler_I;
+        _wtPacketEventHandler = handler_I;
+        WinForms.MessageEvents.MessageReceived += _wtPacketEventHandler;
     }
 
     public void ClearWTPacketEventHandler()
@@ -289,7 +292,26 @@ public class CWintabData
     {
         if (m_context.HCtx == 0)
         {
-            throw new System.ArgumentOutOfRangeException(nameof(m_context.HCtx), msg + " - Bad Context");
+            throw new InvalidOperationException(msg + " - Bad Context: m_context.HCtx is 0");
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (_wtPacketEventHandler != null)
+            {
+                WinForms.MessageEvents.MessageReceived -= _wtPacketEventHandler;
+                _wtPacketEventHandler = null;
+            }
         }
     }
 }
+

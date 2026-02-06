@@ -1,7 +1,4 @@
-﻿using System;
-using SD = System.Drawing;
-
-namespace WinTabUtils.Geometry;
+﻿namespace WinTabUtils.Geometry;
 
 public readonly record struct Point(int X, int Y)
 {
@@ -17,14 +14,6 @@ public readonly record struct Point(int X, int Y)
     public PointD Divide(double scale) => new PointD(this.X / scale, this.Y / scale);
 
     public string ToStringXY() => string.Format("{0},{1}", this.X, this.Y);
-
-    public static implicit operator SD.Point(Point s) => s.ToSDPoint();
-
-    public SD.Point ToSDPoint()
-    {
-        var p = new SD.Point(this.X, this.Y);
-        return p;
-    }
 
     public Geometry.Point ToPointD()
     {

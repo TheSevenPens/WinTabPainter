@@ -1,8 +1,4 @@
-﻿
-using System.DirectoryServices.ActiveDirectory;
-using SD = System.Drawing;
-
-namespace WinTabUtils.Geometry;
+﻿namespace WinTabUtils.Geometry;
 
 public readonly record struct SizeD( double Width, double Height )
 {
@@ -25,12 +21,5 @@ public readonly record struct SizeD( double Width, double Height )
         return s;
     }
 
-    public SD.SizeF ToSDSizeF()
-    {
-        var s = new SD.SizeF((float)this.Width, (float)this.Height);
-        return s;
-    }
-
-    public static implicit operator SD.SizeF(SizeD s) => s.ToSDSizeF();
 
 }

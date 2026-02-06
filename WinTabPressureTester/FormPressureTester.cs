@@ -59,7 +59,14 @@ namespace WinTabPressureTester
             this.appstate.queue_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.appstate.logical_pressure_queue_size);
 
             string comportname = GetSelectedComPortName();
-            this.appstate.serial_port = new SerialPort(comportname);
+            if (!string.IsNullOrEmpty(comportname))
+            {
+               this.appstate.serial_port = new SerialPort(comportname);
+            }
+            else
+            {
+               this.appstate.serial_port = null;
+            }
             this.appstate.scale_cts = new CancellationTokenSource();
 
             this.appstate.record_collection = new PressureRecordCollection();
@@ -69,11 +76,19 @@ namespace WinTabPressureTester
         private string GetSelectedComPortName()
         {
             var portnames= SerialPort.GetPortNames();
-            var lastitem = this.comboBoxcomport.Items[this.comboBoxcomport.Items.Count - 1];
-            this.comboBoxcomport.Text = lastitem.ToString();
-
-            string comport = this.comboBoxcomport.Text.ToUpper();
-            return comport;
+            if (portnames == null || portnames.Length == 0)
+            {
+                return null;
+            }
+            
+            if (this.comboBoxcomport.Items.Count > 0)
+            {
+                var lastitem = this.comboBoxcomport.Items[this.comboBoxcomport.Items.Count - 1];
+                this.comboBoxcomport.Text = lastitem.ToString();
+                return this.comboBoxcomport.Text.ToUpper();
+            }
+            
+            return null;
         }
 
         Graphics gfx_picbox1;
@@ -88,11 +103,42 @@ namespace WinTabPressureTester
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            StopWinTabSession();
             StopScaleSession();
-            this.np_pressure_guage?.Dispose();
-            this.pictureBox1.Image?.Dispose();
-            this.pictureBox1?.Dispose();
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                // WinTab Session
+                this.appstate.wintab_session?.Dispose();
+                
+                // Scale Session Resources
+                this.appstate.scale_cts?.Cancel();
+                this.appstate.scale_cts?.Dispose();
+                
+                if (this.appstate.serial_port != null)
+                {
+                   if (this.appstate.serial_port.IsOpen) this.appstate.serial_port.Close();
+                   this.appstate.serial_port.Dispose();
+                }
+
+                // GDI+ Resources
+                this.np_pressure_guage?.Dispose();
+                this.pictureBox1.Image?.Dispose();
+                this.pictureBox1?.Dispose();
+                this.gfx_picbox1?.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
 
@@ -197,9 +243,16 @@ namespace WinTabPressureTester
         {
             try
             {
-                if (!appstate.serial_port.IsOpen)
+                if (appstate.serial_port != null && !appstate.serial_port.IsOpen)
                 {
                     appstate.serial_port.Open();
+                }
+
+                if (appstate.serial_port == null)
+                {
+                     // Simulate or just wait if no serial port
+                     // For now just return or let it run simulated?
+                     // appstate.serial_port is used in ReadSerialPortAsync, need to check there too
                 }
 
                 appstate.scale_isReading = true;
@@ -214,7 +267,7 @@ namespace WinTabPressureTester
             finally
             {
                 await ReadSerialPortAsync(appstate.scale_cts.Token);
-                if (appstate.serial_port.IsOpen)
+                if (appstate.serial_port != null && appstate.serial_port.IsOpen)
                 {
                     appstate.serial_port.Close();
                 }
@@ -336,7 +389,7 @@ namespace WinTabPressureTester
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (appstate.serial_port.BytesToRead > 0)
+                    if (appstate.serial_port != null && appstate.serial_port.IsOpen && appstate.serial_port.BytesToRead > 0)
                     {
                         string line = await Task.Run(() => appstate.serial_port.ReadLine());
                         var sr_parse = ParseScaleLine(line);

@@ -23,6 +23,7 @@ public struct PenButtonPressChange
             0 => PenButtonIdentifier.Tip,
             1 => PenButtonIdentifier.LowerButton,
             2 => PenButtonIdentifier.UpperButton,
+            3 => PenButtonIdentifier.BarrelButton,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }

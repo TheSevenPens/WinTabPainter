@@ -25,7 +25,7 @@ namespace WintabDN;
 /// <summary>
 /// Class to support access to Wintab context management.
 /// </summary>
-public class CWintabContext
+public class CWintabContext : IDisposable
 {
     // Context data
     private Structs.WintabLogContext m_logicalcontext = new Structs.WintabLogContext();
@@ -90,19 +90,34 @@ public class CWintabContext
     /// <returns>true if context successfully closed</returns>
     public bool Close()
     {
-        bool status = false;
-
         if (m_hCTX == 0)
         {
-            throw new Exception("CloseContext: invalid context");
+            return false;
         }
 
-        status = CWintabFuncs.WTClose(m_hCTX);
-        m_hCTX = 0;
-        m_logicalcontext = new Structs.WintabLogContext();
+        Dispose();
+        return true;
+    }
 
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-        return status;
+    protected virtual void Dispose(bool disposing)
+    {
+        if (m_hCTX != 0)
+        {
+            CWintabFuncs.WTClose(m_hCTX);
+            m_hCTX = 0;
+            m_logicalcontext = new Structs.WintabLogContext();
+        }
+    }
+
+    ~CWintabContext()
+    {
+        Dispose(false);
     }
 
     /// <summary>

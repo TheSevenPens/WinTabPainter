@@ -4,5 +4,6 @@ public enum PenButtonIdentifier
 {
     Tip,
     LowerButton,
-    UpperButton
+    UpperButton,
+    BarrelButton
 }
