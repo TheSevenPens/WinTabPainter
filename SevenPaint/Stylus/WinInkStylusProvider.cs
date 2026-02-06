@@ -1,5 +1,26 @@
 using System.Windows;
 
+public static class WinInkExtensions
+{
+    extension (System.Windows.Input.StylusPoint point)
+    {
+
+        public int GetPropertyValueSafe(System.Windows.Input.StylusPointProperty prop, int defval)
+        {
+            if (point.HasProperty(prop))
+            {
+                int value = point.GetPropertyValue(prop);
+                return value;
+            }
+            else
+            {
+                return defval;
+            }
+        }
+
+    }
+
+}
 namespace SevenPaint.Stylus
 {
     public class WinInkStylusProvider : IStylusProvider
@@ -85,10 +106,8 @@ namespace SevenPaint.Stylus
             foreach (var p in points)
             {
                 // Calculate Tilt/Azimuth/Altitude
-                double tiltX = 0;
-                double tiltY = 0;
-                if (p.HasProperty(System.Windows.Input.StylusPointProperties.XTiltOrientation)) tiltX = p.GetPropertyValue(System.Windows.Input.StylusPointProperties.XTiltOrientation);
-                if (p.HasProperty(System.Windows.Input.StylusPointProperties.YTiltOrientation)) tiltY = p.GetPropertyValue(System.Windows.Input.StylusPointProperties.YTiltOrientation);
+                double tiltX = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.XTiltOrientation,0);
+                double tiltY = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.YTiltOrientation,0);
 
                 double azimuth = 0;
                 double altitude = 90;
@@ -121,6 +140,7 @@ namespace SevenPaint.Stylus
                     TiltY = tiltY,
                     Azimuth = azimuth,
                     Altitude = altitude,
+
                     // Twist not standard in Ink StylusPoint usually
                     Timestamp = DateTime.Now.Ticks 
                 };
@@ -130,26 +150,7 @@ namespace SevenPaint.Stylus
                 // Consuming event to prevent system badging/selection?
                 // Probably yes.
             }
-            // Should we mark Handled? 
-            // MainWindow logic was: e.Handled = true
-            // But we should allow consumer to decide or do it here.
-            // Let's do it here if we assume this class "Owns" the input.
-            // But MainWindow might have Panning logic that needs it first?
-            // In MainWindow, Panning check happened BEFORE drawing.
-            // So logic needs to be: MainWindow checks Panning. If not panning, InkInput processes.
-            // But InkInput subscribes directly.
-            // We can add a property "ConsumeInput" or Handle bubbles.
-            // Or simple: MainWindow logic stays for routing? 
-            // In "Refactoring", we want to move logic out.
-            // Let's assume InkInput is disabled if Panning? 
-            // Or we just handle it.
-            
-            // To mimic MainWindow:
-            // if (_isSpaceDown || _isPanning) return;
-            // e.Handled = true;
-            // Draw(e);
-            
-            // So if InkInput is "Active", it should handle it?
+
             if (IsActive)
             {
                  // e.Handled = true; // Maybe let caller handle? 
