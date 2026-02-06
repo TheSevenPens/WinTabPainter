@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinTabUtils.Numerics;
+namespace SevenUtils.Numerics;
 
 public class SimpleCurve
 {

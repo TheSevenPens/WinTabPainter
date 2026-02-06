@@ -41,7 +41,7 @@ namespace WinTabPainter
 
         private void FormCurve_Load(object sender, System.EventArgs e)
         {
-            var s = new WinTabUtils.Geometry.Size(num_points + 2 * this.padding, num_points + 2 * this.padding);
+            var s = new SevenUtils.Geometry.Size(num_points + 2 * this.padding, num_points + 2 * this.padding);
             this.bitmaplayer = new Painting.BitmapLayer(s);
             this.pictureBox_Curve.Image = this.bitmaplayer.Bitmap;
             this.brush = new SD.SolidBrush(SD.Color.White);
@@ -52,7 +52,7 @@ namespace WinTabPainter
             this.checkBoxAntiAliasing.Checked = this.paintsettings.AntiAliasing;
             this.render_curve();
 
-            var curve_slide_range = new WinTabUtils.Numerics.OrderedRangeD(-100.0, 100.0);
+            var curve_slide_range = new SevenUtils.Numerics.OrderedRangeD(-100.0, 100.0);
             var slider_value = (int)curve_slide_range.Clamp(this.paintsettings.PressureCurveAmount * 100.0);
             this.trackBar_Amount.Value = slider_value;
 
@@ -103,8 +103,8 @@ namespace WinTabPainter
             int i_max = num_points - 1;
 
 
-            var x_coord_range = new WinTabUtils.Numerics.OrderedRangeD(0, i_max);
-            var y_coord_range = new WinTabUtils.Numerics.OrderedRangeD(0, i_max);
+            var x_coord_range = new SevenUtils.Numerics.OrderedRangeD(0, i_max);
+            var y_coord_range = new SevenUtils.Numerics.OrderedRangeD(0, i_max);
 
             for (int i = 0; i <= i_max; i++)
             {
@@ -114,7 +114,7 @@ namespace WinTabPainter
                 double x_coord = x_coord_range.Clamp(x * i_max);
                 double y_coord = i_max - y_coord_range.Clamp(y * i_max);
 
-                var p = new WinTabUtils.Geometry.PointD(x_coord, y_coord);
+                var p = new SevenUtils.Geometry.PointD(x_coord, y_coord);
                 var p2 = p.Add(this.padding, this.padding);
                 var p3 = new SD.PointF((float)p2.X, (float)p2.Y);
                 this.points[i] = p3;
@@ -175,7 +175,7 @@ namespace WinTabPainter
 
         private double get_bend_amount_from_trackbar()
         {
-            var range = new WinTabUtils.Numerics.OrderedRangeD(-1, 1);
+            var range = new SevenUtils.Numerics.OrderedRangeD(-1, 1);
             double v = this.trackBar_Amount.Value / (double)100;
             v = range.Clamp(v);
             return v;

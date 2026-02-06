@@ -1,6 +1,6 @@
-﻿using WinTabUtils.Geometry;
+﻿using SevenUtils.Geometry;
 
-namespace WinTabUtils.Numerics;
+namespace SevenUtils.Numerics;
 
 public static class Interpolation
 {

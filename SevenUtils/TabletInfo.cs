@@ -1,4 +1,4 @@
-﻿namespace WinTabUtils;
+﻿namespace SevenUtils;
 public class TabletInfo
 {
     public WintabDN.Structs.WintabAxis XAxis {  private set; get ;}

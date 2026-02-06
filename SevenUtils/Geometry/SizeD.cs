@@ -1,4 +1,4 @@
-﻿namespace WinTabUtils.Geometry;
+﻿namespace SevenUtils.Geometry;
 
 public readonly record struct SizeD( double Width, double Height )
 {

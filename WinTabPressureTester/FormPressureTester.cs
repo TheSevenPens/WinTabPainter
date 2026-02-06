@@ -2,7 +2,7 @@ using ScottPlot;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Text;
-using WinTabUtils;
+using SevenUtils;
 
 namespace WinTabPressureTester
 {
@@ -21,7 +21,7 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.appstate.wintab_session = new WinTabUtils.TabletSession();
+            this.appstate.wintab_session = new SevenUtils.TabletSession();
             this.appstate.scale_session = new ScaleSession();
 
 
@@ -56,7 +56,7 @@ namespace WinTabPressureTester
             formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 27;
 
 
-            this.appstate.queue_logical = new WinTabUtils.Numerics.IndexedQueue<double>(this.appstate.logical_pressure_queue_size);
+            this.appstate.queue_logical = new SevenUtils.Numerics.IndexedQueue<double>(this.appstate.logical_pressure_queue_size);
 
             string comportname = GetSelectedComPortName();
             if (!string.IsNullOrEmpty(comportname))
@@ -147,26 +147,26 @@ namespace WinTabPressureTester
         {
             return change switch
             {
-                WinTabUtils.PenButtonPressChangeType.Pressed => true,
-                WinTabUtils.PenButtonPressChangeType.Released => false,
+                SevenUtils.PenButtonPressChangeType.Pressed => true,
+                SevenUtils.PenButtonPressChangeType.Released => false,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {
 
-            var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != WinTabUtils.PenButtonPressChangeType.NoChange)
+            var button_info = new SevenUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+            if (button_info.Change != SevenUtils.PenButtonPressChangeType.NoChange)
             {
-                if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.Tip)
+                if (button_info.ButtonId == SevenUtils.PenButtonIdentifier.Tip)
                 {
                     this.checkBox_tipdown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.LowerButton)
+                else if (button_info.ButtonId == SevenUtils.PenButtonIdentifier.LowerButton)
                 {
                     this.checkBox_lowerbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == WinTabUtils.PenButtonIdentifier.UpperButton)
+                else if (button_info.ButtonId == SevenUtils.PenButtonIdentifier.UpperButton)
                 {
                     this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
@@ -183,7 +183,7 @@ namespace WinTabPressureTester
             string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure * 100.0);
             this.appstate.log_pressure = normalized_raw_pressure;
 
-            (double TiltX, double TiltY) = WinTabUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
+            (double TiltX, double TiltY) = SevenUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
 
             this.label_pressure_raw.Text = wintab_pkt.pkNormalPressure.ToString();
             this.label_normalized_pressure.Text = str_pressure.ToString();
@@ -210,9 +210,9 @@ namespace WinTabPressureTester
 
         }
 
-        private void ButtonChangeHandler(WintabDN.Structs.WintabPacket wintab_pkt, WinTabUtils.PenButtonPressChange buttonchange)
+        private void ButtonChangeHandler(WintabDN.Structs.WintabPacket wintab_pkt, SevenUtils.PenButtonPressChange buttonchange)
         {
-            if (buttonchange.Change == WinTabUtils.PenButtonPressChangeType.Released)
+            if (buttonchange.Change == SevenUtils.PenButtonPressChangeType.Released)
             {
                 this.appstate.scale_session.logical_pressure_moving_average.Clear();
             }
@@ -231,7 +231,7 @@ namespace WinTabPressureTester
         {
             this.appstate.wintab_session.PacketHandler = this.PacketHandler;
             this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(WinTabUtils.TabletContextType.System);
+            this.appstate.wintab_session.Open(SevenUtils.TabletContextType.System);
         }
 
         private void StopWinTabSession()

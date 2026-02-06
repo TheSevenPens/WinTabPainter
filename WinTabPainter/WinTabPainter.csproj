@@ -12,8 +12,9 @@
     <Content Include="MIT-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
     <ProjectReference Include="..\WintabDN\WintabDN.csproj" />
-    <ProjectReference Include="..\WinTabUtils\WinTabUtils.csproj" />
+    <ProjectReference Include="..\WinTabUtils\SevenUtils.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

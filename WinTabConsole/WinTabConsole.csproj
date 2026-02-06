@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
     <ProjectReference Include="..\WintabDN\WintabDN.csproj" />
-    <ProjectReference Include="..\WinTabUtils\WinTabUtils.csproj" />
+    <ProjectReference Include="..\WinTabUtils\SevenUtils.csproj" />
   </ItemGroup>
 
 </Project>

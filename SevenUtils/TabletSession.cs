@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinTabUtils;
+namespace SevenUtils;
 
 public class TabletSession : IDisposable
 {
@@ -10,7 +10,7 @@ public class TabletSession : IDisposable
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WintabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WintabDN.Structs.WintabPacket, WinTabUtils.PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WintabDN.Structs.WintabPacket, SevenUtils.PenButtonPressChange> ButtonChangedHandler = null;
 
     public TabletSession()
     {
@@ -76,7 +76,7 @@ public class TabletSession : IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+            var button_info = new SevenUtils.PenButtonPressChange(wintab_pkt.pkButtons);
             if (button_info.Change != PenButtonPressChangeType.NoChange)
             {
                 this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);

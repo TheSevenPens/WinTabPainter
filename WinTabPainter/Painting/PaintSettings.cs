@@ -7,15 +7,15 @@ namespace WinTabPainter.Painting;
 public class PaintSettingsDynamics
 {
     // dynamics
-    public readonly WinTabUtils.Numerics.SimpleCurve PressureCurve;
-    public readonly WinTabUtils.Numerics.EMASmoother PressureSmoother;
-    public readonly WinTabUtils.Numerics.EMAPositionSmoother PositionSmoother;
+    public readonly SevenUtils.Numerics.SimpleCurve PressureCurve;
+    public readonly SevenUtils.Numerics.EMASmoother PressureSmoother;
+    public readonly SevenUtils.Numerics.EMAPositionSmoother PositionSmoother;
 
     public PaintSettingsDynamics()
     {
-        this.PressureCurve = new WinTabUtils.Numerics.SimpleCurve();
-        this.PressureSmoother = new WinTabUtils.Numerics.EMASmoother(0);
-        this.PositionSmoother = new WinTabUtils.Numerics.EMAPositionSmoother(0);
+        this.PressureCurve = new SevenUtils.Numerics.SimpleCurve();
+        this.PressureSmoother = new SevenUtils.Numerics.EMASmoother(0);
+        this.PositionSmoother = new SevenUtils.Numerics.EMAPositionSmoother(0);
     }
 }
 
@@ -23,9 +23,9 @@ public class PaintSettingsDynamics
 public class PaintSettings
 {
     // statics
-    public static readonly WinTabUtils.Numerics.OrderedRange SYS_BRUSHSIZE_RANGE = new WinTabUtils.Numerics.OrderedRange(1, 100);
-    public static readonly WinTabUtils.Numerics.OrderedRangeD SYS_SMOOTHING_RANGE = new WinTabUtils.Numerics.OrderedRangeD(0, 1);
-    public static readonly WinTabUtils.Numerics.OrderedRangeD SYS_SMOOTHING_RANGE_LIMITED = new WinTabUtils.Numerics.OrderedRangeD(0.0, 0.995);
+    public static readonly SevenUtils.Numerics.OrderedRange SYS_BRUSHSIZE_RANGE = new SevenUtils.Numerics.OrderedRange(1, 100);
+    public static readonly SevenUtils.Numerics.OrderedRangeD SYS_SMOOTHING_RANGE = new SevenUtils.Numerics.OrderedRangeD(0, 1);
+    public static readonly SevenUtils.Numerics.OrderedRangeD SYS_SMOOTHING_RANGE_LIMITED = new SevenUtils.Numerics.OrderedRangeD(0.0, 0.995);
 
     // dynamics
     public PaintSettingsDynamics Dynamics;

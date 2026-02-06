@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using WinTabPainter.Painting;
-using WinTabUtils;
+using SevenUtils;
 using WinTabPainter.GeometryExtensions;
 
 // References:
@@ -26,7 +26,7 @@ namespace WinTabPainter
 
 
 
-        private WinTabUtils.TabletSession tabsession;
+        private SevenUtils.TabletSession tabsession;
         public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
         Painting.PaintData old_paintdata;
 
@@ -39,7 +39,7 @@ namespace WinTabPainter
         string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
-        WinTabUtils.Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new WinTabUtils.Numerics.OrderedRange(-100, 100);
+        SevenUtils.Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new SevenUtils.Numerics.OrderedRange(-100, 100);
 
 
 
@@ -79,9 +79,9 @@ namespace WinTabPainter
             this.EraseCanvas();
 
 
-            this.tabsession = new WinTabUtils.TabletSession();
+            this.tabsession = new SevenUtils.TabletSession();
             this.tabsession.PacketHandler = this.PacketHandler;
-            this.tabsession.Open(WinTabUtils.TabletContextType.System);
+            this.tabsession.Open(SevenUtils.TabletContextType.System);
 
             this.tabsession.ButtonChangedHandler = this.HandleButtonChange;
 
@@ -178,7 +178,7 @@ namespace WinTabPainter
             {
                 RecordPacket(wintab_pkt);
             }
-            var button_info = new WinTabUtils.PenButtonPressChange(wintab_pkt.pkButtons);
+            var button_info = new SevenUtils.PenButtonPressChange(wintab_pkt.pkButtons);
 
             Update_UI_Button_status(button_info);
 
@@ -191,15 +191,15 @@ namespace WinTabPainter
 
 
 
-        private void Update_UI_Button_status(WinTabUtils.PenButtonPressChange button_info)
+        private void Update_UI_Button_status(SevenUtils.PenButtonPressChange button_info)
         {
-            if (button_info.Change != WinTabUtils.PenButtonPressChangeType.NoChange)
+            if (button_info.Change != SevenUtils.PenButtonPressChangeType.NoChange)
             {
                 int index = button_info.ButtonId switch
                 {
-                    WinTabUtils.PenButtonIdentifier.Tip => 0,
-                    WinTabUtils.PenButtonIdentifier.LowerButton => 1,
-                    WinTabUtils.PenButtonIdentifier.UpperButton => 2,
+                    SevenUtils.PenButtonIdentifier.Tip => 0,
+                    SevenUtils.PenButtonIdentifier.LowerButton => 1,
+                    SevenUtils.PenButtonIdentifier.UpperButton => 2,
                     _ => throw new System.ArgumentOutOfRangeException()
                 };
 
@@ -214,8 +214,8 @@ namespace WinTabPainter
         {
             return change switch
             {
-                WinTabUtils.PenButtonPressChangeType.Pressed => 'D',
-                WinTabUtils.PenButtonPressChangeType.Released => 'U',
+                SevenUtils.PenButtonPressChangeType.Pressed => 'D',
+                SevenUtils.PenButtonPressChangeType.Released => 'U',
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
@@ -259,7 +259,7 @@ namespace WinTabPainter
 
         }
 
-        public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, WinTabUtils.PenButtonPressChange change)
+        public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, SevenUtils.PenButtonPressChange change)
         {
             if (change.ButtonId == PenButtonIdentifier.Tip)
             {
@@ -275,7 +275,7 @@ namespace WinTabPainter
             }
 
         }
-        public WinTabUtils.Geometry.Point Screen_loc_to_canvas_loc(WinTabUtils.Geometry.Point screen_loc)
+        public SevenUtils.Geometry.Point Screen_loc_to_canvas_loc(SevenUtils.Geometry.Point screen_loc)
         {
             var canv_loc = this.pictureBox_Canvas.Location.ToPoint();
             var adjusted_pos = screen_loc.Subtract(canv_loc);
@@ -302,7 +302,7 @@ namespace WinTabPainter
                 return str_pressure;
             }
         }
-        private void UpdateLivePaintStats(Painting.PaintData paint_data, WinTabUtils.Geometry.Point penpos_canvas)
+        private void UpdateLivePaintStats(Painting.PaintData paint_data, SevenUtils.Geometry.Point penpos_canvas)
         {
             this.label_ScreenPosValue.Text = paint_data.PosScreen.ToStringXY();
             this.label_CanvasPos.Text = penpos_canvas.ToStringXY();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinTabUtils.Numerics
+namespace SevenUtils.Numerics
 {
     public class MovingAverage
     {

@@ -1,4 +1,4 @@
-﻿namespace WinTabUtils;
+﻿namespace SevenUtils;
 
 public enum PenButtonIdentifier
 {

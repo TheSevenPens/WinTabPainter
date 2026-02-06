@@ -10,10 +10,10 @@ public struct PaintData
     public readonly uint Time;
 
     // POSITION
-    public readonly WinTabUtils.Geometry.Point PosScreen;
-    public readonly WinTabUtils.Geometry.Point PosScreenEffective;
-    public readonly WinTabUtils.Geometry.Point PosCanvas;
-    public readonly WinTabUtils.Geometry.Point PosCanvasEffective;
+    public readonly SevenUtils.Geometry.Point PosScreen;
+    public readonly SevenUtils.Geometry.Point PosScreenEffective;
+    public readonly SevenUtils.Geometry.Point PosCanvas;
+    public readonly SevenUtils.Geometry.Point PosCanvasEffective;
 
     // HOVER
     public readonly int PenHover;
@@ -43,7 +43,7 @@ public struct PaintData
     }
 
     static System.Random random  = new System.Random();
-    public PaintData(WintabDN.Structs.WintabPacket pkt, WinTabUtils.TabletInfo tablet, PaintSettings paintsettings, System.Func<WinTabUtils.Geometry.Point,WinTabUtils.Geometry.Point> to_canv)
+    public PaintData(WintabDN.Structs.WintabPacket pkt, SevenUtils.TabletInfo tablet, PaintSettings paintsettings, System.Func<SevenUtils.Geometry.Point,SevenUtils.Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;
@@ -52,7 +52,7 @@ public struct PaintData
         this.Time = pkt.pkTime;
 
         // POSITION
-        this.PosScreen = new WinTabUtils.Geometry.Point(pkt.pkX, pkt.pkY);
+        this.PosScreen = new SevenUtils.Geometry.Point(pkt.pkX, pkt.pkY);
         this.PosScreenEffective = paintsettings.Dynamics.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
 
         this.PosCanvas = to_canv(this.PosScreen);
@@ -60,12 +60,12 @@ public struct PaintData
 
         if (paintsettings.PostionNoiseX > 0)
         {
-            this.PosCanvasEffective = new WinTabUtils.Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PostionNoiseX), this.PosCanvasEffective.Y);
+            this.PosCanvasEffective = new SevenUtils.Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PostionNoiseX), this.PosCanvasEffective.Y);
         }
 
         if (paintsettings.PositionNoiseY > 0)
         {
-            this.PosCanvasEffective = new WinTabUtils.Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PositionNoiseY));
+            this.PosCanvasEffective = new SevenUtils.Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PositionNoiseY));
         }
 
 
@@ -76,7 +76,7 @@ public struct PaintData
         this.TiltAltitude = pkt.pkOrientation.orAltitude / 10.0;
         this.TiltAzimuth = pkt.pkOrientation.orAzimuth / 10.0;
 
-        (this.TiltX, this.TiltY) = WinTabUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(this.TiltAzimuth, this.TiltAltitude);
+        (this.TiltX, this.TiltY) = SevenUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(this.TiltAzimuth, this.TiltAltitude);
 
         // PRESSURE
         this.PressureRaw = pkt.pkNormalPressure;
