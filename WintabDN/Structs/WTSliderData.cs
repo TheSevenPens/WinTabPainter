@@ -2,7 +2,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WintabDN.Structs;
+namespace WinTabDN.Structs;
 
 /// <summary>
 /// Extension data for one touch ring or one touch strip.

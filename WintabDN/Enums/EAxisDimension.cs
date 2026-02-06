@@ -1,6 +1,6 @@
 ﻿// See copright.md for copyright information.
 
-namespace WintabDN.Enums;
+namespace WinTabDN.Enums;
 
 /// <summary>
 /// Values to use when asking for X, Y or Z WintabAxis object.

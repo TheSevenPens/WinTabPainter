@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WintabDN.WinForms;
+namespace WinTabDN.WinForms;
 
 /// <summary>
 /// Windows native message handler, to provide support for detecting and

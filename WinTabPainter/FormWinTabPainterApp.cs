@@ -14,7 +14,7 @@ using WinTabPainter.GeometryExtensions;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq.Expressions;
-using WintabDN.Structs;
+using WinTabDN.Structs;
 using System.Security.Cryptography;
 using static System.Windows.Forms.Design.AxImporter;
 using System.Drawing;
@@ -92,7 +92,7 @@ namespace WinTabPainter
             this.label_BrushSizeValue.Text = paint_settings.BrushWidth.ToString();
 
 
-            this.recorded_packets = new List<WintabDN.Structs.WintabPacket>(this.max_rec_packets);
+            this.recorded_packets = new List<WinTabDN.Structs.WintabPacket>(this.max_rec_packets);
 
             this.UpdateRecStatus();
 
@@ -172,7 +172,7 @@ namespace WinTabPainter
             get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType.Released),
             get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType.Released)};
 
-        private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
+        private void PacketHandler(WinTabDN.Structs.WintabPacket wintab_pkt)
         {
             if (this.RecStat == RecStatusEnum.Recording)
             {
@@ -259,7 +259,7 @@ namespace WinTabPainter
 
         }
 
-        public void HandleButtonChange(WintabDN.Structs.WintabPacket pkt, SevenUtils.WinTab.PenButtonPressChange change)
+        public void HandleButtonChange(WinTabDN.Structs.WintabPacket pkt, SevenUtils.WinTab.PenButtonPressChange change)
         {
             if (change.ButtonId == SevenUtils.WinTab.PenButtonIdentifier.Tip)
             {

@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN;
+namespace WinTabDN;
 using P_HCTX = UInt32;
 using P_HWND = System.IntPtr;
 

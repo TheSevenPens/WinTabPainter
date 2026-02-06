@@ -27,7 +27,7 @@ namespace WinTabPainter
             public int NumPackets { get => numPackets; set => numPackets = value; }
             public List<SerPacket> Packets { get => packets; set => packets = value; }
 
-            public PacketRecording(List<WintabDN.Structs.WintabPacket> pkts)
+            public PacketRecording(List<WinTabDN.Structs.WintabPacket> pkts)
             {
                 this.App = "WinTabPainter";
                 this.AppVer = "1.0";

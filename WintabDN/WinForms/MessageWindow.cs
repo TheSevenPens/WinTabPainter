@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace WintabDN.WinForms;
+namespace WinTabDN.WinForms;
 
 public static partial class MessageEvents
 {

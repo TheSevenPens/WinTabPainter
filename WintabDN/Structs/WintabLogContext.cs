@@ -3,7 +3,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WintabDN.Structs;
+namespace WinTabDN.Structs;
 
 /// <summary>
 /// Managed version of Wintab LOGCONTEXT struct.  This structure determines what events an 

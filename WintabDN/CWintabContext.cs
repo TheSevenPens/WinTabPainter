@@ -2,7 +2,7 @@
 
 using System;
 
-namespace WintabDN;
+namespace WinTabDN;
 
 /// <summary>
 /// Class to support access to Wintab context management.

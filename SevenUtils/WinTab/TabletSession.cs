@@ -4,12 +4,12 @@ namespace SevenUtils.WinTab;
 public class TabletSession : IDisposable
 {
 
-    public WintabDN.CWintabContext Context = null;
-    public WintabDN.CWintabData Data = null;
+    public WinTabDN.CWintabContext Context = null;
+    public WinTabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public SevenUtils.WinTab.TabletContextType ContextType;
-    public System.Action<WintabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WintabDN.Structs.WintabPacket, SevenUtils.WinTab.PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
+    public System.Action<WinTabDN.Structs.WintabPacket, SevenUtils.WinTab.PenButtonPressChange> ButtonChangedHandler = null;
 
     public TabletSession()
     {
@@ -22,15 +22,15 @@ public class TabletSession : IDisposable
         var wt_context_type = context_type_to_index(context_type);
 
         // CREATE CONTEXT
-        var options = WintabDN.Enums.ECTXOptionValues.CXO_MESSAGES;
-        this.Context = WintabDN.CWintabInfo.GetDefaultContext(wt_context_type, options);
+        var options = WinTabDN.Enums.ECTXOptionValues.CXO_MESSAGES;
+        this.Context = WinTabDN.CWintabInfo.GetDefaultContext(wt_context_type, options);
 
         if (this.Context == null)
         {
             throw new System.ApplicationException("Failed to get digitizing context");
         }
 
-        this.Context.Options |= (uint)WintabDN.Enums.ECTXOptionValues.CXO_SYSTEM;
+        this.Context.Options |= (uint)WinTabDN.Enums.ECTXOptionValues.CXO_SYSTEM;
 
         // Move origin from lower-left to upper left so it matches screen origin
         this.Context.OutExtY = -this.Context.OutExtY;
@@ -38,7 +38,7 @@ public class TabletSession : IDisposable
 
         // CREATE DATA
 
-        this.Data = new WintabDN.CWintabData(this.Context);
+        this.Data = new WinTabDN.CWintabData(this.Context);
 
 
         this.TabletInfo.Initialize();
@@ -51,17 +51,17 @@ public class TabletSession : IDisposable
         }
     }
 
-    private static WintabDN.Enums.EWTICategoryIndex context_type_to_index(SevenUtils.WinTab.TabletContextType context_type)
+    private static WinTabDN.Enums.EWTICategoryIndex context_type_to_index(SevenUtils.WinTab.TabletContextType context_type)
     {
         return context_type switch
         {
-            SevenUtils.WinTab.TabletContextType.System => WintabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
-            SevenUtils.WinTab.TabletContextType.Digitizer => WintabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
+            SevenUtils.WinTab.TabletContextType.System => WinTabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
+            SevenUtils.WinTab.TabletContextType.Digitizer => WinTabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }
 
-    private void WinTabPacketHandler(Object sender, WintabDN.WinForms.MessageReceivedEventArgs args)
+    private void WinTabPacketHandler(Object sender, WinTabDN.WinForms.MessageReceivedEventArgs args)
     {
         if (this.Data == null)
         {

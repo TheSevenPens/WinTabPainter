@@ -3,7 +3,7 @@
 
 //TODO - generics should be used where possible -
 
-namespace WintabDN.Enums;
+namespace WinTabDN.Enums;
 
 /// <summary>
 /// Index values used for WTI extensions.

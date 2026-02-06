@@ -1,7 +1,7 @@
 ﻿// See copright.md for copyright information.
 
 
-namespace WintabDN.Enums;
+namespace WinTabDN.Enums;
 
 /// <summary>
 /// Wintab packet status values.

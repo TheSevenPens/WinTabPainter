@@ -2,7 +2,7 @@
 
 using System;
 
-namespace WintabDN;
+namespace WinTabDN;
 
 /// <summary>
 /// Class to access Wintab interface data.
