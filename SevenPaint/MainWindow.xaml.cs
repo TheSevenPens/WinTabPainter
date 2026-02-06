@@ -209,18 +209,18 @@ namespace SevenPaint
             // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
             // We assume this is called inside Dispatcher if from Wintab.
             
-            TxtButtons.Text = $"Buttons: {buttons}";
-            TxtX.Text = $"X: {currentPoint.X:F1}";
-            TxtY.Text = $"Y: {currentPoint.Y:F1}";
-            TxtVelocity.Text = $"Velocity: {_lastVelocity:F1} px/s";
-            TxtDirection.Text = $"Direction: {_lastDirection:F1}";
+            TxtButtons.Text = $"{buttons}";
+            TxtX.Text = $"{currentPoint.X:F1}";
+            TxtY.Text = $"{currentPoint.Y:F1}";
+            TxtVelocity.Text = $"{_lastVelocity:F1}";
+            TxtDirection.Text = $"{_lastDirection:F1}";
             
-            TxtPressure.Text = $"Pressure: {pressure:F4}";
-            TxtTiltX.Text = $"Tilt x: {tiltX:F1}";
-            TxtTiltY.Text = $"Tilt y: {tiltY:F1}";
-            TxtTiltAzimuth.Text = $"Tilt azimuth: {azimuth:F1}";
-            TxtTiltAltitude.Text = $"Tilt altitude: {altitude:F1}";
-            TxtBarrelRotation.Text = $"Barrel rotation: {twist:F0}";
+            TxtPressure.Text = $"{pressure:F4}";
+            TxtTiltX.Text = $"{tiltX:F1}";
+            TxtTiltY.Text = $"{tiltY:F1}";
+            TxtTiltAzimuth.Text = $"{azimuth:F1}";
+            TxtTiltAltitude.Text = $"{altitude:F1}";
+            TxtBarrelRotation.Text = $"{twist:F0}";
         }
 
         // --- Wintab Handler ---
@@ -466,38 +466,120 @@ namespace SevenPaint
                     int radius = (int)(_maxRadius * scaleFactor);
                     if (radius < 1) radius = 1;
 
-                    DrawDab(pBackBuffer, stride, x, y, radius, _currentColor);
+                DrawDab(pBackBuffer, stride, point.X, point.Y, radius, _currentColor);
                 }
             }
             _wbmp.AddDirtyRect(new Int32Rect(0, 0, ImageWidth, ImageHeight));
             _wbmp.Unlock();
         }
 
-        private unsafe void DrawDab(int* buffer, int stride, int cx, int cy, int radius, System.Windows.Media.Color color)
+        private unsafe void DrawDab(int* buffer, int stride, double cx, double cy, double radius, System.Windows.Media.Color color)
         {
-            int colorData = ConvertColor(color);
-            int r2 = radius * radius;
+            // Bounding box
+            int minX = (int)Math.Floor(cx - radius - 1);
+            int maxX = (int)Math.Ceiling(cx + radius + 1);
+            int minY = (int)Math.Floor(cy - radius - 1);
+            int maxY = (int)Math.Ceiling(cy + radius + 1);
 
-            int minX = Math.Max(0, cx - radius);
-            int maxX = Math.Min(ImageWidth - 1, cx + radius);
-            int minY = Math.Max(0, cy - radius);
-            int maxY = Math.Min(ImageHeight - 1, cy + radius);
+            // Clamp to image bounds
+            minX = Math.Max(0, minX);
+            maxX = Math.Min(ImageWidth - 1, maxX);
+            minY = Math.Max(0, minY);
+            maxY = Math.Min(ImageHeight - 1, maxY);
+
+            // Pre-calculate color components (assuming opaque input color for now, or handle alpha)
+            // Windows allows semi-transparent colors, so let's handle input alpha too
+            double srcA = color.A / 255.0;
+            double srcR = color.R * srcA; // Premultiplied source
+            double srcG = color.G * srcA;
+            double srcB = color.B * srcA;
+
+            double radiusSq = radius * radius;
+            double radiusInner = radius - 1.0;
+            if (radiusInner < 0) radiusInner = 0;
+            double radiusInnerSq = radiusInner * radiusInner;
 
             for (int y = minY; y <= maxY; y++)
             {
-                int dy = y - cy;
-                int dy2 = dy * dy;
-                
-                // Get row pointer
-                // Stride is rendering bytes, so we divide by 4 for int*
+                // Optimization: pointer to row start
+                // stride is in bytes. int* arithmetic moves by 4 bytes. 
+                // buffer is int*, so we need strict byte offset logic or assume stride is multiple of 4 (usually is for Pbgra32)
+                // Existing code used: int* row = buffer + (y * (stride / 4));
                 int* row = buffer + (y * (stride / 4));
+
+                double dy = y - cy;
+                double dy2 = dy * dy;
 
                 for (int x = minX; x <= maxX; x++)
                 {
-                    int dx = x - cx;
-                    if (dx * dx + dy2 <= r2)
+                    double dx = x - cx;
+                    double distSq = dx * dx + dy2;
+
+                    if (distSq >= (radius + 1) * (radius + 1)) continue; // Optimization: far outside
+
+                    double alphaFactor = 0.0;
+                    double dist = Math.Sqrt(distSq);
+
+                    if (dist < radiusInner)
                     {
-                         row[x] = colorData;
+                        // Fully inside inner radius -> use full source alpha
+                        alphaFactor = 1.0;
+                    }
+                    else if (dist < radius)
+                    {
+                        // On edge -> antialias
+                        // Linear falloff: 1.0 at radiusInner, 0.0 at radius
+                        alphaFactor = 1.0 - (dist - radiusInner); // Since radius - radiusInner = 1 (usually)
+                    }
+                    else
+                    {
+                        // Just outside radius but inside bounding box (sub-pixel coverage?)
+                        // We can be a bit softer: range [radius-0.5, radius+0.5]?
+                        // Let's stick to [radius-1, radius] for now aka standard 1px feather
+                         alphaFactor = 0.0;
+                    }
+
+                    if (alphaFactor > 0)
+                    {
+                        // Calculate effective source color
+                        double coverage = alphaFactor;
+                        
+                        // Current Destination Pixel
+                        int destPixel = row[x];
+                        
+                        // Extract Dest components (Pbgra32: B G R A)
+                        byte dA = (byte)((destPixel >> 24) & 0xFF);
+                        byte dR = (byte)((destPixel >> 16) & 0xFF);
+                        byte dG = (byte)((destPixel >> 8) & 0xFF);
+                        byte dB = (byte)(destPixel & 0xFF);
+
+                        // Blend
+                        // Out = Src * Cov + Dest * (1 - SrcA * Cov)
+                        
+                        // Effective source alpha for this pixel
+                        double outSrcA = srcA * coverage;
+                        
+                        // Premultiplied Source components for this pixel
+                        double pSrcR = srcR * coverage;
+                        double pSrcG = srcG * coverage;
+                        double pSrcB = srcB * coverage;
+                        double pSrcA = color.A * coverage; // = outSrcA * 255.0
+
+                        // Destination blend factor
+                        double destFactor = 1.0 - outSrcA;
+
+                        double rA = pSrcA + dA * destFactor;
+                        double rR = pSrcR + dR * destFactor;
+                        double rG = pSrcG + dG * destFactor;
+                        double rB = pSrcB + dB * destFactor;
+
+                        // Clamp and Pack
+                        byte fA = (byte)Math.Min(255, Math.Max(0, rA));
+                        byte fR = (byte)Math.Min(255, Math.Max(0, rR));
+                        byte fG = (byte)Math.Min(255, Math.Max(0, rG));
+                        byte fB = (byte)Math.Min(255, Math.Max(0, rB));
+
+                        row[x] = (fA << 24) | (fR << 16) | (fG << 8) | fB;
                     }
                 }
             }
