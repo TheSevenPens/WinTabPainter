@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////
 using System;
-using System.Windows.Forms;
 
 namespace WintabDN.WinForms;
 
@@ -32,16 +31,16 @@ namespace WintabDN.WinForms;
 /// </summary>
 public class MessageReceivedEventArgs : EventArgs
 {
-    private readonly Message _message;
+    private readonly System.Windows.Forms.Message _message;
 
     /// <summary>
     /// MessageReceivedEventArgs constructor.
     /// </summary>
     /// <param name="message">Native windows message to be registered.</param>
-    public MessageReceivedEventArgs(Message message) { _message = message; }
+    public MessageReceivedEventArgs(System.Windows.Forms.Message message) { _message = message; }
 
     /// <summary>
     /// Return native Windows message handled by this object.
     /// </summary>
-    public Message Message { get { return _message; } }
+    public System.Windows.Forms.Message Message { get { return _message; } }
 }

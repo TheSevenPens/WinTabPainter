@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace WintabDN.WinForms;
 
@@ -69,7 +68,7 @@ public static partial class MessageEvents
                     tcs.SetResult(win.Handle);
 
                     // Start the standard Windows message loop
-                    Application.Run();
+                    System.Windows.Forms.Application.Run();
                 });
                 
                 t.Name = "MessageEvents message loop";

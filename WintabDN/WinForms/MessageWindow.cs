@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace WintabDN.WinForms;
 
 public static partial class MessageEvents
 {
-    private class MessageWindow : NativeWindow
+    private class MessageWindow : System.Windows.Forms.NativeWindow
     {
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
         private readonly Dictionary<int, bool> _messageSet = new Dictionary<int, bool>();
 
         public MessageWindow()
         {
-            var cp = new CreateParams { Caption = "WintabDN Message Window" };
+            var cp = new System.Windows.Forms.CreateParams { Caption = "WintabDN Message Window" };
             CreateHandle(cp);
         }
 
@@ -31,7 +30,7 @@ public static partial class MessageEvents
             }
         }
 
-        protected override void WndProc(ref Message m)
+        protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             bool handleMessage = false;
             _lock.EnterReadLock();
@@ -49,7 +48,7 @@ public static partial class MessageEvents
                 MessageEvents._context?.Post(delegate (object state)
                 {
                     EventHandler<MessageReceivedEventArgs> handler = MessageEvents.MessageReceived;
-                    handler?.Invoke(null, new MessageReceivedEventArgs((Message)state));
+                    handler?.Invoke(null, new MessageReceivedEventArgs((System.Windows.Forms.Message)state));
                 }, m);
             }
 
