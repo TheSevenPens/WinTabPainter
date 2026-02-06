@@ -30,20 +30,33 @@
                     <TextBlock Text="STROKE FORMAT" FontWeight="Bold" Margin="0,0,0,5"/>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Size " VerticalAlignment="Center"/>
-                        <ComboBox Width="60" SelectedIndex="0">
+                        <TextBlock Text="Size " VerticalAlignment="Center"/>
+                        <ComboBox x:Name="ComboSize" Width="60" SelectedIndex="3" SelectionChanged="ComboSize_SelectionChanged">
+                            <ComboBoxItem Content="1px"/>
+                            <ComboBoxItem Content="5px"/>
+                            <ComboBoxItem Content="10px"/>
                             <ComboBoxItem Content="50px"/>
+                            <ComboBoxItem Content="100px"/>
+                            <ComboBoxItem Content="300px"/>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Scale size by " VerticalAlignment="Center"/>
-                        <ComboBox Width="80" SelectedIndex="0">
+                        <ComboBox x:Name="ComboScale" Width="100" SelectedIndex="0" SelectionChanged="ComboScale_SelectionChanged">
+                            <ComboBoxItem Content="Don't scale"/>
                             <ComboBoxItem Content="Pressure"/>
+                            <ComboBoxItem Content="Tilt Azimuth"/>
+                            <ComboBoxItem Content="Tilt Altitude"/>
+                            <ComboBoxItem Content="Barrel Rotation"/>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Color " VerticalAlignment="Center"/>
-                        <ComboBox Width="80" SelectedIndex="0">
+                        <ComboBox x:Name="ComboColor" Width="80" SelectedIndex="0" SelectionChanged="ComboColor_SelectionChanged">
                             <ComboBoxItem Content="Black"/>
+                            <ComboBoxItem Content="Red"/>
+                            <ComboBoxItem Content="Green"/>
+                            <ComboBoxItem Content="Blue"/>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">

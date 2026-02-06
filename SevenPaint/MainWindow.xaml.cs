@@ -20,10 +20,14 @@ namespace SevenPaint
         private WriteableBitmap _wbmp;
         private const int ImageWidth = 1920;
         private const int ImageHeight = 1080;
-        private const int MaxRadius = 20;
+        private int _maxRadius = 25; // Default 50px diameter / 2
+        private System.Windows.Media.Color _currentColor = Colors.Black;
 
         private WinTabUtils.TabletSession? _wintabSession;
         private bool _useWintab = false;
+        
+        private enum ScaleType { Pressure, None, Azimuth, Altitude, Rotation }
+        private ScaleType _scaleType = ScaleType.Pressure;
         
         // Ribbon Tracking
         private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
@@ -87,6 +91,50 @@ namespace SevenPaint
         private void UpdateStatus()
         {
             StatusLabel.Text = _useWintab ? "Active API: Wintab" : "Active API: Windows Ink";
+        }
+
+        private void ComboColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboColor.SelectedItem is ComboBoxItem item && item.Content is string colorName)
+            {
+                switch (colorName)
+                {
+                    case "Red": _currentColor = Colors.Red; break;
+                    case "Green": _currentColor = Colors.Green; break;
+                    case "Blue": _currentColor = Colors.Blue; break;
+                    default: _currentColor = Colors.Black; break;
+                }
+            }
+        }
+
+        private void ComboSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboSize.SelectedItem is ComboBoxItem item && item.Content is string sizeText)
+            {
+                // Format is "50px". Remove "px" and parse.
+                string raw = sizeText.Replace("px", "");
+                if (int.TryParse(raw, out int size))
+                {
+                    _maxRadius = size / 2;
+                    if (_maxRadius < 1) _maxRadius = 1;
+                }
+            }
+        }
+
+        private void ComboScale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+             if (ComboScale.SelectedItem is ComboBoxItem item && item.Content is string scaleText)
+            {
+                switch (scaleText)
+                {
+                    case "Pressure": _scaleType = ScaleType.Pressure; break;
+                    case "Don't scale": _scaleType = ScaleType.None; break;
+                    case "Tilt Azimuth": _scaleType = ScaleType.Azimuth; break;
+                    case "Tilt Altitude": _scaleType = ScaleType.Altitude; break;
+                    case "Barrel Rotation": _scaleType = ScaleType.Rotation; break;
+                    default: _scaleType = ScaleType.Pressure; break;
+                }
+            }
         }
 
         private void Clear(System.Windows.Media.Color color)
@@ -192,9 +240,37 @@ namespace SevenPaint
                 // Allow drawing outside just for test, or map global -> local
                 var visualPoint = RenderImage.PointFromScreen(new System.Windows.Point(x, y));
                 
+                double scaleFactor = pressureFactor;
+
+                switch (_scaleType)
+                {
+                    case ScaleType.None:
+                        scaleFactor = 1.0;
+                        break;
+                    case ScaleType.Azimuth:
+                        // Azimuth: 0-360 degrees
+                        scaleFactor = (azimuth % 360.0) / 360.0;
+                        break;
+                    case ScaleType.Altitude:
+                        // Altitude: 0-90 degrees
+                        scaleFactor = Math.Abs(altitude) / 90.0;
+                        break;
+                    case ScaleType.Rotation:
+                        // Twist: 0-360 degrees
+                        scaleFactor = (twist % 360.0) / 360.0;
+                        break;
+                    case ScaleType.Pressure:
+                    default:
+                        scaleFactor = pressureFactor;
+                        break;
+                }
+                
+                if (scaleFactor > 1.0) scaleFactor = 1.0;
+                if (scaleFactor < 0.0) scaleFactor = 0.0;
+
                 UpdateRibbon(visualPoint, pressureFactor, 0, 0, azimuth, altitude, twist, (int)packet.pkButtons);
 
-                DrawDabCore((int)visualPoint.X, (int)visualPoint.Y, pressureFactor);
+                DrawDabCore((int)visualPoint.X, (int)visualPoint.Y, (float)scaleFactor);
             });
         }
 
@@ -208,10 +284,12 @@ namespace SevenPaint
                 int* pBackBuffer = (int*)_wbmp.BackBuffer;
                 int stride = _wbmp.BackBufferStride;
 
-                int radius = (int)(MaxRadius * pressureFactor);
+                int radius = (int)(_maxRadius * pressureFactor);
                 if (radius < 1) radius = 1;
 
-                DrawDab(pBackBuffer, stride, x, y, radius, Colors.Black);
+                if (radius < 1) radius = 1;
+
+                DrawDab(pBackBuffer, stride, x, y, radius, _currentColor);
             }
             _wbmp.AddDirtyRect(new Int32Rect(0, 0, ImageWidth, ImageHeight));
             _wbmp.Unlock();
@@ -277,11 +355,36 @@ namespace SevenPaint
                     int x = (int)point.X;
                     int y = (int)point.Y;
                     float pressure = point.PressureFactor;
+                    float scaleFactor = pressure;
 
-                    int radius = (int)(MaxRadius * pressure);
+                    switch (_scaleType)
+                    {
+                         case ScaleType.None:
+                            scaleFactor = 1.0f;
+                            break;
+                         case ScaleType.Pressure:
+                            scaleFactor = pressure;
+                            break;
+                         case ScaleType.Azimuth:
+                         case ScaleType.Altitude:
+                         case ScaleType.Rotation:
+                            // Try to get properties from StylusPoint
+                            scaleFactor = 0.5f; // Default if not found
+                            
+                            // Note: Getting these properties from StylusPoint in WPF can be tricky if not natively supported or exposed
+                            // We will use 0.5f as fallback for now
+                            break;
+                        default:
+                             break;
+                    }
+                    
+                    if (scaleFactor > 1.0f) scaleFactor = 1.0f;
+                    if (scaleFactor < 0.0f) scaleFactor = 0.0f;
+
+                    int radius = (int)(_maxRadius * scaleFactor);
                     if (radius < 1) radius = 1;
 
-                    DrawDab(pBackBuffer, stride, x, y, radius, Colors.Black);
+                    DrawDab(pBackBuffer, stride, x, y, radius, _currentColor);
                 }
             }
             _wbmp.AddDirtyRect(new Int32Rect(0, 0, ImageWidth, ImageHeight));
