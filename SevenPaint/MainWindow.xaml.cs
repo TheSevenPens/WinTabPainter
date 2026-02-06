@@ -149,15 +149,15 @@ namespace SevenPaint
         {
             if (ComboScale.SelectedItem is ComboBoxItem item && item.Content is string scaleText)
             {
-                switch (scaleText)
+                _brushSettings.ScaleType = scaleText switch
                 {
-                    case "Pressure": _brushSettings.ScaleType = Paint.ScaleType.Pressure; break;
-                    case "Don't scale": _brushSettings.ScaleType = Paint.ScaleType.None; break;
-                    case "Tilt Azimuth": _brushSettings.ScaleType = Paint.ScaleType.Azimuth; break;
-                    case "Tilt Altitude": _brushSettings.ScaleType = Paint.ScaleType.Altitude; break;
-                    case "Barrel Rotation": _brushSettings.ScaleType = Paint.ScaleType.Rotation; break;
-                    default: _brushSettings.ScaleType = Paint.ScaleType.Pressure; break;
-                }
+                    "Pressure" => Paint.ScaleType.Pressure,
+                    "Don't scale" => Paint.ScaleType.None,
+                    "Tilt Azimuth" => Paint.ScaleType.Azimuth,
+                    "Tilt Altitude" => Paint.ScaleType.Altitude,
+                    "Barrel Rotation" => Paint.ScaleType.Rotation,
+                    _ => Paint.ScaleType.Pressure,
+                };
             }
         }
 
