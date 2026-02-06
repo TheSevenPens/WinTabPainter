@@ -1,4 +1,4 @@
-namespace SevenPaint
+namespace SevenPaint.Stylus
 {
     public struct DrawInputArgs
     {

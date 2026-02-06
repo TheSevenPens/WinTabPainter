@@ -15,8 +15,8 @@ namespace SevenPaint
 
         private BrushSettings _brushSettings = new BrushSettings();
 
-        private WinTabStyusProvider _wintabInput;
-        private WinInkStylusProvider _inkInput;
+        private Stylus.WinTabStyusProvider _wintabInput;
+        private Stylus.WinInkStylusProvider _inkInput;
         private bool _useWintab = false;
 
         // Zoom
@@ -52,10 +52,10 @@ namespace SevenPaint
             Clear(Colors.White);
 
             // Initialize Inputs
-            _wintabInput = new WinTabStyusProvider(RenderImage);
+            _wintabInput = new Stylus.WinTabStyusProvider(RenderImage);
             _wintabInput.InputMove += OnInputMove;
 
-            _inkInput = new WinInkStylusProvider(RenderImage);
+            _inkInput = new Stylus.WinInkStylusProvider(RenderImage);
             _inkInput.InputMove += OnInputMove;
             _inkInput.InputDown += OnInputMove; // Treat Down as Move for painting
 
@@ -372,7 +372,7 @@ namespace SevenPaint
             TxtBarrelRotation.Text = $"{twist:F0}";
         }
 
-        private void OnInputMove(DrawInputArgs args)
+        private void OnInputMove(Stylus.DrawInputArgs args)
         {
             if (_isSpaceDown || _isPanning) return;
 
