@@ -158,22 +158,34 @@
                     <TextBlock Text="ACTIONS" FontWeight="Bold" Margin="0,0,0,5"/>
                     <CheckBox x:Name="CheckUseWintab" Content="Use Wintab" Margin="0,0,0,5" Click="CheckUseWintab_Click"/>
                     <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                         <Button Content="-" Width="20" Click="ButtonZoomOut_Click"/>
+                         <TextBlock x:Name="TxtZoomLevel" Text="Zoom: 1x" VerticalAlignment="Center" Margin="5,0,5,0" Width="60" TextAlignment="Center"/>
+                         <Button Content="+" Width="20" Click="ButtonZoomIn_Click"/>
+                         <Button Content="Reset" Click="ButtonResetZoom_Click" Padding="4,0" Margin="5,0,0,0"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
         </StatusBar>
-        <Grid>
-            <Image x:Name="RenderImage" Stretch="None" 
-                   StylusDown="RenderImage_StylusDown"
-                   StylusMove="RenderImage_StylusMove"
-                   StylusUp="RenderImage_StylusUp" 
-                   Stylus.IsFlicksEnabled="False"
-                   Stylus.IsPressAndHoldEnabled="False"
-                   Stylus.IsTapFeedbackEnabled="False"
-                   Stylus.IsTouchFeedbackEnabled="False"
-                   Cursor="Pen"/>
-        </Grid>
+        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <Grid>
+                <Grid.LayoutTransform>
+                    <ScaleTransform x:Name="CanvasScale" ScaleX="1.0" ScaleY="1.0"/>
+                </Grid.LayoutTransform>
+                <Image x:Name="RenderImage" Stretch="None" 
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       StylusDown="RenderImage_StylusDown"
+                       StylusMove="RenderImage_StylusMove"
+                       StylusUp="RenderImage_StylusUp" 
+                       Stylus.IsFlicksEnabled="False"
+                       Stylus.IsPressAndHoldEnabled="False"
+                       Stylus.IsTapFeedbackEnabled="False"
+                       Stylus.IsTouchFeedbackEnabled="False"
+                       Cursor="Pen"/>
+            </Grid>
+        </ScrollViewer>
     </DockPanel>
 </Window>

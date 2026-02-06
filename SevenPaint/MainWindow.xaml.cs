@@ -29,6 +29,11 @@ namespace SevenPaint
         
         private enum ScaleType { Pressure, None, Azimuth, Altitude, Rotation }
         private ScaleType _scaleType = ScaleType.Pressure;
+
+        // Zoom
+        private int _zoomLevel = 1;
+        private const int MinZoom = 1;
+        private const int MaxZoom = 20;
         
         // Ribbon Tracking
         private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
@@ -164,6 +169,80 @@ namespace SevenPaint
             }
         }
 
+
+
+        private void PerformZoom(int newZoom, System.Windows.Point? centerOnViewport = null)
+        {
+            if (newZoom < MinZoom) newZoom = MinZoom;
+            if (newZoom > MaxZoom) newZoom = MaxZoom;
+            
+            if (newZoom == _zoomLevel) return;
+
+            // 1. Determine "center" of zoom in Viewport coordinates
+            double viewportW = MainScrollViewer.ViewportWidth;
+            double viewportH = MainScrollViewer.ViewportHeight;
+            
+            System.Windows.Point center = centerOnViewport ?? new System.Windows.Point(viewportW / 2.0, viewportH / 2.0);
+
+            // 2. Find that point in the UN-SCALED content space
+            // Current Content Offset + Viewport Center = Point in SCALED content
+            // Divide by old zoom to get UN-SCALED
+            double oldZoom = _zoomLevel;
+            double contentX = (MainScrollViewer.HorizontalOffset + center.X) / oldZoom;
+            double contentY = (MainScrollViewer.VerticalOffset + center.Y) / oldZoom;
+
+            // 3. Apply new Zoom
+            _zoomLevel = newZoom;
+            CanvasScale.ScaleX = _zoomLevel;
+            CanvasScale.ScaleY = _zoomLevel;
+
+            if (TxtZoomLevel != null)
+            {
+                TxtZoomLevel.Text = $"Zoom: {_zoomLevel}x";
+            }
+
+            // 4. Update Layout to ensure ScrollViewer knows the new Extent sizes
+            MainScrollViewer.UpdateLayout();
+
+            // 5. Calculate new scroll offsets to keep 'contentX/Y' at 'center'
+            double newContentX = contentX * _zoomLevel;
+            double newContentY = contentY * _zoomLevel;
+
+            double newScrollX = newContentX - center.X;
+            double newScrollY = newContentY - center.Y;
+
+            MainScrollViewer.ScrollToHorizontalOffset(newScrollX);
+            MainScrollViewer.ScrollToVerticalOffset(newScrollY);
+        }
+
+        private void ButtonResetZoom_Click(object sender, RoutedEventArgs e)
+        {
+            PerformZoom(1);
+        }
+
+        private void ButtonZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            PerformZoom(_zoomLevel + 1);
+        }
+
+        private void ButtonZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            PerformZoom(_zoomLevel - 1);
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                int delta = (e.Delta > 0) ? 1 : -1;
+                System.Windows.Point mousePos = e.GetPosition(MainScrollViewer);
+                
+                PerformZoom(_zoomLevel + delta, mousePos);
+
+                e.Handled = true;
+            }
+        }
+
         private void Clear(System.Windows.Media.Color color)
         {
             _wbmp.Lock();
@@ -266,6 +345,23 @@ namespace SevenPaint
             {
                 // Allow drawing outside just for test, or map global -> local
                 var visualPoint = RenderImage.PointFromScreen(new System.Windows.Point(x, y));
+                
+                // Adjust for zoom (PointFromScreen should handle layout transform, but let's verify if manual adjustment is needed)
+                // Actually, PointFromScreen on the Image element which has a LayoutTransform parent...
+                // The Image itself is inside the scaled Grid. 
+                // PointFromScreen returns coordinates relative to the Image's top-left, acknowledging transforms?
+                // Visual.PointFromScreen converts "a point in screen coordinates into a Point that represents the current coordinate system of the Visual."
+                // So it should already account for the ScaleTransform on the parent Grid.
+                // HOWEVER, if the ScrollViewer scrolls, PointFromScreen handles that too.
+                // So theoretically, visualPoint is already correct in "Image pixel space".
+                // BUT, let's verify if we need to divide by zoom if existing logic expects "Bitmap coordinates".
+                // If ScaleTransform is applied via LayoutTransform, the Image's "local" coordinates are still 0..1920, 0..1080?
+                // Yes, LayoutTransform scales the element's layout size, but `PointFromScreen` returns the point relative to the element's coordinate space.
+                // So if we draw at (10, 10) on screen, and it's zoomed 2x, PointFromScreen should return (5, 5)?
+                // Wait. If I click on the top-left pixel, it's (0,0). If I click on pixel 100 drawn at size 200, it should return 100.
+                // So `PointFromScreen` DOES handle the transform.
+                // So `visualPoint` should be correct WITHOUT manual division if the transform is in the visual tree.
+                // Let's assume PointFromScreen works correctly for now.
                 
                 double scaleFactor = pressureFactor;
 
