@@ -6,11 +6,21 @@
         xmlns:local="clr-namespace:SevenPaint"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Image x:Name="RenderImage" Stretch="None" 
-               StylusDown="RenderImage_StylusDown"
-               StylusMove="RenderImage_StylusMove"
-               StylusUp="RenderImage_StylusUp" 
-               Cursor="Pen"/>
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Input API">
+                <MenuItem x:Name="MenuUseWintab" Header="Use Wintab" IsCheckable="True" Click="MenuUseWintab_Click"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
+        </StatusBar>
+        <Grid>
+            <Image x:Name="RenderImage" Stretch="None" 
+                   StylusDown="RenderImage_StylusDown"
+                   StylusMove="RenderImage_StylusMove"
+                   StylusUp="RenderImage_StylusUp" 
+                   Cursor="Pen"/>
+        </Grid>
+    </DockPanel>
 </Window>
