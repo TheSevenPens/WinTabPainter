@@ -68,6 +68,13 @@ namespace SevenPaint
             _inkInput?.Close();
         }
 
+        private void ButtonWintabInfo_Click(object sender, RoutedEventArgs e)
+        {
+            var infoWindow = new WintabInfoWindow();
+            infoWindow.Owner = this;
+            infoWindow.ShowDialog();
+        }
+
         private void OptionInput_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is System.Windows.Controls.RadioButton rb && rb.IsChecked == true)
