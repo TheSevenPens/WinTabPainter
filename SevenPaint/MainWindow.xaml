@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SevenPaint"
         mc:Ignorable="d"
-        Title="SevenPaint - Wintab &amp; Realtime Stylus Demo" Height="600" Width="800"
+        Title="SevenPaint" Height="600" Width="800"
         Closing="MainWindow_Closing"
         KeyDown="Window_KeyDown"
         Stylus.IsFlicksEnabled="False"
