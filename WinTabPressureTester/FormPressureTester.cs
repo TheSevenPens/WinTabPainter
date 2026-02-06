@@ -152,7 +152,7 @@ namespace WinTabPressureTester
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
-        private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
+        private void PacketHandler(WinTabDN.Structs.WintabPacket wintab_pkt)
         {
 
             var button_info = new SevenUtils.WinTab.PenButtonPressChange(wintab_pkt.pkButtons);
@@ -210,7 +210,7 @@ namespace WinTabPressureTester
 
         }
 
-        private void ButtonChangeHandler(WintabDN.Structs.WintabPacket wintab_pkt, SevenUtils.WinTab.PenButtonPressChange buttonchange)
+        private void ButtonChangeHandler(WinTabDN.Structs.WintabPacket wintab_pkt, SevenUtils.WinTab.PenButtonPressChange buttonchange)
         {
             if (buttonchange.Change == SevenUtils.WinTab.PenButtonPressChangeType.Released)
             {

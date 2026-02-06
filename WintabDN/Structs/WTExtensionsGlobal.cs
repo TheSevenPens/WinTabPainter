@@ -2,7 +2,7 @@
 
 //TODO - generics should be used where possible -
 
-namespace WintabDN.Structs;
+namespace WinTabDN.Structs;
 
 /// <summary>
 /// Globals used for Wintab extensions.

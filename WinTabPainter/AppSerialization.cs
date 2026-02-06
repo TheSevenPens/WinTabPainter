@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Windows.Forms;
-using WintabDN.Structs;
+using WinTabDN.Structs;
 
 namespace WinTabPainter
 {
@@ -17,7 +17,7 @@ namespace WinTabPainter
     {
         int max_rec_packets = 200 * 60 * 2; // allocate enough for 2 minute at 200 reports per second
 
-        List<WintabDN.Structs.WintabPacket> recorded_packets;
+        List<WinTabDN.Structs.WintabPacket> recorded_packets;
 
         RecStatusEnum RecStat = RecStatusEnum.NotRecording;
 

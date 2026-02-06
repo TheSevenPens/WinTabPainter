@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 //TODO - generics should be used where possible -
 
-namespace WintabDN.Structs;
+namespace WinTabDN.Structs;
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct WTExtensionPropertyBase

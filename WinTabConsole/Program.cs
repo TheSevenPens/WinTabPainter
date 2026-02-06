@@ -45,7 +45,7 @@ namespace MyApp
 
         }
 
-        private static void WinTabPacketHandler(Object sender, WintabDN.WinForms.MessageReceivedEventArgs args)
+        private static void WinTabPacketHandler(Object sender, WinTabDN.WinForms.MessageReceivedEventArgs args)
         {
 
             uint pktId = (uint)args.Message.WParam;
@@ -58,7 +58,7 @@ namespace MyApp
             }
         }
 
-        private static void PacketHandler(WintabDN.Structs.WintabPacket pkt)
+        private static void PacketHandler(WinTabDN.Structs.WintabPacket pkt)
         {
             Console.WriteLine("Packet");
         }

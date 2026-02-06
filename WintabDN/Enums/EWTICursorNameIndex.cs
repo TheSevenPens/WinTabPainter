@@ -3,7 +3,7 @@
 
 using System;
 
-namespace WintabDN.Enums;
+namespace WinTabDN.Enums;
 
 /// <summary>
 /// Index used with CSR_NAME to get stylus types.

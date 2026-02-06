@@ -40,7 +40,7 @@ namespace SevenPaint
             IsActive = false;
         }
 
-        private void OnWintabPacket(WintabDN.Structs.WintabPacket packet)
+        private void OnWintabPacket(WinTabDN.Structs.WintabPacket packet)
         {
             if (!IsActive) return;
 

@@ -2,7 +2,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WintabDN.Structs;
+namespace WinTabDN.Structs;
 
 /// <summary>
 /// Managed version of AXIS struct.

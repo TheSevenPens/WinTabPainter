@@ -32,7 +32,7 @@ namespace WinTabPainter
                 // do nothing
             }
 
-            public SerPacket(WintabDN.Structs.WintabPacket pkt)
+            public SerPacket(WinTabDN.Structs.WintabPacket pkt)
             {
                 this.pkContext = pkt.pkContext;
                 this.pkStatus = pkt.pkStatus;
@@ -51,9 +51,9 @@ namespace WinTabPainter
                 this.orTwist = pkt.pkOrientation.orTwist;
             }
 
-            public WintabDN.Structs.WintabPacket ToPacket()
+            public WinTabDN.Structs.WintabPacket ToPacket()
             {
-                var p = new WintabDN.Structs.WintabPacket();
+                var p = new WinTabDN.Structs.WintabPacket();
                 p.pkContext = this.pkContext;
                 p.pkStatus = this.pkStatus;
                 p.pkTime = this.pkTime;

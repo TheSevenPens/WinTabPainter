@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WintabDN.Structs;
+namespace WinTabDN.Structs;
 
 //Implementation note: cannot use statement such as:
 //      using WTPKT = UInt32;
