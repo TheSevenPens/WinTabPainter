@@ -116,6 +116,8 @@ namespace SevenPaint
 
             // Pressure: 0 to MaxPressure
             uint pressure = packet.pkNormalPressure;
+            if (pressure == 0) return;
+
             uint maxPressure = (uint)_wintabSession.TabletInfo.MaxPressure;
             float pressureFactor = (float)pressure / maxPressure;
 
