@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34031.279
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinTabPainter", "WinTabPainter\WinTabPainter.csproj", "{9ED11B23-EB2A-4A0B-864F-31F151CBC96E}"
 EndProject
@@ -15,8 +15,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinTabConsole", "WinTabConsole\WinTabConsole.csproj", "{312D046B-CD1A-4899-B02E-607999640849}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinTabUtils", "WinTabUtils\WinTabUtils.csproj", "{5AE10630-FED7-46D2-951C-6DD3F6E5FECD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoSerDes", "DemoSerDes\DemoSerDes.csproj", "{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTabPressureTester", "WinTabPressureTester\WinTabPressureTester.csproj", "{0A126588-A948-423E-9AE9-EB4B120530E7}"
 EndProject
@@ -80,18 +78,6 @@ Global
 		{5AE10630-FED7-46D2-951C-6DD3F6E5FECD}.Release|x64.Build.0 = Release|Any CPU
 		{5AE10630-FED7-46D2-951C-6DD3F6E5FECD}.Release|x86.ActiveCfg = Release|Any CPU
 		{5AE10630-FED7-46D2-951C-6DD3F6E5FECD}.Release|x86.Build.0 = Release|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Debug|x64.Build.0 = Debug|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Debug|x86.Build.0 = Debug|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Release|x64.ActiveCfg = Release|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Release|x64.Build.0 = Release|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Release|x86.ActiveCfg = Release|Any CPU
-		{0F0A0ADD-D778-440D-967A-2BF9856B8F1F}.Release|x86.Build.0 = Release|Any CPU
 		{0A126588-A948-423E-9AE9-EB4B120530E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A126588-A948-423E-9AE9-EB4B120530E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A126588-A948-423E-9AE9-EB4B120530E7}.Debug|x64.ActiveCfg = Debug|Any CPU
