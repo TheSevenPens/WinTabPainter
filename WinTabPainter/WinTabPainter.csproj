@@ -13,7 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
-    <ProjectReference Include="..\WintabDN\WintabDN.csproj" />
+    <ProjectReference Include="..\WintabDN\WinTabDN.csproj" />
     <ProjectReference Include="..\WinTabUtils\SevenUtils.csproj" />
   </ItemGroup>
   <ItemGroup>
