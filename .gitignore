@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Build logs
 build_log*.txt
+build_errors.txt
