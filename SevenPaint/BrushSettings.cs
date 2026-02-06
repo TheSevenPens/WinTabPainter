@@ -1,7 +1,5 @@
 namespace SevenPaint
 {
-    public enum ScaleType { Pressure, None, Azimuth, Altitude, Rotation }
-
     public class BrushSettings
     {
         public System.Windows.Media.Color Color { get; set; } = System.Windows.Media.Colors.Black;
