@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SevenPaint"
         mc:Ignorable="d"
-        Title="SevenPaint" Height="600" Width="800"
+        Title="SevenPaint - Wintab &amp; Realtime Stylus Demo" Height="600" Width="800"
         Closing="MainWindow_Closing"
         KeyDown="Window_KeyDown"
+        Stylus.IsFlicksEnabled="False"
+        Stylus.IsPressAndHoldEnabled="False"
+        Stylus.IsTapFeedbackEnabled="False"
+        Stylus.IsTouchFeedbackEnabled="False"
         Focusable="True">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -113,6 +117,10 @@
                    StylusDown="RenderImage_StylusDown"
                    StylusMove="RenderImage_StylusMove"
                    StylusUp="RenderImage_StylusUp" 
+                   Stylus.IsFlicksEnabled="False"
+                   Stylus.IsPressAndHoldEnabled="False"
+                   Stylus.IsTapFeedbackEnabled="False"
+                   Stylus.IsTouchFeedbackEnabled="False"
                    Cursor="Pen"/>
         </Grid>
     </DockPanel>
