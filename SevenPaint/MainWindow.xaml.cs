@@ -68,31 +68,49 @@ namespace SevenPaint
             _inkInput?.Close();
         }
 
-        private void CheckUseWintab_Click(object sender, RoutedEventArgs e)
+        private void OptionInput_Checked(object sender, RoutedEventArgs e)
         {
-            _useWintab = CheckUseWintab.IsChecked ?? false;
-
-            if (_useWintab)
+            if (sender is System.Windows.Controls.RadioButton rb && rb.IsChecked == true)
             {
-                try
+                if (rb == OptionWintab)
                 {
-                    _inkInput.Close();
-                    _wintabInput.Open();
+                    SwitchToWintab();
                 }
-                catch (Exception ex)
+                else if (rb == OptionInk)
                 {
-                    System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
-                    _useWintab = false;
-                    CheckUseWintab.IsChecked = false;
-                    _wintabInput.Close();
-                    _inkInput.Open();
+                    SwitchToInk();
                 }
             }
-            else
+        }
+
+        private void SwitchToWintab()
+        {
+            if (_useWintab) return;
+
+            try
             {
+                _inkInput.Close();
+                _wintabInput.Open();
+                _useWintab = true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
+                _useWintab = false;
                 _wintabInput.Close();
                 _inkInput.Open();
+                OptionInk.IsChecked = true;
             }
+            UpdateStatus();
+        }
+
+        private void SwitchToInk()
+        {
+            if (!_useWintab) return;
+
+            _wintabInput.Close();
+            _inkInput.Open();
+            _useWintab = false;
             UpdateStatus();
         }
 
