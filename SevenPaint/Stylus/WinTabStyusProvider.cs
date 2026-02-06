@@ -7,9 +7,11 @@ namespace SevenPaint.Stylus
         private WinTabUtils.TabletSession _session;
         private FrameworkElement _targetElement;
         
+#pragma warning disable 67
         public event Action<DrawInputArgs>? InputDown; // Wintab packets usually don't distinguish Down/Move easily without logic, but we treat non-zero pressure as active
         public event Action<DrawInputArgs>? InputMove;
         public event Action<DrawInputArgs>? InputUp;
+#pragma warning restore 67
 
         public bool IsActive { get; set; } = false;
 

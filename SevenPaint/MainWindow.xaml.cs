@@ -19,15 +19,8 @@ namespace SevenPaint
         private Stylus.WinInkStylusProvider _inkInput;
         private bool _useWintab = false;
 
-        // Zoom
-        private int _zoomLevel = 1;
-        private const int MinZoom = 1;
-        private const int MaxZoom = 20;
-
-        // Panning
-        private bool _isSpaceDown = false;
-        private bool _isPanning = false;
-        private System.Windows.Point _lastMousePosition;
+        // View Manager
+        private SevenPaint.View.ViewManager _viewManager;
 
         // Ribbon Tracking
         private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
@@ -44,6 +37,10 @@ namespace SevenPaint
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // Initialize ViewManager
+            _viewManager = new SevenPaint.View.ViewManager(MainScrollViewer, CanvasScale);
+            _viewManager.ZoomChanged += (s, level) => TxtZoomLevel.Text = $"Zoom: {level}x";
+
             // Initialize PixelCanvas - 96 DPI
             _canvas = new Paint.PixelCanvas(ImageWidth, ImageHeight, 96.0);
             RenderImage.Source = _canvas.Source;
@@ -173,146 +170,83 @@ namespace SevenPaint
                 _canvas.Clear(Colors.White);
             }
 
-            if (e.Key == System.Windows.Input.Key.Space && !_isSpaceDown && !_isPanning)
-            {
-                _isSpaceDown = true;
-                System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
-            }
+            _viewManager.ProcessKeyDown(e);
         }
 
         private void Window_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Space)
-            {
-                _isSpaceDown = false;
-
-                // If we are NOT currently dragging mouse, we can reset cursor immediately
-                if (!_isPanning)
-                {
-                    System.Windows.Input.Mouse.OverrideCursor = null;
-                }
-                // If we ARE panning, we usually want to stop panning mode as well, 
-                // or at least stop the "Hand" mode. 
-                else
-                {
-                    _isPanning = false;
-                    MainScrollViewer.ReleaseMouseCapture();
-                    System.Windows.Input.Mouse.OverrideCursor = null;
-                }
-            }
+            _viewManager.ProcessKeyUp(e);
         }
 
+        // --- ScrollViewer Panning ---
         private void ScrollViewer_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Only start pan if space is held AND it's left click
-            if (_isSpaceDown && e.ChangedButton == System.Windows.Input.MouseButton.Left)
-            {
-                _isPanning = true;
-                _lastMousePosition = e.GetPosition(MainScrollViewer);
-                MainScrollViewer.CaptureMouse();
-                System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.ScrollAll; // Grabbing look
-                e.Handled = true;
-            }
+            _viewManager.ProcessPreviewMouseDown(e);
         }
 
         private void ScrollViewer_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (_isPanning)
+            // Update Coordinates for UI
+            System.Windows.Point currentPoint = e.GetPosition(RenderImage);
+            int buttons = 0;
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 1;
+            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 2;
+
+            // Simple velocity calc
+            long now = DateTime.Now.Ticks; // 100ns units
+            double dt = (now - _lastTime) / 10000.0; // milliseconds
+            
+            // Only calc velocity if time passed significantly (e.g. > 5ms)
+            if (_lastTime > 0 && dt > 0)
             {
-                System.Windows.Point currentPos = e.GetPosition(MainScrollViewer);
-                double dx = currentPos.X - _lastMousePosition.X;
-                double dy = currentPos.Y - _lastMousePosition.Y;
-
-                MainScrollViewer.ScrollToHorizontalOffset(MainScrollViewer.HorizontalOffset - dx);
-                MainScrollViewer.ScrollToVerticalOffset(MainScrollViewer.VerticalOffset - dy);
-
-                _lastMousePosition = currentPos;
+                double dx = currentPoint.X - _lastPoint.X;
+                double dy = currentPoint.Y - _lastPoint.Y;
+                double dist = Math.Sqrt(dx * dx + dy * dy);
+                
+                // Velocity in px/s: (dist / dt_ms) * 1000
+                double velocity = (dist / dt) * 1000.0;
+                
+                // Direction (degrees)
+                double dirRad = Math.Atan2(dy, dx);
+                double dirDeg = dirRad * (180.0 / Math.PI);
+                if (dirDeg < 0) dirDeg += 360.0;
+                
+                _lastVelocity = velocity;
+                _lastDirection = dirDeg;
             }
+
+            _lastTime = now;
+            _lastPoint = currentPoint;
+            
+            // Note: Wintab updates this too, but Mouse is smoother for "hover"
+            UpdateRibbon(currentPoint, 0, 0, 0, 0, 90, 0, buttons);
+
+            _viewManager.ProcessPreviewMouseMove(e);
         }
 
         private void ScrollViewer_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (_isPanning && e.ChangedButton == System.Windows.Input.MouseButton.Left)
-            {
-                _isPanning = false;
-                MainScrollViewer.ReleaseMouseCapture();
-                // If space is still down, go back to Hand, otherwise normal
-                System.Windows.Input.Mouse.OverrideCursor = _isSpaceDown ? System.Windows.Input.Cursors.Hand : null;
-            }
-        }
-
-
-
-        private void PerformZoom(int newZoom, System.Windows.Point? centerOnViewport = null)
-        {
-            if (newZoom < MinZoom) newZoom = MinZoom;
-            if (newZoom > MaxZoom) newZoom = MaxZoom;
-
-            if (newZoom == _zoomLevel) return;
-
-            // 1. Determine "center" of zoom in Viewport coordinates
-            double viewportW = MainScrollViewer.ViewportWidth;
-            double viewportH = MainScrollViewer.ViewportHeight;
-
-            System.Windows.Point center = centerOnViewport ?? new System.Windows.Point(viewportW / 2.0, viewportH / 2.0);
-
-            // 2. Find that point in the UN-SCALED content space
-            // Current Content Offset + Viewport Center = Point in SCALED content
-            // Divide by old zoom to get UN-SCALED
-            double oldZoom = _zoomLevel;
-            double contentX = (MainScrollViewer.HorizontalOffset + center.X) / oldZoom;
-            double contentY = (MainScrollViewer.VerticalOffset + center.Y) / oldZoom;
-
-            // 3. Apply new Zoom
-            _zoomLevel = newZoom;
-            CanvasScale.ScaleX = _zoomLevel;
-            CanvasScale.ScaleY = _zoomLevel;
-
-            if (TxtZoomLevel != null)
-            {
-                TxtZoomLevel.Text = $"Zoom: {_zoomLevel}x";
-            }
-
-            // 4. Update Layout to ensure ScrollViewer knows the new Extent sizes
-            MainScrollViewer.UpdateLayout();
-
-            // 5. Calculate new scroll offsets to keep 'contentX/Y' at 'center'
-            double newContentX = contentX * _zoomLevel;
-            double newContentY = contentY * _zoomLevel;
-
-            double newScrollX = newContentX - center.X;
-            double newScrollY = newContentY - center.Y;
-
-            MainScrollViewer.ScrollToHorizontalOffset(newScrollX);
-            MainScrollViewer.ScrollToVerticalOffset(newScrollY);
+            _viewManager.ProcessPreviewMouseUp(e);
         }
 
         private void ButtonResetZoom_Click(object sender, RoutedEventArgs e)
         {
-            PerformZoom(1);
+            _viewManager.ResetZoom();
         }
 
         private void ButtonZoomIn_Click(object sender, RoutedEventArgs e)
         {
-            PerformZoom(_zoomLevel + 1);
+            _viewManager.ZoomIn();
         }
 
         private void ButtonZoomOut_Click(object sender, RoutedEventArgs e)
         {
-            PerformZoom(_zoomLevel - 1);
+            _viewManager.ZoomOut();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            if (System.Windows.Input.Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
-            {
-                int delta = (e.Delta > 0) ? 1 : -1;
-                System.Windows.Point mousePos = e.GetPosition(MainScrollViewer);
-
-                PerformZoom(_zoomLevel + delta, mousePos);
-
-                e.Handled = true;
-            }
+             _viewManager.ProcessPreviewMouseWheel(e);
         }
 
         // Clear method removed (moved to PixelCanvas)
@@ -371,10 +305,10 @@ namespace SevenPaint
             TxtTiltAltitude.Text = $"{altitude:F1}";
             TxtBarrelRotation.Text = $"{twist:F0}";
         }
-
+        
         private void OnInputMove(Stylus.DrawInputArgs args)
         {
-            if (_isSpaceDown || _isPanning) return;
+            if (_viewManager.IsSpaceDown || _viewManager.IsPanning) return;
 
             double scaleFactor = args.Pressure;
 
