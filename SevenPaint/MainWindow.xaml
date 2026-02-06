@@ -12,6 +12,74 @@
                 <MenuItem x:Name="MenuUseWintab" Header="Use Wintab" IsCheckable="True" Click="MenuUseWintab_Click"/>
             </MenuItem>
         </Menu>
+        
+        <!-- Ribbon UI -->
+        <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SECTION 1: STROKE FORMAT -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="STROKE FORMAT" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Size " VerticalAlignment="Center"/>
+                        <ComboBox Width="60" SelectedIndex="0">
+                            <ComboBoxItem Content="50px"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Scale size by " VerticalAlignment="Center"/>
+                        <ComboBox Width="80" SelectedIndex="0">
+                            <ComboBoxItem Content="Pressure"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Color " VerticalAlignment="Center"/>
+                        <ComboBox Width="80" SelectedIndex="0">
+                            <ComboBoxItem Content="Black"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Min size " VerticalAlignment="Center"/>
+                        <ComboBox Width="60" SelectedIndex="0">
+                            <ComboBoxItem Content="1px"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <Rectangle Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+
+                <!-- SECTION 2: POINTER -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="POINTER" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="TxtButtons" Text="Buttons: 0 (none)"/>
+                    <TextBlock x:Name="TxtX" Text="X: 0.0"/>
+                    <TextBlock x:Name="TxtY" Text="Y: 0.0"/>
+                    <TextBlock x:Name="TxtVelocity" Text="Velocity: 0.0 px/s"/>
+                    <TextBlock x:Name="TxtDirection" Text="Direction: 0.0"/>
+                </StackPanel>
+
+                <Rectangle Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+
+                <!-- SECTION 3: SENSORS -->
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="SENSORS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="TxtPressure" Text="Pressure: 0.0000"/>
+                    <TextBlock x:Name="TxtTiltX" Text="Tilt x: 0.0"/>
+                    <TextBlock x:Name="TxtTiltY" Text="Tilt y: 0.0"/>
+                    <TextBlock x:Name="TxtTiltAzimuth" Text="Tilt azimuth: 0.0"/>
+                    <TextBlock x:Name="TxtTiltAltitude" Text="Tilt altitude: 0.0"/>
+                    <TextBlock x:Name="TxtBarrelRotation" Text="Barrel rotation: 0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
         </StatusBar>

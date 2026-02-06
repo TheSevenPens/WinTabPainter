@@ -24,6 +24,12 @@ namespace SevenPaint
 
         private WinTabUtils.TabletSession? _wintabSession;
         private bool _useWintab = false;
+        
+        // Ribbon Tracking
+        private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
+        private long _lastTime = 0;
+        private double _lastVelocity = 0;
+        private double _lastDirection = 0;
 
         public MainWindow()
         {
@@ -106,6 +112,56 @@ namespace SevenPaint
             return (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
         }
 
+
+
+        private void UpdateRibbon(System.Windows.Point currentPoint, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons)
+        {
+            long now = DateTime.Now.Ticks; // 100ns units
+            double dt = (now - _lastTime) / 10000.0; // milliseconds
+            
+            // Only calc velocity if time passed significantly (e.g. > 5ms) to avoid divide by zero or extreme noise
+            if (_lastTime > 0 && dt > 0)
+            {
+                double dx = currentPoint.X - _lastPoint.X;
+                double dy = currentPoint.Y - _lastPoint.Y;
+                double dist = Math.Sqrt(dx * dx + dy * dy);
+                
+                // Velocity in px/s: (dist / dt_ms) * 1000
+                double velocity = (dist / dt) * 1000.0;
+                
+                // Direction (degrees)
+                // Atan2 returns radians. 0 is right (positive X).
+                // Let's normalize like standard tools usually do (0-360).
+                double dirRad = Math.Atan2(dy, dx);
+                double dirDeg = dirRad * (180.0 / Math.PI);
+                if (dirDeg < 0) dirDeg += 360.0;
+                
+                // Simple smoothing could be added, but user asked for raw-ish values
+                 _lastVelocity = velocity;
+                 _lastDirection = dirDeg;
+            }
+
+            _lastTime = now;
+            _lastPoint = currentPoint;
+
+            // Update UI (Throttle if needed, but doing it every moved event for "live" feel)
+            // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
+            // We assume this is called inside Dispatcher if from Wintab.
+            
+            TxtButtons.Text = $"Buttons: {buttons}";
+            TxtX.Text = $"X: {currentPoint.X:F1}";
+            TxtY.Text = $"Y: {currentPoint.Y:F1}";
+            TxtVelocity.Text = $"Velocity: {_lastVelocity:F1} px/s";
+            TxtDirection.Text = $"Direction: {_lastDirection:F1}";
+            
+            TxtPressure.Text = $"Pressure: {pressure:F4}";
+            TxtTiltX.Text = $"Tilt x: {tiltX:F1}";
+            TxtTiltY.Text = $"Tilt y: {tiltY:F1}";
+            TxtTiltAzimuth.Text = $"Tilt azimuth: {azimuth:F1}";
+            TxtTiltAltitude.Text = $"Tilt altitude: {altitude:F1}";
+            TxtBarrelRotation.Text = $"Barrel rotation: {twist:F0}";
+        }
+
         // --- Wintab Handler ---
         private void WintabPacketHandler(WintabDN.Structs.WintabPacket packet)
         {
@@ -121,11 +177,23 @@ namespace SevenPaint
             uint maxPressure = (uint)_wintabSession.TabletInfo.MaxPressure;
             float pressureFactor = (float)pressure / maxPressure;
 
+            // Wintab Orientation
+            double azimuth = packet.pkOrientation.orAzimuth / 10.0; // Usually units are 0.1 deg? Actually spec says "tenths of degrees" commonly.
+            double altitude = packet.pkOrientation.orAltitude / 10.0;
+            double twist = packet.pkOrientation.orTwist / 10.0;
+            
+            // Calculate TiltX/Y from Azimuth/Altitude if possible, or just display Az/Alt
+            // TiltX ~ Altitude * Cos(Azimuth)? 
+            // Standard conversions are non-trivial without specific context (HID vs Wintab). 
+            // Let's just output Az/Alt for now.
+             
             Dispatcher.Invoke(() =>
             {
                 // Allow drawing outside just for test, or map global -> local
                 var visualPoint = RenderImage.PointFromScreen(new System.Windows.Point(x, y));
                 
+                UpdateRibbon(visualPoint, pressureFactor, 0, 0, azimuth, altitude, twist, (int)packet.pkButtons);
+
                 DrawDabCore((int)visualPoint.X, (int)visualPoint.Y, pressureFactor);
             });
         }
@@ -175,15 +243,36 @@ namespace SevenPaint
         {
             if (_wbmp == null) return;
 
-            var points = e.GetStylusPoints(RenderImage);
-            
+            // Update Ribbon with first point data (sufficient for high freq)
+            var stylusPoints = e.GetStylusPoints(RenderImage);
+            if (stylusPoints.Count > 0)
+            {
+                var p = stylusPoints[stylusPoints.Count - 1]; // Use latest point
+                // Extract properties
+                // TiltX/Y are potentially available but assume 0 if not
+                // StylusPoint has properties like PressureFactor.
+                // Standard properties:
+                // Guid StylusPointProperties.TiltX
+                
+                double tiltX = 0;
+                double tiltY = 0;
+                // Need to use StylusPointDescription to check index?
+                if (p.HasProperty(StylusPointProperties.XTiltOrientation)) tiltX = p.GetPropertyValue(StylusPointProperties.XTiltOrientation);
+                if (p.HasProperty(StylusPointProperties.YTiltOrientation)) tiltY = p.GetPropertyValue(StylusPointProperties.YTiltOrientation);
+                
+                // Estimate Azimuth/Altitude from TiltX/TiltY?
+                // Let's just pass what we have
+                
+                UpdateRibbon(new System.Windows.Point(p.X, p.Y), p.PressureFactor, tiltX, tiltY, 0, 0, 0, 0);
+            }
+
             _wbmp.Lock();
             unsafe
             {
                 int* pBackBuffer = (int*)_wbmp.BackBuffer;
                 int stride = _wbmp.BackBufferStride;
 
-                foreach (var point in points)
+                foreach (var point in stylusPoints)
                 {
                     int x = (int)point.X;
                     int y = (int)point.Y;
