@@ -9,11 +9,11 @@ namespace SevenPaint
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PixelCanvas _canvas;
+        private Paint.PixelCanvas _canvas;
         private const int ImageWidth = 1920;
         private const int ImageHeight = 1080;
 
-        private BrushSettings _brushSettings = new BrushSettings();
+        private Paint.BrushSettings _brushSettings = new Paint.BrushSettings();
 
         private Stylus.WinTabStyusProvider _wintabInput;
         private Stylus.WinInkStylusProvider _inkInput;
@@ -45,7 +45,7 @@ namespace SevenPaint
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // Initialize PixelCanvas - 96 DPI
-            _canvas = new PixelCanvas(ImageWidth, ImageHeight, 96.0);
+            _canvas = new Paint.PixelCanvas(ImageWidth, ImageHeight, 96.0);
             RenderImage.Source = _canvas.Source;
 
             // Clear to white
@@ -151,12 +151,12 @@ namespace SevenPaint
             {
                 switch (scaleText)
                 {
-                    case "Pressure": _brushSettings.ScaleType = ScaleType.Pressure; break;
-                    case "Don't scale": _brushSettings.ScaleType = ScaleType.None; break;
-                    case "Tilt Azimuth": _brushSettings.ScaleType = ScaleType.Azimuth; break;
-                    case "Tilt Altitude": _brushSettings.ScaleType = ScaleType.Altitude; break;
-                    case "Barrel Rotation": _brushSettings.ScaleType = ScaleType.Rotation; break;
-                    default: _brushSettings.ScaleType = ScaleType.Pressure; break;
+                    case "Pressure": _brushSettings.ScaleType = Paint.ScaleType.Pressure; break;
+                    case "Don't scale": _brushSettings.ScaleType = Paint.ScaleType.None; break;
+                    case "Tilt Azimuth": _brushSettings.ScaleType = Paint.ScaleType.Azimuth; break;
+                    case "Tilt Altitude": _brushSettings.ScaleType = Paint.ScaleType.Altitude; break;
+                    case "Barrel Rotation": _brushSettings.ScaleType = Paint.ScaleType.Rotation; break;
+                    default: _brushSettings.ScaleType = Paint.ScaleType.Pressure; break;
                 }
             }
         }
@@ -380,19 +380,19 @@ namespace SevenPaint
 
             switch (_brushSettings.ScaleType)
             {
-                case ScaleType.None:
+                case Paint.ScaleType.None:
                     scaleFactor = 1.0;
                     break;
-                case ScaleType.Pressure:
+                case Paint.ScaleType.Pressure:
                     scaleFactor = args.Pressure;
                     break;
-                case ScaleType.Azimuth:
+                case Paint.ScaleType.Azimuth:
                     scaleFactor = (args.Azimuth % 360.0) / 360.0;
                     break;
-                case ScaleType.Altitude:
+                case Paint.ScaleType.Altitude:
                     scaleFactor = args.Altitude / 90.0;
                     break;
-                case ScaleType.Rotation:
+                case Paint.ScaleType.Rotation:
                     scaleFactor = (args.Twist % 360.0) / 360.0;
                     break;
                 default:

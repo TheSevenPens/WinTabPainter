@@ -1,4 +1,4 @@
-namespace SevenPaint
+namespace SevenPaint.Paint
 {
     public class BrushSettings
     {

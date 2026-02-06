@@ -1,9 +1,8 @@
-using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace SevenPaint
+namespace SevenPaint.Paint
 {
     public class PixelCanvas
     {
