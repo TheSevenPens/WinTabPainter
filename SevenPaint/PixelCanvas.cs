@@ -116,7 +116,7 @@ namespace SevenPaint
                     {
                         // Current Destination Pixel
                         int destPixel = row[x];
-                        
+
                         // Extract Dest components (Pbgra32: B G R A)
                         byte dA = (byte)((destPixel >> 24) & 0xFF);
                         byte dR = (byte)((destPixel >> 16) & 0xFF);
@@ -125,7 +125,7 @@ namespace SevenPaint
 
                         // Effective source alpha for this pixel
                         double outSrcA = srcA * alphaFactor;
-                        
+
                         // Premultiplied Source components for this pixel
                         double pSrcR = srcR * alphaFactor;
                         double pSrcG = srcG * alphaFactor;
