@@ -35,8 +35,7 @@
                     <TextBlock Text="STROKE FORMAT" FontWeight="Bold" Margin="0,0,0,5"/>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Size " VerticalAlignment="Center"/>
-                        <TextBlock Text="Size " VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboSize" Width="60" SelectedIndex="3" SelectionChanged="ComboSize_SelectionChanged">
+                        <ComboBox x:Name="ComboSize" Width="60" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="3" SelectionChanged="ComboSize_SelectionChanged">
                             <ComboBoxItem Content="1px"/>
                             <ComboBoxItem Content="5px"/>
                             <ComboBoxItem Content="10px"/>
@@ -47,7 +46,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Scale size by " VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboScale" Width="100" SelectedIndex="0" SelectionChanged="ComboScale_SelectionChanged">
+                        <ComboBox x:Name="ComboScale" Width="100" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="0" SelectionChanged="ComboScale_SelectionChanged">
                             <ComboBoxItem Content="Don't scale"/>
                             <ComboBoxItem Content="Pressure"/>
                             <ComboBoxItem Content="Tilt Azimuth"/>
@@ -57,7 +56,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Color " VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboColor" Width="80" SelectedIndex="0" SelectionChanged="ComboColor_SelectionChanged">
+                        <ComboBox x:Name="ComboColor" Width="80" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="0" SelectionChanged="ComboColor_SelectionChanged">
                             <ComboBoxItem Content="Black"/>
                             <ComboBoxItem Content="Red"/>
                             <ComboBoxItem Content="Green"/>
@@ -66,7 +65,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Min size " VerticalAlignment="Center"/>
-                        <ComboBox Width="60" SelectedIndex="0">
+                        <ComboBox Width="60" Padding="2,0,2,0" SelectedIndex="0">
                             <ComboBoxItem Content="1px"/>
                         </ComboBox>
                     </StackPanel>
