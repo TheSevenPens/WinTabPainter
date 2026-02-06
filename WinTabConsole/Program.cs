@@ -5,14 +5,14 @@ namespace MyApp
 
     internal class Program
     {
-        static SevenUtils.TabletSession session;
+        static SevenUtils.WinTab.TabletSession session;
         static void Main(string[] args)
         {
             ConsoleWindow.QuickEditMode(false);
-            using (session = new SevenUtils.TabletSession())
+            using (session = new SevenUtils.WinTab.TabletSession())
             {
                 session.PacketHandler = PacketHandler;
-                session.Open(SevenUtils.TabletContextType.System);
+                session.Open(SevenUtils.WinTab.TabletContextType.System);
 
                 while (true)
                 {
@@ -23,7 +23,7 @@ namespace MyApp
                         //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
                         foreach (var pkt in pkts)
                         {
-                            var button_info = new SevenUtils.PenButtonPressChange(pkt.pkButtons);
+                            var button_info = new SevenUtils.WinTab.PenButtonPressChange(pkt.pkButtons);
 
                             if (button_info.Change != 0)
                             {

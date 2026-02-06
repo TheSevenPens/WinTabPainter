@@ -1,6 +1,5 @@
-﻿using System;
-
-namespace SevenUtils;
+﻿
+namespace SevenUtils.WinTab;
 
 public class TabletSession : IDisposable
 {
@@ -8,16 +7,16 @@ public class TabletSession : IDisposable
     public WintabDN.CWintabContext Context = null;
     public WintabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
-    public TabletContextType ContextType;
+    public SevenUtils.WinTab.TabletContextType ContextType;
     public System.Action<WintabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WintabDN.Structs.WintabPacket, SevenUtils.PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WintabDN.Structs.WintabPacket, SevenUtils.WinTab.PenButtonPressChange> ButtonChangedHandler = null;
 
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
     }
 
-    public void Open(TabletContextType context_type)
+    public void Open(SevenUtils.WinTab.TabletContextType context_type)
     {
         // convert the context type to something wintab understands
         var wt_context_type = context_type_to_index(context_type);
@@ -52,12 +51,12 @@ public class TabletSession : IDisposable
         }
     }
 
-    private static WintabDN.Enums.EWTICategoryIndex context_type_to_index(TabletContextType context_type)
+    private static WintabDN.Enums.EWTICategoryIndex context_type_to_index(SevenUtils.WinTab.TabletContextType context_type)
     {
         return context_type switch
         {
-            TabletContextType.System => WintabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
-            TabletContextType.Digitizer => WintabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
+            SevenUtils.WinTab.TabletContextType.System => WintabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
+            SevenUtils.WinTab.TabletContextType.Digitizer => WintabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }
@@ -76,8 +75,8 @@ public class TabletSession : IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new SevenUtils.PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != PenButtonPressChangeType.NoChange)
+            var button_info = new SevenUtils.WinTab.PenButtonPressChange(wintab_pkt.pkButtons);
+            if (button_info.Change != WinTab.PenButtonPressChangeType.NoChange)
             {
                 this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
 

@@ -21,7 +21,7 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.appstate.wintab_session = new SevenUtils.TabletSession();
+            this.appstate.wintab_session = new SevenUtils.WinTab.TabletSession();
             this.appstate.scale_session = new ScaleSession();
 
 
@@ -143,30 +143,30 @@ namespace WinTabPressureTester
 
 
 
-        private static bool get_press_change_as_letter(PenButtonPressChangeType change)
+        private static bool get_press_change_as_letter(SevenUtils.WinTab.PenButtonPressChangeType change)
         {
             return change switch
             {
-                SevenUtils.PenButtonPressChangeType.Pressed => true,
-                SevenUtils.PenButtonPressChangeType.Released => false,
+                SevenUtils.WinTab.PenButtonPressChangeType.Pressed => true,
+                SevenUtils.WinTab.PenButtonPressChangeType.Released => false,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
         private void PacketHandler(WintabDN.Structs.WintabPacket wintab_pkt)
         {
 
-            var button_info = new SevenUtils.PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != SevenUtils.PenButtonPressChangeType.NoChange)
+            var button_info = new SevenUtils.WinTab.PenButtonPressChange(wintab_pkt.pkButtons);
+            if (button_info.Change != SevenUtils.WinTab.PenButtonPressChangeType.NoChange)
             {
-                if (button_info.ButtonId == SevenUtils.PenButtonIdentifier.Tip)
+                if (button_info.ButtonId == SevenUtils.WinTab.PenButtonIdentifier.Tip)
                 {
                     this.checkBox_tipdown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == SevenUtils.PenButtonIdentifier.LowerButton)
+                else if (button_info.ButtonId == SevenUtils.WinTab.PenButtonIdentifier.LowerButton)
                 {
                     this.checkBox_lowerbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == SevenUtils.PenButtonIdentifier.UpperButton)
+                else if (button_info.ButtonId == SevenUtils.WinTab.PenButtonIdentifier.UpperButton)
                 {
                     this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
@@ -210,9 +210,9 @@ namespace WinTabPressureTester
 
         }
 
-        private void ButtonChangeHandler(WintabDN.Structs.WintabPacket wintab_pkt, SevenUtils.PenButtonPressChange buttonchange)
+        private void ButtonChangeHandler(WintabDN.Structs.WintabPacket wintab_pkt, SevenUtils.WinTab.PenButtonPressChange buttonchange)
         {
-            if (buttonchange.Change == SevenUtils.PenButtonPressChangeType.Released)
+            if (buttonchange.Change == SevenUtils.WinTab.PenButtonPressChangeType.Released)
             {
                 this.appstate.scale_session.logical_pressure_moving_average.Clear();
             }
@@ -231,7 +231,7 @@ namespace WinTabPressureTester
         {
             this.appstate.wintab_session.PacketHandler = this.PacketHandler;
             this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(SevenUtils.TabletContextType.System);
+            this.appstate.wintab_session.Open(SevenUtils.WinTab.TabletContextType.System);
         }
 
         private void StopWinTabSession()
