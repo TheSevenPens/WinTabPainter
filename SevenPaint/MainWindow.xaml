@@ -46,7 +46,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="Scale size by " VerticalAlignment="Center"/>
-                        <ComboBox x:Name="ComboScale" Width="100" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="0" SelectionChanged="ComboScale_SelectionChanged">
+                        <ComboBox x:Name="ComboScale" Width="100" Padding="2,0,2,0" VerticalContentAlignment="Center" SelectedIndex="1" SelectionChanged="ComboScale_SelectionChanged">
                             <ComboBoxItem Content="Don't scale"/>
                             <ComboBoxItem Content="Pressure"/>
                             <ComboBoxItem Content="Tilt Azimuth"/>
@@ -74,7 +74,7 @@
                 <Rectangle Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 2: POINTER -->
-                <StackPanel Grid.Column="2">
+                <StackPanel Grid.Column="2" Width="120">
                     <TextBlock Text="POINTER" FontWeight="Bold" Margin="0,0,0,5"/>
                     <TextBlock x:Name="TxtButtons" Text="Buttons: 0 (none)"/>
                     <TextBlock x:Name="TxtX" Text="X: 0.0"/>
@@ -86,7 +86,7 @@
                 <Rectangle Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 3: SENSORS -->
-                <StackPanel Grid.Column="4">
+                <StackPanel Grid.Column="4" Width="120">
                     <TextBlock Text="SENSORS" FontWeight="Bold" Margin="0,0,0,5"/>
                     <TextBlock x:Name="TxtPressure" Text="Pressure: 0.0000"/>
                     <TextBlock x:Name="TxtTiltX" Text="Tilt x: 0.0"/>
