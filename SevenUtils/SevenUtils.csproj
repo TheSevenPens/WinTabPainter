@@ -7,8 +7,4 @@
     <LangVersion>14</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WintabDN\WinTabDN.csproj" />
-  </ItemGroup>
-
 </Project>

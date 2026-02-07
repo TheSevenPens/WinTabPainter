@@ -1,10 +1,10 @@
 using System.Windows;
-
+//
 namespace SevenPaint.Stylus
 {
     public class WinTabStyusProvider : IStylusProvider
     {
-        private SevenUtils.WinTab.TabletSession _session;
+        private WinTabDN.Utils.TabletSession _session;
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
@@ -18,7 +18,7 @@ namespace SevenPaint.Stylus
         public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
-            _session = new SevenUtils.WinTab.TabletSession();
+            _session = new WinTabDN.Utils.TabletSession();
             _session.PacketHandler = OnWintabPacket;
         }
 
@@ -26,7 +26,7 @@ namespace SevenPaint.Stylus
         {
             try
             {
-                _session.Open(SevenUtils.WinTab.TabletContextType.System);
+                _session.Open(WinTabDN.Utils.TabletContextType.System);
                 IsActive = true;
             }
             catch (Exception)
@@ -47,11 +47,7 @@ namespace SevenPaint.Stylus
             if (!IsActive) return;
 
             // Basic filtering
-            if (packet.pkNormalPressure == 0) 
-            {
-                 // Could fire Up if we tracked state
-                 return; 
-            }
+
 
             // We need to map coordinates on the UI thread
             _targetElement.Dispatcher.Invoke(() =>
@@ -69,6 +65,8 @@ namespace SevenPaint.Stylus
                 double altitude = packet.pkOrientation.orAltitude / 10.0;
                 double twist = packet.pkOrientation.orTwist / 10.0;
 
+                var tiltaa_deg = new SevenUtils.Trigonometry.TiltAA(azimuth, altitude);
+                var tiltxy_deg = tiltaa_deg.ToXY_Deg();
                 // Create Args
                 var args = new DrawInputArgs
                 {
@@ -77,6 +75,8 @@ namespace SevenPaint.Stylus
                     Pressure = pressure,
                     Azimuth = azimuth,
                     Altitude = altitude,
+                    TiltX = tiltxy_deg.X,
+                    TiltY = tiltxy_deg.Y,
                     Twist = twist,
                     Buttons = (int)packet.pkButtons,
                     Timestamp = packet.pkTime

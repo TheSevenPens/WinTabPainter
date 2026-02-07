@@ -43,7 +43,7 @@ public struct PaintData
     }
 
     static System.Random random  = new System.Random();
-    public PaintData(WinTabDN.Structs.WintabPacket pkt, SevenUtils.WinTab.TabletInfo tablet, PaintSettings paintsettings, System.Func<SevenUtils.Geometry.Point,SevenUtils.Geometry.Point> to_canv)
+    public PaintData(WinTabDN.Structs.WintabPacket pkt, WinTabDN.Utils.TabletInfo tablet, PaintSettings paintsettings, System.Func<SevenUtils.Geometry.Point,SevenUtils.Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;
@@ -76,7 +76,10 @@ public struct PaintData
         this.TiltAltitude = pkt.pkOrientation.orAltitude / 10.0;
         this.TiltAzimuth = pkt.pkOrientation.orAzimuth / 10.0;
 
-        (this.TiltX, this.TiltY) = SevenUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(this.TiltAzimuth, this.TiltAltitude);
+        var tiltaa_deg = new SevenUtils.Trigonometry.TiltAA(this.TiltAzimuth, this.TiltAltitude);
+        var tiltxy_deg = tiltaa_deg.ToXY_Deg();
+        this.TiltX = tiltxy_deg.X;
+        this.TiltY  = tiltxy_deg.Y;
 
         // PRESSURE
         this.PressureRaw = pkt.pkNormalPressure;

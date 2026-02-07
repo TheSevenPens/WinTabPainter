@@ -78,10 +78,10 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Rectangle Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+                <Rectangle x:Name="SepPointer" Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 2: POINTER -->
-                <StackPanel Grid.Column="2" Width="140">
+                <StackPanel x:Name="PanelPointer" Grid.Column="2" Width="140">
                     <TextBlock Text="POINTER" FontWeight="Bold" Margin="0,0,0,5"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -97,26 +97,26 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Buttons: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtButtons" Text="0 (none)"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtButtons" Text="0 (none)" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="X: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtX" Text="0.0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtX" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Y: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtY" Text="0.0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtY" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Velocity: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtVelocity" Text="0.0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtVelocity" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Direction: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtDirection" Text="0.0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtDirection" Text="0.0" FontFamily="Consolas"/>
                     </Grid>
                 </StackPanel>
 
-                <Rectangle Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+                <Rectangle x:Name="SepSensors" Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 3: SENSORS -->
-                <StackPanel Grid.Column="4" Width="150">
+                <StackPanel x:Name="PanelSensors" Grid.Column="4" Width="150">
                     <TextBlock Text="SENSORS" FontWeight="Bold" Margin="0,0,0,5"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -133,34 +133,34 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Pressure: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtPressure" Text="0.0000"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtPressure" Text="0.0000" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Tilt x: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtTiltX" Text="0.0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtTiltX" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Tilt y: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtTiltY" Text="0.0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtTiltY" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Tilt azimuth: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtTiltAzimuth" Text="0.0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtTiltAzimuth" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Tilt altitude: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtTiltAltitude" Text="0.0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtTiltAltitude" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="Barrel rotation: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="TxtBarrelRotation" Text="0"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="TxtBarrelRotation" Text="0" FontFamily="Consolas"/>
                     </Grid>
                 </StackPanel>
 
-                <Rectangle Grid.Column="5" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+                <Rectangle x:Name="SepActions" Grid.Column="5" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 4: ACTIONS -->
                 <StackPanel Grid.Column="6">
                     <TextBlock Text="ACTIONS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <CheckBox x:Name="ChkLogData" Content="Log Data" IsChecked="False" Checked="ChkLogData_Checked" Unchecked="ChkLogData_Unchecked" Margin="0,0,0,5"/>
 
                     <StackPanel Margin="0,0,0,5">
-                        <RadioButton x:Name="OptionInk" Content="Windows Ink" IsChecked="True" Checked="OptionInput_Checked" Margin="0,0,0,2"/>
-                        <RadioButton x:Name="OptionWintab" Content="WinTab" Checked="OptionInput_Checked"/>
+                        <!-- Input selection removed -->
                     </StackPanel>
 
                     <Button Content="WinTab Info" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Margin="0,0,0,5" Click="ButtonWintabInfo_Click"/>

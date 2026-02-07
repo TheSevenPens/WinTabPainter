@@ -16,8 +16,7 @@ namespace SevenPaint
         private Paint.BrushSettings _brushSettings = new Paint.BrushSettings();
 
         private Stylus.WinTabStyusProvider _wintabInput;
-        private Stylus.WinInkStylusProvider _inkInput;
-        private bool _useWintab = false;
+
 
         // View Manager
         private SevenPaint.View.ViewManager _viewManager;
@@ -52,20 +51,23 @@ namespace SevenPaint
             _wintabInput = new Stylus.WinTabStyusProvider(RenderImage);
             _wintabInput.InputMove += OnInputMove;
 
-            _inkInput = new Stylus.WinInkStylusProvider(RenderImage);
-            _inkInput.InputMove += OnInputMove;
-            _inkInput.InputDown += OnInputMove; // Treat Down as Move for painting
-
-            // Default to Ink
-            _inkInput.Open();
-
-            UpdateStatus();
+            // Default to Wintab
+            try
+            {
+                _wintabInput.Open();
+                StatusLabel.Text = "Active API: Wintab";
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
+                StatusLabel.Text = "Active API: Wintab (Failed)";
+            }
         }
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             _wintabInput?.Close();
-            _inkInput?.Close();
+            _debugLogWindow?.Close();
         }
 
         private void ButtonWintabInfo_Click(object sender, RoutedEventArgs e)
@@ -75,56 +77,7 @@ namespace SevenPaint
             infoWindow.ShowDialog();
         }
 
-        private void OptionInput_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is System.Windows.Controls.RadioButton rb && rb.IsChecked == true)
-            {
-                if (rb == OptionWintab)
-                {
-                    SwitchToWintab();
-                }
-                else if (rb == OptionInk)
-                {
-                    SwitchToInk();
-                }
-            }
-        }
 
-        private void SwitchToWintab()
-        {
-            if (_useWintab) return;
-
-            try
-            {
-                _inkInput.Close();
-                _wintabInput.Open();
-                _useWintab = true;
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
-                _useWintab = false;
-                _wintabInput.Close();
-                _inkInput.Open();
-                OptionInk.IsChecked = true;
-            }
-            UpdateStatus();
-        }
-
-        private void SwitchToInk()
-        {
-            if (!_useWintab) return;
-
-            _wintabInput.Close();
-            _inkInput.Open();
-            _useWintab = false;
-            UpdateStatus();
-        }
-
-        private void UpdateStatus()
-        {
-            StatusLabel.Text = _useWintab ? "Active API: Wintab" : "Active API: Windows Ink";
-        }
 
         private void ComboColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -280,6 +233,31 @@ namespace SevenPaint
             _canvas.Clear(color);
         }
 
+        private DebugLogWindow? _debugLogWindow;
+
+        private void ChkLogData_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_debugLogWindow == null)
+            {
+                _debugLogWindow = new DebugLogWindow();
+                _debugLogWindow.Owner = this;
+                _debugLogWindow.Closed += (s, args) =>
+                {
+                    _debugLogWindow = null;
+                    ChkLogData.IsChecked = false;
+                };
+                _debugLogWindow.Show();
+            }
+        }
+
+        private void ChkLogData_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _debugLogWindow?.Close();
+            _debugLogWindow = null;
+        }
+
+        // Removed SetDebugVisibility as it is no longer needed
+
 
 
 
@@ -322,11 +300,11 @@ namespace SevenPaint
             TxtVelocity.Text = $"{_lastVelocity:F1}";
             TxtDirection.Text = $"{_lastDirection:F1}";
             TxtPressure.Text = $"{pressure:F4}";
-            TxtTiltX.Text = $"{tiltX:F1}";
-            TxtTiltY.Text = $"{tiltY:F1}";
-            TxtTiltAzimuth.Text = $"{azimuth:F1}";
-            TxtTiltAltitude.Text = $"{altitude:F1}";
-            TxtBarrelRotation.Text = $"{twist:F0}";
+            TxtTiltX.Text = $"{tiltX,6:F1}";
+            TxtTiltY.Text = $"{tiltY,6:F1}";
+            TxtTiltAzimuth.Text = $"{azimuth,6:F1}";
+            TxtTiltAltitude.Text = $"{altitude,6:F1}";
+            TxtBarrelRotation.Text = $"{twist,6:F0}";
         }
         
         private void OnInputMove(Stylus.DrawInputArgs args)
@@ -362,9 +340,21 @@ namespace SevenPaint
             double radius = _brushSettings.MinRadius + (_brushSettings.MaxRadius - _brushSettings.MinRadius) * scaleFactor;
             if (radius < 0.1) radius = 0.1;
 
-            _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
+            if (args.Pressure > 0)
+            {
+                _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
+            }
 
             UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.Pressure, args.TiltX, args.TiltY, args.Azimuth, args.Altitude, args.Twist, args.Buttons);
+            
+            if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
+            {
+                if (!_debugLogWindow.OnlyLogDown || args.Pressure > 0)
+                {
+                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.X:F1} Y={args.Y:F1} P={args.Pressure:F4} TX={args.TiltX:F1} TY={args.TiltY:F1} Az={args.Azimuth:F1} Alt={args.Altitude:F1} Tw={args.Twist:F1} Btn={args.Buttons}";
+                    _debugLogWindow.Log(log);
+                }
+            }
         }
     }
 }

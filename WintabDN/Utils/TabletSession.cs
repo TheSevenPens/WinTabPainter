@@ -1,22 +1,23 @@
 ﻿
-namespace SevenUtils.WinTab;
+namespace WinTabDN.Utils;
 
-public class TabletSession : IDisposable
+
+public class TabletSession : System.IDisposable
 {
 
     public WinTabDN.CWintabContext Context = null;
     public WinTabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
-    public SevenUtils.WinTab.TabletContextType ContextType;
+    public TabletContextType ContextType;
     public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WinTabDN.Structs.WintabPacket, SevenUtils.WinTab.PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WinTabDN.Structs.WintabPacket, PenButtonPressChange> ButtonChangedHandler = null;
 
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
     }
 
-    public void Open(SevenUtils.WinTab.TabletContextType context_type)
+    public void Open(TabletContextType context_type)
     {
         // convert the context type to something wintab understands
         var wt_context_type = context_type_to_index(context_type);
@@ -51,17 +52,17 @@ public class TabletSession : IDisposable
         }
     }
 
-    private static WinTabDN.Enums.EWTICategoryIndex context_type_to_index(SevenUtils.WinTab.TabletContextType context_type)
+    private static WinTabDN.Enums.EWTICategoryIndex context_type_to_index(TabletContextType context_type)
     {
         return context_type switch
         {
-            SevenUtils.WinTab.TabletContextType.System => WinTabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
-            SevenUtils.WinTab.TabletContextType.Digitizer => WinTabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
+            TabletContextType.System => WinTabDN.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
+            TabletContextType.Digitizer => WinTabDN.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }
 
-    private void WinTabPacketHandler(Object sender, WinTabDN.WinForms.MessageReceivedEventArgs args)
+    private void WinTabPacketHandler(System.Object sender, WinTabDN.WinForms.MessageReceivedEventArgs args)
     {
         if (this.Data == null)
         {
@@ -75,8 +76,8 @@ public class TabletSession : IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new SevenUtils.WinTab.PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != WinTab.PenButtonPressChangeType.NoChange)
+            var button_info = new PenButtonPressChange(wintab_pkt.pkButtons);
+            if (button_info.Change != PenButtonPressChangeType.NoChange)
             {
                 this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
 
@@ -97,7 +98,7 @@ public class TabletSession : IDisposable
     public void Dispose()
     {
         Dispose(true);
-        GC.SuppressFinalize(this);
+        System.GC.SuppressFinalize(this);
     }
 
     protected virtual void Dispose(bool disposing)
