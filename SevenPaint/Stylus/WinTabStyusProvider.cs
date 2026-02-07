@@ -47,11 +47,7 @@ namespace SevenPaint.Stylus
             if (!IsActive) return;
 
             // Basic filtering
-            if (packet.pkNormalPressure == 0) 
-            {
-                 // Could fire Up if we tracked state
-                 return; 
-            }
+
 
             // We need to map coordinates on the UI thread
             _targetElement.Dispatcher.Invoke(() =>

@@ -88,7 +88,7 @@ namespace SevenPaint.Stylus
             // For now, let's fire everything and let consumer check pressure if they want, 
             // OR check InAir status.
             
-            if (e.InAir) return; // Ignore hover for painting for now
+
             
             ProcessStylusEvent(e, InputMove);
         }

@@ -362,7 +362,10 @@ namespace SevenPaint
             double radius = _brushSettings.MinRadius + (_brushSettings.MaxRadius - _brushSettings.MinRadius) * scaleFactor;
             if (radius < 0.1) radius = 0.1;
 
-            _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
+            if (args.Pressure > 0)
+            {
+                _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
+            }
 
             UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.Pressure, args.TiltX, args.TiltY, args.Azimuth, args.Altitude, args.Twist, args.Buttons);
         }
