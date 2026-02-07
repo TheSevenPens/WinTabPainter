@@ -97,19 +97,19 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Buttons: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtButtons" Text="0 (none)"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtButtons" Text="0 (none)" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="X: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtX" Text="0.0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtX" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Y: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtY" Text="0.0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtY" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Velocity: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtVelocity" Text="0.0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtVelocity" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Direction: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtDirection" Text="0.0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtDirection" Text="0.0" FontFamily="Consolas"/>
                     </Grid>
                 </StackPanel>
 
@@ -133,22 +133,22 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Pressure: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtPressure" Text="0.0000"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtPressure" Text="0.0000" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Tilt x: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtTiltX" Text="0.0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtTiltX" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Tilt y: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtTiltY" Text="0.0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtTiltY" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Tilt azimuth: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtTiltAzimuth" Text="0.0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtTiltAzimuth" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Tilt altitude: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtTiltAltitude" Text="0.0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TxtTiltAltitude" Text="0.0" FontFamily="Consolas"/>
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="Barrel rotation: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="TxtBarrelRotation" Text="0"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="TxtBarrelRotation" Text="0" FontFamily="Consolas"/>
                     </Grid>
                 </StackPanel>
 

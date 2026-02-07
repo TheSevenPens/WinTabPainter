@@ -69,6 +69,8 @@ namespace SevenPaint.Stylus
                 double altitude = packet.pkOrientation.orAltitude / 10.0;
                 double twist = packet.pkOrientation.orTwist / 10.0;
 
+
+                (double TiltX, double TiltY) = SevenUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(azimuth, altitude);
                 // Create Args
                 var args = new DrawInputArgs
                 {
@@ -77,6 +79,8 @@ namespace SevenPaint.Stylus
                     Pressure = pressure,
                     Azimuth = azimuth,
                     Altitude = altitude,
+                    TiltX = TiltX,
+                    TiltY = TiltY,
                     Twist = twist,
                     Buttons = (int)packet.pkButtons,
                     Timestamp = packet.pkTime
