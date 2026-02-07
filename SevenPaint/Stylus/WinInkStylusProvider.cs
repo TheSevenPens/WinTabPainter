@@ -106,38 +106,18 @@ namespace SevenPaint.Stylus
             foreach (var p in points)
             {
                 // Calculate Tilt/Azimuth/Altitude
-                double tiltX = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.XTiltOrientation, 0) / 100.0 ;
-                double tiltY = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.YTiltOrientation, 0) / 100.0;
-
-                double azimuth = 0;
-                double altitude = 90;
-
-                if (tiltX != 0.0 || tiltY != 0.0)
-                {
-                    double txRad = tiltX * Math.PI / 180.0;
-                    double tyRad = tiltY * Math.PI / 180.0;
-                    double tanX = Math.Tan(txRad);
-                    double tanY = Math.Tan(tyRad);
-
-                    double azRad = Math.Atan2(tanY, tanX);
-                    azimuth = azRad * 180.0 / Math.PI;
-                    if (azimuth < 0) azimuth += 360.0;
-
-                    double denom = Math.Sqrt(tanX * tanX + tanY * tanY);
-                    if (denom > 0.001)
-                    {
-                        double altRad = Math.Atan(1.0 / denom);
-                        altitude = altRad * 180.0 / Math.PI;
-                    }
-                }
+                double tiltX_deg = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.XTiltOrientation, 0) / 100.0;
+                double tiltY_deg = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.YTiltOrientation, 0) / 100.0;
+                
+                (double azimuth , double altitude ) = SevenUtils.Trigonometry.Angles.TiltXYToTiltAzAl(tiltX_deg, tiltY_deg);
 
                 var args = new DrawInputArgs
                 {
                     X = p.X,
                     Y = p.Y,
                     Pressure = p.PressureFactor,
-                    TiltX = tiltX,
-                    TiltY = tiltY,
+                    TiltX = tiltX_deg,
+                    TiltY = tiltY_deg,
                     Azimuth = azimuth,
                     Altitude = altitude,
 
@@ -146,14 +126,7 @@ namespace SevenPaint.Stylus
                 };
 
                 eventHandler(args);
-                
-                // Consuming event to prevent system badging/selection?
-                // Probably yes.
-            }
-
-            if (IsActive)
-            {
-                 // e.Handled = true; // Maybe let caller handle? 
+               
             }
         }
     }
