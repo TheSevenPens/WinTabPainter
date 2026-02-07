@@ -1,13 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SevenUtils.Trigonometry
+﻿namespace SevenUtils.Trigonometry
 {
     public static class Angles
     {
+        public static (double Azimuth, double Altitude) TiltXYToTiltAzAl(double tiltX_deg, double tiltY_deg)
+        {
+            double azimuth = 0;
+            double altitude = 90;
+
+            if (tiltX_deg != 0.0 || tiltY_deg != 0.0)
+            {
+                double txRad = DegreesToRadians( tiltX_deg );
+                double tyRad = DegreesToRadians( tiltY_deg );
+                double tanX = Math.Tan(txRad);
+                double tanY = Math.Tan(tyRad);
+
+                double azRad = Math.Atan2(tanY, tanX);
+                azimuth = RadiansToDegrees( azRad );
+                if (azimuth < 0)
+                {
+                    azimuth += 360.0;
+                }
+
+                double denom = Math.Sqrt(tanX * tanX + tanY * tanY);
+                if (denom > 0.001)
+                {
+                    double altRad = Math.Atan(1.0 / denom);
+                    altitude = RadiansToDegrees(altRad);
+                }
+            }
+
+            return (azimuth, altitude);
+        }
         public static (double TiltX, double TiltY) AzimuthAndAltudeToTilt_Rad(double azimuth_radians, double altitude_radians)
         {
             double tanAlt = System.Math.Tan(System.Math.Abs(altitude_radians));

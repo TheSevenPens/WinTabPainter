@@ -106,13 +106,13 @@ namespace SevenPaint.Stylus
             foreach (var p in points)
             {
                 // Calculate Tilt/Azimuth/Altitude
-                double tiltX = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.XTiltOrientation,0);
-                double tiltY = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.YTiltOrientation,0);
+                double tiltX = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.XTiltOrientation, 0) / 100.0 ;
+                double tiltY = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.YTiltOrientation, 0) / 100.0;
 
                 double azimuth = 0;
                 double altitude = 90;
 
-                if (Math.Abs(tiltX) > 0.1 || Math.Abs(tiltY) > 0.1)
+                if (tiltX != 0.0 || tiltY != 0.0)
                 {
                     double txRad = tiltX * Math.PI / 180.0;
                     double tyRad = tiltY * Math.PI / 180.0;
