@@ -322,11 +322,11 @@ namespace SevenPaint
             TxtVelocity.Text = $"{_lastVelocity:F1}";
             TxtDirection.Text = $"{_lastDirection:F1}";
             TxtPressure.Text = $"{pressure:F4}";
-            TxtTiltX.Text = $"{tiltX:F1}";
-            TxtTiltY.Text = $"{tiltY:F1}";
-            TxtTiltAzimuth.Text = $"{azimuth:F1}";
-            TxtTiltAltitude.Text = $"{altitude:F1}";
-            TxtBarrelRotation.Text = $"{twist:F0}";
+            TxtTiltX.Text = $"{tiltX,6:F1}";
+            TxtTiltY.Text = $"{tiltY,6:F1}";
+            TxtTiltAzimuth.Text = $"{azimuth,6:F1}";
+            TxtTiltAltitude.Text = $"{altitude,6:F1}";
+            TxtBarrelRotation.Text = $"{twist,6:F0}";
         }
         
         private void OnInputMove(Stylus.DrawInputArgs args)
