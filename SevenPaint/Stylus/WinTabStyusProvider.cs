@@ -1,5 +1,5 @@
 using System.Windows;
-
+//
 namespace SevenPaint.Stylus
 {
     public class WinTabStyusProvider : IStylusProvider
