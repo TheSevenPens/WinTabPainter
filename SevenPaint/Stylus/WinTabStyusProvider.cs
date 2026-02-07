@@ -8,9 +8,9 @@ namespace SevenPaint.Stylus
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
-        public event Action<DrawInputArgs>? InputDown; // Wintab packets usually don't distinguish Down/Move easily without logic, but we treat non-zero pressure as active
-        public event Action<DrawInputArgs>? InputMove;
-        public event Action<DrawInputArgs>? InputUp;
+        public event Action<StylusEventArgs>? InputDown; // Wintab packets usually don't distinguish Down/Move easily without logic, but we treat non-zero pressure as active
+        public event Action<StylusEventArgs>? InputMove;
+        public event Action<StylusEventArgs>? InputUp;
 #pragma warning restore 67
 
         public bool IsActive { get; set; } = false;
@@ -56,10 +56,7 @@ namespace SevenPaint.Stylus
 
                 // Map Screen -> Local
                 System.Windows.Point p = _targetElement.PointFromScreen(new System.Windows.Point(packet.pkX, packet.pkY));
-
-                // Normalize Pressure
-                float pressure = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure;
-                
+              
                 // Tilt/Orientation
                 double azimuth = packet.pkOrientation.orAzimuth / 10.0;
                 double altitude = packet.pkOrientation.orAltitude / 10.0;
@@ -68,17 +65,18 @@ namespace SevenPaint.Stylus
                 var tiltaa_deg = new SevenUtils.Trigonometry.TiltAA(azimuth, altitude);
                 var tiltxy_deg = tiltaa_deg.ToXY_Deg();
                 // Create Args
-                var args = new DrawInputArgs
+                var args = new StylusEventArgs
                 {
                     X = p.X,
                     Y = p.Y,
-                    Pressure = pressure,
-                    Azimuth = azimuth,
-                    Altitude = altitude,
-                    TiltX = tiltxy_deg.X,
-                    TiltY = tiltxy_deg.Y,
+                    PressureLevelRaw = packet.pkNormalPressure,
+                    PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
+                    TiltAzimuthDeg = azimuth,
+                    TiltAltitudeDeg = altitude,
+                    TiltXDeg = tiltxy_deg.X,
+                    TiltYDeg = tiltxy_deg.Y,
                     Twist = twist,
-                    Buttons = (int)packet.pkButtons,
+                    ButtonsRaw = (int)packet.pkButtons,
                     Timestamp = packet.pkTime
                 };
 

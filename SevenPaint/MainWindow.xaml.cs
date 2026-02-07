@@ -307,11 +307,11 @@ namespace SevenPaint
             TxtBarrelRotation.Text = $"{twist,6:F0}";
         }
         
-        private void OnInputMove(Stylus.DrawInputArgs args)
+        private void OnInputMove(Stylus.StylusEventArgs args)
         {
             if (_viewManager.IsSpaceDown || _viewManager.IsPanning) return;
 
-            double scaleFactor = args.Pressure;
+            double scaleFactor = args.PressureNormalized;
 
             switch (_brushSettings.ScaleType)
             {
@@ -319,13 +319,13 @@ namespace SevenPaint
                     scaleFactor = 1.0;
                     break;
                 case Paint.ScaleType.Pressure:
-                    scaleFactor = args.Pressure;
+                    scaleFactor = args.PressureNormalized;
                     break;
                 case Paint.ScaleType.Azimuth:
-                    scaleFactor = (args.Azimuth % 360.0) / 360.0;
+                    scaleFactor = (args.TiltAzimuthDeg % 360.0) / 360.0;
                     break;
                 case Paint.ScaleType.Altitude:
-                    scaleFactor = args.Altitude / 90.0;
+                    scaleFactor = args.TiltAltitudeDeg / 90.0;
                     break;
                 case Paint.ScaleType.Rotation:
                     scaleFactor = (args.Twist % 360.0) / 360.0;
@@ -340,18 +340,18 @@ namespace SevenPaint
             double radius = _brushSettings.MinRadius + (_brushSettings.MaxRadius - _brushSettings.MinRadius) * scaleFactor;
             if (radius < 0.1) radius = 0.1;
 
-            if (args.Pressure > 0)
+            if (args.PressureNormalized > 0)
             {
                 _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.Pressure, args.TiltX, args.TiltY, args.Azimuth, args.Altitude, args.Twist, args.Buttons);
+            UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
-                if (!_debugLogWindow.OnlyLogDown || args.Pressure > 0)
+                if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
                 {
-                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.X:F1} Y={args.Y:F1} P={args.Pressure:F4} TX={args.TiltX:F1} TY={args.TiltY:F1} Az={args.Azimuth:F1} Alt={args.Altitude:F1} Tw={args.Twist:F1} Btn={args.Buttons}";
+                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.X:F1} Y={args.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXDeg:F1} TY={args.TiltYDeg:F1} Az={args.TiltAzimuthDeg:F1} Alt={args.TiltAltitudeDeg:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
                     _debugLogWindow.Log(log);
                 }
             }
