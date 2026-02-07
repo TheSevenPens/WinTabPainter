@@ -183,15 +183,16 @@ namespace WinTabPressureTester
             string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure * 100.0);
             this.appstate.log_pressure = normalized_raw_pressure;
 
-            (double TiltX, double TiltY) = SevenUtils.Trigonometry.Angles.AzimuthAndAltudeToTiltDeg(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
+            SevenUtils.Trigonometry.TiltAA tiltAA = new(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
+            var tiltxy_deg = tiltAA.ToXY_Deg();
 
             this.label_pressure_raw.Text = wintab_pkt.pkNormalPressure.ToString();
             this.label_normalized_pressure.Text = str_pressure.ToString();
 
             this.label_or_altitude.Text = (wintab_pkt.pkOrientation.orAltitude / 10.0).ToString() + "°";
             this.label_or_azimuth.Text = (wintab_pkt.pkOrientation.orAzimuth / 10.0).ToString() + "°";
-            this.label_tiltx.Text = string.Format("{0:00.000}°", TiltX);
-            this.label_tilty.Text = string.Format("{0:00.000}°", TiltY);
+            this.label_tiltx.Text = string.Format("{0:00.000}°", tiltxy_deg.X);
+            this.label_tilty.Text = string.Format("{0:00.000}°", tiltxy_deg.Y);
 
 
 
