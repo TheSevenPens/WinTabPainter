@@ -67,8 +67,10 @@ namespace SevenPaint.Stylus
                 // Create Args
                 var args = new StylusEventArgs
                 {
-                    X = p.X,
-                    Y = p.Y,
+
+                    LocalX = p.X,
+                    LocalY = p.Y,
+                    HoverDistance = packet.pkZ,
                     PressureLevelRaw = packet.pkNormalPressure,
                     PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
                     TiltAzimuthDeg = azimuth,
@@ -80,12 +82,8 @@ namespace SevenPaint.Stylus
                     Timestamp = packet.pkTime
                 };
 
-                // Fire Move (treating all pressure > 0 as move/draw)
                 InputMove?.Invoke(args);
                 
-                // TODO: Logic for Down/Up? 
-                // Creating a state machine here (wasPressure0 -> >0 = Down) might be better, 
-                // but for now keeping it simple as a stream of paint events.
             });
         }
     }

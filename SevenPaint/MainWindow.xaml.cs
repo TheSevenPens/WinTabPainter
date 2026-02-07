@@ -197,7 +197,7 @@ namespace SevenPaint
             _lastPoint = currentPoint;
             
             // Note: Wintab updates this too, but Mouse is smoother for "hover"
-            UpdateRibbon(currentPoint, 0, 0, 0, 0, 90, 0, buttons);
+            UpdateRibbon(currentPoint, 0, 0, 0, 0, 90, 0, buttons, 0.0);
 
             _viewManager.ProcessPreviewMouseMove(e);
         }
@@ -261,7 +261,7 @@ namespace SevenPaint
 
 
 
-        private void UpdateRibbon(System.Windows.Point currentPoint, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons)
+        private void UpdateRibbon(System.Windows.Point currentPoint, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons, double hoverDist)
         {
             long now = DateTime.Now.Ticks; // 100ns units
             double dt = (now - _lastTime) / 10000.0; // milliseconds
@@ -299,6 +299,7 @@ namespace SevenPaint
             TxtY.Text = $"{currentPoint.Y:F1}";
             TxtVelocity.Text = $"{_lastVelocity:F1}";
             TxtDirection.Text = $"{_lastDirection:F1}";
+            TxtHoverDist.Text = $"{hoverDist:F1}";
             TxtPressure.Text = $"{pressure:F4}";
             TxtTiltX.Text = $"{tiltX,6:F1}";
             TxtTiltY.Text = $"{tiltY,6:F1}";
@@ -342,16 +343,16 @@ namespace SevenPaint
 
             if (args.PressureNormalized > 0)
             {
-                _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
+                _canvas.DrawDab(args.LocalX, args.LocalY, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw);
+            UpdateRibbon(new System.Windows.Point(args.LocalX, args.LocalY), args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw, args.HoverDistance);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
                 if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
                 {
-                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.X:F1} Y={args.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXDeg:F1} TY={args.TiltYDeg:F1} Az={args.TiltAzimuthDeg:F1} Alt={args.TiltAltitudeDeg:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
+                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalX:F1} Y={args.LocalY:F1} P={args.PressureNormalized:F4} TX={args.TiltXDeg:F1} TY={args.TiltYDeg:F1} Az={args.TiltAzimuthDeg:F1} Alt={args.TiltAltitudeDeg:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
                     _debugLogWindow.Log(log);
                 }
             }

@@ -2,8 +2,10 @@ namespace SevenPaint.Stylus
 {
     public struct StylusEventArgs
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double LocalX { get; set; }
+        public double LocalY { get; set; }
+
+        public double HoverDistance { get; set; } 
 
         public float PressureLevelRaw { get; set; }
         public float PressureNormalized { get; set; }

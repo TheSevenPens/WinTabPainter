@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
-using WinTabPainter.Painting;
-using SevenUtils;
-using WinTabPainter.GeometryExtensions;
-
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
 // https://github.com/DennisWacom/InkPlatform/tree/master/WintabDN
@@ -12,12 +7,10 @@ using WinTabPainter.GeometryExtensions;
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Linq.Expressions;
-using WinTabDN.Structs;
-using System.Security.Cryptography;
-using static System.Windows.Forms.Design.AxImporter;
 using System.Drawing;
+using System.Windows.Forms;
+using WinTabPainter.GeometryExtensions;
+using WinTabPainter.Painting;
 
 namespace WinTabPainter
 {
