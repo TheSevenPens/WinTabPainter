@@ -109,7 +109,8 @@ namespace SevenPaint.Stylus
                 double tiltX_deg = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.XTiltOrientation, 0) / 100.0;
                 double tiltY_deg = p.GetPropertyValueSafe(System.Windows.Input.StylusPointProperties.YTiltOrientation, 0) / 100.0;
                 
-                (double azimuth , double altitude ) = SevenUtils.Trigonometry.Angles.TiltXYToTiltAzAl(tiltX_deg, tiltY_deg);
+                var tiltXY_deg = new SevenUtils.Trigonometry.TiltXY(tiltX_deg, tiltY_deg);
+                var tiltaa_deg = tiltXY_deg.ToAA_deg();
 
                 var args = new DrawInputArgs
                 {
@@ -118,8 +119,8 @@ namespace SevenPaint.Stylus
                     Pressure = p.PressureFactor,
                     TiltX = tiltX_deg,
                     TiltY = tiltY_deg,
-                    Azimuth = azimuth,
-                    Altitude = altitude,
+                    Azimuth = tiltaa_deg.Azimuth,
+                    Altitude = tiltaa_deg.Altitude,
 
                     // Twist not standard in Ink StylusPoint usually
                     Timestamp = DateTime.Now.Ticks 
