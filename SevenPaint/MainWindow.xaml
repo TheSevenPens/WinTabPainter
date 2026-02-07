@@ -160,8 +160,7 @@
                     <CheckBox x:Name="ChkLogData" Content="Log Data" IsChecked="False" Checked="ChkLogData_Checked" Unchecked="ChkLogData_Unchecked" Margin="0,0,0,5"/>
 
                     <StackPanel Margin="0,0,0,5">
-                        <RadioButton x:Name="OptionInk" Content="Windows Ink" IsChecked="True" Checked="OptionInput_Checked" Margin="0,0,0,2"/>
-                        <RadioButton x:Name="OptionWintab" Content="WinTab" Checked="OptionInput_Checked"/>
+                        <!-- Input selection removed -->
                     </StackPanel>
 
                     <Button Content="WinTab Info" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Margin="0,0,0,5" Click="ButtonWintabInfo_Click"/>
