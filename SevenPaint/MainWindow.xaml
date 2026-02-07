@@ -78,10 +78,10 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Rectangle Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+                <Rectangle x:Name="SepPointer" Grid.Column="1" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 2: POINTER -->
-                <StackPanel Grid.Column="2" Width="140">
+                <StackPanel x:Name="PanelPointer" Grid.Column="2" Width="140">
                     <TextBlock Text="POINTER" FontWeight="Bold" Margin="0,0,0,5"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -113,10 +113,10 @@
                     </Grid>
                 </StackPanel>
 
-                <Rectangle Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+                <Rectangle x:Name="SepSensors" Grid.Column="3" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 3: SENSORS -->
-                <StackPanel Grid.Column="4" Width="150">
+                <StackPanel x:Name="PanelSensors" Grid.Column="4" Width="150">
                     <TextBlock Text="SENSORS" FontWeight="Bold" Margin="0,0,0,5"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -152,11 +152,12 @@
                     </Grid>
                 </StackPanel>
 
-                <Rectangle Grid.Column="5" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
+                <Rectangle x:Name="SepActions" Grid.Column="5" Width="1" Fill="LightGray" VerticalAlignment="Stretch"/>
 
                 <!-- SECTION 4: ACTIONS -->
                 <StackPanel Grid.Column="6">
                     <TextBlock Text="ACTIONS" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <CheckBox x:Name="ChkLogData" Content="Log Data" IsChecked="False" Checked="ChkLogData_Checked" Unchecked="ChkLogData_Unchecked" Margin="0,0,0,5"/>
 
                     <StackPanel Margin="0,0,0,5">
                         <RadioButton x:Name="OptionInk" Content="Windows Ink" IsChecked="True" Checked="OptionInput_Checked" Margin="0,0,0,2"/>

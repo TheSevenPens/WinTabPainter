@@ -66,6 +66,7 @@ namespace SevenPaint
         {
             _wintabInput?.Close();
             _inkInput?.Close();
+            _debugLogWindow?.Close();
         }
 
         private void ButtonWintabInfo_Click(object sender, RoutedEventArgs e)
@@ -280,6 +281,31 @@ namespace SevenPaint
             _canvas.Clear(color);
         }
 
+        private DebugLogWindow? _debugLogWindow;
+
+        private void ChkLogData_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_debugLogWindow == null)
+            {
+                _debugLogWindow = new DebugLogWindow();
+                _debugLogWindow.Owner = this;
+                _debugLogWindow.Closed += (s, args) =>
+                {
+                    _debugLogWindow = null;
+                    ChkLogData.IsChecked = false;
+                };
+                _debugLogWindow.Show();
+            }
+        }
+
+        private void ChkLogData_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _debugLogWindow?.Close();
+            _debugLogWindow = null;
+        }
+
+        // Removed SetDebugVisibility as it is no longer needed
+
 
 
 
@@ -368,6 +394,15 @@ namespace SevenPaint
             }
 
             UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.Pressure, args.TiltX, args.TiltY, args.Azimuth, args.Altitude, args.Twist, args.Buttons);
+            
+            if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
+            {
+                if (!_debugLogWindow.OnlyLogDown || args.Pressure > 0)
+                {
+                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.X:F1} Y={args.Y:F1} P={args.Pressure:F4} TX={args.TiltX:F1} TY={args.TiltY:F1} Az={args.Azimuth:F1} Alt={args.Altitude:F1} Tw={args.Twist:F1} Btn={args.Buttons}";
+                    _debugLogWindow.Log(log);
+                }
+            }
         }
     }
 }
