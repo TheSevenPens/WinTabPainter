@@ -1,4 +1,7 @@
-﻿namespace SevenUtils.WinTab;
+﻿using System;
+
+namespace WinTabDN.Utils;
+
 
 public struct PenButtonPressChange
 {

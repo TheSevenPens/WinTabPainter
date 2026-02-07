@@ -4,7 +4,7 @@ namespace SevenPaint.Stylus
 {
     public class WinTabStyusProvider : IStylusProvider
     {
-        private SevenUtils.WinTab.TabletSession _session;
+        private WinTabDN.Utils.TabletSession _session;
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
@@ -18,7 +18,7 @@ namespace SevenPaint.Stylus
         public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
-            _session = new SevenUtils.WinTab.TabletSession();
+            _session = new WinTabDN.Utils.TabletSession();
             _session.PacketHandler = OnWintabPacket;
         }
 
@@ -26,7 +26,7 @@ namespace SevenPaint.Stylus
         {
             try
             {
-                _session.Open(SevenUtils.WinTab.TabletContextType.System);
+                _session.Open(WinTabDN.Utils.TabletContextType.System);
                 IsActive = true;
             }
             catch (Exception)
