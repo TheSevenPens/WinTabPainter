@@ -101,12 +101,6 @@ public class TabletSession : System.IDisposable
                     {
                         this.ButtonState |= BUTTON_UPPER_MASK;
                     }
-                    else if (button_info.ButtonId == PenButtonChangeButtonId.BarrelButton)
-                    {
-                        // this may be a remnant of the winink integration so identify if this is real
-                        // because it doesn't have a standard bitmask in wintab
-                        this.ButtonState |= BUTTON_BARREL_MASK; // Set bit for barrel button (using the next available bit)
-                    }
                 }
                 else if (button_info.Change == PenButtonChangeType.Released)
                 {
@@ -121,12 +115,6 @@ public class TabletSession : System.IDisposable
                     else if (button_info.ButtonId == PenButtonChangeButtonId.UpperButton)
                     {
                         this.ButtonState &= ~BUTTON_UPPER_MASK;
-                    }
-                    else if (button_info.ButtonId == PenButtonChangeButtonId.BarrelButton)
-                    {
-                        // this may be a remnant of the winink integration so identify if this is real
-                        // because it doesn't have a standard bitmask in wintab
-                        this.ButtonState &= ~BUTTON_BARREL_MASK; // Clear bit for barrel button
                     }
                 }
             }

@@ -26,7 +26,6 @@ public struct PenButtonChange
             0 => PenButtonChangeButtonId.Tip,
             1 => PenButtonChangeButtonId.LowerButton,
             2 => PenButtonChangeButtonId.UpperButton,
-            3 => PenButtonChangeButtonId.BarrelButton,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }
