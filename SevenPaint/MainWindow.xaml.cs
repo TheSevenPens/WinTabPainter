@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
+using SevenPaint.GeometryExtensions;
+
 namespace SevenPaint
 {
     /// <summary>
@@ -22,7 +24,7 @@ namespace SevenPaint
         private SevenPaint.View.ViewManager _viewManager;
 
         // Ribbon Tracking
-        private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
+        private SevenUtils.Geometry.PointD _lastPoint = new SevenUtils.Geometry.PointD(0, 0);
         private long _lastTime = 0;
         private double _lastVelocity = 0;
         private double _lastDirection = 0;
@@ -165,7 +167,7 @@ namespace SevenPaint
         private void ScrollViewer_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             // Update Coordinates for UI
-            System.Windows.Point currentPoint = e.GetPosition(RenderImage);
+            var currentPoint = e.GetPosition(RenderImage);
             int buttons = 0;
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 1;
             if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 2;
@@ -194,10 +196,10 @@ namespace SevenPaint
             }
 
             _lastTime = now;
-            _lastPoint = currentPoint;
+            _lastPoint = currentPoint.ToSPPointD();
             
             // Note: Wintab updates this too, but Mouse is smoother for "hover"
-            UpdateRibbon(currentPoint, 0, 0, 0, 0, 90, 0, buttons, 0.0);
+            UpdateRibbon(currentPoint.ToSPPointD(), 0, 0, 0, 0, 90, 0, buttons, 0.0);
 
             _viewManager.ProcessPreviewMouseMove(e);
         }
@@ -261,7 +263,7 @@ namespace SevenPaint
 
 
 
-        private void UpdateRibbon(System.Windows.Point currentPoint, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons, double hoverDist)
+        private void UpdateRibbon(SevenUtils.Geometry.PointD localpos, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons, double hoverDist)
         {
             long now = DateTime.Now.Ticks; // 100ns units
             double dt = (now - _lastTime) / 10000.0; // milliseconds
@@ -269,8 +271,8 @@ namespace SevenPaint
             // Only calc velocity if time passed significantly (e.g. > 5ms) to avoid divide by zero or extreme noise
             if (_lastTime > 0 && dt > 0)
             {
-                double dx = currentPoint.X - _lastPoint.X;
-                double dy = currentPoint.Y - _lastPoint.Y;
+                double dx = localpos.X - _lastPoint.X;
+                double dy = localpos.Y - _lastPoint.Y;
                 double dist = Math.Sqrt(dx * dx + dy * dy);
 
                 // Velocity in px/s: (dist / dt_ms) * 1000
@@ -289,14 +291,14 @@ namespace SevenPaint
             }
 
             _lastTime = now;
-            _lastPoint = currentPoint;
+            _lastPoint = localpos;
 
             // Update UI (Throttle if needed, but doing it every moved event for "live" feel)
             // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
             // We assume this is called inside Dispatcher if from Wintab.
             TxtButtons.Text = $"{buttons}";
-            TxtX.Text = $"{currentPoint.X:F1}";
-            TxtY.Text = $"{currentPoint.Y:F1}";
+            TxtX.Text = $"{localpos.X:F1}";
+            TxtY.Text = $"{localpos.Y:F1}";
             TxtVelocity.Text = $"{_lastVelocity:F1}";
             TxtDirection.Text = $"{_lastDirection:F1}";
             TxtHoverDist.Text = $"{hoverDist:F1}";
@@ -346,7 +348,7 @@ namespace SevenPaint
                 _canvas.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(new System.Windows.Point(args.LocalPos.X, args.LocalPos.Y), args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw, args.HoverDistance);
+            UpdateRibbon(args.LocalPos, args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw, args.HoverDistance);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
