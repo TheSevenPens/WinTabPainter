@@ -1,6 +1,6 @@
 ﻿namespace WinTabDN.Utils;
 
-public enum PenButtonIdentifier
+public enum PenButtonChangeButtonId
 {
     Tip,
     LowerButton,

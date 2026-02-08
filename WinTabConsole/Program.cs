@@ -23,7 +23,7 @@ namespace MyApp
                         //System.Console.WriteLine("Packets received = {0}", num_pkts_received);
                         foreach (var pkt in pkts)
                         {
-                            var button_info = new WinTabDN.Utils.PenButtonPressChange(pkt.pkButtons);
+                            var button_info = new WinTabDN.Utils.PenButtonChange(pkt.pkButtons);
 
                             if (button_info.Change != 0)
                             {

@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using SevenPaint.GeometryExtensions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
-using SevenPaint.GeometryExtensions;
+using WinTabDN.Utils;
 
 namespace SevenPaint
 {
@@ -172,9 +172,9 @@ namespace SevenPaint
         {
             // Update Coordinates for UI
             var currentPoint = e.GetPosition(RenderImage);
-            int buttons = 0;
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 1;
-            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 2;
+            int mouse_buttons = 0;
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 1;
+            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 2;
 
             // Simple velocity calc
             long now = DateTime.Now.Ticks; // 100ns units
@@ -213,7 +213,8 @@ namespace SevenPaint
                     TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
                     TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
                     Twist = 0,
-                    ButtonsRaw = buttons,
+                    PenButtonRaw = 0,
+                    PenButtonChange = new PenButtonChange(0),
                     HoverDistance = 0
                 };
 
@@ -305,7 +306,7 @@ namespace SevenPaint
             // Update UI (Throttle if needed, but doing it every moved event for "live" feel)
             // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
             // We assume this is called inside Dispatcher if from Wintab.
-            TxtButtons.Text = $"{args.ButtonsRaw}";
+            TxtButtons.Text = $"{args.ButtonState:X}";
             TxtX.Text = $"{args.LocalPos.X:F1}";
             TxtY.Text = $"{args.LocalPos.Y:F1}";
             TxtVelocity.Text = $"{_lastVelocity:F1}";
@@ -368,7 +369,7 @@ namespace SevenPaint
                 {
                     if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
                     {
-                        string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
+                        string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.PenButtonRaw}";
                         _debugLogWindow.Log(log);
                     }
                 }

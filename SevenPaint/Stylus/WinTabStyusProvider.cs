@@ -1,4 +1,5 @@
 using System.Windows;
+using WinTabDN.Utils;
 //
 namespace SevenPaint.Stylus
 {
@@ -86,20 +87,27 @@ namespace SevenPaint.Stylus
                 TiltAADeg = tiltaa_deg,
                 TiltXYDeg = tiltxy_deg,
                 Twist = twist,
-                ButtonsRaw = (int)packet.pkButtons,
+                PenButtonRaw = (int)packet.pkButtons,
+                ButtonState = (int)_session.ButtonState,
+                PenButtonChange = new PenButtonChange(packet.pkButtons),
                 Timestamp = packet.pkTime
             };
             return args;
         }
-        private void OnButtonChanged(WinTabDN.Structs.WintabPacket packet, WinTabDN.Utils.PenButtonPressChange change)
+        private void OnButtonChanged(WinTabDN.Structs.WintabPacket packet, WinTabDN.Utils.PenButtonChange change)
         {
             if (!IsActive) return;
 
-            if (change.ButtonId == WinTabDN.Utils.PenButtonIdentifier.Tip)
+            bool tip_pressed_status = false; // temporary set to false. Should be maintained as some state.
+            if (change.ButtonId == WinTabDN.Utils.PenButtonChangeButtonId.Tip)
             {
-                if (change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed)
+                if (change.Change == WinTabDN.Utils.PenButtonChangeType.Pressed)
                 {
-                    // Per-stroke state for things like smoothing should be reset here
+                    tip_pressed_status = true;
+                }
+                else if (change.Change == WinTabDN.Utils.PenButtonChangeType.Released)
+                {
+                    tip_pressed_status = false;
                 }
             }
 
@@ -107,7 +115,7 @@ namespace SevenPaint.Stylus
             {
                 if (!IsActive) return;
 
-                bool isPressed = change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed;
+                bool isPressed = change.Change == WinTabDN.Utils.PenButtonChangeType.Pressed;
                 string btnName = change.ButtonId.ToString();
                 int btnId = (int)change.ButtonId;
                 

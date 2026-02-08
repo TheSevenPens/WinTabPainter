@@ -143,30 +143,30 @@ namespace WinTabPressureTester
 
 
 
-        private static bool get_press_change_as_letter(WinTabDN.Utils.PenButtonPressChangeType change)
+        private static bool get_press_change_as_letter(WinTabDN.Utils.PenButtonChangeType change)
         {
             return change switch
             {
-                WinTabDN.Utils.PenButtonPressChangeType.Pressed => true,
-                WinTabDN.Utils.PenButtonPressChangeType.Released => false,
+                WinTabDN.Utils.PenButtonChangeType.Pressed => true,
+                WinTabDN.Utils.PenButtonChangeType.Released => false,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
         private void PacketHandler(WinTabDN.Structs.WintabPacket wintab_pkt)
         {
 
-            var button_info = new WinTabDN.Utils.PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != WinTabDN.Utils.PenButtonPressChangeType.NoChange)
+            var button_info = new WinTabDN.Utils.PenButtonChange(wintab_pkt.pkButtons);
+            if (button_info.Change != WinTabDN.Utils.PenButtonChangeType.NoChange)
             {
-                if (button_info.ButtonId == WinTabDN.Utils.PenButtonIdentifier.Tip)
+                if (button_info.ButtonId == WinTabDN.Utils.PenButtonChangeButtonId.Tip)
                 {
                     this.checkBox_tipdown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == WinTabDN.Utils.PenButtonIdentifier.LowerButton)
+                else if (button_info.ButtonId == WinTabDN.Utils.PenButtonChangeButtonId.LowerButton)
                 {
                     this.checkBox_lowerbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == WinTabDN.Utils.PenButtonIdentifier.UpperButton)
+                else if (button_info.ButtonId == WinTabDN.Utils.PenButtonChangeButtonId.UpperButton)
                 {
                     this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
@@ -211,9 +211,9 @@ namespace WinTabPressureTester
 
         }
 
-        private void ButtonChangeHandler(WinTabDN.Structs.WintabPacket wintab_pkt, WinTabDN.Utils.PenButtonPressChange buttonchange)
+        private void ButtonChangeHandler(WinTabDN.Structs.WintabPacket wintab_pkt, WinTabDN.Utils.PenButtonChange buttonchange)
         {
-            if (buttonchange.Change == WinTabDN.Utils.PenButtonPressChangeType.Released)
+            if (buttonchange.Change == WinTabDN.Utils.PenButtonChangeType.Released)
             {
                 this.appstate.scale_session.logical_pressure_moving_average.Clear();
             }

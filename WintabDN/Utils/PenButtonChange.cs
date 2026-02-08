@@ -3,30 +3,30 @@
 namespace WinTabDN.Utils;
 
 
-public struct PenButtonPressChange
+public struct PenButtonChange
 {
-    public readonly PenButtonPressChangeType Change;
-    public readonly PenButtonIdentifier ButtonId;
+    public readonly PenButtonChangeType Change;
+    public readonly PenButtonChangeButtonId ButtonId;
 
-    public PenButtonPressChange(UInt32 pkt_button)
+    public PenButtonChange(UInt32 pkt_button)
     {
         UInt16 button_id = (UInt16)((pkt_button & 0x0000FFFF) >> 0);
         UInt16 press_change = (UInt16)((pkt_button & 0xFFFF0000) >> 16);
 
         this.Change = press_change switch
         {
-            0 => PenButtonPressChangeType.NoChange,
-            1 => PenButtonPressChangeType.Released,
-            2 => PenButtonPressChangeType.Pressed,
+            0 => PenButtonChangeType.NoChange,
+            1 => PenButtonChangeType.Released,
+            2 => PenButtonChangeType.Pressed,
             _ => throw new System.ArgumentOutOfRangeException()
         };
 
         this.ButtonId = button_id switch
         {
-            0 => PenButtonIdentifier.Tip,
-            1 => PenButtonIdentifier.LowerButton,
-            2 => PenButtonIdentifier.UpperButton,
-            3 => PenButtonIdentifier.BarrelButton,
+            0 => PenButtonChangeButtonId.Tip,
+            1 => PenButtonChangeButtonId.LowerButton,
+            2 => PenButtonChangeButtonId.UpperButton,
+            3 => PenButtonChangeButtonId.BarrelButton,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }

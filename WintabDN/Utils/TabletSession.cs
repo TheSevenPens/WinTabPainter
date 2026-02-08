@@ -10,11 +10,17 @@ public class TabletSession : System.IDisposable
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WinTabDN.Structs.WintabPacket, PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WinTabDN.Structs.WintabPacket, PenButtonChange> ButtonChangedHandler = null;
+    public uint ButtonState;
 
+    public readonly uint BUTTON_TIP_MASK = 0x0001;
+    public readonly uint BUTTON_LOWER_MASK = 0x0002;
+    public readonly uint BUTTON_UPPER_MASK = 0x0004;
+    public readonly uint BUTTON_BARREL_MASK = 0x0008;
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
+        this.ButtonState = 0; // Initialize to indicate no buttons are pressed
     }
 
     public void Open(TabletContextType context_type)
@@ -76,11 +82,59 @@ public class TabletSession : System.IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != PenButtonPressChangeType.NoChange)
+            var button_info = new PenButtonChange(wintab_pkt.pkButtons);
+
+            if (button_info.Change != PenButtonChangeType.NoChange)
+            {
+                // there's been some change to the buttons
+                if (button_info.Change == PenButtonChangeType.Pressed)
+                {
+                    if (button_info.ButtonId == PenButtonChangeButtonId.Tip)
+                    {
+                        this.ButtonState |= BUTTON_TIP_MASK; // Set bit for button 1
+                    }
+                    else if (button_info.ButtonId == PenButtonChangeButtonId.LowerButton)
+                    {
+                        this.ButtonState |= BUTTON_LOWER_MASK; // Set bit for button 2
+                    }
+                    else if (button_info.ButtonId == PenButtonChangeButtonId.UpperButton)
+                    {
+                        this.ButtonState |= BUTTON_UPPER_MASK;
+                    }
+                    else if (button_info.ButtonId == PenButtonChangeButtonId.BarrelButton)
+                    {
+                        // this may be a remnant of the winink integration so identify if this is real
+                        // because it doesn't have a standard bitmask in wintab
+                        this.ButtonState |= BUTTON_BARREL_MASK; // Set bit for barrel button (using the next available bit)
+                    }
+                }
+                else if (button_info.Change == PenButtonChangeType.Released)
+                {
+                    if (button_info.ButtonId == PenButtonChangeButtonId.Tip)
+                    {
+                        this.ButtonState &= ~BUTTON_TIP_MASK; // Clear bit for button 1
+                    }
+                    else if (button_info.ButtonId == PenButtonChangeButtonId.LowerButton)
+                    {
+                        this.ButtonState &= ~BUTTON_LOWER_MASK; // Clear bit for button 2
+                    }
+                    else if (button_info.ButtonId == PenButtonChangeButtonId.UpperButton)
+                    {
+                        this.ButtonState &= ~BUTTON_UPPER_MASK;
+                    }
+                    else if (button_info.ButtonId == PenButtonChangeButtonId.BarrelButton)
+                    {
+                        // this may be a remnant of the winink integration so identify if this is real
+                        // because it doesn't have a standard bitmask in wintab
+                        this.ButtonState &= ~BUTTON_BARREL_MASK; // Clear bit for barrel button
+                    }
+                }
+            }
+
+
+            if (button_info.Change != PenButtonChangeType.NoChange)
             {
                 this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
-
             }
 
             if (this.PacketHandler != null) 
