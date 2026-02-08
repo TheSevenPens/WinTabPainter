@@ -52,6 +52,7 @@ namespace SevenPaint
             // Initialize Inputs
             _wintabInput = new Stylus.WinTabStyusProvider(RenderImage);
             _wintabInput.InputMove += OnInputMove;
+            _wintabInput.ButtonChanged += OnButtonChanged;
 
             // Default to Wintab
             try
@@ -368,6 +369,27 @@ namespace SevenPaint
                     string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
                     _debugLogWindow.Log(log);
                 }
+            }
+        }
+        private void OnButtonChanged(Stylus.StylusButtonEventArgs args)
+        {/*
+            if (change.ButtonId == WinTabDN.Utils.PenButtonIdentifier.Tip)
+            {
+                if (change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed)
+                {
+                    // we need to reset the smoothing 
+                    // whenever the pen tip touches the tablet
+                    // if we don't do this the previous stroke will
+                    // have influence on the new stroke
+                    paint_settings.Dynamics.PositionSmoother.Reset();
+                    paint_settings.Dynamics.PressureSmoother.Reset();
+                }
+            }*/
+            if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
+            {
+                string action = args.IsPressed ? "Pressed" : "Released";
+                string log = $"{DateTime.Now:HH:mm:ss.fff}: Button {args.ButtonName} ({args.ButtonId}) {action}";
+                _debugLogWindow.Log(log);
             }
         }
     }

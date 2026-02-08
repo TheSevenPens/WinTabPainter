@@ -2,15 +2,14 @@ using System.Windows;
 //
 namespace SevenPaint.Stylus
 {
-    public class WinTabStyusProvider : IStylusProvider
+    public class WinTabStyusProvider
     {
         private WinTabDN.Utils.TabletSession _session;
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
-        public event Action<StylusEventArgs>? InputDown; // Wintab packets usually don't distinguish Down/Move easily without logic, but we treat non-zero pressure as active
         public event Action<StylusEventArgs>? InputMove;
-        public event Action<StylusEventArgs>? InputUp;
+        public event Action<StylusButtonEventArgs>? ButtonChanged;
 #pragma warning restore 67
 
         public bool IsActive { get; set; } = false;
@@ -20,6 +19,7 @@ namespace SevenPaint.Stylus
             _targetElement = targetElement;
             _session = new WinTabDN.Utils.TabletSession();
             _session.PacketHandler = OnWintabPacket;
+            _session.ButtonChangedHandler = OnButtonChanged;
         }
 
         public void Open()
@@ -90,6 +90,30 @@ namespace SevenPaint.Stylus
                 Timestamp = packet.pkTime
             };
             return args;
+        }
+        private void OnButtonChanged(WinTabDN.Structs.WintabPacket packet, WinTabDN.Utils.PenButtonPressChange change)
+        {
+            if (!IsActive) return;
+
+            if (change.ButtonId == WinTabDN.Utils.PenButtonIdentifier.Tip)
+            {
+                if (change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed)
+                {
+                    // Per-stroke state for things like smoothing should be reset here
+                }
+            }
+
+            _targetElement.Dispatcher.Invoke(() =>
+            {
+                if (!IsActive) return;
+
+                bool isPressed = change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed;
+                string btnName = change.ButtonId.ToString();
+                int btnId = (int)change.ButtonId;
+                
+                var args = new StylusButtonEventArgs(btnId, isPressed, btnName);
+                ButtonChanged?.Invoke(args);
+            });
         }
     }
 }

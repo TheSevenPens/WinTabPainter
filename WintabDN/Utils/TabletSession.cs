@@ -114,7 +114,7 @@ public class TabletSession : System.IDisposable
 
             if (this.Context != null)
             {
-                this.Context.Close(); // Close() calls Dispose() internally now
+                this.Context.Close(); // Close() calls Dispose() internally 
                 this.Context = null;
             }
         }
