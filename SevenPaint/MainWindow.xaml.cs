@@ -11,9 +11,9 @@ namespace SevenPaint
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Paint.PixelCanvas _canvas;
-        private const int ImageWidth = 1920;
-        private const int ImageHeight = 1080;
+        private Paint.CanvasDocument _document;
+        private const int default_canvas_width = 1920;
+        private const int default_canvas_height = 1080;
 
         private Paint.BrushSettings _brushSettings = new Paint.BrushSettings();
 
@@ -42,9 +42,9 @@ namespace SevenPaint
             _viewManager = new SevenPaint.View.ViewManager(MainScrollViewer, CanvasScale);
             _viewManager.ZoomChanged += (s, level) => TxtZoomLevel.Text = $"Zoom: {level}x";
 
-            // Initialize PixelCanvas - 96 DPI
-            _canvas = new Paint.PixelCanvas(ImageWidth, ImageHeight, 96.0);
-            RenderImage.Source = _canvas.Source;
+            // Initialize CanvasDocument - 96 DPI
+            _document = new Paint.CanvasDocument(default_canvas_width, default_canvas_height, 96.0);
+            RenderImage.Source = _document.Source;
 
             // Clear to white
             Clear(Colors.White);
@@ -148,7 +148,7 @@ namespace SevenPaint
         {
             if (e.Key == System.Windows.Input.Key.Delete || e.Key == System.Windows.Input.Key.Back)
             {
-                _canvas.Clear(Colors.White);
+                _document.Clear(Colors.White);
             }
 
             _viewManager.ProcessKeyDown(e);
@@ -244,7 +244,7 @@ namespace SevenPaint
         // Clear method removed (moved to PixelCanvas)
         private void Clear(System.Windows.Media.Color color)
         {
-            _canvas.Clear(color);
+            _document.Clear(color);
         }
 
         private DebugLogWindow? _debugLogWindow;
@@ -347,17 +347,21 @@ namespace SevenPaint
 
             if (args.PressureNormalized > 0)
             {
-                _canvas.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
+                _document.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
             }
 
             UpdateRibbon(args);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
-                if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
+                // Only log if within canvas bounds
+                if (_document.Contains(args.LocalPos.X, args.LocalPos.Y))
                 {
-                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
-                    _debugLogWindow.Log(log);
+                    if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
+                    {
+                        string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
+                        _debugLogWindow.Log(log);
+                    }
                 }
             }
         }
