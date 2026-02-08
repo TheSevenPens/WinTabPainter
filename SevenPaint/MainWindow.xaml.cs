@@ -29,6 +29,9 @@ namespace SevenPaint
         private double _lastVelocity = 0;
         private double _lastDirection = 0;
 
+        // Debounce tracking
+        private long _lastWintabTime = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -200,18 +203,22 @@ namespace SevenPaint
             _lastPoint = currentPoint.ToSPPointD();
             
             // Note: Wintab updates this too, but Mouse is smoother for "hover"
-            var temp_args = new Stylus.StylusEventArgs
+            // However, if we just got a Wintab packet, don't overwrite with mouse zeros
+            if (DateTime.Now.Ticks - _lastWintabTime > 1000000) // 100ms
             {
-                LocalPos = currentPoint.ToSPPointD(),
-                PressureNormalized = 0,
-                TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
-                TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
-                Twist = 0,
-                ButtonsRaw = buttons,
-                HoverDistance = 0
-            };
+                var temp_args = new Stylus.StylusEventArgs
+                {
+                    LocalPos = currentPoint.ToSPPointD(),
+                    PressureNormalized = 0,
+                    TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
+                    TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
+                    Twist = 0,
+                    ButtonsRaw = buttons,
+                    HoverDistance = 0
+                };
 
-            UpdateRibbon(temp_args);
+                UpdateRibbon(temp_args);
+            }
 
             _viewManager.ProcessPreviewMouseMove(e);
         }
@@ -314,6 +321,8 @@ namespace SevenPaint
         
         private void OnInputMove(Stylus.StylusEventArgs args)
         {
+            _lastWintabTime = DateTime.Now.Ticks;
+
             if (_viewManager.IsSpaceDown || _viewManager.IsPanning) return;
 
             double scaleFactor = args.PressureNormalized;
