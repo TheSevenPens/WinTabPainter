@@ -118,8 +118,9 @@ namespace SevenPaint.Stylus
                 bool isPressed = change.Change == WinTabDN.Utils.PenButtonChangeType.Pressed;
                 string btnName = change.ButtonId.ToString();
                 int btnId = (int)change.ButtonId;
+                int btnState = (int)_session.ButtonState;
                 
-                var args = new StylusButtonEventArgs(btnId, isPressed, btnName);
+                var args = new StylusButtonEventArgs(btnId, isPressed, btnName, btnState);
                 ButtonChanged?.Invoke(args);
             });
         }

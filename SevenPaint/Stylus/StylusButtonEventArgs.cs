@@ -6,11 +6,14 @@ namespace SevenPaint.Stylus
         public bool IsPressed { get; }
         public string ButtonName { get; }
 
-        public StylusButtonEventArgs(int buttonId, bool isPressed, string buttonName)
+        public int ButtonState { get; }
+
+        public StylusButtonEventArgs(int buttonId, bool isPressed, string buttonName, int buttonState)
         {
             ButtonId = buttonId;
             IsPressed = isPressed;
             ButtonName = buttonName;
+            ButtonState = buttonState;
         }
     }
 }

@@ -32,6 +32,10 @@ namespace SevenPaint
         // Debounce tracking
         private long _lastWintabTime = 0;
 
+        // Button State Tracking
+        private int _lastButtonState = 0;
+        private int _lastButtonsRaw = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -278,6 +282,11 @@ namespace SevenPaint
             _debugLogWindow = null;
         }
 
+        private void UpdateButtonText()
+        {
+            TxtButtons.Text = $"{_lastButtonsRaw} / {_lastButtonState:X}";
+        }
+
         private void UpdateRibbon(SevenPaint.Stylus.StylusEventArgs args)
         {
             long now = DateTime.Now.Ticks; // 100ns units
@@ -306,7 +315,8 @@ namespace SevenPaint
             // Update UI (Throttle if needed, but doing it every moved event for "live" feel)
             // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
             // We assume this is called inside Dispatcher if from Wintab.
-            TxtButtons.Text = $"{args.ButtonState:X}";
+            _lastButtonsRaw = args.PenButtonRaw;
+            UpdateButtonText();
             TxtX.Text = $"{args.LocalPos.X:F1}";
             TxtY.Text = $"{args.LocalPos.Y:F1}";
             TxtVelocity.Text = $"{_lastVelocity:F1}";
@@ -376,23 +386,14 @@ namespace SevenPaint
             }
         }
         private void OnButtonChanged(Stylus.StylusButtonEventArgs args)
-        {/*
-            if (change.ButtonId == WinTabDN.Utils.PenButtonIdentifier.Tip)
-            {
-                if (change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed)
-                {
-                    // we need to reset the smoothing 
-                    // whenever the pen tip touches the tablet
-                    // if we don't do this the previous stroke will
-                    // have influence on the new stroke
-                    paint_settings.Dynamics.PositionSmoother.Reset();
-                    paint_settings.Dynamics.PressureSmoother.Reset();
-                }
-            }*/
+        {
+            _lastButtonState = args.ButtonState;
+            UpdateButtonText();
+
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
                 string action = args.IsPressed ? "Pressed" : "Released";
-                string log = $"{DateTime.Now:HH:mm:ss.fff}: Button {args.ButtonName} ({args.ButtonId}) {action}";
+                string log = $"{DateTime.Now:HH:mm:ss.fff}: Button {args.ButtonName} ({args.ButtonId}) {action} State={args.ButtonState:X}";
                 _debugLogWindow.Log(log);
             }
         }
