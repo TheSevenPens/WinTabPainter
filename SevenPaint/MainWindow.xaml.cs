@@ -199,7 +199,18 @@ namespace SevenPaint
             _lastPoint = currentPoint.ToSPPointD();
             
             // Note: Wintab updates this too, but Mouse is smoother for "hover"
-            UpdateRibbon(currentPoint.ToSPPointD(), 0, 0, 0, 0, 90, 0, buttons, 0.0);
+            var temp_args = new Stylus.StylusEventArgs
+            {
+                LocalPos = currentPoint.ToSPPointD(),
+                PressureNormalized = 0,
+                TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
+                TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
+                Twist = 0,
+                ButtonsRaw = buttons,
+                HoverDistance = 0
+            };
+
+            UpdateRibbon(temp_args);
 
             _viewManager.ProcessPreviewMouseMove(e);
         }
@@ -263,7 +274,7 @@ namespace SevenPaint
 
 
 
-        private void UpdateRibbon(SevenUtils.Geometry.PointD localpos, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons, double hoverDist)
+        private void UpdateRibbon(SevenPaint.Stylus.StylusEventArgs args)
         {
             long now = DateTime.Now.Ticks; // 100ns units
             double dt = (now - _lastTime) / 10000.0; // milliseconds
@@ -271,8 +282,8 @@ namespace SevenPaint
             // Only calc velocity if time passed significantly (e.g. > 5ms) to avoid divide by zero or extreme noise
             if (_lastTime > 0 && dt > 0)
             {
-                double dx = localpos.X - _lastPoint.X;
-                double dy = localpos.Y - _lastPoint.Y;
+                double dx = args.LocalPos.X - _lastPoint.X;
+                double dy = args.LocalPos.Y - _lastPoint.Y;
                 double dist = Math.Sqrt(dx * dx + dy * dy);
 
                 // Velocity in px/s: (dist / dt_ms) * 1000
@@ -291,23 +302,23 @@ namespace SevenPaint
             }
 
             _lastTime = now;
-            _lastPoint = localpos;
+            _lastPoint = args.LocalPos;
 
             // Update UI (Throttle if needed, but doing it every moved event for "live" feel)
             // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
             // We assume this is called inside Dispatcher if from Wintab.
-            TxtButtons.Text = $"{buttons}";
-            TxtX.Text = $"{localpos.X:F1}";
-            TxtY.Text = $"{localpos.Y:F1}";
+            TxtButtons.Text = $"{args.ButtonsRaw}";
+            TxtX.Text = $"{args.LocalPos.X:F1}";
+            TxtY.Text = $"{args.LocalPos.Y:F1}";
             TxtVelocity.Text = $"{_lastVelocity:F1}";
             TxtDirection.Text = $"{_lastDirection:F1}";
-            TxtHoverDist.Text = $"{hoverDist:F1}";
-            TxtPressure.Text = $"{pressure:F4}";
-            TxtTiltX.Text = $"{tiltX,6:F1}";
-            TxtTiltY.Text = $"{tiltY,6:F1}";
-            TxtTiltAzimuth.Text = $"{azimuth,6:F1}";
-            TxtTiltAltitude.Text = $"{altitude,6:F1}";
-            TxtBarrelRotation.Text = $"{twist,6:F0}";
+            TxtHoverDist.Text = $"{args.HoverDistance:F1}";
+            TxtPressure.Text = $"{args.PressureNormalized:F4}";
+            TxtTiltX.Text = $"{args.TiltXYDeg.X,6:F1}";
+            TxtTiltY.Text = $"{args.TiltXYDeg.Y,6:F1}";
+            TxtTiltAzimuth.Text = $"{args.TiltAADeg.Azimuth,6:F1}";
+            TxtTiltAltitude.Text = $"{args.TiltAADeg.Altitude,6:F1}";
+            TxtBarrelRotation.Text = $"{args.Twist,6:F0}";
         }
         
         private void OnInputMove(Stylus.StylusEventArgs args)
@@ -348,7 +359,7 @@ namespace SevenPaint
                 _canvas.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(args.LocalPos, args.PressureNormalized, args.TiltXYDeg.X, args.TiltXYDeg.Y, args.TiltAADeg.Azimuth, args.TiltAADeg.Altitude, args.Twist, args.ButtonsRaw, args.HoverDistance);
+            UpdateRibbon(args);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
