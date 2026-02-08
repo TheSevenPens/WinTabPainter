@@ -2,11 +2,9 @@ namespace SevenPaint.Stylus
 {
     public struct StylusEventArgs
     {
-        public double LocalX { get; set; }
-        public double LocalY { get; set; }
-
+        public SevenUtils.Geometry.PointD ScreenPos { get; set; }
+        public SevenUtils.Geometry.PointD LocalPos { get; set; }
         public double HoverDistance { get; set; } 
-
         public float PressureLevelRaw { get; set; }
         public float PressureNormalized { get; set; }
         public double TiltXDeg { get; set; }

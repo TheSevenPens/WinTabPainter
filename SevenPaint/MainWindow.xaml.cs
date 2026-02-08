@@ -343,16 +343,16 @@ namespace SevenPaint
 
             if (args.PressureNormalized > 0)
             {
-                _canvas.DrawDab(args.LocalX, args.LocalY, radius, _brushSettings.Color);
+                _canvas.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(new System.Windows.Point(args.LocalX, args.LocalY), args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw, args.HoverDistance);
+            UpdateRibbon(new System.Windows.Point(args.LocalPos.X, args.LocalPos.Y), args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw, args.HoverDistance);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
                 if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
                 {
-                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalX:F1} Y={args.LocalY:F1} P={args.PressureNormalized:F4} TX={args.TiltXDeg:F1} TY={args.TiltYDeg:F1} Az={args.TiltAzimuthDeg:F1} Alt={args.TiltAltitudeDeg:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
+                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXDeg:F1} TY={args.TiltYDeg:F1} Az={args.TiltAzimuthDeg:F1} Alt={args.TiltAltitudeDeg:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
                     _debugLogWindow.Log(log);
                 }
             }

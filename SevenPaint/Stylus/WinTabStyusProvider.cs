@@ -55,7 +55,7 @@ namespace SevenPaint.Stylus
                 if (!IsActive) return;
 
                 // Map Screen -> Local
-                System.Windows.Point p = _targetElement.PointFromScreen(new System.Windows.Point(packet.pkX, packet.pkY));
+                var localpos = _targetElement.PointFromScreen(new System.Windows.Point(packet.pkX, packet.pkY));
               
                 // Tilt/Orientation
                 double azimuth = packet.pkOrientation.orAzimuth / 10.0;
@@ -67,9 +67,8 @@ namespace SevenPaint.Stylus
                 // Create Args
                 var args = new StylusEventArgs
                 {
-
-                    LocalX = p.X,
-                    LocalY = p.Y,
+                    ScreenPos = new SevenUtils.Geometry.PointD(packet.pkX, packet.pkY),
+                    LocalPos = new SevenUtils.Geometry.PointD(localpos.X, localpos.Y),
                     HoverDistance = packet.pkZ,
                     PressureLevelRaw = packet.pkNormalPressure,
                     PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
