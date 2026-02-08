@@ -284,7 +284,7 @@ namespace SevenPaint
 
         private void UpdateButtonText()
         {
-            TxtButtons.Text = $"{_lastButtonsRaw} / {_lastButtonState:X}";
+            TxtButtons.Text = $"{_lastButtonState:X}";
         }
 
         private void UpdateRibbon(SevenPaint.Stylus.StylusEventArgs args)

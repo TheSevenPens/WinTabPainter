@@ -98,19 +98,6 @@ namespace SevenPaint.Stylus
         {
             if (!IsActive) return;
 
-            bool tip_pressed_status = false; // temporary set to false. Should be maintained as some state.
-            if (change.ButtonId == WinTabDN.Utils.PenButtonChangeButtonId.Tip)
-            {
-                if (change.Change == WinTabDN.Utils.PenButtonChangeType.Pressed)
-                {
-                    tip_pressed_status = true;
-                }
-                else if (change.Change == WinTabDN.Utils.PenButtonChangeType.Released)
-                {
-                    tip_pressed_status = false;
-                }
-            }
-
             _targetElement.Dispatcher.Invoke(() =>
             {
                 if (!IsActive) return;
