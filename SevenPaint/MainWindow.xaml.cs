@@ -270,11 +270,6 @@ namespace SevenPaint
             _debugLogWindow = null;
         }
 
-        // Removed SetDebugVisibility as it is no longer needed
-
-
-
-
         private void UpdateRibbon(SevenPaint.Stylus.StylusEventArgs args)
         {
             long now = DateTime.Now.Ticks; // 100ns units
@@ -283,18 +278,13 @@ namespace SevenPaint
             // Only calc velocity if time passed significantly (e.g. > 5ms) to avoid divide by zero or extreme noise
             if (_lastTime > 0 && dt > 0)
             {
-                double dx = args.LocalPos.X - _lastPoint.X;
-                double dy = args.LocalPos.Y - _lastPoint.Y;
-                double dist = Math.Sqrt(dx * dx + dy * dy);
+                var deltapos = args.LocalPos.Subtract(_lastPoint);
+                double dist = Math.Sqrt((deltapos.X * deltapos.X) + (deltapos.Y * deltapos.Y));
 
                 // Velocity in px/s: (dist / dt_ms) * 1000
                 double velocity = (dist / dt) * 1000.0;
-
-                // Direction (degrees)
-                // Atan2 returns radians. 0 is right (positive X).
-                // Let's normalize like standard tools usually do (0-360).
-                double dirRad = Math.Atan2(dy, dx);
-                double dirDeg = dirRad * (180.0 / Math.PI);
+                double dirRad = Math.Atan2(deltapos.X, deltapos.Y);
+                double dirDeg = SevenUtils.Trigonometry.Angles.RadiansToDegrees(dirRad);
                 if (dirDeg < 0) dirDeg += 360.0;
 
                 // Simple smoothing could be added, but user asked for raw-ish values
