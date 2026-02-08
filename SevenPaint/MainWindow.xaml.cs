@@ -325,10 +325,10 @@ namespace SevenPaint
                     scaleFactor = args.PressureNormalized;
                     break;
                 case Paint.ScaleType.Azimuth:
-                    scaleFactor = (args.TiltAzimuthDeg % 360.0) / 360.0;
+                    scaleFactor = (args.TiltAADeg.Azimuth % 360.0) / 360.0;
                     break;
                 case Paint.ScaleType.Altitude:
-                    scaleFactor = args.TiltAltitudeDeg / 90.0;
+                    scaleFactor = args.TiltAADeg.Altitude / 90.0;
                     break;
                 case Paint.ScaleType.Rotation:
                     scaleFactor = (args.Twist % 360.0) / 360.0;
@@ -348,13 +348,13 @@ namespace SevenPaint
                 _canvas.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(args.LocalPos, args.PressureNormalized, args.TiltXDeg, args.TiltYDeg, args.TiltAzimuthDeg, args.TiltAltitudeDeg, args.Twist, args.ButtonsRaw, args.HoverDistance);
+            UpdateRibbon(args.LocalPos, args.PressureNormalized, args.TiltXYDeg.X, args.TiltXYDeg.Y, args.TiltAADeg.Azimuth, args.TiltAADeg.Altitude, args.Twist, args.ButtonsRaw, args.HoverDistance);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
                 if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
                 {
-                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXDeg:F1} TY={args.TiltYDeg:F1} Az={args.TiltAzimuthDeg:F1} Alt={args.TiltAltitudeDeg:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
+                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.ButtonsRaw}";
                     _debugLogWindow.Log(log);
                 }
             }

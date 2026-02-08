@@ -46,24 +46,27 @@ namespace SevenPaint.Stylus
         {
             if (!IsActive) return;
 
-            // Basic filtering
-
-
             // We need to map coordinates on the UI thread
             _targetElement.Dispatcher.Invoke(() =>
             {
                 if (!IsActive) return;
 
-                // Map Screen -> Local
+                // WinTab gives us screen coordinates
+                // For a "drawing app" so we need to convert them to local coordinates relative to the target element (canvas)
                 var localpos = _targetElement.PointFromScreen(new System.Windows.Point(packet.pkX, packet.pkY));
-              
-                // Tilt/Orientation
-                double azimuth = packet.pkOrientation.orAzimuth / 10.0;
-                double altitude = packet.pkOrientation.orAltitude / 10.0;
-                double twist = packet.pkOrientation.orTwist / 10.0;
 
+                // Pen Orientation is given in Azimuth (0-360), Altitude (0-90), and Twist (0-360)
+                // WinTab gives these values in tenths of degrees, so we divide by 10 to get actual degrees
+                double angle_normalization_factor = 10.0;
+                double azimuth = packet.pkOrientation.orAzimuth / angle_normalization_factor;
+                double altitude = packet.pkOrientation.orAltitude / angle_normalization_factor;
+                double twist = packet.pkOrientation.orTwist / angle_normalization_factor;
+
+                // WinTab provides the orientation only in Azimuth/Altitude format
+                // For convenience, convert that to XY tilt
                 var tiltaa_deg = new SevenUtils.Trigonometry.TiltAA(azimuth, altitude);
                 var tiltxy_deg = tiltaa_deg.ToXY_Deg();
+
                 // Create Args
                 var args = new StylusEventArgs
                 {
@@ -72,10 +75,8 @@ namespace SevenPaint.Stylus
                     HoverDistance = packet.pkZ,
                     PressureLevelRaw = packet.pkNormalPressure,
                     PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
-                    TiltAzimuthDeg = azimuth,
-                    TiltAltitudeDeg = altitude,
-                    TiltXDeg = tiltxy_deg.X,
-                    TiltYDeg = tiltxy_deg.Y,
+                    TiltAADeg = tiltaa_deg,
+                    TiltXYDeg = tiltxy_deg,
                     Twist = twist,
                     ButtonsRaw = (int)packet.pkButtons,
                     Timestamp = packet.pkTime
