@@ -13,7 +13,7 @@ namespace SevenPaint.Stylus
         public double Twist { get; set; } // Barrel Rotation
         public int PenButtonRaw { get; set; }
         public int ButtonState { get; set; }
-        public WinTabDN.Utils.PenButtonChange PenButtonChange { get; set; }
+        public WinTabDN.Utils.StylusButtonChange PenButtonChange { get; set; }
         public long Timestamp { get; set; } // Ticks
     }
 }

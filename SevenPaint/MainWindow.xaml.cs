@@ -218,7 +218,7 @@ namespace SevenPaint
                     TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
                     Twist = 0,
                     PenButtonRaw = 0,
-                    PenButtonChange = new PenButtonChange(0),
+                    PenButtonChange = new StylusButtonChange(0),
                     HoverDistance = 0
                 };
 

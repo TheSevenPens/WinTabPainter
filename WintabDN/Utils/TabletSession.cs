@@ -10,17 +10,17 @@ public class TabletSession : System.IDisposable
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WinTabDN.Structs.WintabPacket, PenButtonChange> ButtonChangedHandler = null;
-    public uint ButtonState;
+    public System.Action<WinTabDN.Structs.WintabPacket, StylusButtonChange> ButtonChangedHandler = null;
+    public uint StylusButtonState;
 
-    public readonly uint BUTTON_TIP_MASK = 0x0001;
-    public readonly uint BUTTON_LOWER_MASK = 0x0002;
-    public readonly uint BUTTON_UPPER_MASK = 0x0004;
-    public readonly uint BUTTON_BARREL_MASK = 0x0008;
+    public readonly uint STYLUS_BUTTON_TIP_MASK = 0x0001;
+    public readonly uint STYLUS_BUTTON_LOWER_MASK = 0x0002;
+    public readonly uint STYLUS_BUTTON_UPPER_MASK = 0x0004;
+    public readonly uint STYLUS_BUTTON_BARREL_MASK = 0x0008;
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
-        this.ButtonState = 0; // Initialize to indicate no buttons are pressed
+        this.StylusButtonState = 0; // Initialize to indicate no buttons are pressed
     }
 
     public void Open(TabletContextType context_type)
@@ -82,45 +82,45 @@ public class TabletSession : System.IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new PenButtonChange(wintab_pkt.pkButtons);
+            var button_info = new StylusButtonChange(wintab_pkt.pkButtons);
 
-            if (button_info.Change != PenButtonChangeType.NoChange)
+            if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 // there's been some change to the buttons
-                if (button_info.Change == PenButtonChangeType.Pressed)
+                if (button_info.Change == StylusButtonChangeType.Pressed)
                 {
-                    if (button_info.ButtonId == PenButtonChangeButtonId.Tip)
+                    if (button_info.ButtonId == StylusButtonId.Tip)
                     {
-                        this.ButtonState |= BUTTON_TIP_MASK; // Set bit for button 1
+                        this.StylusButtonState |= STYLUS_BUTTON_TIP_MASK; // Set bit for button 1
                     }
-                    else if (button_info.ButtonId == PenButtonChangeButtonId.LowerButton)
+                    else if (button_info.ButtonId == StylusButtonId.LowerButton)
                     {
-                        this.ButtonState |= BUTTON_LOWER_MASK; // Set bit for button 2
+                        this.StylusButtonState |= STYLUS_BUTTON_LOWER_MASK; // Set bit for button 2
                     }
-                    else if (button_info.ButtonId == PenButtonChangeButtonId.UpperButton)
+                    else if (button_info.ButtonId == StylusButtonId.UpperButton)
                     {
-                        this.ButtonState |= BUTTON_UPPER_MASK;
+                        this.StylusButtonState |= STYLUS_BUTTON_UPPER_MASK;
                     }
                 }
-                else if (button_info.Change == PenButtonChangeType.Released)
+                else if (button_info.Change == StylusButtonChangeType.Released)
                 {
-                    if (button_info.ButtonId == PenButtonChangeButtonId.Tip)
+                    if (button_info.ButtonId == StylusButtonId.Tip)
                     {
-                        this.ButtonState &= ~BUTTON_TIP_MASK; // Clear bit for button 1
+                        this.StylusButtonState &= ~STYLUS_BUTTON_TIP_MASK; // Clear bit for button 1
                     }
-                    else if (button_info.ButtonId == PenButtonChangeButtonId.LowerButton)
+                    else if (button_info.ButtonId == StylusButtonId.LowerButton)
                     {
-                        this.ButtonState &= ~BUTTON_LOWER_MASK; // Clear bit for button 2
+                        this.StylusButtonState &= ~STYLUS_BUTTON_LOWER_MASK; // Clear bit for button 2
                     }
-                    else if (button_info.ButtonId == PenButtonChangeButtonId.UpperButton)
+                    else if (button_info.ButtonId == StylusButtonId.UpperButton)
                     {
-                        this.ButtonState &= ~BUTTON_UPPER_MASK;
+                        this.StylusButtonState &= ~STYLUS_BUTTON_UPPER_MASK;
                     }
                 }
             }
 
 
-            if (button_info.Change != PenButtonChangeType.NoChange)
+            if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
             }
