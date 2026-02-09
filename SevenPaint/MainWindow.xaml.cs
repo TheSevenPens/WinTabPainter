@@ -84,12 +84,12 @@ namespace SevenPaint
             try
             {
                 _wintabInput.Open();
-                StatusLabel.Text = $"Active API: Wintab (DPI Scale: {_dpiScale:F2})";
+                // StatusLabel.Text = "Active API: Wintab";
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
-                StatusLabel.Text = "Active API: Wintab (Failed)";
+                // StatusLabel.Text = "Active API: Wintab (Failed)";
             }
         }
 

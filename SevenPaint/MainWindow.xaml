@@ -179,9 +179,7 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
-        </StatusBar>
+
         <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#FF808080"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
                       PreviewMouseDown="ScrollViewer_PreviewMouseDown"
