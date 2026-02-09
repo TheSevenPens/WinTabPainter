@@ -5,22 +5,19 @@ namespace WinTabDN.Utils;
 public class TabletSession : System.IDisposable
 {
 
+
     public WinTabDN.CWintabContext Context = null;
     public WinTabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
     public System.Action<WinTabDN.Structs.WintabPacket, StylusButtonChange> ButtonChangedHandler = null;
-    public uint StylusButtonState;
+    public StylusButtonState StylusButtonState;
 
-    public readonly uint STYLUS_BUTTON_TIP_MASK = 0x0001;
-    public readonly uint STYLUS_BUTTON_LOWER_MASK = 0x0002;
-    public readonly uint STYLUS_BUTTON_UPPER_MASK = 0x0004;
-    public readonly uint STYLUS_BUTTON_BARREL_MASK = 0x0008;
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
-        this.StylusButtonState = 0; // Initialize to indicate no buttons are pressed
+        this.StylusButtonState = new StylusButtonState(0); // Initialize to indicate no buttons are pressed
     }
 
     public void Open(TabletContextType context_type)
@@ -87,36 +84,7 @@ public class TabletSession : System.IDisposable
             if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 // there's been some change to the buttons
-                if (button_info.Change == StylusButtonChangeType.Pressed)
-                {
-                    if (button_info.ButtonId == StylusButtonId.Tip)
-                    {
-                        this.StylusButtonState |= STYLUS_BUTTON_TIP_MASK; // Set bit for button 1
-                    }
-                    else if (button_info.ButtonId == StylusButtonId.LowerButton)
-                    {
-                        this.StylusButtonState |= STYLUS_BUTTON_LOWER_MASK; // Set bit for button 2
-                    }
-                    else if (button_info.ButtonId == StylusButtonId.UpperButton)
-                    {
-                        this.StylusButtonState |= STYLUS_BUTTON_UPPER_MASK;
-                    }
-                }
-                else if (button_info.Change == StylusButtonChangeType.Released)
-                {
-                    if (button_info.ButtonId == StylusButtonId.Tip)
-                    {
-                        this.StylusButtonState &= ~STYLUS_BUTTON_TIP_MASK; // Clear bit for button 1
-                    }
-                    else if (button_info.ButtonId == StylusButtonId.LowerButton)
-                    {
-                        this.StylusButtonState &= ~STYLUS_BUTTON_LOWER_MASK; // Clear bit for button 2
-                    }
-                    else if (button_info.ButtonId == StylusButtonId.UpperButton)
-                    {
-                        this.StylusButtonState &= ~STYLUS_BUTTON_UPPER_MASK;
-                    }
-                }
+                this.StylusButtonState.Update(button_info);
             }
 
 

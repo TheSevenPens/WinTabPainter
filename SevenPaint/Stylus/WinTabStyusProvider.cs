@@ -77,39 +77,39 @@ namespace SevenPaint.Stylus
             var tiltxy_deg = tiltaa_deg.ToXY_Deg();
 
             // Create Args
-            var args = new StylusEventArgs
-            {
-                ScreenPos = new SevenUtils.Geometry.PointD(packet.pkX, packet.pkY),
-                LocalPos = new SevenUtils.Geometry.PointD(localpos.X, localpos.Y),
-                HoverDistance = packet.pkZ,
-                PressureLevelRaw = packet.pkNormalPressure,
-                PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
-                TiltAADeg = tiltaa_deg,
-                TiltXYDeg = tiltxy_deg,
-                Twist = twist,
-                PenButtonRaw = (int)packet.pkButtons,
-                ButtonState = (int)_session.StylusButtonState,
-                PenButtonChange = new StylusButtonChange(packet.pkButtons),
-                Timestamp = packet.pkTime
-            };
-            return args;
-        }
-        private void OnButtonChanged(WinTabDN.Structs.WintabPacket packet, WinTabDN.Utils.StylusButtonChange change)
-        {
-            if (!IsActive) return;
-
-            _targetElement.Dispatcher.Invoke(() =>
+                var args = new StylusEventArgs
+                {
+                    ScreenPos = new SevenUtils.Geometry.PointD(packet.pkX, packet.pkY),
+                    LocalPos = new SevenUtils.Geometry.PointD(localpos.X, localpos.Y),
+                    HoverDistance = packet.pkZ,
+                    PressureLevelRaw = packet.pkNormalPressure,
+                    PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
+                    TiltAADeg = tiltaa_deg,
+                    TiltXYDeg = tiltxy_deg,
+                    Twist = twist,
+                    PenButtonRaw = (int)packet.pkButtons,
+                    ButtonState = (uint)_session.StylusButtonState,
+                    PenButtonChange = new StylusButtonChange(packet.pkButtons),
+                    Timestamp = packet.pkTime
+                };
+                return args;
+            }
+            private void OnButtonChanged(WinTabDN.Structs.WintabPacket packet, WinTabDN.Utils.StylusButtonChange change)
             {
                 if (!IsActive) return;
-
-                bool isPressed = change.Change == WinTabDN.Utils.StylusButtonChangeType.Pressed;
-                string btnName = change.ButtonId.ToString();
-                int btnId = (int)change.ButtonId;
-                int btnState = (int)_session.StylusButtonState;
-                
-                var args = new StylusButtonEventArgs(btnId, isPressed, btnName, btnState);
-                ButtonChanged?.Invoke(args);
-            });
-        }
+    
+                _targetElement.Dispatcher.Invoke(() =>
+                {
+                    if (!IsActive) return;
+    
+                    bool isPressed = change.Change == WinTabDN.Utils.StylusButtonChangeType.Pressed;
+                    string btnName = change.ButtonId.ToString();
+                    int btnId = (int)change.ButtonId;
+                    int btnState = (int)(uint)_session.StylusButtonState;
+                    
+                    var args = new StylusButtonEventArgs(btnId, isPressed, btnName, btnState);
+                    ButtonChanged?.Invoke(args);
+                });
+            }
     }
 }
