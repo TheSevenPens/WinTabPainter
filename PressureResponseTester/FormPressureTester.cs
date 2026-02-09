@@ -231,7 +231,7 @@ namespace WinTabPressureTester
         private void StartWinTabSession()
         {
             this.appstate.wintab_session.PacketHandler = this.PacketHandler;
-            this.appstate.wintab_session.ButtonChangedHandler = this.ButtonChangeHandler;
+            this.appstate.wintab_session.StylusButtonChangedHandler = this.ButtonChangeHandler;
             this.appstate.wintab_session.Open(WinTabDN.Utils.TabletContextType.System);
         }
 

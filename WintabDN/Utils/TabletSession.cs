@@ -11,7 +11,7 @@ public class TabletSession : System.IDisposable
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WinTabDN.Structs.WintabPacket, StylusButtonChange> ButtonChangedHandler = null;
+    public System.Action<WinTabDN.Structs.WintabPacket, StylusButtonChange> StylusButtonChangedHandler = null;
     public StylusButtonState StylusButtonState;
 
     public TabletSession()
@@ -90,7 +90,7 @@ public class TabletSession : System.IDisposable
 
             if (button_info.Change != StylusButtonChangeType.NoChange)
             {
-                this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
+                this.StylusButtonChangedHandler?.Invoke(wintab_pkt, button_info);
             }
 
             if (this.PacketHandler != null) 

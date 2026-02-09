@@ -76,7 +76,7 @@ namespace WinTabPainter
             this.tabsession.PacketHandler = this.PacketHandler;
             this.tabsession.Open(WinTabDN.Utils.TabletContextType.System);
 
-            this.tabsession.ButtonChangedHandler = this.HandleButtonChange;
+            this.tabsession.StylusButtonChangedHandler = this.HandleButtonChange;
 
             this.labelMaxPressure.Text = this.tabsession.TabletInfo.MaxPressure.ToString();
             Reposition_app();
