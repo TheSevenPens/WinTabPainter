@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
-    <ProjectReference Include="..\WintabDN\WinTab.csproj" />
+    <ProjectReference Include="..\WinTab\WinTab.csproj" />
 
   </ItemGroup>
 
