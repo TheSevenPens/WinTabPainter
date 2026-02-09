@@ -170,6 +170,44 @@ namespace SevenPaint
             Clear(Colors.White);
         }
 
+        private void ButtonNewAuto_Click(object sender, RoutedEventArgs e)
+        {
+            // Calculate available size in Logical Units
+            double availW = MainScrollViewer.ViewportWidth;
+            double availH = MainScrollViewer.ViewportHeight;
+
+            // Margin
+            double margin = 50.0; 
+            
+            double targetLogicalW = availW - margin;
+            double targetLogicalH = availH - margin;
+
+            if (targetLogicalW < 100) targetLogicalW = 100;
+            if (targetLogicalH < 100) targetLogicalH = 100;
+
+            // Convert to Physical Pixels
+            // We want the image to be this many *physical* pixels so that when displayed at 
+            // logical size (Pixels / DpiScale), it matches the targetLogical size.
+            int pixelW = (int)(targetLogicalW * _dpiScale);
+            int pixelH = (int)(targetLogicalH * _dpiScale);
+
+            // Re-Initialize Document
+            // Note: CanvasDocument takes DPI. If we want 1 pixel = 1 screen pixel, we use screen DPI.
+            double dpi = 96.0 * _dpiScale;
+            _document = new Paint.CanvasDocument(pixelW, pixelH, dpi);
+            RenderImage.Source = _document.Source;
+
+            // Explicitly set Logical Size
+            RenderImage.Width = targetLogicalW;
+            RenderImage.Height = targetLogicalH;
+
+            // Reset Zoom
+            _viewManager.ResetZoom();
+
+            // Clear
+            Clear(Colors.White);
+        }
+
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Delete || e.Key == System.Windows.Input.Key.Back)

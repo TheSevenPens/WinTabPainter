@@ -169,7 +169,8 @@
                     </StackPanel>
 
                     <Button Content="WinTab Info" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Margin="0,0,0,5" Click="ButtonWintabInfo_Click"/>
-                    <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click"/>
+                    <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click" Margin="0,0,0,5"/>
+                    <Button Content="New Auto-Sized" Width="90" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonNewAuto_Click"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                          <Button Content="-" Width="20" Click="ButtonZoomOut_Click"/>
                          <TextBlock x:Name="TxtZoomLevel" Text="Zoom: 1x" VerticalAlignment="Center" Margin="5,0,5,0" Width="60" TextAlignment="Center"/>
