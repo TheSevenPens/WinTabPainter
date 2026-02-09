@@ -181,15 +181,18 @@
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
         </StatusBar>
-        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#FF606060"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
                       PreviewMouseDown="ScrollViewer_PreviewMouseDown"
                       PreviewMouseMove="ScrollViewer_PreviewMouseMove"
                       PreviewMouseUp="ScrollViewer_PreviewMouseUp">
-            <Grid>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.LayoutTransform>
                     <ScaleTransform x:Name="CanvasScale" ScaleX="1.0" ScaleY="1.0"/>
                 </Grid.LayoutTransform>
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.5"/>
+                </Grid.Effect>
                 <Image x:Name="RenderImage" Stretch="None" 
                        RenderOptions.BitmapScalingMode="NearestNeighbor"
                        Stylus.IsFlicksEnabled="False"
