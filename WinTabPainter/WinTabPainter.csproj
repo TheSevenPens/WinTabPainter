@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
     <ProjectReference Include="..\WintabDN\WinTabDN.csproj" />
-    <ProjectReference Include="..\WinTabUtils\SevenUtils.csproj" />
+
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

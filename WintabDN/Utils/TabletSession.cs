@@ -5,16 +5,19 @@ namespace WinTabDN.Utils;
 public class TabletSession : System.IDisposable
 {
 
+
     public WinTabDN.CWintabContext Context = null;
     public WinTabDN.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<WinTabDN.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<WinTabDN.Structs.WintabPacket, PenButtonPressChange> ButtonChangedHandler = null;
+    public System.Action<WinTabDN.Structs.WintabPacket, StylusButtonChange> StylusButtonChangedHandler = null;
+    public StylusButtonState StylusButtonState;
 
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
+        this.StylusButtonState = new StylusButtonState(0); // Initialize to indicate no buttons are pressed
     }
 
     public void Open(TabletContextType context_type)
@@ -76,11 +79,18 @@ public class TabletSession : System.IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new PenButtonPressChange(wintab_pkt.pkButtons);
-            if (button_info.Change != PenButtonPressChangeType.NoChange)
-            {
-                this.ButtonChangedHandler?.Invoke(wintab_pkt, button_info);
+            var button_info = new StylusButtonChange(wintab_pkt.pkButtons);
 
+            if (button_info.Change != StylusButtonChangeType.NoChange)
+            {
+                // there's been some change to the buttons
+                this.StylusButtonState.Update(button_info);
+            }
+
+
+            if (button_info.Change != StylusButtonChangeType.NoChange)
+            {
+                this.StylusButtonChangedHandler?.Invoke(wintab_pkt, button_info);
             }
 
             if (this.PacketHandler != null) 
@@ -114,7 +124,7 @@ public class TabletSession : System.IDisposable
 
             if (this.Context != null)
             {
-                this.Context.Close(); // Close() calls Dispose() internally now
+                this.Context.Close(); // Close() calls Dispose() internally 
                 this.Context = null;
             }
         }

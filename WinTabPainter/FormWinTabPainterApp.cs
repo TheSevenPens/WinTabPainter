@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
-using WinTabPainter.Painting;
-using SevenUtils;
-using WinTabPainter.GeometryExtensions;
-
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
 // https://github.com/DennisWacom/InkPlatform/tree/master/WintabDN
@@ -12,12 +7,10 @@ using WinTabPainter.GeometryExtensions;
 // https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Linq.Expressions;
-using WinTabDN.Structs;
-using System.Security.Cryptography;
-using static System.Windows.Forms.Design.AxImporter;
 using System.Drawing;
+using System.Windows.Forms;
+using WinTabPainter.GeometryExtensions;
+using WinTabPainter.Painting;
 
 namespace WinTabPainter
 {
@@ -83,7 +76,7 @@ namespace WinTabPainter
             this.tabsession.PacketHandler = this.PacketHandler;
             this.tabsession.Open(WinTabDN.Utils.TabletContextType.System);
 
-            this.tabsession.ButtonChangedHandler = this.HandleButtonChange;
+            this.tabsession.StylusButtonChangedHandler = this.HandleButtonChange;
 
             this.labelMaxPressure.Text = this.tabsession.TabletInfo.MaxPressure.ToString();
             Reposition_app();
@@ -168,9 +161,9 @@ namespace WinTabPainter
         }
 
         char[] button_status = new char[3] {
-            get_press_change_as_letter(WinTabDN.Utils.PenButtonPressChangeType.Released),
-            get_press_change_as_letter(WinTabDN.Utils.PenButtonPressChangeType.Released),
-            get_press_change_as_letter(WinTabDN.Utils.PenButtonPressChangeType.Released)};
+            get_press_change_as_letter(WinTabDN.Utils.StylusButtonChangeType.Released),
+            get_press_change_as_letter(WinTabDN.Utils.StylusButtonChangeType.Released),
+            get_press_change_as_letter(WinTabDN.Utils.StylusButtonChangeType.Released)};
 
         private void PacketHandler(WinTabDN.Structs.WintabPacket wintab_pkt)
         {
@@ -178,7 +171,7 @@ namespace WinTabPainter
             {
                 RecordPacket(wintab_pkt);
             }
-            var button_info = new WinTabDN.Utils.PenButtonPressChange(wintab_pkt.pkButtons);
+            var button_info = new WinTabDN.Utils.StylusButtonChange(wintab_pkt.pkButtons);
 
             Update_UI_Button_status(button_info);
 
@@ -191,15 +184,15 @@ namespace WinTabPainter
 
 
 
-        private void Update_UI_Button_status(WinTabDN.Utils.PenButtonPressChange button_info)
+        private void Update_UI_Button_status(WinTabDN.Utils.StylusButtonChange button_info)
         {
-            if (button_info.Change != WinTabDN.Utils.PenButtonPressChangeType.NoChange)
+            if (button_info.Change != WinTabDN.Utils.StylusButtonChangeType.NoChange)
             {
                 int index = button_info.ButtonId switch
                 {
-                    WinTabDN.Utils.PenButtonIdentifier.Tip => 0,
-                    WinTabDN.Utils.PenButtonIdentifier.LowerButton => 1,
-                    WinTabDN.Utils.PenButtonIdentifier.UpperButton => 2,
+                    WinTabDN.Utils.StylusButtonId.Tip => 0,
+                    WinTabDN.Utils.StylusButtonId.LowerButton => 1,
+                    WinTabDN.Utils.StylusButtonId.UpperButton => 2,
                     _ => throw new System.ArgumentOutOfRangeException()
                 };
 
@@ -210,12 +203,12 @@ namespace WinTabPainter
             this.label_ButtonsValue.Text = new string(this.button_status);
         }
 
-        private static char get_press_change_as_letter(WinTabDN.Utils.PenButtonPressChangeType change)
+        private static char get_press_change_as_letter(WinTabDN.Utils.StylusButtonChangeType change)
         {
             return change switch
             {
-                WinTabDN.Utils.PenButtonPressChangeType.Pressed => 'D',
-                WinTabDN.Utils.PenButtonPressChangeType.Released => 'U',
+                WinTabDN.Utils.StylusButtonChangeType.Pressed => 'D',
+                WinTabDN.Utils.StylusButtonChangeType.Released => 'U',
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
@@ -259,11 +252,11 @@ namespace WinTabPainter
 
         }
 
-        public void HandleButtonChange(WinTabDN.Structs.WintabPacket pkt, WinTabDN.Utils.PenButtonPressChange change)
+        public void HandleButtonChange(WinTabDN.Structs.WintabPacket pkt, WinTabDN.Utils.StylusButtonChange change)
         {
-            if (change.ButtonId == WinTabDN.Utils.PenButtonIdentifier.Tip)
+            if (change.ButtonId == WinTabDN.Utils.StylusButtonId.Tip)
             {
-                if (change.Change == WinTabDN.Utils.PenButtonPressChangeType.Pressed)
+                if (change.Change == WinTabDN.Utils.StylusButtonChangeType.Pressed)
                 {
                     // we need to reset the smoothing 
                     // whenever the pen tip touches the tablet

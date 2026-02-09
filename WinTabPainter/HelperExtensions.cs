@@ -1,6 +1,4 @@
-﻿using System;
-using SevenUtils.Geometry;
-using SD = System.Drawing;
+﻿using SD = System.Drawing;
 
 namespace WinTabPainter;
 

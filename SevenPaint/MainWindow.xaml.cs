@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using SevenPaint.GeometryExtensions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
+using WinTabDN.Utils;
 
 namespace SevenPaint
 {
@@ -9,9 +12,9 @@ namespace SevenPaint
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Paint.PixelCanvas _canvas;
-        private const int ImageWidth = 1920;
-        private const int ImageHeight = 1080;
+        private Paint.CanvasDocument _document;
+        private const int default_canvas_width = 1920;
+        private const int default_canvas_height = 1080;
 
         private Paint.BrushSettings _brushSettings = new Paint.BrushSettings();
 
@@ -22,10 +25,17 @@ namespace SevenPaint
         private SevenPaint.View.ViewManager _viewManager;
 
         // Ribbon Tracking
-        private System.Windows.Point _lastPoint = new System.Windows.Point(0, 0);
+        private SevenUtils.Geometry.PointD _lastPoint = new SevenUtils.Geometry.PointD(0, 0);
         private long _lastTime = 0;
         private double _lastVelocity = 0;
         private double _lastDirection = 0;
+
+        // Debounce tracking
+        private long _lastWintabTime = 0;
+
+        // Button State Tracking
+        private WinTabDN.Utils.StylusButtonState _lastButtonState = new StylusButtonState(0);
+        private int _lastButtonsRaw = 0;
 
         public MainWindow()
         {
@@ -40,9 +50,9 @@ namespace SevenPaint
             _viewManager = new SevenPaint.View.ViewManager(MainScrollViewer, CanvasScale);
             _viewManager.ZoomChanged += (s, level) => TxtZoomLevel.Text = $"Zoom: {level}x";
 
-            // Initialize PixelCanvas - 96 DPI
-            _canvas = new Paint.PixelCanvas(ImageWidth, ImageHeight, 96.0);
-            RenderImage.Source = _canvas.Source;
+            // Initialize CanvasDocument - 96 DPI
+            _document = new Paint.CanvasDocument(default_canvas_width, default_canvas_height, 96.0);
+            RenderImage.Source = _document.Source;
 
             // Clear to white
             Clear(Colors.White);
@@ -50,6 +60,7 @@ namespace SevenPaint
             // Initialize Inputs
             _wintabInput = new Stylus.WinTabStyusProvider(RenderImage);
             _wintabInput.InputMove += OnInputMove;
+            _wintabInput.ButtonChanged += OnButtonChanged;
 
             // Default to Wintab
             try
@@ -145,7 +156,7 @@ namespace SevenPaint
         {
             if (e.Key == System.Windows.Input.Key.Delete || e.Key == System.Windows.Input.Key.Back)
             {
-                _canvas.Clear(Colors.White);
+                _document.Clear(Colors.White);
             }
 
             _viewManager.ProcessKeyDown(e);
@@ -165,10 +176,10 @@ namespace SevenPaint
         private void ScrollViewer_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             // Update Coordinates for UI
-            System.Windows.Point currentPoint = e.GetPosition(RenderImage);
-            int buttons = 0;
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 1;
-            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) buttons |= 2;
+            var currentPoint = e.GetPosition(RenderImage);
+            int mouse_buttons = 0;
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 1;
+            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 2;
 
             // Simple velocity calc
             long now = DateTime.Now.Ticks; // 100ns units
@@ -194,10 +205,26 @@ namespace SevenPaint
             }
 
             _lastTime = now;
-            _lastPoint = currentPoint;
+            _lastPoint = currentPoint.ToSPPointD();
             
             // Note: Wintab updates this too, but Mouse is smoother for "hover"
-            UpdateRibbon(currentPoint, 0, 0, 0, 0, 90, 0, buttons);
+            // However, if we just got a Wintab packet, don't overwrite with mouse zeros
+            if (DateTime.Now.Ticks - _lastWintabTime > 1000000) // 100ms
+            {
+                var temp_args = new Stylus.StylusEventArgs
+                {
+                    LocalPos = currentPoint.ToSPPointD(),
+                    PressureNormalized = 0,
+                    TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
+                    TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
+                    Twist = 0,
+                    PenButtonRaw = 0,
+                    PenButtonChange = new StylusButtonChange(0),
+                    HoverDistance = 0
+                };
+
+                UpdateRibbon(temp_args);
+            }
 
             _viewManager.ProcessPreviewMouseMove(e);
         }
@@ -230,7 +257,7 @@ namespace SevenPaint
         // Clear method removed (moved to PixelCanvas)
         private void Clear(System.Windows.Media.Color color)
         {
-            _canvas.Clear(color);
+            _document.Clear(color);
         }
 
         private DebugLogWindow? _debugLogWindow;
@@ -256,12 +283,12 @@ namespace SevenPaint
             _debugLogWindow = null;
         }
 
-        // Removed SetDebugVisibility as it is no longer needed
+        private void UpdateButtonText()
+        {
+            TxtButtons.Text = $"{_lastButtonState:X}";
+        }
 
-
-
-
-        private void UpdateRibbon(System.Windows.Point currentPoint, double pressure, double tiltX, double tiltY, double azimuth, double altitude, double twist, int buttons)
+        private void UpdateRibbon(SevenPaint.Stylus.StylusEventArgs args)
         {
             long now = DateTime.Now.Ticks; // 100ns units
             double dt = (now - _lastTime) / 10000.0; // milliseconds
@@ -269,18 +296,13 @@ namespace SevenPaint
             // Only calc velocity if time passed significantly (e.g. > 5ms) to avoid divide by zero or extreme noise
             if (_lastTime > 0 && dt > 0)
             {
-                double dx = currentPoint.X - _lastPoint.X;
-                double dy = currentPoint.Y - _lastPoint.Y;
-                double dist = Math.Sqrt(dx * dx + dy * dy);
+                var deltapos = args.LocalPos.Subtract(_lastPoint);
+                double dist = Math.Sqrt((deltapos.X * deltapos.X) + (deltapos.Y * deltapos.Y));
 
                 // Velocity in px/s: (dist / dt_ms) * 1000
                 double velocity = (dist / dt) * 1000.0;
-
-                // Direction (degrees)
-                // Atan2 returns radians. 0 is right (positive X).
-                // Let's normalize like standard tools usually do (0-360).
-                double dirRad = Math.Atan2(dy, dx);
-                double dirDeg = dirRad * (180.0 / Math.PI);
+                double dirRad = Math.Atan2(deltapos.X, deltapos.Y);
+                double dirDeg = SevenUtils.Trigonometry.Angles.RadiansToDegrees(dirRad);
                 if (dirDeg < 0) dirDeg += 360.0;
 
                 // Simple smoothing could be added, but user asked for raw-ish values
@@ -289,29 +311,33 @@ namespace SevenPaint
             }
 
             _lastTime = now;
-            _lastPoint = currentPoint;
+            _lastPoint = args.LocalPos;
 
             // Update UI (Throttle if needed, but doing it every moved event for "live" feel)
             // Note: Dispatcher.Invoke is implicit if called from UI thread, but Wintab comes from bg thread.
             // We assume this is called inside Dispatcher if from Wintab.
-            TxtButtons.Text = $"{buttons}";
-            TxtX.Text = $"{currentPoint.X:F1}";
-            TxtY.Text = $"{currentPoint.Y:F1}";
+            _lastButtonsRaw = args.PenButtonRaw;
+            UpdateButtonText();
+            TxtX.Text = $"{args.LocalPos.X:F1}";
+            TxtY.Text = $"{args.LocalPos.Y:F1}";
             TxtVelocity.Text = $"{_lastVelocity:F1}";
             TxtDirection.Text = $"{_lastDirection:F1}";
-            TxtPressure.Text = $"{pressure:F4}";
-            TxtTiltX.Text = $"{tiltX,6:F1}";
-            TxtTiltY.Text = $"{tiltY,6:F1}";
-            TxtTiltAzimuth.Text = $"{azimuth,6:F1}";
-            TxtTiltAltitude.Text = $"{altitude,6:F1}";
-            TxtBarrelRotation.Text = $"{twist,6:F0}";
+            TxtHoverDist.Text = $"{args.HoverDistance:F1}";
+            TxtPressure.Text = $"{args.PressureNormalized:F4}";
+            TxtTiltX.Text = $"{args.TiltXYDeg.X,6:F1}";
+            TxtTiltY.Text = $"{args.TiltXYDeg.Y,6:F1}";
+            TxtTiltAzimuth.Text = $"{args.TiltAADeg.Azimuth,6:F1}";
+            TxtTiltAltitude.Text = $"{args.TiltAADeg.Altitude,6:F1}";
+            TxtBarrelRotation.Text = $"{args.Twist,6:F0}";
         }
         
-        private void OnInputMove(Stylus.DrawInputArgs args)
+        private void OnInputMove(Stylus.StylusEventArgs args)
         {
+            _lastWintabTime = DateTime.Now.Ticks;
+
             if (_viewManager.IsSpaceDown || _viewManager.IsPanning) return;
 
-            double scaleFactor = args.Pressure;
+            double scaleFactor = args.PressureNormalized;
 
             switch (_brushSettings.ScaleType)
             {
@@ -319,13 +345,13 @@ namespace SevenPaint
                     scaleFactor = 1.0;
                     break;
                 case Paint.ScaleType.Pressure:
-                    scaleFactor = args.Pressure;
+                    scaleFactor = args.PressureNormalized;
                     break;
                 case Paint.ScaleType.Azimuth:
-                    scaleFactor = (args.Azimuth % 360.0) / 360.0;
+                    scaleFactor = (args.TiltAADeg.Azimuth % 360.0) / 360.0;
                     break;
                 case Paint.ScaleType.Altitude:
-                    scaleFactor = args.Altitude / 90.0;
+                    scaleFactor = args.TiltAADeg.Altitude / 90.0;
                     break;
                 case Paint.ScaleType.Rotation:
                     scaleFactor = (args.Twist % 360.0) / 360.0;
@@ -340,20 +366,36 @@ namespace SevenPaint
             double radius = _brushSettings.MinRadius + (_brushSettings.MaxRadius - _brushSettings.MinRadius) * scaleFactor;
             if (radius < 0.1) radius = 0.1;
 
-            if (args.Pressure > 0)
+            if (args.PressureNormalized > 0)
             {
-                _canvas.DrawDab(args.X, args.Y, radius, _brushSettings.Color);
+                _document.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
             }
 
-            UpdateRibbon(new System.Windows.Point(args.X, args.Y), args.Pressure, args.TiltX, args.TiltY, args.Azimuth, args.Altitude, args.Twist, args.Buttons);
+            UpdateRibbon(args);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
-                if (!_debugLogWindow.OnlyLogDown || args.Pressure > 0)
+                // Only log if within canvas bounds
+                if (_document.Contains(args.LocalPos.X, args.LocalPos.Y))
                 {
-                    string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.X:F1} Y={args.Y:F1} P={args.Pressure:F4} TX={args.TiltX:F1} TY={args.TiltY:F1} Az={args.Azimuth:F1} Alt={args.Altitude:F1} Tw={args.Twist:F1} Btn={args.Buttons}";
-                    _debugLogWindow.Log(log);
+                    if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
+                    {
+                        string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.PenButtonRaw}";
+                        _debugLogWindow.Log(log);
+                    }
                 }
+            }
+        }
+        private void OnButtonChanged(Stylus.StylusButtonEventArgs args)
+        {
+            _lastButtonState = args.ButtonState;
+            UpdateButtonText();
+
+            if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
+            {
+                string action = args.IsPressed ? "Pressed" : "Released";
+                string log = $"{DateTime.Now:HH:mm:ss.fff}: Button {args.ButtonName} ({args.ButtonId}) {action} State={args.ButtonState:X}";
+                _debugLogWindow.Log(log);
             }
         }
     }

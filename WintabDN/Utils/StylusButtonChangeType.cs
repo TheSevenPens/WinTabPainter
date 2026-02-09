@@ -1,7 +1,6 @@
 ﻿namespace WinTabDN.Utils;
 
-
-public enum PenButtonPressChangeType
+public enum StylusButtonChangeType
 {
     NoChange,
     Pressed,
