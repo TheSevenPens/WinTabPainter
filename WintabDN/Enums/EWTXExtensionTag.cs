@@ -2,7 +2,7 @@
 
 
 
-namespace WinTabDN.Enums;
+namespace WinTab.Enums;
 
 /// <summary>
 /// Tag values used to get extension masks in GetWTExtensionMask

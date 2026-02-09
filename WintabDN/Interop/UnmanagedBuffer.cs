@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WinTabDN.Interop;
+namespace WinTab.Interop;
 
 public class UnmanagedBuffer : IDisposable
 {
@@ -135,7 +135,7 @@ public class UnmanagedBuffer : IDisposable
     /// <returns></returns>
 
 
-    public WinTabDN.Structs.WintabPacket[] MarshalDataPacketsFromBuffer(UInt32 num_pkts)
+    public WinTab.Structs.WintabPacket[] MarshalDataPacketsFromBuffer(UInt32 num_pkts)
     {
         if (num_pkts == 0)
         {
@@ -147,14 +147,14 @@ public class UnmanagedBuffer : IDisposable
             return null;
         }
 
-        var packets = new WinTabDN.Structs.WintabPacket[num_pkts];
+        var packets = new WinTab.Structs.WintabPacket[num_pkts];
 
-        var temp_packet = new WinTabDN.Structs.WintabPacket();
+        var temp_packet = new WinTab.Structs.WintabPacket();
         int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(temp_packet);
 
         for (int i = 0; i < num_pkts; i++)
         {
-            packets[i] = (WinTabDN.Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(IntPtr.Add(this.Pointer, i * pkt_size), typeof(WinTabDN.Structs.WintabPacket));
+            packets[i] = (WinTab.Structs.WintabPacket)System.Runtime.InteropServices.Marshal.PtrToStructure(IntPtr.Add(this.Pointer, i * pkt_size), typeof(WinTab.Structs.WintabPacket));
         }
         return packets;
     }
@@ -166,9 +166,9 @@ public class UnmanagedBuffer : IDisposable
     /// <param name="num_pkts">number of packets to marshal</param>
     /// <param name="buf_ptr">pointer to unmanaged heap memory containing data packets</param>
     /// <returns></returns>
-    public WinTabDN.Structs.WintabPacketExt[] MarshalDataExtPacketsFromBuffer(UInt32 num_pkts)
+    public WinTab.Structs.WintabPacketExt[] MarshalDataExtPacketsFromBuffer(UInt32 num_pkts)
     {
-        var packets = new WinTabDN.Structs.WintabPacketExt[num_pkts];
+        var packets = new WinTab.Structs.WintabPacketExt[num_pkts];
 
         if (num_pkts == 0)
         {
@@ -184,7 +184,7 @@ public class UnmanagedBuffer : IDisposable
         // This is "necessary" because none of the other ways I tried to marshal
         // seemed to work.  It's ugly, but it works.
 
-        var temp_pkt_ext = new WinTabDN.Structs.WintabPacketExt();
+        var temp_pkt_ext = new WinTab.Structs.WintabPacketExt();
         int pkt_size = System.Runtime.InteropServices.Marshal.SizeOf(temp_pkt_ext);
         var bytes = new Byte[num_pkts * pkt_size];
         System.Runtime.InteropServices.Marshal.Copy(this.Pointer, bytes, 0, (int)num_pkts * pkt_size);
@@ -198,10 +198,10 @@ public class UnmanagedBuffer : IDisposable
                 temp_bytes[i] = bytes[(pkt_i * pkt_size) + i];
             }
 
-            using (var tmpbuf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<WinTabDN.Structs.WintabPacketExt>())
+            using (var tmpbuf = WinTab.Interop.UnmanagedBuffer.CreateForObject<WinTab.Structs.WintabPacketExt>())
             {
                 System.Runtime.InteropServices.Marshal.Copy(temp_bytes, 0, tmpbuf.Pointer, pkt_size);
-                packets[pkt_i] = tmpbuf.MarshalObjectFromBuffer<WinTabDN.Structs.WintabPacketExt>();
+                packets[pkt_i] = tmpbuf.MarshalObjectFromBuffer<WinTab.Structs.WintabPacketExt>();
             }
         }
 

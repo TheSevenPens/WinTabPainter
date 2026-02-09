@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace WinTabDN;
+namespace WinTab;
 
 
 /// <summary>
@@ -112,7 +112,7 @@ public class CWintabExtensions
         extProperty.extBase.reserved = 0;
         extProperty.extBase.dataSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(result_O);
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<WinTabDN.Structs.WTExtensionProperty>())
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObject<WinTab.Structs.WTExtensionProperty>())
         {
             buf.MarshalObjectlIntoBuffer(extProperty);
 
@@ -170,7 +170,7 @@ public class CWintabExtensions
         // Send input value as an array of bytes.
         System.Buffer.BlockCopy(valueBytes, 0, extProperty.data, 0, (int)extProperty.extBase.dataSize);
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
         {
 
             buf.MarshalObjectlIntoBuffer(extProperty.data);
@@ -205,7 +205,7 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionProperty();
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionProperty>())
         {
 
             // Convert unicode string value_I to UTF8-encoded bytes
@@ -257,7 +257,7 @@ public class CWintabExtensions
         bool retStatus = false;
         var extProperty = new Structs.WTExtensionImageProperty();
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionImageProperty>())
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WTExtensionImageProperty>())
         {
 
             //IntPtr buf = Interop.CMemUtils.AllocUnmanagedBuf(extProperty);

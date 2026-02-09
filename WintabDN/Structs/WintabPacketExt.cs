@@ -3,7 +3,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WinTabDN.Structs;
+namespace WinTab.Structs;
 
 /// <summary>
 /// Wintab extension data packet for one tablet control.

@@ -1,11 +1,11 @@
 using System.Windows;
-using WinTabDN.Utils;
+using WinTab.Utils;
 //
 namespace SevenPaint.Stylus
 {
     public class WinTabStyusProvider
     {
-        private WinTabDN.Utils.TabletSession _session;
+        private WinTab.Utils.TabletSession _session;
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
@@ -18,7 +18,7 @@ namespace SevenPaint.Stylus
         public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
-            _session = new WinTabDN.Utils.TabletSession();
+            _session = new WinTab.Utils.TabletSession();
             _session.PacketHandler = OnWintabPacket;
             _session.StylusButtonChangedHandler = OnButtonChanged;
         }
@@ -27,7 +27,7 @@ namespace SevenPaint.Stylus
         {
             try
             {
-                _session.Open(WinTabDN.Utils.TabletContextType.System);
+                _session.Open(WinTab.Utils.TabletContextType.System);
                 IsActive = true;
             }
             catch (Exception)
@@ -43,7 +43,7 @@ namespace SevenPaint.Stylus
             IsActive = false;
         }
 
-        private void OnWintabPacket(WinTabDN.Structs.WintabPacket packet)
+        private void OnWintabPacket(WinTab.Structs.WintabPacket packet)
         {
             if (!IsActive) return;
 
@@ -57,7 +57,7 @@ namespace SevenPaint.Stylus
             });
         }
 
-        private StylusEventArgs CreateStylusArgsFromPacket(WinTabDN.Structs.WintabPacket packet)
+        private StylusEventArgs CreateStylusArgsFromPacket(WinTab.Structs.WintabPacket packet)
         {
 
             // WinTab gives us screen coordinates
@@ -94,7 +94,7 @@ namespace SevenPaint.Stylus
                 };
                 return args;
             }
-            private void OnButtonChanged(WinTabDN.Structs.WintabPacket packet, WinTabDN.Utils.StylusButtonChange change)
+            private void OnButtonChanged(WinTab.Structs.WintabPacket packet, WinTab.Utils.StylusButtonChange change)
             {
                 if (!IsActive) return;
     
@@ -102,7 +102,7 @@ namespace SevenPaint.Stylus
                 {
                     if (!IsActive) return;
     
-                    bool isPressed = change.Change == WinTabDN.Utils.StylusButtonChangeType.Pressed;
+                    bool isPressed = change.Change == WinTab.Utils.StylusButtonChangeType.Pressed;
                     string btnName = change.ButtonId.ToString();
                     int btnId = (int)change.ButtonId;
                     var btnState = _session.StylusButtonState;

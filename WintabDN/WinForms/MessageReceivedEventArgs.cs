@@ -2,7 +2,7 @@
 
 using System;
 
-namespace WinTabDN.WinForms;
+namespace WinTab.WinForms;
 
 /// <summary>
 /// Support for registering a Native Windows message with MessageEvents class.

@@ -3,7 +3,7 @@
 
 //TODO - generics should be used where possible -
 
-namespace WinTabDN.Enums;
+namespace WinTab.Enums;
 
 /// <summary>
 /// Tablet property values used with WTExtGet and WTExtSet

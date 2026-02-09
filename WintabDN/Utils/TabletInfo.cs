@@ -1,9 +1,9 @@
-﻿namespace WinTabDN.Utils;
+﻿namespace WinTab.Utils;
 
 public class TabletInfo
 {
-    public WinTabDN.Structs.WintabAxis XAxis {  private set; get ;}
-    public WinTabDN.Structs.WintabAxis YAxis { private set; get; }
+    public WinTab.Structs.WintabAxis XAxis {  private set; get ;}
+    public WinTab.Structs.WintabAxis YAxis { private set; get; }
     public int MaxPressure {  private set; get ;}
     public string Name { private set; get; }
 
@@ -12,13 +12,13 @@ public class TabletInfo
 
     public void Initialize()
     {
-        this.XAxis = WinTabDN.CWintabInfo.GetTabletAxis(WinTabDN.Enums.EAxisDimension.AXIS_X);
-        this.YAxis = WinTabDN.CWintabInfo.GetTabletAxis(WinTabDN.Enums.EAxisDimension.AXIS_Y);
-        this.MaxPressure = WinTabDN.CWintabInfo.GetMaxPressure();
-        this.Name = WinTabDN.CWintabInfo.GetDeviceInfo();
+        this.XAxis = WinTab.CWintabInfo.GetTabletAxis(WinTab.Enums.EAxisDimension.AXIS_X);
+        this.YAxis = WinTab.CWintabInfo.GetTabletAxis(WinTab.Enums.EAxisDimension.AXIS_Y);
+        this.MaxPressure = WinTab.CWintabInfo.GetMaxPressure();
+        this.Name = WinTab.CWintabInfo.GetDeviceInfo();
 
         bool b;
-        var arr = WinTabDN.CWintabInfo.GetDeviceOrientation(out b);
+        var arr = WinTab.CWintabInfo.GetDeviceOrientation(out b);
         this.TiltSupport = b;
     }
 }

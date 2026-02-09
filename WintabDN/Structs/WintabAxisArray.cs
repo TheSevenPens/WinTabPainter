@@ -2,7 +2,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WinTabDN.Structs;
+namespace WinTab.Structs;
 
 /// <summary>
 /// Array of WintabAxis objects.

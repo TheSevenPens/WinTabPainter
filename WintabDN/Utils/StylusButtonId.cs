@@ -1,4 +1,4 @@
-﻿namespace WinTabDN.Utils;
+﻿namespace WinTab.Utils;
 
 public enum StylusButtonId
 {

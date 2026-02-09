@@ -3,7 +3,7 @@
 
 using System;
 
-namespace WinTabDN.Enums;
+namespace WinTab.Enums;
 
 /// <summary>
 /// Index values for WTInfo wCategory parameter.

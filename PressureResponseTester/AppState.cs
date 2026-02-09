@@ -5,7 +5,7 @@ namespace WinTabPressureTester
     public class AppState
     {
         // Sessions with devices
-        public WinTabDN.Utils.TabletSession wintab_session;
+        public WinTab.Utils.TabletSession wintab_session;
         public ScaleSession scale_session;
 
 

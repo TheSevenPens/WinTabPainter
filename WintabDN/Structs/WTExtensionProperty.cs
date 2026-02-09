@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 //TODO - generics should be used where possible -
 
-namespace WinTabDN.Structs;
+namespace WinTab.Structs;
 
 /// <summary>
 /// Structure for reading/writing non-image Wintab extension data. (Wintab 1.4)

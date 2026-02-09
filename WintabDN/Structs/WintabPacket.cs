@@ -3,7 +3,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WinTabDN.Structs;
+namespace WinTab.Structs;
 
 /// <summary>
 /// Wintab data packet.  Contains the "Full Monty" for all possible data values.

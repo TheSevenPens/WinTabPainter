@@ -1,6 +1,6 @@
 ﻿// See copright.md for copyright information.
 
-namespace WinTabDN.Enums;
+namespace WinTab.Enums;
 
 /// <summary>
 /// Index values for WTI_CURSORS.

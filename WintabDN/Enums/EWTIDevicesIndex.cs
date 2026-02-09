@@ -2,7 +2,7 @@
 
 
 
-namespace WinTabDN.Enums;
+namespace WinTab.Enums;
 
 /// <summary>
 /// Index values for WTI_DEVICES

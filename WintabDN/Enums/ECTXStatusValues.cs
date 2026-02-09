@@ -1,7 +1,7 @@
 ﻿// See copright.md for copyright information.
 
 
-namespace WinTabDN.Enums;
+namespace WinTab.Enums;
 
 /// <summary>
 /// Context status values.

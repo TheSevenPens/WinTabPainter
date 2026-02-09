@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WinTabDN.Utils;
+namespace WinTab.Utils;
 
 
 public struct StylusButtonChange

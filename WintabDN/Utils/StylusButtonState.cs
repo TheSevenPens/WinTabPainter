@@ -1,5 +1,5 @@
 
-namespace WinTabDN.Utils;
+namespace WinTab.Utils;
 
 public struct StylusButtonState
 {

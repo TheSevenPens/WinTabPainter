@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
-using WinTabDN.Utils;
+using WinTab.Utils;
 
 namespace SevenPaint
 {
@@ -34,7 +34,7 @@ namespace SevenPaint
         private long _lastWintabTime = 0;
 
         // Button State Tracking
-        private WinTabDN.Utils.StylusButtonState _lastButtonState = new StylusButtonState(0);
+        private WinTab.Utils.StylusButtonState _lastButtonState = new StylusButtonState(0);
         private int _lastButtonsRaw = 0;
 
         public MainWindow()

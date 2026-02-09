@@ -2,7 +2,7 @@
 
 using System;
 
-namespace WinTabDN;
+namespace WinTab;
 
 /// <summary>
 /// Class to support capture and management of Wintab daa.
@@ -106,7 +106,7 @@ public class CWintabData : IDisposable
 
         CheckForValidHCTX(nameof(GetDataPacket));
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
         {
 
             bool status = CWintabFuncs.WTPacket(hCtx_I, pktId_I, buf.Pointer);
@@ -158,7 +158,7 @@ public class CWintabData : IDisposable
 
         CheckForValidHCTX(nameof(GetDataPacket));
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
         {
             bool status = CWintabFuncs.WTPacket(hCtx_I, pktId_I, buf.Pointer);
 
@@ -213,7 +213,7 @@ public class CWintabData : IDisposable
 
         // Packet array is used whether we're just looking or buying.
 
-        using (var buf = WinTabDN.Interop.UnmanagedBuffer.CreateForObjectArray<Structs.WintabPacket>((int)MaxPkts_I))
+        using (var buf = WinTab.Interop.UnmanagedBuffer.CreateForObjectArray<Structs.WintabPacket>((int)MaxPkts_I))
         {
 
 

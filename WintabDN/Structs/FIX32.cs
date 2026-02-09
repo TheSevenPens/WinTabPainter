@@ -2,7 +2,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace WinTabDN.Structs;
+namespace WinTab.Structs;
 
 /// <summary>
 /// Managed implementation of Wintab FIX32 typedef.
