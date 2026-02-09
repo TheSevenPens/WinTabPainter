@@ -88,7 +88,7 @@ namespace SevenPaint.Stylus
                     TiltXYDeg = tiltxy_deg,
                     Twist = twist,
                     PenButtonRaw = (int)packet.pkButtons,
-                    ButtonState = (uint)_session.StylusButtonState,
+                    ButtonState = _session.StylusButtonState,
                     PenButtonChange = new StylusButtonChange(packet.pkButtons),
                     Timestamp = packet.pkTime
                 };
@@ -105,7 +105,7 @@ namespace SevenPaint.Stylus
                     bool isPressed = change.Change == WinTabDN.Utils.StylusButtonChangeType.Pressed;
                     string btnName = change.ButtonId.ToString();
                     int btnId = (int)change.ButtonId;
-                    int btnState = (int)(uint)_session.StylusButtonState;
+                    var btnState = _session.StylusButtonState;
                     
                     var args = new StylusButtonEventArgs(btnId, isPressed, btnName, btnState);
                     ButtonChanged?.Invoke(args);

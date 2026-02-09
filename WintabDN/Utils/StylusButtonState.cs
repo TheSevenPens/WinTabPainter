@@ -56,10 +56,10 @@ public struct StylusButtonState
     }
     
     // Implicit conversion to uint to support legacy code that expects a uint
-    public static implicit operator uint(StylusButtonState s) => s._state;
+    //public static implicit operator uint(StylusButtonState s) => s._state;
     
     // Explicit conversion from uint
-    public static explicit operator StylusButtonState(uint s) => new StylusButtonState(s);
+    //public static explicit operator StylusButtonState(uint s) => new StylusButtonState(s);
 
     public override string ToString() => _state.ToString();
 }
