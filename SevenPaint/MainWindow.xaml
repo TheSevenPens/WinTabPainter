@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:SevenPaint"
         mc:Ignorable="d"
         Title="SevenPaint" Height="600" Width="800"
+        WindowState="Maximized"
         Closing="MainWindow_Closing"
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewKeyUp="Window_PreviewKeyUp"
