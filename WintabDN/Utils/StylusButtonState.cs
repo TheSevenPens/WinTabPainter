@@ -5,10 +5,10 @@ public struct StylusButtonState
 {
     private uint _state;
 
-    public const uint TipMask = 0x0001;
-    public const uint LowerMask = 0x0002;
-    public const uint UpperMask = 0x0004;
-    public const uint BarrelMask = 0x0008; // Included for completeness, though not explicitly used in original TabletSession logic yet
+    private const uint TipMask = 0x0001;
+    private const uint LowerMask = 0x0002;
+    private const uint UpperMask = 0x0004;
+    private const uint BarrelMask = 0x0008; // Included for completeness, though not explicitly used in original TabletSession logic yet
 
     public StylusButtonState(uint initialState)
     {
@@ -18,7 +18,7 @@ public struct StylusButtonState
     public bool IsTipDown => (_state & TipMask) != 0;
     public bool IsLowerButtonDown => (_state & LowerMask) != 0;
     public bool IsUpperButtonDown => (_state & UpperMask) != 0;
-    public bool IsBarrelDown => (_state & BarrelMask) != 0;
+    public bool IsBarrelButtonDown => (_state & BarrelMask) != 0;
 
 
     public void Update(StylusButtonChange change)
