@@ -14,7 +14,7 @@ namespace WinTabHelloWorld;
     public partial class MainWindow : Window
     {
         private WinTab.Utils.TabletSession _session;
-        private WriteableBitmap _bitmap;
+        private CanvasRenderer _renderer;
         private const int BitmapWidth = 800;
         private const int BitmapHeight = 600;
 
@@ -40,28 +40,8 @@ namespace WinTabHelloWorld;
 
         private void InitializeCanvas()
         {
-            _bitmap = new WriteableBitmap(BitmapWidth, BitmapHeight, 96, 96, PixelFormats.Bgra32, null);
-            CanvasImage.Source = _bitmap;
-            
-            // Clear bitmap to white
-            _bitmap.Lock();
-            try
-            {
-                IntPtr backBuffer = _bitmap.BackBuffer;
-                unsafe
-                {
-                    int* pBackBuffer = (int*)backBuffer;
-                    for (int i = 0; i < BitmapWidth * BitmapHeight; i++)
-                    {
-                        *pBackBuffer++ = unchecked((int)0xFFFFFFFF); // White
-                    }
-                }
-                _bitmap.AddDirtyRect(new Int32Rect(0, 0, BitmapWidth, BitmapHeight));
-            }
-            finally
-            {
-                _bitmap.Unlock();
-            }
+            _renderer = new CanvasRenderer(BitmapWidth, BitmapHeight);
+            CanvasImage.Source = _renderer.ImageSource;
         }
 
         private void InitializeTablet()
@@ -98,7 +78,7 @@ namespace WinTabHelloWorld;
                     // Log mapped coordinates for debugging
                     Log($"System: {packet.pkX},{packet.pkY} -> Local: {localPoint.X:F0},{localPoint.Y:F0} P:{packet.pkNormalPressure}");
 
-                    DrawPoint((int)localPoint.X, (int)localPoint.Y, packet.pkNormalPressure);
+                    _renderer.DrawPoint((int)localPoint.X, (int)localPoint.Y, packet.pkNormalPressure);
                 }
                 catch (Exception ex)
                 {
@@ -108,65 +88,7 @@ namespace WinTabHelloWorld;
             });
         }
 
-        private void DrawPoint(int x, int y, uint pressure)
-        {
-            if (x < 0 || x >= BitmapWidth || y < 0 || y >= BitmapHeight)
-            {
-                return;
-            }
 
-            int bx = x;
-            int by = y;
-
-            // Draw a simple 3x3 block
-            _bitmap.Lock();
-            try
-            {
-                unsafe
-                {
-                    byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
-                    int stride = _bitmap.BackBufferStride;
-                    int color = unchecked((int)0xFF000000); // Black (ARGB)
-                    
-                    // Draw 3x3
-                    for (int dy = -1; dy <= 1; dy++)
-                    {
-                        for (int dx = -1; dx <= 1; dx++)
-                        {
-                            int px = bx + dx;
-                            int py = by + dy;
-                            if (px >= 0 && px < BitmapWidth && py >= 0 && py < BitmapHeight)
-                            {
-                                // Use stride to calculate row offset
-                                byte* pRow = pBackBuffer + (py * stride);
-                                int* pPixel = (int*)(pRow + (px * 4));
-                                *pPixel = color;
-                            }
-                        }
-                    }
-                }
-                // Calculate dirty rect
-                int drX = bx - 1;
-                int drY = by - 1;
-                int drW = 3;
-                int drH = 3;
-
-                // Clamp to bitmap bounds
-                if (drX < 0) { drW += drX; drX = 0; }
-                if (drY < 0) { drH += drY; drY = 0; }
-                if (drX + drW > BitmapWidth) drW = BitmapWidth - drX;
-                if (drY + drH > BitmapHeight) drH = BitmapHeight - drY;
-
-                if (drW > 0 && drH > 0)
-                {
-                    _bitmap.AddDirtyRect(new Int32Rect(drX, drY, drW, drH));
-                }
-            }
-            finally
-            {
-                _bitmap.Unlock();
-            }
-        }
 
         private void ProcessLogBuffer(object sender, EventArgs e)
         {
