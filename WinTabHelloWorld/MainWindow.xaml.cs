@@ -83,7 +83,10 @@ namespace WinTabHelloWorld;
                     // Log mapped coordinates for debugging
                     Log($"System: {packet.pkX},{packet.pkY} -> Local: {localPoint.X:F0},{localPoint.Y:F0} P:{packet.pkNormalPressure}");
 
-                    _renderer.DrawPoint((int)localPoint.X, (int)localPoint.Y, packet.pkNormalPressure);
+                    if (packet.pkNormalPressure > 0)
+                    {
+                        _renderer.DrawPoint((int)localPoint.X, (int)localPoint.Y, packet.pkNormalPressure);
+                    }
                 }
                 catch (Exception ex)
                 {
