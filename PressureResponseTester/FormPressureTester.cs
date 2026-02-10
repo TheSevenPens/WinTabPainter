@@ -1,8 +1,6 @@
 using ScottPlot;
-using System.Diagnostics;
 using System.IO.Ports;
 using System.Text;
-using SevenUtils;
 
 namespace WinTabPressureTester
 {

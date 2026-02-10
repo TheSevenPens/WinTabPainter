@@ -1,7 +1,5 @@
-﻿using SevenPaint.GeometryExtensions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Media;
 using WinTab.Utils;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace WinTabPainter.Painting;
+﻿namespace WinTabPainter.Painting;
 
 
 public class PaintSettingsDynamics

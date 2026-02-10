@@ -1,8 +1,6 @@
 ﻿using SD = System.Drawing;
 using System.Windows.Forms;
 using WinTabPainter.Painting;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Threading;
 using System.Linq;
 
 
