@@ -90,11 +90,24 @@ namespace WinTabHelloWorld;
 
                 try
                 {
-                    // Wintab with CXO_SYSTEM usually returns screen coordinates.
-                    // Map from Screen to UI Element coordinates.
-                    Point screenPoint = new Point(packet.pkX, packet.pkY);
+                    // Map raw tablet coordinates to screen coordinates
+                    var xAxis = _session.TabletInfo.XAxis;
+                    var yAxis = _session.TabletInfo.YAxis;
+
+                    // Normalize to 0..1
+                    double normX = (double)(packet.pkX - xAxis.axMin) / (xAxis.axMax - xAxis.axMin);
+                    double normY = (double)(packet.pkY - yAxis.axMin) / (yAxis.axMax - yAxis.axMin);
+
+                    // Scale to Virtual Screen
+                    double screenX = SystemParameters.VirtualScreenLeft + (normX * SystemParameters.VirtualScreenWidth);
+                    double screenY = SystemParameters.VirtualScreenTop + (normY * SystemParameters.VirtualScreenHeight);
+
+                    Point screenPoint = new Point(screenX, screenY);
                     Point localPoint = CanvasImage.PointFromScreen(screenPoint);
                     
+                    // Log mapped coordinates for debugging
+                    Log($"Global: {packet.pkX},{packet.pkY} -> Screen: {screenX:F0},{screenY:F0} -> Local: {localPoint.X:F0},{localPoint.Y:F0}");
+
                     DrawPoint((int)localPoint.X, (int)localPoint.Y, packet.pkNormalPressure);
                 }
                 catch (Exception ex)
@@ -121,12 +134,10 @@ namespace WinTabHelloWorld;
             {
                 unsafe
                 {
-                    int* pBackBuffer = (int*)_bitmap.BackBuffer;
+                    byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
+                    int stride = _bitmap.BackBufferStride;
                     int color = unchecked((int)0xFF000000); // Black (ARGB)
-                    // varied alpha by pressure?
-                    byte alpha = (byte)((pressure / 1023.0) * 255); // Assuming 1024 levels roughly
-                    color = (255 << 24) | (0 << 16) | (0 << 8) | 0; // Black opaque for simplicity
-
+                    
                     // Draw 3x3
                     for (int dy = -1; dy <= 1; dy++)
                     {
@@ -136,7 +147,10 @@ namespace WinTabHelloWorld;
                             int py = by + dy;
                             if (px >= 0 && px < BitmapWidth && py >= 0 && py < BitmapHeight)
                             {
-                                pBackBuffer[py * BitmapWidth + px] = color;
+                                // Use stride to calculate row offset
+                                byte* pRow = pBackBuffer + (py * stride);
+                                int* pPixel = (int*)(pRow + (px * 4));
+                                *pPixel = color;
                             }
                         }
                     }
