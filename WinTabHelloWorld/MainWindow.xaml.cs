@@ -70,8 +70,8 @@ namespace WinTabHelloWorld;
             {
                 _session = new WinTab.Utils.TabletSession();
                 _session.PacketHandler = OnPacket;
-                _session.Open(WinTab.Utils.TabletContextType.Digitizer);
-                Log("Tablet session opened.");
+                _session.Open(WinTab.Utils.TabletContextType.System);
+                Log("Tablet session opened (System Context).");
             }
             catch (Exception ex)
             {
@@ -90,23 +90,13 @@ namespace WinTabHelloWorld;
 
                 try
                 {
-                    // Map raw tablet coordinates to screen coordinates
-                    var xAxis = _session.TabletInfo.XAxis;
-                    var yAxis = _session.TabletInfo.YAxis;
-
-                    // Normalize to 0..1
-                    double normX = (double)(packet.pkX - xAxis.axMin) / (xAxis.axMax - xAxis.axMin);
-                    double normY = (double)(packet.pkY - yAxis.axMin) / (yAxis.axMax - yAxis.axMin);
-
-                    // Scale to Virtual Screen
-                    double screenX = SystemParameters.VirtualScreenLeft + (normX * SystemParameters.VirtualScreenWidth);
-                    double screenY = SystemParameters.VirtualScreenTop + (normY * SystemParameters.VirtualScreenHeight);
-
-                    Point screenPoint = new Point(screenX, screenY);
+                    // Wintab with CXO_SYSTEM returns virtual screen coordinates.
+                    // We can map these directly to the element.
+                    Point screenPoint = new Point(packet.pkX, packet.pkY);
                     Point localPoint = CanvasImage.PointFromScreen(screenPoint);
                     
                     // Log mapped coordinates for debugging
-                    Log($"Global: {packet.pkX},{packet.pkY} -> Screen: {screenX:F0},{screenY:F0} -> Local: {localPoint.X:F0},{localPoint.Y:F0}");
+                    Log($"System: {packet.pkX},{packet.pkY} -> Local: {localPoint.X:F0},{localPoint.Y:F0} P:{packet.pkNormalPressure}");
 
                     DrawPoint((int)localPoint.X, (int)localPoint.Y, packet.pkNormalPressure);
                 }
