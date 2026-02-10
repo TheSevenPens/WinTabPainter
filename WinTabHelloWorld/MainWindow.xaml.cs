@@ -101,13 +101,23 @@ namespace WinTabHelloWorld;
         private void ProcessLogBuffer(object sender, EventArgs e)
         {
             // Update UI with last packet info
+            // Update UI with last packet info
             if ((DateTime.Now - _lastPacketTime).TotalSeconds < 1.0)
             {
-                 PacketInfoText.Text = $"X: {_lastPacket.pkX}, Y: {_lastPacket.pkY}, Z: {_lastPacket.pkZ}, P: {_lastPacket.pkNormalPressure}, Btn: {_lastPacket.pkButtons}, Az: {_lastPacket.pkOrientation.orAzimuth}, Alt: {_lastPacket.pkOrientation.orAltitude}";
+                 ValX.Text = _lastPacket.pkX.ToString();
+                 ValY.Text = _lastPacket.pkY.ToString();
+                 ValZ.Text = _lastPacket.pkZ.ToString();
+                 ValP.Text = _lastPacket.pkNormalPressure.ToString();
+                 ValBtn.Text = _lastPacket.pkButtons.ToString("X"); // Hex for buttons
+                 ValAz.Text = _lastPacket.pkOrientation.orAzimuth.ToString();
+                 ValAlt.Text = _lastPacket.pkOrientation.orAltitude.ToString();
+                 ValTime.Text = _lastPacket.pkTime.ToString();
             }
             else
             {
-                 PacketInfoText.Text = "No input...";
+                 // clear or show dashes
+                 ValX.Text = "-"; ValY.Text = "-"; ValZ.Text = "-"; ValP.Text = "-";
+                 ValBtn.Text = "-"; ValAz.Text = "-"; ValAlt.Text = "-"; ValTime.Text = "-";
             }
 
             if (_logBuffer.IsEmpty) return;
