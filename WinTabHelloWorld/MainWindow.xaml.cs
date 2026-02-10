@@ -103,7 +103,7 @@ namespace WinTabHelloWorld;
             // Update UI with last packet info
             if ((DateTime.Now - _lastPacketTime).TotalSeconds < 1.0)
             {
-                 PacketInfoText.Text = $"X: {_lastPacket.pkX}, Y: {_lastPacket.pkY}, P: {_lastPacket.pkNormalPressure}, T: {_lastPacket.pkTime}";
+                 PacketInfoText.Text = $"X: {_lastPacket.pkX}, Y: {_lastPacket.pkY}, Z: {_lastPacket.pkZ}, P: {_lastPacket.pkNormalPressure}, Btn: {_lastPacket.pkButtons}, Az: {_lastPacket.pkOrientation.orAzimuth}, Alt: {_lastPacket.pkOrientation.orAltitude}";
             }
             else
             {
