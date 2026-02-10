@@ -15,6 +15,8 @@ namespace WinTabHelloWorld;
     {
         private WinTab.Utils.TabletSession _session;
         private CanvasRenderer _renderer;
+        private WinTab.Structs.WintabPacket _lastPacket;
+        private DateTime _lastPacketTime;
         private const int BitmapWidth = 800;
         private const int BitmapHeight = 600;
 
@@ -61,6 +63,9 @@ namespace WinTabHelloWorld;
 
         private void OnPacket(WinTab.Structs.WintabPacket packet)
         {
+            _lastPacket = packet;
+            _lastPacketTime = DateTime.Now;
+
             // buffer the log message
             _logBuffer.Enqueue($"X: {packet.pkX}, Y: {packet.pkY}, P: {packet.pkNormalPressure}");
 
@@ -92,6 +97,16 @@ namespace WinTabHelloWorld;
 
         private void ProcessLogBuffer(object sender, EventArgs e)
         {
+            // Update UI with last packet info
+            if ((DateTime.Now - _lastPacketTime).TotalSeconds < 1.0)
+            {
+                 PacketInfoText.Text = $"X: {_lastPacket.pkX}, Y: {_lastPacket.pkY}, P: {_lastPacket.pkNormalPressure}, T: {_lastPacket.pkTime}";
+            }
+            else
+            {
+                 PacketInfoText.Text = "No input...";
+            }
+
             if (_logBuffer.IsEmpty) return;
 
             int count = 0;

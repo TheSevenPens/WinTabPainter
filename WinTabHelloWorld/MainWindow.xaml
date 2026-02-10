@@ -7,19 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <GroupBox Header="Log" Grid.Column="0" Margin="5">
+        <TextBlock x:Name="PacketInfoText" Grid.Row="0" Grid.ColumnSpan="2" Margin="5" Padding="5" Background="#EEE" FontSize="14" Text="Waiting for input..."/>
+
+        <GroupBox Header="Log" Grid.Row="1" Grid.Column="0" Margin="5">
             <ListBox x:Name="LogListBox" 
                      ItemsSource="{Binding LogEntries}"
                      FontFamily="Consolas"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
         </GroupBox>
         
-        <GroupBox Header="Canvas" Grid.Column="1" Margin="5">
+        <GroupBox Header="Canvas" Grid.Row="1" Grid.Column="1" Margin="5">
             <Image x:Name="CanvasImage" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </GroupBox>
     </Grid>
