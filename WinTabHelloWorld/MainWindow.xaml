@@ -18,11 +18,17 @@
         
         <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#EEE" Padding="5" Margin="5">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="X:" FontWeight="Bold" Margin="0,0,5,0"/>
-                <TextBlock x:Name="ValX" Text="0" MinWidth="40" Margin="0,0,15,0"/>
+                <TextBlock Text="Gx:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global X"/>
+                <TextBlock x:Name="ValGx" Text="0" MinWidth="40" Margin="0,0,15,0"/>
 
-                <TextBlock Text="Y:" FontWeight="Bold" Margin="0,0,5,0"/>
-                <TextBlock x:Name="ValY" Text="0" MinWidth="40" Margin="0,0,15,0"/>
+                <TextBlock Text="Gy:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global Y"/>
+                <TextBlock x:Name="ValGy" Text="0" MinWidth="40" Margin="0,0,15,0"/>
+
+                <TextBlock Text="Cx:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Canvas X"/>
+                <TextBlock x:Name="ValCx" Text="0" MinWidth="40" Margin="0,0,15,0"/>
+
+                <TextBlock Text="Cy:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Canvas Y"/>
+                <TextBlock x:Name="ValCy" Text="0" MinWidth="40" Margin="0,0,15,0"/>
 
                 <TextBlock Text="Z:" FontWeight="Bold" Margin="0,0,5,0"/>
                 <TextBlock x:Name="ValZ" Text="0" MinWidth="30" Margin="0,0,15,0"/>

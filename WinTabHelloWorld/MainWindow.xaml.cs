@@ -16,6 +16,7 @@ namespace WinTabHelloWorld;
         private WinTab.Utils.TabletSession _session;
         private CanvasRenderer _renderer;
         private WinTab.Structs.WintabPacket _lastPacket;
+        private Point _lastLocalPoint; 
         private DateTime _lastPacketTime;
         private const int BitmapWidth = 800;
         private const int BitmapHeight = 600;
@@ -70,18 +71,17 @@ namespace WinTabHelloWorld;
             _logBuffer.Enqueue($"X: {packet.pkX}, Y: {packet.pkY}, P: {packet.pkNormalPressure}");
 
             Dispatcher.Invoke(() =>
-            { 
-               // Log removed from here to avoid UI saturation
-
+            {
                 try
                 {
-                    // Wintab with CXO_SYSTEM returns virtual screen coordinates.
-                    // We can map these directly to the element.
+                    // SevenPaint Logic: Directly map System Coordinate to Element Coordinate
+                    // WinTab (with CXO_SYSTEM) returns screen coordinates.
                     Point screenPoint = new Point(packet.pkX, packet.pkY);
                     Point localPoint = CanvasImage.PointFromScreen(screenPoint);
-                    
-                    // Log mapped coordinates for debugging
-                    Log($"System: {packet.pkX},{packet.pkY} -> Local: {localPoint.X:F0},{localPoint.Y:F0} P:{packet.pkNormalPressure}");
+
+                    _lastLocalPoint = localPoint;
+
+                    Log($"Sys: {packet.pkX},{packet.pkY} -> Cx/Cy: {localPoint.X:F0},{localPoint.Y:F0} P:{packet.pkNormalPressure}");
 
                     if (packet.pkNormalPressure > 0)
                     {
@@ -90,11 +90,12 @@ namespace WinTabHelloWorld;
                 }
                 catch (Exception ex)
                 {
-                    // Can happen if window is not loaded or other visual tree issues
                     System.Diagnostics.Debug.WriteLine($"Error mapping coordinates: {ex.Message}");
                 }
             });
         }
+
+
 
 
 
@@ -104,8 +105,11 @@ namespace WinTabHelloWorld;
             // Update UI with last packet info
             if ((DateTime.Now - _lastPacketTime).TotalSeconds < 1.0)
             {
-                 ValX.Text = _lastPacket.pkX.ToString();
-                 ValY.Text = _lastPacket.pkY.ToString();
+                 ValGx.Text = _lastPacket.pkX.ToString();
+                 ValGy.Text = _lastPacket.pkY.ToString();
+                 ValCx.Text = _lastLocalPoint.X.ToString("F0");
+                 ValCy.Text = _lastLocalPoint.Y.ToString("F0");
+                 
                  ValZ.Text = _lastPacket.pkZ.ToString();
                  ValP.Text = _lastPacket.pkNormalPressure.ToString();
                  ValBtn.Text = _lastPacket.pkButtons.ToString("X"); // Hex for buttons
@@ -116,7 +120,10 @@ namespace WinTabHelloWorld;
             else
             {
                  // clear or show dashes
-                 ValX.Text = "-"; ValY.Text = "-"; ValZ.Text = "-"; ValP.Text = "-";
+                 ValGx.Text = "-"; ValGy.Text = "-"; 
+                 ValCx.Text = "-"; ValCy.Text = "-";
+                 
+                 ValZ.Text = "-"; ValP.Text = "-";
                  ValBtn.Text = "-"; ValAz.Text = "-"; ValAlt.Text = "-"; ValTime.Text = "-";
             }
 
