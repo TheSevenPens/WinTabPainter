@@ -21,18 +21,14 @@ namespace WinTabHelloWorld;
         private const int BitmapWidth = 800;
         private const int BitmapHeight = 600;
 
-        public ObservableCollection<string> LogEntries { get; set; }
-        private ConcurrentQueue<string> _logBuffer;
         private DispatcherTimer _uiTimer;
 
         public MainWindow()
         {
             InitializeComponent();
-            LogEntries = new ObservableCollection<string>();
-            _logBuffer = new ConcurrentQueue<string>();
             _uiTimer = new DispatcherTimer();
             _uiTimer.Interval = TimeSpan.FromMilliseconds(16); // ~60 FPS
-            _uiTimer.Tick += ProcessLogBuffer;
+            _uiTimer.Tick += UpdateUI;
             _uiTimer.Start();
 
             DataContext = this;
@@ -45,6 +41,14 @@ namespace WinTabHelloWorld;
         {
             _renderer = new CanvasRenderer(BitmapWidth, BitmapHeight);
             CanvasImage.Source = _renderer.ImageSource;
+            
+            // Draw Reference Dots
+            // Top-Left (Red)
+            _renderer.DrawPoint(0, 0, 8000); // 8000 pressure = big dot
+            _renderer.DrawPoint(10, 10, 8000); 
+            
+            // Bottom-Right (Blue)
+            _renderer.DrawPoint(BitmapWidth - 10, BitmapHeight - 10, 8000);
         }
 
         private void InitializeTablet()
@@ -54,11 +58,10 @@ namespace WinTabHelloWorld;
                 _session = new WinTab.Utils.TabletSession();
                 _session.PacketHandler = OnPacket;
                 _session.Open(WinTab.Utils.TabletContextType.System);
-                Log("Tablet session opened (System Context).");
             }
             catch (Exception ex)
             {
-                Log($"Error opening tablet session: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error opening tablet session: {ex.Message}");
             }
         }
 
@@ -66,9 +69,6 @@ namespace WinTabHelloWorld;
         {
             _lastPacket = packet;
             _lastPacketTime = DateTime.Now;
-
-            // buffer the log message
-            _logBuffer.Enqueue($"X: {packet.pkX}, Y: {packet.pkY}, P: {packet.pkNormalPressure}");
 
             Dispatcher.Invoke(() =>
             {
@@ -80,8 +80,6 @@ namespace WinTabHelloWorld;
                     Point localPoint = CanvasImage.PointFromScreen(screenPoint);
 
                     _lastLocalPoint = localPoint;
-
-                    Log($"Sys: {packet.pkX},{packet.pkY} -> Cx/Cy: {localPoint.X:F0},{localPoint.Y:F0} P:{packet.pkNormalPressure}");
 
                     if (packet.pkNormalPressure > 0)
                     {
@@ -99,9 +97,8 @@ namespace WinTabHelloWorld;
 
 
 
-        private void ProcessLogBuffer(object sender, EventArgs e)
+        private void UpdateUI(object sender, EventArgs e)
         {
-            // Update UI with last packet info
             // Update UI with last packet info
             if ((DateTime.Now - _lastPacketTime).TotalSeconds < 1.0)
             {
@@ -126,34 +123,6 @@ namespace WinTabHelloWorld;
                  ValZ.Text = "-"; ValP.Text = "-";
                  ValBtn.Text = "-"; ValAz.Text = "-"; ValAlt.Text = "-"; ValTime.Text = "-";
             }
-
-            if (_logBuffer.IsEmpty) return;
-
-            int count = 0;
-            while (_logBuffer.TryDequeue(out string message) && count < 50) // Limit updates per tick
-            {
-                LogEntries.Add(message);
-                count++;
-            }
-
-            if (LogEntries.Count > 2000)
-            {
-                // Remove excess
-                while (LogEntries.Count > 2000)
-                {
-                    LogEntries.RemoveAt(0);
-                }
-            }
-
-            if (LogListBox != null && LogListBox.Items.Count > 0)
-            {
-               LogListBox.ScrollIntoView(LogListBox.Items[LogListBox.Items.Count - 1]);
-            }
-        }
-        
-        private void Log(string message)
-        {
-             _logBuffer.Enqueue(message);
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -12,11 +12,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#EEE" Padding="5" Margin="5">
+        <Border Grid.Row="0" Background="#EEE" Padding="5" Margin="5">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="Gx:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global X"/>
                 <TextBlock x:Name="ValGx" Text="0" MinWidth="40" Margin="0,0,15,0"/>
@@ -49,15 +48,8 @@
                 <TextBlock x:Name="ValTime" Text="0" MinWidth="50"/>
             </StackPanel>
         </Border>
-
-        <GroupBox Header="Log" Grid.Row="1" Grid.Column="0" Margin="5">
-            <ListBox x:Name="LogListBox" 
-                     ItemsSource="{Binding LogEntries}"
-                     FontFamily="Consolas"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-        </GroupBox>
         
-        <GroupBox Header="Canvas" Grid.Row="1" Grid.Column="1" Margin="5">
+        <GroupBox Header="Canvas" Grid.Row="1" Margin="5">
           <Border Background="#EEE" Padding="20">
                <Image x:Name="CanvasImage" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center">
                    <Image.Effect>
