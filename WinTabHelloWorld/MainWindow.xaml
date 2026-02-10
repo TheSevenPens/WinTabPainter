@@ -26,7 +26,13 @@
         </GroupBox>
         
         <GroupBox Header="Canvas" Grid.Row="1" Grid.Column="1" Margin="5">
-            <Image x:Name="CanvasImage" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+          <Border Background="#EEE" Padding="20">
+               <Image x:Name="CanvasImage" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center">
+                   <Image.Effect>
+                        <DropShadowEffect Color="Black" Opacity="0.3" ShadowDepth="5" BlurRadius="10"/>
+                   </Image.Effect>
+               </Image>
+          </Border>
         </GroupBox>
     </Grid>
 </Window>
