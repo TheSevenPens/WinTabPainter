@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Collections.ObjectModel;
-using System.Collections.Concurrent;
 using System.Windows.Threading;
 
 namespace WinTabHelloWorld;
@@ -41,14 +37,6 @@ namespace WinTabHelloWorld;
         {
             _renderer = new CanvasRenderer(BitmapWidth, BitmapHeight);
             CanvasImage.Source = _renderer.ImageSource;
-            
-            // Draw Reference Dots
-            // Top-Left (Red)
-            _renderer.DrawPoint(0, 0, 8000); // 8000 pressure = big dot
-            _renderer.DrawPoint(10, 10, 8000); 
-            
-            // Bottom-Right (Blue)
-            _renderer.DrawPoint(BitmapWidth - 10, BitmapHeight - 10, 8000);
         }
 
         private void InitializeTablet()
@@ -109,7 +97,7 @@ namespace WinTabHelloWorld;
                  
                  ValZ.Text = _lastPacket.pkZ.ToString();
                  ValP.Text = _lastPacket.pkNormalPressure.ToString();
-                 ValBtn.Text = _lastPacket.pkButtons.ToString("X"); // Hex for buttons
+
                  ValAz.Text = _lastPacket.pkOrientation.orAzimuth.ToString();
                  ValAlt.Text = _lastPacket.pkOrientation.orAltitude.ToString();
                  ValTime.Text = _lastPacket.pkTime.ToString();
@@ -119,9 +107,8 @@ namespace WinTabHelloWorld;
                  // clear or show dashes
                  ValGx.Text = "-"; ValGy.Text = "-"; 
                  ValCx.Text = "-"; ValCy.Text = "-";
-                 
                  ValZ.Text = "-"; ValP.Text = "-";
-                 ValBtn.Text = "-"; ValAz.Text = "-"; ValAlt.Text = "-"; ValTime.Text = "-";
+                 ValAz.Text = "-"; ValAlt.Text = "-"; ValTime.Text = "-";
             }
         }
 
@@ -133,4 +120,6 @@ namespace WinTabHelloWorld;
                 _session = null;
             }
         }
+
+
     }

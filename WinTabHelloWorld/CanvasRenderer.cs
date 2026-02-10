@@ -103,5 +103,91 @@ namespace WinTabHelloWorld
                 _bitmap.Unlock();
             }
         }
+        public void DrawRectangle(int x, int y, int width, int height, int color)
+        {
+            if (width <= 0 || height <= 0) return;
+
+            // Clamp coordinates
+            if (x < 0) { width += x; x = 0; }
+            if (y < 0) { height += y; y = 0; }
+            if (x + width > Width) width = Width - x;
+            if (y + height > Height) height = Height - y;
+
+            if (width <= 0 || height <= 0) return;
+
+            _bitmap.Lock();
+            try
+            {
+                unsafe
+                {
+                    byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
+                    int stride = _bitmap.BackBufferStride;
+                    
+                    for (int dy = 0; dy < height; dy++)
+                    {
+                        byte* pRow = pBackBuffer + ((y + dy) * stride);
+                        int* pPixel = (int*)(pRow + (x * 4));
+                        for (int dx = 0; dx < width; dx++)
+                        {
+                            // Draw only edges (3px thick)
+                            if (dx < 3 || dx >= width - 3 || dy < 3 || dy >= height - 3)
+                            {
+                                *pPixel = color;
+                            }
+                            pPixel++;
+                        }
+                    }
+                }
+                _bitmap.AddDirtyRect(new Int32Rect(x, y, width, height));
+            }
+            finally
+            {
+                _bitmap.Unlock();
+            }
+        }
+
+        public void DrawLine(int x0, int y0, int x1, int y1, int color)
+        {
+            _bitmap.Lock();
+            try
+            {
+                unsafe
+                {
+                    int w = Width;
+                    int h = Height;
+                    byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
+                    int stride = _bitmap.BackBufferStride;
+
+                    int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+                    int dy = -Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+                    int err = dx + dy, e2;
+
+                    while (true)
+                    {
+                        if (x0 >= 0 && x0 < w && y0 >= 0 && y0 < h)
+                        {
+                            byte* pRow = pBackBuffer + (y0 * stride);
+                            int* pPixel = (int*)(pRow + (x0 * 4));
+                            *pPixel = color;
+                        }
+
+                        if (x0 == x1 && y0 == y1) break;
+                        e2 = 2 * err;
+                        if (e2 >= dy) { err += dy; x0 += sx; }
+                        if (e2 <= dx) { err += dx; y0 += sy; }
+                    }
+                }
+                // Dirty rect for the whole line bounding box
+                int minX = Math.Min(x0, x1);
+                int minY = Math.Min(y0, y1);
+                int maxX = Math.Max(x0, x1);
+                int maxY = Math.Max(y0, y1);
+                _bitmap.AddDirtyRect(new Int32Rect(minX, minY, (maxX - minX) + 1, (maxY - minY) + 1));
+            }
+            finally
+            {
+                _bitmap.Unlock();
+            }
+        }
     }
 }
