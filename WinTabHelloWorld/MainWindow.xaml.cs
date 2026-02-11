@@ -102,7 +102,7 @@ public partial class MainWindow : Window
 
             ValAz.Text = _packetstate.Packet.pkOrientation.orAzimuth.ToString();
             ValAlt.Text = _packetstate.Packet.pkOrientation.orAltitude.ToString();
-            ValTime.Text = _packetstate.Packet.pkTime.ToString();
+
             ValBtn.Text = _buttonStatus;
         }
         else
@@ -111,7 +111,7 @@ public partial class MainWindow : Window
             ValGx.Text = "-"; ValGy.Text = "-";
             ValCx.Text = "-"; ValCy.Text = "-";
             ValZ.Text = "-"; ValP.Text = "-";
-            ValAz.Text = "-"; ValAlt.Text = "-"; ValTime.Text = "-";
+            ValAz.Text = "-"; ValAlt.Text = "-";
         }
     }
 
