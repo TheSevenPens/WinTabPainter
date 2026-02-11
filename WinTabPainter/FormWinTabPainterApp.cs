@@ -160,10 +160,11 @@ namespace WinTabPainter
             base.Dispose(disposing);
         }
 
-        char[] button_status = new char[3] {
+        char[] button_status = new char[4] {
             get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),
             get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),
-            get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released)};
+            get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),
+            get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),};
 
         private void PacketHandler(WinTab.Structs.WintabPacket wintab_pkt)
         {
@@ -193,6 +194,7 @@ namespace WinTabPainter
                     WinTab.Utils.StylusButtonId.Tip => 0,
                     WinTab.Utils.StylusButtonId.LowerButton => 1,
                     WinTab.Utils.StylusButtonId.UpperButton => 2,
+                    WinTab.Utils.StylusButtonId.Button3 => 3,
                     _ => throw new System.ArgumentOutOfRangeException()
                 };
 
