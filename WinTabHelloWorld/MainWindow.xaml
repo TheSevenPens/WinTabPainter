@@ -17,10 +17,10 @@
         
         <Border Grid.Row="0" Background="#EEE" Padding="5" Margin="5">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Gx:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global X"/>
+                <TextBlock Text="Sx:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global X"/>
                 <TextBlock x:Name="ValGx" Text="0" MinWidth="40" Margin="0,0,15,0"/>
 
-                <TextBlock Text="Gy:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global Y"/>
+                <TextBlock Text="Sy:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Global Y"/>
                 <TextBlock x:Name="ValGy" Text="0" MinWidth="40" Margin="0,0,15,0"/>
 
                 <TextBlock Text="Cx:" FontWeight="Bold" Margin="0,0,5,0" ToolTip="Canvas X"/>
@@ -32,20 +32,20 @@
                 <TextBlock Text="Z:" FontWeight="Bold" Margin="0,0,5,0"/>
                 <TextBlock x:Name="ValZ" Text="0" MinWidth="30" Margin="0,0,15,0"/>
 
-                <TextBlock Text="P:" FontWeight="Bold" Margin="0,0,5,0"/>
+                <TextBlock Text="PRS:" FontWeight="Bold" Margin="0,0,5,0"/>
                 <TextBlock x:Name="ValP" Text="0" MinWidth="40" Margin="0,0,15,0"/>
 
 
 
-                <TextBlock Text="Az:" FontWeight="Bold" Margin="0,0,5,0"/>
+                <TextBlock Text="TAz:" FontWeight="Bold" Margin="0,0,5,0"/>
                 <TextBlock x:Name="ValAz" Text="0" MinWidth="30" Margin="0,0,15,0"/>
 
-                <TextBlock Text="Alt:" FontWeight="Bold" Margin="0,0,5,0"/>
+                <TextBlock Text="TAlt:" FontWeight="Bold" Margin="0,0,5,0"/>
                 <TextBlock x:Name="ValAlt" Text="0" MinWidth="30" Margin="0,0,15,0"/>
                 
 
 
-                <TextBlock Text="Btn:" FontWeight="Bold" Margin="0,0,5,0"/>
+                <TextBlock Text="BTN:" FontWeight="Bold" Margin="0,0,5,0"/>
                 <TextBlock x:Name="ValBtn" Text="None" MinWidth="100"/>
             </StackPanel>
         </Border>
