@@ -12,6 +12,7 @@ public partial class MainWindow : Window
     private WinTab.Utils.TabletSession _session;
     private CanvasRenderer _renderer;
     private PacketState _packetstate = new PacketState();
+    private string _buttonStatus = "None";
     private const int BitmapWidth = 800;
     private const int BitmapHeight = 600;
 
@@ -43,6 +44,7 @@ public partial class MainWindow : Window
         {
             _session = new WinTab.Utils.TabletSession();
             _session.PacketHandler = OnPacket;
+            _session.StylusButtonChangedHandler = OnButtonChange;
             _session.Open(WinTab.Utils.TabletContextType.System);
         }
         catch (Exception ex)
@@ -79,6 +81,12 @@ public partial class MainWindow : Window
         });
     }
 
+    private void OnButtonChange(WinTab.Structs.WintabPacket packet, WinTab.Utils.StylusButtonChange buttonChange)
+    {
+        _buttonStatus = _session.StylusButtonState.ToString();
+        //_buttonStatus = $"{buttonChange.ButtonId}: {buttonChange.Change}";
+    }
+
     private void UpdateUI(object sender, EventArgs e)
     {
         // Update UI with last packet info
@@ -95,6 +103,7 @@ public partial class MainWindow : Window
             ValAz.Text = _packetstate.Packet.pkOrientation.orAzimuth.ToString();
             ValAlt.Text = _packetstate.Packet.pkOrientation.orAltitude.ToString();
             ValTime.Text = _packetstate.Packet.pkTime.ToString();
+            ValBtn.Text = _buttonStatus;
         }
         else
         {

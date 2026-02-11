@@ -26,7 +26,7 @@ public struct StylusButtonChange
             0 => StylusButtonId.Tip,
             1 => StylusButtonId.LowerButton,
             2 => StylusButtonId.UpperButton,
-            3 => StylusButtonId.Button3,
+            3 => StylusButtonId.BarrelButton,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }

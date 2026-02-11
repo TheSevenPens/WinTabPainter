@@ -8,5 +8,5 @@ public enum StylusButtonId
     Tip,
     LowerButton,
     UpperButton,
-    Button3
+    BarrelButton
 }
