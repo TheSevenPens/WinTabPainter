@@ -271,45 +271,4 @@ namespace WinInkHelloWorld
         private static extern bool GetPointerInfo(uint pointerId, out POINTER_INFO pointerInfo);
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct NativePoint 
-    {
-        public int X;
-        public int Y;
-        public NativePoint(int x, int y) { X = x; Y = y; }
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINTER_PEN_INFO
-    {
-        public POINTER_INFO pointerInfo;
-        public uint penFlags;
-        public uint penMask;
-        public uint pressure;
-        public uint rotation;
-        public int tiltX;
-        public int tiltY;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINTER_INFO
-    {
-        public int pointerType;
-        public uint pointerId;
-        public uint frameId;
-        public uint pointerFlags;
-        public IntPtr sourceDevice;
-        public IntPtr hwndTarget;
-        public NativePoint ptPixelLocation;
-        public NativePoint ptHimetricLocation;
-        public NativePoint ptPixelLocationRaw;
-        public NativePoint ptHimetricLocationRaw;
-        public uint dwTime;
-        public uint historyCount;
-        public int InputData;
-        public uint dwKeyStates;
-        public ulong PerformanceCount;
-        public int ButtonChangeType;
-    }
-
 }
