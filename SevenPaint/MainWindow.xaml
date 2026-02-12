@@ -63,6 +63,9 @@
                             <ComboBoxItem Content="Red"/>
                             <ComboBoxItem Content="Green"/>
                             <ComboBoxItem Content="Blue"/>
+                            <ComboBoxItem Content="By Pressure"/>
+                            <ComboBoxItem Content="By Tilt Azimuth"/>
+                            <ComboBoxItem Content="By Tilt Altitude"/>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">

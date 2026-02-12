@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SkiaSharp;
+using SkiaSharp.Views.WPF;
 
 namespace SevenPaint.Paint
 {
@@ -22,132 +24,65 @@ namespace SevenPaint.Paint
         public void Clear(System.Windows.Media.Color color)
         {
             _wbmp.Lock();
-            unsafe
+            try
             {
-                int* pBackBuffer = (int*)_wbmp.BackBuffer;
-                int colorData = ConvertColor(color);
-
-                for (int i = 0; i < _width * _height; i++)
+                var info = new SKImageInfo(_width, _height, SKColorType.Bgra8888, SKAlphaType.Premul);
+                using (var surface = SKSurface.Create(info, _wbmp.BackBuffer, _wbmp.BackBufferStride))
                 {
-                    *pBackBuffer++ = colorData;
+                    surface.Canvas.Clear(ToSKColor(color));
                 }
+                _wbmp.AddDirtyRect(new Int32Rect(0, 0, _width, _height));
             }
-            _wbmp.AddDirtyRect(new Int32Rect(0, 0, _width, _height));
-            _wbmp.Unlock();
+            finally
+            {
+                _wbmp.Unlock();
+            }
         }
 
         public void DrawDab(double x, double y, double radius, System.Windows.Media.Color color)
         {
-            if (_wbmp == null) return;
-
             _wbmp.Lock();
-            unsafe
+            try
             {
-                int* pBackBuffer = (int*)_wbmp.BackBuffer;
-                int stride = _wbmp.BackBufferStride;
-
-                DrawDabUnsafe(pBackBuffer, stride, x, y, radius, color);
-            }
-            _wbmp.AddDirtyRect(new Int32Rect(0, 0, _width, _height));
-            _wbmp.Unlock();
-        }
-
-        private static int ConvertColor(System.Windows.Media.Color color)
-        {
-            // Pbgra32: A, R, G, B in int memory (Little Endian) for fully opaque
-            return (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
-        }
-
-        private unsafe void DrawDabUnsafe(int* buffer, int stride, double cx, double cy, double radius, System.Windows.Media.Color color)
-        {
-            // Bounding box
-            int minX = (int)Math.Floor(cx - radius - 1);
-            int maxX = (int)Math.Ceiling(cx + radius + 1);
-            int minY = (int)Math.Floor(cy - radius - 1);
-            int maxY = (int)Math.Ceiling(cy + radius + 1);
-
-            // Clamp to image bounds
-            minX = Math.Max(0, minX);
-            maxX = Math.Min(_width - 1, maxX);
-            minY = Math.Max(0, minY);
-            maxY = Math.Min(_height - 1, maxY);
-
-            // Pre-calculate color components
-            double srcA = color.A / 255.0;
-            double srcR = color.R * srcA; // Premultiplied source
-            double srcG = color.G * srcA;
-            double srcB = color.B * srcA;
-
-            double radiusInner = radius - 1.0;
-            if (radiusInner < 0) radiusInner = 0;
-
-            for (int y = minY; y <= maxY; y++)
-            {
-                int* row = buffer + (y * (stride / 4));
-
-                double dy = y - cy;
-                double dy2 = dy * dy;
-
-                for (int x = minX; x <= maxX; x++)
+                var info = new SKImageInfo(_width, _height, SKColorType.Bgra8888, SKAlphaType.Premul);
+                using (var surface = SKSurface.Create(info, _wbmp.BackBuffer, _wbmp.BackBufferStride))
                 {
-                    double dx = x - cx;
-                    double distSq = dx * dx + dy2;
-
-                    if (distSq >= (radius + 1) * (radius + 1)) continue;
-
-                    double alphaFactor = 0.0;
-                    double dist = Math.Sqrt(distSq);
-
-                    if (dist < radiusInner)
+                    using (var paint = new SKPaint())
                     {
-                        alphaFactor = 1.0;
-                    }
-                    else if (dist < radius)
-                    {
-                        alphaFactor = 1.0 - (dist - radiusInner);
-                    }
-                    else
-                    {
-                        alphaFactor = 0.0;
-                    }
-
-                    if (alphaFactor > 0)
-                    {
-                        // Current Destination Pixel
-                        int destPixel = row[x];
-
-                        // Extract Dest components (Pbgra32: B G R A)
-                        byte dA = (byte)((destPixel >> 24) & 0xFF);
-                        byte dR = (byte)((destPixel >> 16) & 0xFF);
-                        byte dG = (byte)((destPixel >> 8) & 0xFF);
-                        byte dB = (byte)(destPixel & 0xFF);
-
-                        // Effective source alpha for this pixel
-                        double outSrcA = srcA * alphaFactor;
-
-                        // Premultiplied Source components for this pixel
-                        double pSrcR = srcR * alphaFactor;
-                        double pSrcG = srcG * alphaFactor;
-                        double pSrcB = srcB * alphaFactor;
-                        double pSrcA = color.A * alphaFactor; // = outSrcA * 255.0
-
-                        // Destination blend factor
-                        double destFactor = 1.0 - outSrcA;
-
-                        double rA = pSrcA + dA * destFactor;
-                        double rR = pSrcR + dR * destFactor;
-                        double rG = pSrcG + dG * destFactor;
-                        double rB = pSrcB + dB * destFactor;
-
-                        byte fA = (byte)Math.Min(255, Math.Max(0, rA));
-                        byte fR = (byte)Math.Min(255, Math.Max(0, rR));
-                        byte fG = (byte)Math.Min(255, Math.Max(0, rG));
-                        byte fB = (byte)Math.Min(255, Math.Max(0, rB));
-
-                        row[x] = (fA << 24) | (fR << 16) | (fG << 8) | fB;
+                        paint.Color = ToSKColor(color);
+                        paint.IsAntialias = true;
+                        paint.Style = SKPaintStyle.Fill;
+                        surface.Canvas.DrawCircle((float)x, (float)y, (float)radius, paint);
                     }
                 }
+
+                // Optimization: Calculate dirty rect instead of full update
+                int r = (int)Math.Ceiling(radius + 2);
+                int minX = (int)(x - r);
+                int minY = (int)(y - r);
+                int w = r * 2;
+                int h = r * 2;
+
+                // Clamp
+                if (minX < 0) minX = 0;
+                if (minY < 0) minY = 0;
+                if (minX + w > _width) w = _width - minX;
+                if (minY + h > _height) h = _height - minY;
+
+                if (w > 0 && h > 0)
+                {
+                    _wbmp.AddDirtyRect(new Int32Rect(minX, minY, w, h));
+                }
             }
+            finally
+            {
+                _wbmp.Unlock();
+            }
+        }
+
+        private SKColor ToSKColor(System.Windows.Media.Color color)
+        {
+            return new SKColor(color.R, color.G, color.B, color.A);
         }
     }
 }

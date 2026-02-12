@@ -112,10 +112,31 @@ namespace SevenPaint
             {
                 switch (colorName)
                 {
-                    case "Red": _brushSettings.Color = Colors.Red; break;
-                    case "Green": _brushSettings.Color = Colors.Green; break;
-                    case "Blue": _brushSettings.Color = Colors.Blue; break;
-                    default: _brushSettings.Color = Colors.Black; break;
+                    case "Red": 
+                        _brushSettings.Color = Colors.Red; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
+                    case "Green": 
+                        _brushSettings.Color = Colors.Green; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
+                    case "Blue": 
+                        _brushSettings.Color = Colors.Blue; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
+                    case "By Pressure":
+                        _brushSettings.ColorMode = Paint.ColorMode.Pressure;
+                        break;
+                    case "By Tilt Azimuth":
+                        _brushSettings.ColorMode = Paint.ColorMode.Azimuth;
+                        break;
+                    case "By Tilt Altitude":
+                        _brushSettings.ColorMode = Paint.ColorMode.Altitude;
+                        break;
+                    default: 
+                        _brushSettings.Color = Colors.Black; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
                 }
             }
         }
@@ -439,7 +460,26 @@ namespace SevenPaint
 
             if (processedArgs.PressureNormalized > 0)
             {
-                _document.DrawDab(processedArgs.LocalPos.X, processedArgs.LocalPos.Y, radius, _brushSettings.Color);
+                System.Windows.Media.Color drawColor = _brushSettings.Color;
+
+                if (_brushSettings.ColorMode == Paint.ColorMode.Pressure)
+                {
+                    double hue = processedArgs.PressureNormalized * 360.0;
+                    drawColor = HsvToColor(hue, 1.0, 1.0);
+                }
+                else if (_brushSettings.ColorMode == Paint.ColorMode.Azimuth)
+                {
+                    double hue = processedArgs.TiltAADeg.Azimuth % 360.0;
+                    drawColor = HsvToColor(hue, 1.0, 1.0);
+                }
+                else if (_brushSettings.ColorMode == Paint.ColorMode.Altitude)
+                {
+                    // Map 0..90 to 0..360
+                    double hue = (processedArgs.TiltAADeg.Altitude / 90.0) * 360.0;
+                    drawColor = HsvToColor(hue, 1.0, 1.0);
+                }
+
+                _document.DrawDab(processedArgs.LocalPos.X, processedArgs.LocalPos.Y, radius, drawColor);
             }
 
             UpdateRibbon(processedArgs);
@@ -468,6 +508,30 @@ namespace SevenPaint
                 string log = $"{DateTime.Now:HH:mm:ss.fff}: Button {args.ButtonName} ({args.ButtonId}) {action} State={args.ButtonState:X}";
                 _debugLogWindow.Log(log);
             }
+        }
+        private System.Windows.Media.Color HsvToColor(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            double f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            byte v = Convert.ToByte(value);
+            byte p = Convert.ToByte(value * (1 - saturation));
+            byte q = Convert.ToByte(value * (1 - f * saturation));
+            byte t = Convert.ToByte(value * (1 - (1 - f) * saturation));
+
+            if (hi == 0)
+                return System.Windows.Media.Color.FromRgb(v, t, p);
+            else if (hi == 1)
+                return System.Windows.Media.Color.FromRgb(q, v, p);
+            else if (hi == 2)
+                return System.Windows.Media.Color.FromRgb(p, v, t);
+            else if (hi == 3)
+                return System.Windows.Media.Color.FromRgb(p, q, v);
+            else if (hi == 4)
+                return System.Windows.Media.Color.FromRgb(t, p, v);
+            else
+                return System.Windows.Media.Color.FromRgb(v, p, q);
         }
     }
 }
