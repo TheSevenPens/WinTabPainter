@@ -68,11 +68,21 @@ namespace WinInkHelloWorld
         {
             if (!_isDrawing) return;
 
-            var currentPoint = e.GetPosition(WritingCanvas);
-            var pressure = e.GetStylusPoints(WritingCanvas)[0].PressureFactor;
+            var sp = e.GetStylusPoints(WritingCanvas);
+            if (sp.Count > 0)
+            {
+                var point = sp[0];
+                var currentPoint = e.GetPosition(WritingCanvas);
+                var pressure = point.PressureFactor;
+                // TODO: Investigate why StylusPointProperties.TiltX/Y are creating build errors in this environment
+                int tiltX = 0; // point.GetPropertyValue(System.Windows.Input.StylusPointProperties.TiltX);
+                int tiltY = 0; // point.GetPropertyValue(System.Windows.Input.StylusPointProperties.TiltY);
 
-            DrawLine(_lastPoint, currentPoint, pressure);
-            _lastPoint = currentPoint;
+                UpdateStatus(currentPoint, pressure, tiltX, tiltY, "Stylus");
+
+                DrawLine(_lastPoint, currentPoint, pressure);
+                _lastPoint = currentPoint;
+            }
         }
 
         private void OnStylusUp(object sender, StylusEventArgs e)
@@ -92,10 +102,14 @@ namespace WinInkHelloWorld
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
+
             if (e.StylusDevice != null) return; // Handled by Stylus events
+            
+            var currentPoint = e.GetPosition(WritingCanvas);
+            UpdateStatus(currentPoint, 1.0f, 0, 0, "Mouse");
+
             if (!_isDrawing) return;
 
-            var currentPoint = e.GetPosition(WritingCanvas);
             DrawLine(_lastPoint, currentPoint, 1.0f); // Default pressure for mouse
             _lastPoint = currentPoint;
         }
@@ -184,6 +198,11 @@ namespace WinInkHelloWorld
                      }
                  }
              }
+        }
+
+        private void UpdateStatus(Point pos, float pressure, int tiltX, int tiltY, string deviceType)
+        {
+            StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY}";
         }
     }
 }
