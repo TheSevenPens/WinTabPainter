@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTab", "WinTab\WinTab.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinTabHelloWorld", "WinTabHelloWorld\WinTabHelloWorld.csproj", "{27D37294-00CB-4E55-9854-CAC816648F7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinInkHelloWorld", "WinInkHelloWorld\WinInkHelloWorld.csproj", "{76E152C2-5390-467C-9940-27A3B86DAB2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,18 @@ Global
 		{27D37294-00CB-4E55-9854-CAC816648F7A}.Release|x64.Build.0 = Release|Any CPU
 		{27D37294-00CB-4E55-9854-CAC816648F7A}.Release|x86.ActiveCfg = Release|Any CPU
 		{27D37294-00CB-4E55-9854-CAC816648F7A}.Release|x86.Build.0 = Release|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Debug|x64.Build.0 = Debug|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Debug|x86.Build.0 = Debug|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Release|x64.ActiveCfg = Release|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Release|x64.Build.0 = Release|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Release|x86.ActiveCfg = Release|Any CPU
+		{76E152C2-5390-467C-9940-27A3B86DAB2B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
