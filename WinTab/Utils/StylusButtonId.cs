@@ -7,5 +7,6 @@ public enum StylusButtonId
     // They are just a convenient way to represent the button IDs in our code.
     Tip,
     LowerButton,
-    UpperButton
+    UpperButton,
+    BarrelButton
 }

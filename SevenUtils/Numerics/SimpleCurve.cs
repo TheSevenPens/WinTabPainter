@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SevenUtils.Numerics;
+﻿namespace SevenUtils.Numerics;
 
 public class SimpleCurve
 {

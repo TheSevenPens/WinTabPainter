@@ -1,7 +1,5 @@
-﻿using SevenPaint.GeometryExtensions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Media;
 using WinTab.Utils;
 
@@ -20,6 +18,8 @@ namespace SevenPaint
 
         private Stylus.WinTabStyusProvider _wintabInput;
 
+        // High DPI Support
+        private double _dpiScale = 1.0; 
 
         // View Manager
         private SevenPaint.View.ViewManager _viewManager;
@@ -46,13 +46,29 @@ namespace SevenPaint
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // Get Screen DPI
+            var presentationSource = PresentationSource.FromVisual(this);
+            if (presentationSource != null)
+            {
+                _dpiScale = presentationSource.CompositionTarget.TransformToDevice.M11;
+            }
+            // Fallback or verify
+            // DpiScale dpiInfo = VisualTreeHelper.GetDpi(this);
+            // _dpiScale = dpiInfo.DpiScaleX;
+
             // Initialize ViewManager
             _viewManager = new SevenPaint.View.ViewManager(MainScrollViewer, CanvasScale);
             _viewManager.ZoomChanged += (s, level) => TxtZoomLevel.Text = $"Zoom: {level}x";
 
-            // Initialize CanvasDocument - 96 DPI
-            _document = new Paint.CanvasDocument(default_canvas_width, default_canvas_height, 96.0);
+            // Initialize CanvasDocument - Use actual DPI to match screen pixel density
+            double dpi = 96.0 * _dpiScale;
+            _document = new Paint.CanvasDocument(default_canvas_width, default_canvas_height, dpi);
             RenderImage.Source = _document.Source;
+
+            // Explicitly size the image control to LOGICAL units so WPF handles layout correctly
+            // Width (Logical) = Width (Pixels) / DpiScale
+            RenderImage.Width = default_canvas_width / _dpiScale;
+            RenderImage.Height = default_canvas_height / _dpiScale;
 
             // Clear to white
             Clear(Colors.White);
@@ -66,12 +82,12 @@ namespace SevenPaint
             try
             {
                 _wintabInput.Open();
-                StatusLabel.Text = "Active API: Wintab";
+                // StatusLabel.Text = "Active API: Wintab";
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show($"Failed to open Wintab: {ex.Message}");
-                StatusLabel.Text = "Active API: Wintab (Failed)";
+                // StatusLabel.Text = "Active API: Wintab (Failed)";
             }
         }
 
@@ -96,10 +112,31 @@ namespace SevenPaint
             {
                 switch (colorName)
                 {
-                    case "Red": _brushSettings.Color = Colors.Red; break;
-                    case "Green": _brushSettings.Color = Colors.Green; break;
-                    case "Blue": _brushSettings.Color = Colors.Blue; break;
-                    default: _brushSettings.Color = Colors.Black; break;
+                    case "Red": 
+                        _brushSettings.Color = Colors.Red; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
+                    case "Green": 
+                        _brushSettings.Color = Colors.Green; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
+                    case "Blue": 
+                        _brushSettings.Color = Colors.Blue; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
+                    case "By Pressure":
+                        _brushSettings.ColorMode = Paint.ColorMode.Pressure;
+                        break;
+                    case "By Tilt Azimuth":
+                        _brushSettings.ColorMode = Paint.ColorMode.Azimuth;
+                        break;
+                    case "By Tilt Altitude":
+                        _brushSettings.ColorMode = Paint.ColorMode.Altitude;
+                        break;
+                    default: 
+                        _brushSettings.Color = Colors.Black; 
+                        _brushSettings.ColorMode = Paint.ColorMode.Fixed;
+                        break;
                 }
             }
         }
@@ -152,6 +189,44 @@ namespace SevenPaint
             Clear(Colors.White);
         }
 
+        private void ButtonNewAuto_Click(object sender, RoutedEventArgs e)
+        {
+            // Calculate available size in Logical Units
+            double availW = MainScrollViewer.ViewportWidth;
+            double availH = MainScrollViewer.ViewportHeight;
+
+            // Margin
+            double margin = 50.0; 
+            
+            double targetLogicalW = availW - margin;
+            double targetLogicalH = availH - margin;
+
+            if (targetLogicalW < 100) targetLogicalW = 100;
+            if (targetLogicalH < 100) targetLogicalH = 100;
+
+            // Convert to Physical Pixels
+            // We want the image to be this many *physical* pixels so that when displayed at 
+            // logical size (Pixels / DpiScale), it matches the targetLogical size.
+            int pixelW = (int)(targetLogicalW * _dpiScale);
+            int pixelH = (int)(targetLogicalH * _dpiScale);
+
+            // Re-Initialize Document
+            // Note: CanvasDocument takes DPI. If we want 1 pixel = 1 screen pixel, we use screen DPI.
+            double dpi = 96.0 * _dpiScale;
+            _document = new Paint.CanvasDocument(pixelW, pixelH, dpi);
+            RenderImage.Source = _document.Source;
+
+            // Explicitly set Logical Size
+            RenderImage.Width = targetLogicalW;
+            RenderImage.Height = targetLogicalH;
+
+            // Reset Zoom
+            _viewManager.ResetZoom();
+
+            // Clear
+            Clear(Colors.White);
+        }
+
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Delete || e.Key == System.Windows.Input.Key.Back)
@@ -176,7 +251,14 @@ namespace SevenPaint
         private void ScrollViewer_PreviewMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             // Update Coordinates for UI
-            var currentPoint = e.GetPosition(RenderImage);
+            // Mouse gives Logical Coordinates relative to the Image (thanks to GetPosition(RenderImage))
+            var logicalPoint = e.GetPosition(RenderImage);
+            
+            // Convert to Pixel Coordinates for display
+            double pixelX = logicalPoint.X * _dpiScale;
+            double pixelY = logicalPoint.Y * _dpiScale;
+            var pixelPoint = new SevenUtils.Geometry.PointD(pixelX, pixelY);
+
             int mouse_buttons = 0;
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 1;
             if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 2;
@@ -188,8 +270,8 @@ namespace SevenPaint
             // Only calc velocity if time passed significantly (e.g. > 5ms)
             if (_lastTime > 0 && dt > 0)
             {
-                double dx = currentPoint.X - _lastPoint.X;
-                double dy = currentPoint.Y - _lastPoint.Y;
+                double dx = pixelPoint.X - _lastPoint.X;
+                double dy = pixelPoint.Y - _lastPoint.Y;
                 double dist = Math.Sqrt(dx * dx + dy * dy);
                 
                 // Velocity in px/s: (dist / dt_ms) * 1000
@@ -205,7 +287,7 @@ namespace SevenPaint
             }
 
             _lastTime = now;
-            _lastPoint = currentPoint.ToSPPointD();
+            _lastPoint = pixelPoint;
             
             // Note: Wintab updates this too, but Mouse is smoother for "hover"
             // However, if we just got a Wintab packet, don't overwrite with mouse zeros
@@ -213,7 +295,7 @@ namespace SevenPaint
             {
                 var temp_args = new Stylus.StylusEventArgs
                 {
-                    LocalPos = currentPoint.ToSPPointD(),
+                    LocalPos = pixelPoint,
                     PressureNormalized = 0,
                     TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
                     TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
@@ -337,7 +419,17 @@ namespace SevenPaint
 
             if (_viewManager.IsSpaceDown || _viewManager.IsPanning) return;
 
-            double scaleFactor = args.PressureNormalized;
+            // Convert Logical (LocalPos from StylusProvider) to Pixel
+            double pixelX = args.LocalPos.X * _dpiScale;
+            double pixelY = args.LocalPos.Y * _dpiScale;
+            
+            // Create a modified args for internal use (or just use vars)
+            // We need to modify args.LocalPos if we pass it around
+            // args is a struct, so modifying copy is safe but we need to pass the copy
+            var processedArgs = args;
+            processedArgs.LocalPos = new SevenUtils.Geometry.PointD(pixelX, pixelY);
+            
+            double scaleFactor = processedArgs.PressureNormalized;
 
             switch (_brushSettings.ScaleType)
             {
@@ -345,16 +437,16 @@ namespace SevenPaint
                     scaleFactor = 1.0;
                     break;
                 case Paint.ScaleType.Pressure:
-                    scaleFactor = args.PressureNormalized;
+                    scaleFactor = processedArgs.PressureNormalized;
                     break;
                 case Paint.ScaleType.Azimuth:
-                    scaleFactor = (args.TiltAADeg.Azimuth % 360.0) / 360.0;
+                    scaleFactor = (processedArgs.TiltAADeg.Azimuth % 360.0) / 360.0;
                     break;
                 case Paint.ScaleType.Altitude:
-                    scaleFactor = args.TiltAADeg.Altitude / 90.0;
+                    scaleFactor = processedArgs.TiltAADeg.Altitude / 90.0;
                     break;
                 case Paint.ScaleType.Rotation:
-                    scaleFactor = (args.Twist % 360.0) / 360.0;
+                    scaleFactor = (processedArgs.Twist % 360.0) / 360.0;
                     break;
                 default:
                     break;
@@ -366,21 +458,40 @@ namespace SevenPaint
             double radius = _brushSettings.MinRadius + (_brushSettings.MaxRadius - _brushSettings.MinRadius) * scaleFactor;
             if (radius < 0.1) radius = 0.1;
 
-            if (args.PressureNormalized > 0)
+            if (processedArgs.PressureNormalized > 0)
             {
-                _document.DrawDab(args.LocalPos.X, args.LocalPos.Y, radius, _brushSettings.Color);
+                System.Windows.Media.Color drawColor = _brushSettings.Color;
+
+                if (_brushSettings.ColorMode == Paint.ColorMode.Pressure)
+                {
+                    double hue = processedArgs.PressureNormalized * 360.0;
+                    drawColor = HsvToColor(hue, 1.0, 1.0);
+                }
+                else if (_brushSettings.ColorMode == Paint.ColorMode.Azimuth)
+                {
+                    double hue = processedArgs.TiltAADeg.Azimuth % 360.0;
+                    drawColor = HsvToColor(hue, 1.0, 1.0);
+                }
+                else if (_brushSettings.ColorMode == Paint.ColorMode.Altitude)
+                {
+                    // Map 0..90 to 0..360
+                    double hue = (processedArgs.TiltAADeg.Altitude / 90.0) * 360.0;
+                    drawColor = HsvToColor(hue, 1.0, 1.0);
+                }
+
+                _document.DrawDab(processedArgs.LocalPos.X, processedArgs.LocalPos.Y, radius, drawColor);
             }
 
-            UpdateRibbon(args);
+            UpdateRibbon(processedArgs);
             
             if (_debugLogWindow != null && _debugLogWindow.IsLoaded)
             {
                 // Only log if within canvas bounds
-                if (_document.Contains(args.LocalPos.X, args.LocalPos.Y))
+                if (_document.Contains(processedArgs.LocalPos.X, processedArgs.LocalPos.Y))
                 {
-                    if (!_debugLogWindow.OnlyLogDown || args.PressureNormalized > 0)
+                    if (!_debugLogWindow.OnlyLogDown || processedArgs.PressureNormalized > 0)
                     {
-                        string log = $"{DateTime.Now:HH:mm:ss.fff}: X={args.LocalPos.X:F1} Y={args.LocalPos.Y:F1} P={args.PressureNormalized:F4} TX={args.TiltXYDeg.X:F1} TY={args.TiltXYDeg.Y:F1} Az={args.TiltAADeg.Azimuth:F1} Alt={args.TiltAADeg.Altitude:F1} Tw={args.Twist:F1} Btn={args.PenButtonRaw}";
+                        string log = $"{DateTime.Now:HH:mm:ss.fff}: X={processedArgs.LocalPos.X:F1} Y={processedArgs.LocalPos.Y:F1} P={processedArgs.PressureNormalized:F4} TX={processedArgs.TiltXYDeg.X:F1} TY={processedArgs.TiltXYDeg.Y:F1} Az={processedArgs.TiltAADeg.Azimuth:F1} Alt={processedArgs.TiltAADeg.Altitude:F1} Tw={processedArgs.Twist:F1} Btn={processedArgs.PenButtonRaw}";
                         _debugLogWindow.Log(log);
                     }
                 }
@@ -397,6 +508,30 @@ namespace SevenPaint
                 string log = $"{DateTime.Now:HH:mm:ss.fff}: Button {args.ButtonName} ({args.ButtonId}) {action} State={args.ButtonState:X}";
                 _debugLogWindow.Log(log);
             }
+        }
+        private System.Windows.Media.Color HsvToColor(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            double f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            byte v = Convert.ToByte(value);
+            byte p = Convert.ToByte(value * (1 - saturation));
+            byte q = Convert.ToByte(value * (1 - f * saturation));
+            byte t = Convert.ToByte(value * (1 - (1 - f) * saturation));
+
+            if (hi == 0)
+                return System.Windows.Media.Color.FromRgb(v, t, p);
+            else if (hi == 1)
+                return System.Windows.Media.Color.FromRgb(q, v, p);
+            else if (hi == 2)
+                return System.Windows.Media.Color.FromRgb(p, v, t);
+            else if (hi == 3)
+                return System.Windows.Media.Color.FromRgb(p, q, v);
+            else if (hi == 4)
+                return System.Windows.Media.Color.FromRgb(t, p, v);
+            else
+                return System.Windows.Media.Color.FromRgb(v, p, q);
         }
     }
 }

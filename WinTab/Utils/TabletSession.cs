@@ -75,6 +75,12 @@ public class TabletSession : System.IDisposable
         }
 
         uint pktId = (uint)args.Message.WParam;
+
+        if (pktId == 0)
+        {
+            return;
+        }
+
         var wintab_pkt = this.Data.GetDataPacket((uint)args.Message.LParam, pktId);
 
         if (wintab_pkt.pkContext == this.Context.HCtx)

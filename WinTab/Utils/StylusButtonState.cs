@@ -37,6 +37,10 @@ public struct StylusButtonState
             {
                 _state |= UpperMask;
             }
+            else if (change.ButtonId == StylusButtonId.BarrelButton)
+            {
+                _state |= BarrelMask;
+            }
         }
         else if (change.Change == StylusButtonChangeType.Released)
         {
@@ -52,14 +56,12 @@ public struct StylusButtonState
             {
                 _state &= ~UpperMask;
             }
+            else if (change.ButtonId == StylusButtonId.BarrelButton)
+            {
+                _state &= ~BarrelMask;
+            }
         }
     }
     
-    // Implicit conversion to uint to support legacy code that expects a uint
-    //public static implicit operator uint(StylusButtonState s) => s._state;
-    
-    // Explicit conversion from uint
-    //public static explicit operator StylusButtonState(uint s) => new StylusButtonState(s);
-
     public override string ToString() => _state.ToString();
 }

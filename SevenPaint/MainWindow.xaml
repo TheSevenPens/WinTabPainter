@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:SevenPaint"
         mc:Ignorable="d"
         Title="SevenPaint" Height="600" Width="800"
+        WindowState="Maximized"
         Closing="MainWindow_Closing"
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewKeyUp="Window_PreviewKeyUp"
@@ -62,6 +63,9 @@
                             <ComboBoxItem Content="Red"/>
                             <ComboBoxItem Content="Green"/>
                             <ComboBoxItem Content="Blue"/>
+                            <ComboBoxItem Content="By Pressure"/>
+                            <ComboBoxItem Content="By Tilt Azimuth"/>
+                            <ComboBoxItem Content="By Tilt Altitude"/>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
@@ -168,7 +172,8 @@
                     </StackPanel>
 
                     <Button Content="WinTab Info" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Margin="0,0,0,5" Click="ButtonWintabInfo_Click"/>
-                    <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click"/>
+                    <Button Content="Clear Canvas" Width="80" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonClear_Click" Margin="0,0,0,5"/>
+                    <Button Content="New Auto-Sized" Width="90" Padding="0,0,0,0" HorizontalAlignment="Left" Click="ButtonNewAuto_Click"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                          <Button Content="-" Width="20" Click="ButtonZoomOut_Click"/>
                          <TextBlock x:Name="TxtZoomLevel" Text="Zoom: 1x" VerticalAlignment="Center" Margin="5,0,5,0" Width="60" TextAlignment="Center"/>
@@ -178,18 +183,19 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock x:Name="StatusLabel" Text="Active API: Windows Ink"/>
-        </StatusBar>
-        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+
+        <ScrollViewer x:Name="MainScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#FF808080"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
                       PreviewMouseDown="ScrollViewer_PreviewMouseDown"
                       PreviewMouseMove="ScrollViewer_PreviewMouseMove"
                       PreviewMouseUp="ScrollViewer_PreviewMouseUp">
-            <Grid>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.LayoutTransform>
                     <ScaleTransform x:Name="CanvasScale" ScaleX="1.0" ScaleY="1.0"/>
                 </Grid.LayoutTransform>
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.5"/>
+                </Grid.Effect>
                 <Image x:Name="RenderImage" Stretch="None" 
                        RenderOptions.BitmapScalingMode="NearestNeighbor"
                        Stylus.IsFlicksEnabled="False"

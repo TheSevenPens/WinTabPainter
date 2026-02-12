@@ -1,6 +1,5 @@
 ﻿// See copright.md for copyright information.
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace WinTab.Structs;

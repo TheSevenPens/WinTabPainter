@@ -160,10 +160,11 @@ namespace WinTabPainter
             base.Dispose(disposing);
         }
 
-        char[] button_status = new char[3] {
+        char[] button_status = new char[4] {
             get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),
             get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),
-            get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released)};
+            get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),
+            get_press_change_as_letter(WinTab.Utils.StylusButtonChangeType.Released),};
 
         private void PacketHandler(WinTab.Structs.WintabPacket wintab_pkt)
         {
@@ -193,6 +194,7 @@ namespace WinTabPainter
                     WinTab.Utils.StylusButtonId.Tip => 0,
                     WinTab.Utils.StylusButtonId.LowerButton => 1,
                     WinTab.Utils.StylusButtonId.UpperButton => 2,
+                    WinTab.Utils.StylusButtonId.BarrelButton => 3,
                     _ => throw new System.ArgumentOutOfRangeException()
                 };
 
@@ -282,18 +284,6 @@ namespace WinTabPainter
             double pressure_rounded = Math.Round(pressure * 100, pressure_digits);
             string str_pressure = string.Format("{0:00.00000}%", pressure_rounded);
             return str_pressure;
-            // handle the case when we have rounded
-            // but actually there is a little bit of pressure
-            // we want to indidate that it is non-zero
-
-            if (pressure_rounded == 0.0 && pressure > 0.0)
-            {
-                return "00.00000+";
-            }
-            else
-            {
-                return str_pressure;
-            }
         }
         private void UpdateLivePaintStats(Painting.PaintData paint_data, SevenUtils.Geometry.Point penpos_canvas)
         {

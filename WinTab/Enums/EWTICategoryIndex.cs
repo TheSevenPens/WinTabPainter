@@ -1,8 +1,5 @@
 ﻿// See copright.md for copyright information.
 
-
-using System;
-
 namespace WinTab.Enums;
 
 /// <summary>
