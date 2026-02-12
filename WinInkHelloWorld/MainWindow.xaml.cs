@@ -1,6 +1,8 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -16,9 +18,27 @@ namespace WinInkHelloWorld
 
         public MainWindow()
         { // turbo
+            // Disable WPF's internal stylus support to prevent it from swallowing WM_POINTER messages
+            AppContext.SetSwitch("Switch.System.Windows.Input.Stylus.DisableStylusAndTouchSupport", true);
+            
             InitializeComponent();
             InitializeCanvas();
-            HooksEvents();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            var source = PresentationSource.FromVisual(this) as HwndSource;
+            source?.AddHook(WndProc);
+
+            // Enable mouse to act as a pointer device for testing
+            EnableMouseInPointer(true);
+            
+            // Disable WPF Stylus features that might interfere
+            Stylus.SetIsPressAndHoldEnabled(this, false);
+            Stylus.SetIsFlicksEnabled(this, false);
+            Stylus.SetIsTapFeedbackEnabled(this, false);
+            Stylus.SetIsTouchFeedbackEnabled(this, false);
         }
 
         private void InitializeCanvas()
@@ -44,91 +64,117 @@ namespace WinInkHelloWorld
             _bitmap.WritePixels(new Int32Rect(0, 0, CanvasWidth, CanvasHeight), pixels, stride, 0);
         }
 
-        private void HooksEvents()
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            WritingCanvas.MouseDown += OnMouseDown;
-            WritingCanvas.MouseMove += OnMouseMove;
-            WritingCanvas.MouseUp += OnMouseUp;
-            
-            // For tablet support, we might want to ensure we're getting raw input messages if possible,
-            // or rely on WPF's built-in Stylus events.
-            WritingCanvas.StylusDown += OnStylusDown;
-            WritingCanvas.StylusMove += OnStylusMove;
-            WritingCanvas.StylusUp += OnStylusUp;
-        }
+            const int WM_POINTERDOWN = 0x0246;
+            const int WM_POINTERUPDATE = 0x0245;
+            const int WM_POINTERUP = 0x0247;
+            const int WM_POINTERLEAVE = 0x024A;
 
-        private void OnStylusDown(object sender, StylusDownEventArgs e)
-        {
-            _isDrawing = true;
-            _lastPoint = e.GetPosition(WritingCanvas);
-            WritingCanvas.CaptureStylus();
-        }
-
-        private void OnStylusMove(object sender, StylusEventArgs e)
-        {
-            if (!_isDrawing) return;
-
-            var sp = e.GetStylusPoints(WritingCanvas);
-            if (sp.Count > 0)
+            switch (msg)
             {
-                var point = sp[0];
-                var currentPoint = e.GetPosition(WritingCanvas);
-                var pressure = point.PressureFactor;
-                // TODO: Investigate why StylusPointProperties.TiltX/Y are creating build errors in this environment
-                int tiltX = 0; // point.GetPropertyValue(System.Windows.Input.StylusPointProperties.TiltX);
-                int tiltY = 0; // point.GetPropertyValue(System.Windows.Input.StylusPointProperties.TiltY);
+                case WM_POINTERDOWN:
+                case WM_POINTERUPDATE:
+                case WM_POINTERUP:
+                case WM_POINTERLEAVE:
+                    uint pointerId = GetPointerId(wParam);
+                    int pointerType = 0;
+                    GetPointerType(pointerId, out pointerType); // 1=Generic, 2=Touch, 3=Pen, 4=Mouse
 
-                UpdateStatus(currentPoint, pressure, tiltX, tiltY, "Stylus");
+                    if (GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
+                    {
+                        HandlePenMessage(msg, penInfo);
+                        handled = true;
+                    }
+                    else if (GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
+                    {
+                         HandlePointerMessage(msg, pointerInfo, pointerType);
+                         handled = true;
+                    }
+                    else
+                    {
+                        // Debug log for failure
+                        UpdateStatus(new Point(0,0), 0, 0, 0, $"Unknown Pointer ID:{pointerId} Type:{pointerType}");
+                    }
+                    break;
+            }
 
-                DrawLine(_lastPoint, currentPoint, pressure);
-                _lastPoint = currentPoint;
+            return IntPtr.Zero;
+        }
+
+        private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
+        {
+            const int WM_POINTERDOWN = 0x0246;
+            const int WM_POINTERUP = 0x0247;
+
+            NativePoint screenPos = new NativePoint(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
+            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
+
+            float pressure = penInfo.pressure / 1024.0f; 
+            int tiltX = penInfo.tiltX;
+            int tiltY = penInfo.tiltY;
+
+            UpdateStatus(clientPos, pressure, tiltX, tiltY, "Native Pen");
+
+            if (msg == WM_POINTERDOWN)
+            {
+                _isDrawing = true;
+                _lastPoint = clientPos;
+                // Capture? In native Win32 usually implied, but we are just drawing.
+            }
+            else if (msg == WM_POINTERUP)
+            {
+                _isDrawing = false;
+            }
+            else // UPDATE
+            {
+                bool inContact = (penInfo.pointerInfo.pointerFlags & POINTER_FLAG_INCONTACT) != 0;
+                
+                if (_isDrawing && inContact)
+                {
+                    DrawLine(_lastPoint, clientPos, pressure);
+                    _lastPoint = clientPos;
+                }
             }
         }
 
-        private void OnStylusUp(object sender, StylusEventArgs e)
+        private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
         {
-            _isDrawing = false;
-            WritingCanvas.ReleaseStylusCapture();
-        }
+            const int WM_POINTERDOWN = 0x0246;
+            const int WM_POINTERUP = 0x0247;
 
-        // Fallback for mouse
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.StylusDevice != null) return; // Handled by Stylus events
-            _isDrawing = true;
-            _lastPoint = e.GetPosition(WritingCanvas);
-            WritingCanvas.CaptureMouse();
-        }
-
-        private void OnMouseMove(object sender, MouseEventArgs e)
-        {
-
-            if (e.StylusDevice != null) return; // Handled by Stylus events
+            NativePoint screenPos = new NativePoint(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
+            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
             
-            var currentPoint = e.GetPosition(WritingCanvas);
-            UpdateStatus(currentPoint, 1.0f, 0, 0, "Mouse");
+            float pressure = 1.0f;
+            string deviceName = ptrType == 4 ? "Mouse" : (ptrType == 2 ? "Touch" : $"Generic({ptrType})");
 
-            if (!_isDrawing) return;
+            UpdateStatus(clientPos, pressure, 0, 0, deviceName);
 
-            DrawLine(_lastPoint, currentPoint, 1.0f); // Default pressure for mouse
-            _lastPoint = currentPoint;
-        }
-
-        private void OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.StylusDevice != null) return; // Handled by Stylus events
-            _isDrawing = false;
-            WritingCanvas.ReleaseMouseCapture();
+            if (msg == WM_POINTERDOWN)
+            {
+                _isDrawing = true;
+                _lastPoint = clientPos;
+            }
+            else if (msg == WM_POINTERUP)
+            {
+                _isDrawing = false;
+            }
+            else
+            {
+                bool inContact = (pointerInfo.pointerFlags & POINTER_FLAG_INCONTACT) != 0;
+                if (_isDrawing && inContact)
+                {
+                    DrawLine(_lastPoint, clientPos, pressure);
+                    _lastPoint = clientPos;
+                }
+            }
         }
 
         private unsafe void DrawLine(Point start, Point end, float pressure)
         {
             _bitmap.Lock();
 
-            // Simple line drawing (Bresenham's or similar)
-            // For simplicity, let's just draw pixels along the line.
-            // Pressure affects thickness or color intensity.
-            
             int x0 = (int)start.X;
             int y0 = (int)start.Y;
             int x1 = (int)end.X;
@@ -148,13 +194,11 @@ namespace WinInkHelloWorld
 
             int thickness = (int)(pressure * 5) + 1; // 1 to 6 px thickness
 
-            // Pointer to back buffer
             byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
             int stride = _bitmap.BackBufferStride;
 
             while (true)
             {
-                // Draw a simple brush at (x0, y0)
                 DrawBrush(pBackBuffer, stride, x0, y0, thickness);
 
                 if (x0 == x1 && y0 == y1) break;
@@ -177,7 +221,6 @@ namespace WinInkHelloWorld
 
         private unsafe void DrawBrush(byte* buffer, int stride, int x, int y, int radius) 
         {
-             // Simple square brush for now
              for (int i = -radius/2; i <= radius/2; i++)
              {
                  for (int j = -radius/2; j <= radius/2; j++)
@@ -187,10 +230,7 @@ namespace WinInkHelloWorld
 
                      if (px >= 0 && px < CanvasWidth && py >= 0 && py < CanvasHeight)
                      {
-                        // Calculate pointer
                         byte* pPixel = buffer + (py * stride) + (px * 4);
-                        
-                        // Set color (Black)
                         pPixel[0] = 0;   // Blue
                         pPixel[1] = 0;   // Green
                         pPixel[2] = 0;   // Red
@@ -204,5 +244,72 @@ namespace WinInkHelloWorld
         {
             StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY}";
         }
+
+        // --- NATIVE INTEROP ---
+        
+        private const int POINTER_FLAG_INCONTACT = 0x0004;
+
+        private static uint GetPointerId(IntPtr wParam)
+        {
+            return (uint)(wParam.ToInt64() & 0xFFFF); // LOWORD
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnableMouseInPointer([MarshalAs(UnmanagedType.Bool)] bool fEnable);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetPointerPenInfo(uint pointerId, out POINTER_PEN_INFO penInfo);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetPointerType(uint pointerId, out int pointerType);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetPointerInfo(uint pointerId, out POINTER_INFO pointerInfo);
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct NativePoint 
+    {
+        public int X;
+        public int Y;
+        public NativePoint(int x, int y) { X = x; Y = y; }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct POINTER_PEN_INFO
+    {
+        public POINTER_INFO pointerInfo;
+        public uint penFlags;
+        public uint penMask;
+        public uint pressure;
+        public uint rotation;
+        public int tiltX;
+        public int tiltY;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct POINTER_INFO
+    {
+        public int pointerType;
+        public uint pointerId;
+        public uint frameId;
+        public uint pointerFlags;
+        public IntPtr sourceDevice;
+        public IntPtr hwndTarget;
+        public NativePoint ptPixelLocation;
+        public NativePoint ptHimetricLocation;
+        public NativePoint ptPixelLocationRaw;
+        public NativePoint ptHimetricLocationRaw;
+        public uint dwTime;
+        public uint historyCount;
+        public int InputData;
+        public uint dwKeyStates;
+        public ulong PerformanceCount;
+        public int ButtonChangeType;
+    }
+
 }
