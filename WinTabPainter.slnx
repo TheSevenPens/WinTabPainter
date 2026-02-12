@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="PressureResponseTester\PressureResponseTester.csproj" />
+  <Project Path="SevenPaint\SevenPaint.csproj" />
+  <Project Path="SevenUtils\SevenUtils.csproj" />
+  <Project Path="WinInkHelloWorld\WinInkHelloWorld.csproj" />
+  <Project Path="WinTab\WinTab.csproj" />
+  <Project Path="WinTabHelloWorld\WinTabHelloWorld.csproj" />
+  <Project Path="WinTabPainter\WinTabPainter.csproj" />
+</Solution>
