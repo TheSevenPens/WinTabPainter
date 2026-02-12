@@ -32,7 +32,7 @@ namespace WinInkHelloWorld
             source?.AddHook(WndProc);
 
             // Enable mouse to act as a pointer device for testing
-            EnableMouseInPointer(true);
+            NativeMethods.EnableMouseInPointer(true);
             
             // Disable WPF Stylus features that might interfere
             Stylus.SetIsPressAndHoldEnabled(this, false);
@@ -77,16 +77,16 @@ namespace WinInkHelloWorld
                 case WM_POINTERUPDATE:
                 case WM_POINTERUP:
                 case WM_POINTERLEAVE:
-                    uint pointerId = GetPointerId(wParam);
+                    uint pointerId = NativeMethods.GetPointerId(wParam);
                     int pointerType = 0;
-                    GetPointerType(pointerId, out pointerType); // 1=Generic, 2=Touch, 3=Pen, 4=Mouse
+                    NativeMethods.GetPointerType(pointerId, out pointerType); // 1=Generic, 2=Touch, 3=Pen, 4=Mouse
 
-                    if (GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
+                    if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
                     {
                         HandlePenMessage(msg, penInfo);
                         handled = true;
                     }
-                    else if (GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
+                    else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
                     {
                          HandlePointerMessage(msg, pointerInfo, pointerType);
                          handled = true;
@@ -94,7 +94,7 @@ namespace WinInkHelloWorld
                     else
                     {
                         // Debug log for failure
-                        UpdateStatus(new Point(0,0), 0, 0, 0, $"Unknown Pointer ID:{pointerId} Type:{pointerType}");
+                        UpdateStatus(new Point(0, 0), 0, 0, 0, $"Unknown Pointer ID:{pointerId} Type:{pointerType}");
                     }
                     break;
             }
@@ -128,7 +128,7 @@ namespace WinInkHelloWorld
             }
             else // UPDATE
             {
-                bool inContact = (penInfo.pointerInfo.pointerFlags & POINTER_FLAG_INCONTACT) != 0;
+                bool inContact = (penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
                 
                 if (_isDrawing && inContact)
                 {
@@ -162,7 +162,7 @@ namespace WinInkHelloWorld
             }
             else
             {
-                bool inContact = (pointerInfo.pointerFlags & POINTER_FLAG_INCONTACT) != 0;
+                bool inContact = (pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
                 if (_isDrawing && inContact)
                 {
                     DrawLine(_lastPoint, clientPos, pressure);
@@ -246,29 +246,7 @@ namespace WinInkHelloWorld
         }
 
         // --- NATIVE INTEROP ---
-        
-        private const int POINTER_FLAG_INCONTACT = 0x0004;
-
-        private static uint GetPointerId(IntPtr wParam)
-        {
-            return (uint)(wParam.ToInt64() & 0xFFFF); // LOWORD
-        }
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool EnableMouseInPointer([MarshalAs(UnmanagedType.Bool)] bool fEnable);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetPointerPenInfo(uint pointerId, out POINTER_PEN_INFO penInfo);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetPointerType(uint pointerId, out int pointerType);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetPointerInfo(uint pointerId, out POINTER_INFO pointerInfo);
+        // Moved to NativeMethods.cs
     }
 
 }
