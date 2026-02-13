@@ -48,24 +48,32 @@ public partial class MainWindow : Window
 
     private void HandleWinTabPointerPacket(SevenLib.WinTab.Structs.WintabPacket packet)
     {
-        _drawingState.Packet = packet;
-        _drawingState.Time = DateTime.Now;
 
         Dispatcher.Invoke(() =>
         {
             try
             {
-                // SevenPaint Logic: Directly map System Coordinate to Element Coordinate
-                // WinTab (with CXO_SYSTEM) returns screen coordinates.
-                Point screenPos = new Point(packet.pkX, packet.pkY);
-                Point canvasPos = CanvasImage.PointFromScreen(screenPos);
+                _drawingState.WinTabPacket = packet;
+                _drawingState.PointerData = new PointerData();
+                _drawingState.PointerData.Time = DateTime.Now;
 
-                _drawingState.LocalPoint = canvasPos;
+                var screenPos = new Point(packet.pkX, packet.pkY);
+                var canvasPos = CanvasImage.PointFromScreen(screenPos);
 
-                if (packet.pkNormalPressure > 0)
+                _drawingState.PointerData.DisplayPoint= new SevenLib.Geometry.PointD(screenPos.X, screenPos.Y);
+                _drawingState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y) ;
+                _drawingState.PointerData.Height = packet.pkZ;
+                float normalized_pressure = (float)packet.pkNormalPressure / _wintabsession.TabletInfo.MaxPressure;
+                _drawingState.PointerData.PressureNormalized = normalized_pressure;
+                _drawingState.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(packet.pkOrientation.orAzimuth/10, packet.pkOrientation.orAltitude/10);
+                _drawingState.PointerData.TiltXYDeg = _drawingState.PointerData.TiltAADeg.ToXY_Deg();
+                _drawingState.PointerData.Twist = packet.pkOrientation.orTwist;
+                _drawingState.PointerData.ButtonState = this._wintabsession.StylusButtonState;
+
+                if (_drawingState.PointerData.PressureNormalized > 0)
                 {
-                    float normalized_pressure = (float)packet.pkNormalPressure / _wintabsession.TabletInfo.MaxPressure;
-                    _renderer.DrawPoint((int)canvasPos.X, (int)canvasPos.Y, normalized_pressure * 15.0f);
+                    const double brush_size = 15;
+                    _renderer.DrawPoint((int)canvasPos.X, (int)canvasPos.Y, (float) (_drawingState.PointerData.PressureNormalized * brush_size));
                 }
             }
             catch (Exception ex)
@@ -83,18 +91,18 @@ public partial class MainWindow : Window
     private void UpdatePointerStats(object sender, EventArgs e)
     {
         // Update UI with last packet info
-        if ((DateTime.Now - _drawingState.Time).TotalSeconds < 1.0)
+        if ((DateTime.Now - _drawingState.PointerData.Time).TotalSeconds < 1.0)
         {
-            ValGx.Text = _drawingState.Packet.pkX.ToString();
-            ValGy.Text = _drawingState.Packet.pkY.ToString();
-            ValCx.Text = _drawingState.LocalPoint.X.ToString("F0");
-            ValCy.Text = _drawingState.LocalPoint.Y.ToString("F0");
+            ValGx.Text = _drawingState.PointerData.DisplayPoint.X.ToString();
+            ValGy.Text = _drawingState.PointerData.DisplayPoint.Y.ToString();
+            ValCx.Text = _drawingState.PointerData.CanvasPoint.X.ToString("F0");
+            ValCy.Text = _drawingState.PointerData.CanvasPoint.Y.ToString("F0");
 
-            ValZ.Text = _drawingState.Packet.pkZ.ToString();
-            ValP.Text = _drawingState.Packet.pkNormalPressure.ToString();
+            ValZ.Text = _drawingState.PointerData.Height.ToString();
+            ValP.Text = _drawingState.PointerData.PressureNormalized.ToString();
 
-            ValAz.Text = _drawingState.Packet.pkOrientation.orAzimuth.ToString();
-            ValAlt.Text = _drawingState.Packet.pkOrientation.orAltitude.ToString();
+            ValAz.Text = _drawingState.PointerData.TiltAADeg.Azimuth.ToString();
+            ValAlt.Text = _drawingState.PointerData.TiltAADeg.Altitude.ToString();
 
             ValBtn.Text = _buttonStatus;
         }
