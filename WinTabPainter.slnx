@@ -3,6 +3,7 @@
     <File Path=".editorconfig" />
   </Folder>
   <Project Path="PressureResponseTester\PressureResponseTester.csproj" />
+  <Project Path="SevenLib.Media/SevenLib.Media.csproj" Id="b7e815e5-b705-41cf-8c53-ec734a85b977" />
   <Project Path="SevenLib.WinTab/SevenLib.WinTab.csproj" />
   <Project Path="SevenLib/SevenLib.csproj" />
   <Project Path="SevenPaint\SevenPaint.csproj" />

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WinInkHelloWorld"
         mc:Ignorable="d"
         Title="WinInk Hello World" Height="650" Width="650"
-        ResizeMode="NoResize">
+        ResizeMode="CanResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,11 +20,18 @@
                    Text="Ready"
                    FontFamily="Consolas"/>
         
-        <Image x:Name="WritingCanvas" 
-               Grid.Row="1"
-               Stretch="None" 
-               HorizontalAlignment="Left" 
-               VerticalAlignment="Top" 
-               RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        <Border Grid.Row="1" Background="#EEE" Padding="20" Margin="5">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Image x:Name="WritingCanvas" 
+                       Stretch="None" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Top" 
+                       RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    <Image.Effect>
+                        <DropShadowEffect Color="Black" Opacity="0.3" ShadowDepth="5" BlurRadius="10"/>
+                    </Image.Effect>
+                </Image>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Window>
