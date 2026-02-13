@@ -7,10 +7,10 @@ namespace WinInkHelloWorld
 {
     public partial class MainWindow : Window
     {
-        private BitmapCanvas _canvas;
+        private CanvasRenderer _renderer;
         private DrawingState _drawingState = new DrawingState();
-        private const int DefaultCanvasWidth = 600;
-        private const int DefaultCanvasHeight = 600;
+        private const int CanvasWidth = 600;
+        private const int CanvasHeight = 600;
 
         public MainWindow()
         { // turbo
@@ -39,8 +39,8 @@ namespace WinInkHelloWorld
 
         private void InitializeCanvas()
         {
-            _canvas = new BitmapCanvas(DefaultCanvasWidth, DefaultCanvasHeight);
-            WritingCanvas.Source = _canvas.Bitmap;
+            _renderer = new CanvasRenderer(CanvasWidth, CanvasHeight);
+            WritingCanvas.Source = _renderer.ImageSource;
         }
 
 
@@ -63,13 +63,13 @@ namespace WinInkHelloWorld
                     if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
                     {
                         // Handling when the pointer is a pen
-                        HandleWinInkPenMessage(msg, penInfo);
+                        HandlePenMessage(msg, penInfo);
                         handled = true;
                     }
                     else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
                     {
                         // Generic pointer handling
-                         HandleWinInkPointerMessage(msg, pointerInfo, pointerType);
+                         HandlePointerMessage(msg, pointerInfo, pointerType);
                          handled = true;
                     }
                     else
@@ -83,50 +83,52 @@ namespace WinInkHelloWorld
             return IntPtr.Zero;
         }
 
-        private (NativePoint,Point) GetPointerPositions(POINTER_INFO pointerInfo)
-        {
-            var screenPos = new NativePoint(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
-            var canvasPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
-            return (screenPos, canvasPos);
-        }   
-
-        private void HandleWinInkPenMessage(int msg, POINTER_PEN_INFO penInfo)
+        private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
         {
 
-            (var screenPos, var canvasPos) = GetPointerPositions(penInfo.pointerInfo);
+            NativePoint screenPos = new NativePoint(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
+            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
 
             float pressure = penInfo.pressure / 1024.0f; 
             int tiltX = penInfo.tiltX;
             int tiltY = penInfo.tiltY;
 
-            UpdatePointerStats(canvasPos, pressure, tiltX, tiltY, "Native Pen");
+            UpdatePointerStats(clientPos, pressure, tiltX, tiltY, "Native Pen");
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(canvasPos);
+                _drawingState.IsDrawing = true;
+                _drawingState.LastPoint = clientPos;
+                // Capture? In native Win32 usually implied, but we are just drawing.
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
-                HandlePointerUp();
+                _drawingState.IsDrawing = false;
             }
             else // UPDATE
             {
-                HandlePointerUpdate(penInfo.pointerInfo, canvasPos, pressure);
+                bool inContact = (penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
+                
+                if (_drawingState.IsDrawing && inContact)
+                {
+                    _renderer.DrawLine(_drawingState.LastPoint, clientPos, pressure);
+                    _drawingState.LastPoint = clientPos;
+                }
             }
         }
-
-        private void HandleWinInkPointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
+        private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
         {
 
-            (var screenPos, var canvasPos) = GetPointerPositions(pointerInfo);
+            NativePoint screenPos = new NativePoint(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
+            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
 
             float pressure = 1.0f; // generic pointer has no pressure so treat it as max pressure
             string deviceName = pointer_type_to_name(ptrType);
-            UpdatePointerStats(canvasPos, pressure, 0, 0, deviceName);
+            UpdatePointerStats(clientPos, pressure, 0, 0, deviceName);
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(canvasPos);
+                HandlePointerDown(clientPos);
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
@@ -134,7 +136,7 @@ namespace WinInkHelloWorld
             }
             else
             {
-                HandlePointerUpdate(pointerInfo, canvasPos, pressure);
+                HandlePointerUpdate(pointerInfo, clientPos, pressure);
             }
         }
 
@@ -144,7 +146,7 @@ namespace WinInkHelloWorld
 
             if (_drawingState.IsDrawing && inContact)
             {
-                _canvas.DrawLine(_drawingState.LastPoint, canvasPos, pressure);
+                _renderer.DrawLine(_drawingState.LastPoint, canvasPos, pressure);
                 _drawingState.LastPoint = canvasPos;
             }
         }
