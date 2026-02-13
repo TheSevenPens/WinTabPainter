@@ -10,7 +10,7 @@ namespace WinTabHelloWorld;
 public partial class MainWindow : Window
 {
     private SevenLib.WinTab.Utils.TabletSession _wintabsession;
-    private CanvasRenderer _renderer;
+    private SevenLib.Media.CanvasRenderer _renderer;
     private DrawingState _drawingState = new DrawingState();
     private string _buttonStatus = "None";
     private const int DefaultCanvasWidth = 800;
@@ -34,7 +34,7 @@ public partial class MainWindow : Window
 
     private void InitializeCanvas()
     {
-        _renderer = new CanvasRenderer(DefaultCanvasWidth, DefaultCanvasHeight);
+        _renderer = new SevenLib.Media.CanvasRenderer(DefaultCanvasWidth, DefaultCanvasHeight);
         CanvasImage.Source = _renderer.ImageSource;
     }
 

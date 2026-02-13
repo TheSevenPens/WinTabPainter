@@ -7,7 +7,7 @@ namespace WinInkHelloWorld
 {
     public partial class MainWindow : Window
     {
-        private CanvasRenderer _renderer;
+        private SevenLib.Media.CanvasRenderer _renderer;
         private DrawingState _drawingState = new DrawingState();
         private const int CanvasWidth = 600;
         private const int CanvasHeight = 600;
@@ -39,7 +39,7 @@ namespace WinInkHelloWorld
 
         private void InitializeCanvas()
         {
-            _renderer = new CanvasRenderer(CanvasWidth, CanvasHeight);
+            _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
         }
 

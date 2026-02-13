@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -17,7 +17,7 @@ namespace SevenLib.Media
         {
             Width = width;
             Height = height;
-            
+
             _bitmap = new WriteableBitmap(Width, Height, 96, 96, PixelFormats.Bgra32, null);
             Clear();
         }
@@ -63,7 +63,7 @@ namespace SevenLib.Media
                     byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
                     int stride = _bitmap.BackBufferStride;
                     int color = unchecked((int)0xFF000000); // Black (ARGB)
-                    
+
                     // Draw 3x3
                     for (int dy = -1; dy <= 1; dy++)
                     {
@@ -122,7 +122,7 @@ namespace SevenLib.Media
                 {
                     byte* pBackBuffer = (byte*)_bitmap.BackBuffer;
                     int stride = _bitmap.BackBufferStride;
-                    
+
                     for (int dy = 0; dy < height; dy++)
                     {
                         byte* pRow = pBackBuffer + ((y + dy) * stride);
