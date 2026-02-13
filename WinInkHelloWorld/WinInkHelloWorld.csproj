@@ -10,4 +10,8 @@
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SevenLib.Media\SevenLib.Media.csproj" />
+  </ItemGroup>
+
 </Project>

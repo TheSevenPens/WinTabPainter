@@ -111,7 +111,7 @@ namespace WinInkHelloWorld
                 
                 if (_drawingState.IsDrawing && inContact)
                 {
-                    _renderer.DrawLine(_drawingState.LastPoint, clientPos, pressure);
+                    _renderer.DrawLineX(_drawingState.LastPoint, clientPos, pressure*(float)5);
                     _drawingState.LastPoint = clientPos;
                 }
             }
@@ -146,7 +146,7 @@ namespace WinInkHelloWorld
 
             if (_drawingState.IsDrawing && inContact)
             {
-                _renderer.DrawLine(_drawingState.LastPoint, canvasPos, pressure);
+                _renderer.DrawLineX(_drawingState.LastPoint, canvasPos, pressure*(float)5);
                 _drawingState.LastPoint = canvasPos;
             }
         }
