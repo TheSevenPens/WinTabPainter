@@ -131,24 +131,18 @@ namespace WinInkHelloWorld
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                _drawingState.IsDrawing = true;
-                _drawingState.LastCanvasPoint = _drawingState.PointerData.CanvasPoint;
+                HandlePointerDown(this._drawingState.PointerData.CanvasPoint);
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
-                _drawingState.IsDrawing = false;
+                HandlePointerUp();
             }
             else // UPDATE
             {
-                bool inContact = (penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
-                
-                if (_drawingState.IsDrawing && inContact)
-                {
-                    _renderer.DrawLineX(_drawingState.LastCanvasPoint, _drawingState.PointerData.CanvasPoint, (float)(_drawingState.PointerData.PressureNormalized * 5));
-                    _drawingState.LastCanvasPoint = _drawingState.PointerData.CanvasPoint;
-                }
+                HandlePointerUpdate(penInfo.pointerInfo, this._drawingState.PointerData.CanvasPoint, this._drawingState.PointerData.PressureNormalized);
             }
         }
+
         private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
         {
 
