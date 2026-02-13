@@ -1,11 +1,11 @@
 using System.Windows;
-using WinTab.Utils;
+using SevenLib.WinTab.Utils;
 //
 namespace SevenPaint.Stylus
 {
     public class WinTabStyusProvider
     {
-        private WinTab.Utils.TabletSession _session;
+        private SevenLib.WinTab.Utils.TabletSession _session;
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
@@ -18,7 +18,7 @@ namespace SevenPaint.Stylus
         public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
-            _session = new WinTab.Utils.TabletSession();
+            _session = new SevenLib.WinTab.Utils.TabletSession();
             _session.PacketHandler = OnWintabPacket;
             _session.StylusButtonChangedHandler = OnButtonChanged;
         }
@@ -27,7 +27,7 @@ namespace SevenPaint.Stylus
         {
             try
             {
-                _session.Open(WinTab.Utils.TabletContextType.System);
+                _session.Open(SevenLib.WinTab.Utils.TabletContextType.System);
                 IsActive = true;
             }
             catch (Exception)
@@ -43,7 +43,7 @@ namespace SevenPaint.Stylus
             IsActive = false;
         }
 
-        private void OnWintabPacket(WinTab.Structs.WintabPacket packet)
+        private void OnWintabPacket(SevenLib.WinTab.Structs.WintabPacket packet)
         {
             if (!IsActive) return;
 
@@ -57,7 +57,7 @@ namespace SevenPaint.Stylus
             });
         }
 
-        private StylusEventArgs CreateStylusArgsFromPacket(WinTab.Structs.WintabPacket packet)
+        private StylusEventArgs CreateStylusArgsFromPacket(SevenLib.WinTab.Structs.WintabPacket packet)
         {
 
             // WinTab gives us screen coordinates
@@ -73,14 +73,14 @@ namespace SevenPaint.Stylus
 
             // WinTab provides the orientation only in Azimuth/Altitude format
             // For convenience, convert that to XY tilt
-            var tiltaa_deg = new SevenUtils.Trigonometry.TiltAA(azimuth, altitude);
+            var tiltaa_deg = new SevenLib.Trigonometry.TiltAA(azimuth, altitude);
             var tiltxy_deg = tiltaa_deg.ToXY_Deg();
 
             // Create Args
                 var args = new StylusEventArgs
                 {
-                    ScreenPos = new SevenUtils.Geometry.PointD(packet.pkX, packet.pkY),
-                    LocalPos = new SevenUtils.Geometry.PointD(localpos.X, localpos.Y),
+                    ScreenPos = new SevenLib.Geometry.PointD(packet.pkX, packet.pkY),
+                    LocalPos = new SevenLib.Geometry.PointD(localpos.X, localpos.Y),
                     HoverDistance = packet.pkZ,
                     PressureLevelRaw = packet.pkNormalPressure,
                     PressureNormalized = packet.pkNormalPressure / (float)_session.TabletInfo.MaxPressure,
@@ -94,7 +94,7 @@ namespace SevenPaint.Stylus
                 };
                 return args;
             }
-            private void OnButtonChanged(WinTab.Structs.WintabPacket packet, WinTab.Utils.StylusButtonChange change)
+            private void OnButtonChanged(SevenLib.WinTab.Structs.WintabPacket packet, SevenLib.WinTab.Utils.StylusButtonChange change)
             {
                 if (!IsActive) return;
     
@@ -102,7 +102,7 @@ namespace SevenPaint.Stylus
                 {
                     if (!IsActive) return;
     
-                    bool isPressed = change.Change == WinTab.Utils.StylusButtonChangeType.Pressed;
+                    bool isPressed = change.Change == SevenLib.WinTab.Utils.StylusButtonChangeType.Pressed;
                     string btnName = change.ButtonId.ToString();
                     int btnId = (int)change.ButtonId;
                     var btnState = _session.StylusButtonState;

@@ -6,7 +6,7 @@ namespace WinTabPainter.GeometryExtensions;
 public static class GeometryExtensions
 {
 
-    extension(SevenUtils.Geometry.Point this_p)
+    extension(SevenLib.Geometry.Point this_p)
     {
 
         public SD.Point ToSDPoint()
@@ -17,7 +17,7 @@ public static class GeometryExtensions
 
     }
 
-    extension(SevenUtils.Geometry.PointD this_p)
+    extension(SevenLib.Geometry.PointD this_p)
     {
 
         public SD.PointF ToSDPointF()
@@ -28,7 +28,7 @@ public static class GeometryExtensions
 
     }
 
-    extension(SevenUtils.Geometry.SizeD this_s)
+    extension(SevenLib.Geometry.SizeD this_s)
     {
 
         public SD.SizeF ToSDSizeF()
@@ -39,7 +39,7 @@ public static class GeometryExtensions
 
     }
 
-    extension(SevenUtils.Geometry.Size this_s)
+    extension(SevenLib.Geometry.Size this_s)
     {
 
         public SD.Size ToSDSize()

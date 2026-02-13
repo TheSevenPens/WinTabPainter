@@ -12,8 +12,9 @@
     <Content Include="MIT-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
     <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
-    <ProjectReference Include="..\WinTab\WinTab.csproj" />
 
   </ItemGroup>
   <ItemGroup>

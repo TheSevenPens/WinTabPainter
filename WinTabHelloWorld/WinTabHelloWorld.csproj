@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WinTab\WinTab.csproj" />
+    <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
+    <ProjectReference Include="..\WinTab\SevenWinTab.csproj" />
   </ItemGroup>
 
 </Project>

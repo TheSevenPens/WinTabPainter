@@ -7,9 +7,9 @@ public static class GeometryExtensions
     extension(System.Windows.Point this_p)
     {
 
-        public SevenUtils.Geometry.PointD ToSPPointD()
+        public SevenLib.Geometry.PointD ToSPPointD()
         {
-            var p = new SevenUtils.Geometry.PointD(this_p.X, this_p.Y);
+            var p = new SevenLib.Geometry.PointD(this_p.X, this_p.Y);
             return p;
         }
 
@@ -18,15 +18,15 @@ public static class GeometryExtensions
     extension(System.Windows.Size this_s)
     {
 
-        public SevenUtils.Geometry.SizeD ToSPSizeD()
+        public SevenLib.Geometry.SizeD ToSPSizeD()
         {
-            var p = new SevenUtils.Geometry.SizeD(this_s.Width, this_s.Height);
+            var p = new SevenLib.Geometry.SizeD(this_s.Width, this_s.Height);
             return p;
         }
 
     }
 
-    extension(SevenUtils.Geometry.Point this_p)
+    extension(SevenLib.Geometry.Point this_p)
     {
 
         public System.Windows.Point ToSW()
@@ -37,7 +37,7 @@ public static class GeometryExtensions
 
     }
 
-    extension(SevenUtils.Geometry.Size this_s)
+    extension(SevenLib.Geometry.Size this_s)
     {
 
         public System.Windows.Size ToSWSize()

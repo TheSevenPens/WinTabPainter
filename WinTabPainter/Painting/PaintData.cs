@@ -1,5 +1,6 @@
 ﻿namespace WinTabPainter.Painting;
 
+using SevenLib.WinTab;
 public struct PaintData
 {
     // STATUS
@@ -10,10 +11,10 @@ public struct PaintData
     public readonly uint Time;
 
     // POSITION
-    public readonly SevenUtils.Geometry.Point PosScreen;
-    public readonly SevenUtils.Geometry.Point PosScreenEffective;
-    public readonly SevenUtils.Geometry.Point PosCanvas;
-    public readonly SevenUtils.Geometry.Point PosCanvasEffective;
+    public readonly SevenLib.Geometry.Point PosScreen;
+    public readonly SevenLib.Geometry.Point PosScreenEffective;
+    public readonly SevenLib.Geometry.Point PosCanvas;
+    public readonly SevenLib.Geometry.Point PosCanvasEffective;
 
     // HOVER
     public readonly int PenHover;
@@ -43,7 +44,7 @@ public struct PaintData
     }
 
     static System.Random random  = new System.Random();
-    public PaintData(WinTab.Structs.WintabPacket pkt, WinTab.Utils.TabletInfo tablet, PaintSettings paintsettings, System.Func<SevenUtils.Geometry.Point,SevenUtils.Geometry.Point> to_canv)
+    public PaintData(SevenLib.WinTab.Structs.WintabPacket pkt, SevenLib.WinTab.Utils.TabletInfo tablet, PaintSettings paintsettings, System.Func<SevenLib.Geometry.Point,SevenLib.Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;
@@ -52,7 +53,7 @@ public struct PaintData
         this.Time = pkt.pkTime;
 
         // POSITION
-        this.PosScreen = new SevenUtils.Geometry.Point(pkt.pkX, pkt.pkY);
+        this.PosScreen = new SevenLib.Geometry.Point(pkt.pkX, pkt.pkY);
         this.PosScreenEffective = paintsettings.Dynamics.PositionSmoother.Smooth(this.PosScreen).Round().ToPoint();
 
         this.PosCanvas = to_canv(this.PosScreen);
@@ -60,12 +61,12 @@ public struct PaintData
 
         if (paintsettings.PostionNoiseX > 0)
         {
-            this.PosCanvasEffective = new SevenUtils.Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PostionNoiseX), this.PosCanvasEffective.Y);
+            this.PosCanvasEffective = new SevenLib.Geometry.Point(this.PosCanvasEffective.X + random.Next( paintsettings.PostionNoiseX), this.PosCanvasEffective.Y);
         }
 
         if (paintsettings.PositionNoiseY > 0)
         {
-            this.PosCanvasEffective = new SevenUtils.Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PositionNoiseY));
+            this.PosCanvasEffective = new SevenLib.Geometry.Point(this.PosCanvasEffective.X, this.PosCanvasEffective.Y + random.Next(paintsettings.PositionNoiseY));
         }
 
 
@@ -76,7 +77,7 @@ public struct PaintData
         this.TiltAltitude = pkt.pkOrientation.orAltitude / 10.0;
         this.TiltAzimuth = pkt.pkOrientation.orAzimuth / 10.0;
 
-        var tiltaa_deg = new SevenUtils.Trigonometry.TiltAA(this.TiltAzimuth, this.TiltAltitude);
+        var tiltaa_deg = new SevenLib.Trigonometry.TiltAA(this.TiltAzimuth, this.TiltAltitude);
         var tiltxy_deg = tiltaa_deg.ToXY_Deg();
         this.TiltX = tiltxy_deg.X;
         this.TiltY  = tiltxy_deg.Y;

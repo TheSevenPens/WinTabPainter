@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
-    <ProjectReference Include="..\WinTab\WinTab.csproj" />
+    <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+    <ProjectReference Include="..\SevenUtils\SevenLib.csproj" />
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
     <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.8" />
   </ItemGroup>

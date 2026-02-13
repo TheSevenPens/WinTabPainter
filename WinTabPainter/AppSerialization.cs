@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Windows.Forms;
-using WinTab.Structs;
 
 namespace WinTabPainter
 {
@@ -17,7 +16,7 @@ namespace WinTabPainter
     {
         int max_rec_packets = 200 * 60 * 2; // allocate enough for 2 minute at 200 reports per second
 
-        List<WinTab.Structs.WintabPacket> recorded_packets;
+        List<SevenLib.WinTab.Structs.WintabPacket> recorded_packets;
 
         RecStatusEnum RecStat = RecStatusEnum.NotRecording;
 
@@ -50,7 +49,7 @@ namespace WinTabPainter
             this.UpdateRecStatus();
         }
 
-        private void RecordPacket(WintabPacket wintab_pkt)
+        private void RecordPacket(SevenLib.WinTab.Structs.WintabPacket wintab_pkt)
         {
             if (this.recorded_packets.Count >= this.max_rec_packets)
             {
@@ -102,7 +101,7 @@ namespace WinTabPainter
             options.WriteIndented = true;
 
             var loaded_recording = PacketRecording.FromFile(ofd.FileName);
-            this.recorded_packets = new List<WintabPacket>();
+            this.recorded_packets = new List<SevenLib.WinTab.Structs.WintabPacket>();
             foreach (var packet in loaded_recording.Packets)
             {
                 this.recorded_packets.Add(packet.ToPacket());

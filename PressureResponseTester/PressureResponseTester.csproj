@@ -15,8 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
-    <ProjectReference Include="..\WinTab\WinTab.csproj" />
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+    <ProjectReference Include="..\SevenUtils\SevenLib.csproj" />
+	  <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
 
   </ItemGroup>
 
