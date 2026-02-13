@@ -30,6 +30,6 @@ namespace WinInkHelloWorld
         public double Twist { get; set; } // Barrel Rotation
 
         // Buttons
-        //public SevenLib.WinTab.Utils.StylusButtonState ButtonState { get; set; }
+        public SevenLib.Stylus.StylusButtonState ButtonState { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace SevenPaint
         private long _lastWintabTime = 0;
 
         // Button State Tracking
-        private SevenLib.WinTab.Utils.StylusButtonState _lastButtonState = new StylusButtonState(0);
+        private SevenLib.Stylus.StylusButtonState _lastButtonState = new SevenLib.Stylus.StylusButtonState(0);
         private int _lastButtonsRaw = 0;
 
         public MainWindow()

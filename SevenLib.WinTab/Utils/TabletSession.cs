@@ -12,12 +12,12 @@ public class TabletSession : System.IDisposable
     public TabletContextType ContextType;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket> PacketHandler = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> StylusButtonChangedHandler = null;
-    public StylusButtonState StylusButtonState;
+    public SevenLib.Stylus.StylusButtonState StylusButtonState;
 
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
-        this.StylusButtonState = new StylusButtonState(0); // Initialize to indicate no buttons are pressed
+        this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
     }
 
     public void Open(TabletContextType context_type)
@@ -90,7 +90,7 @@ public class TabletSession : System.IDisposable
             if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 // there's been some change to the buttons
-                this.StylusButtonState.Update(button_info);
+                this.StylusButtonState = SevenLib.WinTab.Utils.StylusUtils.Update(this.StylusButtonState, button_info);
             }
 
 

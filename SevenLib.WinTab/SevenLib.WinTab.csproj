@@ -12,4 +12,7 @@
   <ItemGroup>
     <Compile Remove="TestOnly.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+  </ItemGroup>
 </Project>

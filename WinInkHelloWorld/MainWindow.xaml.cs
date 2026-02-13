@@ -73,11 +73,12 @@ namespace WinInkHelloWorld
                         this._drawingState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
                         this._drawingState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(clientPos.X, clientPos.Y);
                         this._drawingState.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
-                        this._drawingState.PointerData.PressureNormalized= penInfo.pressure / 1024.0f;
+                        this._drawingState.PointerData.PressureNormalized = penInfo.pressure / 1024.0f;
                         this._drawingState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
                         this._drawingState.PointerData.TiltAADeg = this._drawingState.PointerData.TiltXYDeg.ToAA_deg();
-                        this._drawingState.PointerData.Twist = penInfo.rotation; 
-                        // _drawingState.PointerData.ButtonState = 0; // Could be derived from penInfo.pointerInfo.dwKeyStates but would require mapping to our ButtonState enum
+                        this._drawingState.PointerData.Twist = penInfo.rotation;
+                        uint buttonState = MapWindowsButtonStates(penInfo);
+                        this._drawingState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
 
                         HandlePenMessage(msg, penInfo);
@@ -97,7 +98,8 @@ namespace WinInkHelloWorld
                         this._drawingState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
                         this._drawingState.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
                         this._drawingState.PointerData.Twist = 0;
-                        // _drawingState.PointerData.ButtonState = 0; // Could be derived from penInfo.pointerInfo.dwKeyStates but would require mapping to our ButtonState enum
+                        uint buttonState = MapWindowsButtonStates(penInfo);
+                        this._drawingState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
                         HandlePointerMessage(msg, pointerInfo, pointerType);
                          handled = true;
@@ -111,6 +113,14 @@ namespace WinInkHelloWorld
             }
 
             return IntPtr.Zero;
+        }
+
+        private static uint MapWindowsButtonStates(POINTER_PEN_INFO penInfo)
+        {
+            uint buttonState = 0;
+            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0) buttonState |= 1; // Tip
+            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0) buttonState |= 8; // Barrel
+            return buttonState;
         }
 
         private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
@@ -208,7 +218,8 @@ namespace WinInkHelloWorld
             var tiltY = this._drawingState.PointerData.TiltXYDeg.Y;
             var az = this._drawingState.PointerData.TiltAADeg.Azimuth;
             var alt = this._drawingState.PointerData.TiltAADeg.Altitude;
-            StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0}";
+            var btns = this._drawingState.PointerData.ButtonState.ToString();
+            StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0} | Btn: {btns}";
         }
 
     }

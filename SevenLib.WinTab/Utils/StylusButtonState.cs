@@ -1,67 +1,54 @@
 
 namespace SevenLib.WinTab.Utils;
 
-public struct StylusButtonState
+public class StylusUtils
 {
-    private uint _state;
 
-    private const uint TipMask = 0x0001;
-    private const uint LowerMask = 0x0002;
-    private const uint UpperMask = 0x0004;
-    private const uint BarrelMask = 0x0008; // Included for completeness, though not explicitly used in original TabletSession logic yet
-
-    public StylusButtonState(uint initialState)
+    public static SevenLib.Stylus.StylusButtonState  Update(SevenLib.Stylus.StylusButtonState state, SevenLib.WinTab.Utils.StylusButtonChange change)
     {
-        _state = initialState;
-    }
+        uint _state = state.Value;
 
-    public bool IsTipDown => (_state & TipMask) != 0;
-    public bool IsLowerButtonDown => (_state & LowerMask) != 0;
-    public bool IsUpperButtonDown => (_state & UpperMask) != 0;
-    public bool IsBarrelButtonDown => (_state & BarrelMask) != 0;
-
-
-    public void Update(StylusButtonChange change)
-    {
         if (change.Change == StylusButtonChangeType.Pressed)
         {
             if (change.ButtonId == StylusButtonId.Tip)
             {
-                _state |= TipMask;
+                _state |= SevenLib.Stylus.StylusButtonState.TipMask;
             }
             else if (change.ButtonId == StylusButtonId.LowerButton)
             {
-                _state |= LowerMask;
+                _state |= SevenLib.Stylus.StylusButtonState.LowerMask;
             }
             else if (change.ButtonId == StylusButtonId.UpperButton)
             {
-                _state |= UpperMask;
+                _state |= SevenLib.Stylus.StylusButtonState.UpperMask;
             }
             else if (change.ButtonId == StylusButtonId.BarrelButton)
             {
-                _state |= BarrelMask;
+                _state |= SevenLib.Stylus.StylusButtonState.BarrelMask;
             }
         }
         else if (change.Change == StylusButtonChangeType.Released)
         {
             if (change.ButtonId == StylusButtonId.Tip)
             {
-                _state &= ~TipMask;
+                _state &= ~SevenLib.Stylus.StylusButtonState.TipMask;
             }
             else if (change.ButtonId == StylusButtonId.LowerButton)
             {
-                _state &= ~LowerMask;
+                _state &= ~SevenLib.Stylus.StylusButtonState.LowerMask;
             }
             else if (change.ButtonId == StylusButtonId.UpperButton)
             {
-                _state &= ~UpperMask;
+                _state &= ~SevenLib.Stylus.StylusButtonState.UpperMask;
             }
             else if (change.ButtonId == StylusButtonId.BarrelButton)
             {
-                _state &= ~BarrelMask;
+                _state &= ~SevenLib.Stylus.StylusButtonState.BarrelMask;
             }
         }
+
+        var new_state = new SevenLib.Stylus.StylusButtonState { Value = _state };
+        return new_state;
     }
     
-    public override string ToString() => _state.ToString();
 }
