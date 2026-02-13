@@ -40,17 +40,10 @@ public partial class MainWindow : Window
 
     private void InitializeTablet()
     {
-        try
-        {
-            _wintabsession = new WinTab.Utils.TabletSession();
-            _wintabsession.PacketHandler = HandleWinTabPointerPacket;
-            _wintabsession.StylusButtonChangedHandler = OnButtonChange;
-            _wintabsession.Open(WinTab.Utils.TabletContextType.System);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error opening tablet session: {ex.Message}");
-        }
+        _wintabsession = new WinTab.Utils.TabletSession();
+        _wintabsession.PacketHandler = HandleWinTabPointerPacket;
+        _wintabsession.StylusButtonChangedHandler = OnButtonChange;
+        _wintabsession.Open(WinTab.Utils.TabletContextType.System);
     }
 
     private void HandleWinTabPointerPacket(WinTab.Structs.WintabPacket packet)
