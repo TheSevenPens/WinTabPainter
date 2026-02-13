@@ -12,7 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SevenLib.Media\SevenLib.Media.csproj" />
     <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
-    <ProjectReference Include="..\WinTab\SevenWinTab.csproj" />
   </ItemGroup>
 
 </Project>

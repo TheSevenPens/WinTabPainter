@@ -64,7 +64,8 @@ public partial class MainWindow : Window
 
                 if (packet.pkNormalPressure > 0)
                 {
-                    _renderer.DrawPoint((int)canvasPos.X, (int)canvasPos.Y, packet.pkNormalPressure);
+                    float normalized_pressure = (float)packet.pkNormalPressure / _wintabsession.TabletInfo.MaxPressure;
+                    _renderer.DrawPoint((int)canvasPos.X, (int)canvasPos.Y, normalized_pressure * 15.0f);
                 }
             }
             catch (Exception ex)

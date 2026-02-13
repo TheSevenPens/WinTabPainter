@@ -47,7 +47,7 @@ namespace SevenLib.Media
             DrawOnCanvas(canvas => canvas.Clear(SKColors.White));
         }
 
-        public void DrawPoint(int x, int y, uint pressure)
+        public void DrawPoint(int x, int y, float size)
         {
             DrawOnCanvas(canvas =>
             {
@@ -57,7 +57,7 @@ namespace SevenLib.Media
                     Style = SKPaintStyle.Fill
                 })
                 {
-                    canvas.DrawRect(x - 1, y - 1, 3, 3, paint);
+                    canvas.DrawRect(x - size / 2, y - size / 2, size, size, paint);
                 }
             });
         }
