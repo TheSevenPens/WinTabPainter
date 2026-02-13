@@ -9,8 +9,8 @@ namespace WinInkHelloWorld
     {
         private BitmapCanvas _canvas;
         private DrawingState _drawingState = new DrawingState();
-        private const int CanvasWidth = 600;
-        private const int CanvasHeight = 600;
+        private const int DefaultCanvasWidth = 600;
+        private const int DefaultCanvasHeight = 600;
 
         public MainWindow()
         { // turbo
@@ -39,7 +39,7 @@ namespace WinInkHelloWorld
 
         private void InitializeCanvas()
         {
-            _canvas = new BitmapCanvas(CanvasWidth, CanvasHeight);
+            _canvas = new BitmapCanvas(DefaultCanvasWidth, DefaultCanvasHeight);
             WritingCanvas.Source = _canvas.Bitmap;
         }
 
@@ -63,19 +63,19 @@ namespace WinInkHelloWorld
                     if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
                     {
                         // Handling when the pointer is a pen
-                        HandlePenMessage(msg, penInfo);
+                        HandleWinInkPenMessage(msg, penInfo);
                         handled = true;
                     }
                     else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
                     {
                         // Generic pointer handling
-                         HandlePointerMessage(msg, pointerInfo, pointerType);
+                         HandleWinInkPointerMessage(msg, pointerInfo, pointerType);
                          handled = true;
                     }
                     else
                     {
                         // Debug log for failure
-                        UpdateStatus(new Point(0, 0), 0, 0, 0, $"Unknown Pointer ID:{pointerId} Type:{pointerType}");
+                        UpdatePointerStats(new Point(0, 0), 0, 0, 0, $"Unknown Pointer ID:{pointerId} Type:{pointerType}");
                     }
                     break;
             }
@@ -90,7 +90,7 @@ namespace WinInkHelloWorld
             return (screenPos, canvasPos);
         }   
 
-        private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
+        private void HandleWinInkPenMessage(int msg, POINTER_PEN_INFO penInfo)
         {
 
             (var screenPos, var canvasPos) = GetPointerPositions(penInfo.pointerInfo);
@@ -99,7 +99,7 @@ namespace WinInkHelloWorld
             int tiltX = penInfo.tiltX;
             int tiltY = penInfo.tiltY;
 
-            UpdateStatus(canvasPos, pressure, tiltX, tiltY, "Native Pen");
+            UpdatePointerStats(canvasPos, pressure, tiltX, tiltY, "Native Pen");
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
@@ -115,14 +115,14 @@ namespace WinInkHelloWorld
             }
         }
 
-        private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
+        private void HandleWinInkPointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
         {
 
             (var screenPos, var canvasPos) = GetPointerPositions(pointerInfo);
 
             float pressure = 1.0f; // generic pointer has no pressure so treat it as max pressure
             string deviceName = pointer_type_to_name(ptrType);
-            UpdateStatus(canvasPos, pressure, 0, 0, deviceName);
+            UpdatePointerStats(canvasPos, pressure, 0, 0, deviceName);
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
@@ -178,7 +178,7 @@ namespace WinInkHelloWorld
             }
         }
 
-        private void UpdateStatus(Point pos, float pressure, int tiltX, int tiltY, string deviceType)
+        private void UpdatePointerStats(Point pos, float pressure, int tiltX, int tiltY, string deviceType)
         {
             StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY}";
         }

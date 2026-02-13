@@ -9,12 +9,12 @@ namespace WinTabHelloWorld;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private WinTab.Utils.TabletSession _session;
+    private WinTab.Utils.TabletSession _wintabsession;
     private CanvasRenderer _renderer;
-    private PacketState _packetstate = new PacketState();
+    private DrawingState _drawingState = new DrawingState();
     private string _buttonStatus = "None";
-    private const int BitmapWidth = 800;
-    private const int BitmapHeight = 600;
+    private const int DefaultCanvasWidth = 800;
+    private const int DefaultCanvasHeight = 600;
 
     private DispatcherTimer _uiTimer;
 
@@ -23,7 +23,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         _uiTimer = new DispatcherTimer();
         _uiTimer.Interval = TimeSpan.FromMilliseconds(16); // ~60 FPS
-        _uiTimer.Tick += UpdateUI;
+        _uiTimer.Tick += UpdatePointerStats;
         _uiTimer.Start();
 
         DataContext = this;
@@ -34,7 +34,7 @@ public partial class MainWindow : Window
 
     private void InitializeCanvas()
     {
-        _renderer = new CanvasRenderer(BitmapWidth, BitmapHeight);
+        _renderer = new CanvasRenderer(DefaultCanvasWidth, DefaultCanvasHeight);
         CanvasImage.Source = _renderer.ImageSource;
     }
 
@@ -42,10 +42,10 @@ public partial class MainWindow : Window
     {
         try
         {
-            _session = new WinTab.Utils.TabletSession();
-            _session.PacketHandler = OnPacket;
-            _session.StylusButtonChangedHandler = OnButtonChange;
-            _session.Open(WinTab.Utils.TabletContextType.System);
+            _wintabsession = new WinTab.Utils.TabletSession();
+            _wintabsession.PacketHandler = HandleWinTabPointerPacket;
+            _wintabsession.StylusButtonChangedHandler = OnButtonChange;
+            _wintabsession.Open(WinTab.Utils.TabletContextType.System);
         }
         catch (Exception ex)
         {
@@ -53,10 +53,10 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnPacket(WinTab.Structs.WintabPacket packet)
+    private void HandleWinTabPointerPacket(WinTab.Structs.WintabPacket packet)
     {
-        _packetstate.Packet = packet;
-        _packetstate.Time = DateTime.Now;
+        _drawingState.Packet = packet;
+        _drawingState.Time = DateTime.Now;
 
         Dispatcher.Invoke(() =>
         {
@@ -67,7 +67,7 @@ public partial class MainWindow : Window
                 Point screenPos = new Point(packet.pkX, packet.pkY);
                 Point canvasPos = CanvasImage.PointFromScreen(screenPos);
 
-                _packetstate.LocalPoint = canvasPos;
+                _drawingState.LocalPoint = canvasPos;
 
                 if (packet.pkNormalPressure > 0)
                 {
@@ -83,25 +83,24 @@ public partial class MainWindow : Window
 
     private void OnButtonChange(WinTab.Structs.WintabPacket packet, WinTab.Utils.StylusButtonChange buttonChange)
     {
-        _buttonStatus = _session.StylusButtonState.ToString();
-        //_buttonStatus = $"{buttonChange.ButtonId}: {buttonChange.Change}";
+        _buttonStatus = _wintabsession.StylusButtonState.ToString();
     }
 
-    private void UpdateUI(object sender, EventArgs e)
+    private void UpdatePointerStats(object sender, EventArgs e)
     {
         // Update UI with last packet info
-        if ((DateTime.Now - _packetstate.Time).TotalSeconds < 1.0)
+        if ((DateTime.Now - _drawingState.Time).TotalSeconds < 1.0)
         {
-            ValGx.Text = _packetstate.Packet.pkX.ToString();
-            ValGy.Text = _packetstate.Packet.pkY.ToString();
-            ValCx.Text = _packetstate.LocalPoint.X.ToString("F0");
-            ValCy.Text = _packetstate.LocalPoint.Y.ToString("F0");
+            ValGx.Text = _drawingState.Packet.pkX.ToString();
+            ValGy.Text = _drawingState.Packet.pkY.ToString();
+            ValCx.Text = _drawingState.LocalPoint.X.ToString("F0");
+            ValCy.Text = _drawingState.LocalPoint.Y.ToString("F0");
 
-            ValZ.Text = _packetstate.Packet.pkZ.ToString();
-            ValP.Text = _packetstate.Packet.pkNormalPressure.ToString();
+            ValZ.Text = _drawingState.Packet.pkZ.ToString();
+            ValP.Text = _drawingState.Packet.pkNormalPressure.ToString();
 
-            ValAz.Text = _packetstate.Packet.pkOrientation.orAzimuth.ToString();
-            ValAlt.Text = _packetstate.Packet.pkOrientation.orAltitude.ToString();
+            ValAz.Text = _drawingState.Packet.pkOrientation.orAzimuth.ToString();
+            ValAlt.Text = _drawingState.Packet.pkOrientation.orAltitude.ToString();
 
             ValBtn.Text = _buttonStatus;
         }
@@ -117,10 +116,10 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (_session != null)
+        if (_wintabsession != null)
         {
-            _session.Close();
-            _session = null;
+            _wintabsession.Close();
+            _wintabsession = null;
         }
     }
 

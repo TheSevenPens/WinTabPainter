@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace WinTabHelloWorld;
 
-public class PacketState
+public class DrawingState
 {
     public WinTab.Structs.WintabPacket Packet { get; set; }
     public DateTime Time { get; set; }
