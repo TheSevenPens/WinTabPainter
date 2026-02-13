@@ -81,7 +81,7 @@ namespace WinInkHelloWorld
                         this._drawingState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
 
-                        HandlePenMessage(msg, penInfo);
+                        HandlePenMessage(msg);
                         handled = true;
                     }
                     else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
@@ -101,7 +101,7 @@ namespace WinInkHelloWorld
                         uint buttonState = MapWindowsButtonStates(penInfo);
                         this._drawingState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
-                        HandlePointerMessage(msg, pointerInfo, pointerType);
+                        HandlePointerMessage(msg, pointerType);
                          handled = true;
                     }
                     else
@@ -118,12 +118,19 @@ namespace WinInkHelloWorld
         private static uint MapWindowsButtonStates(POINTER_PEN_INFO penInfo)
         {
             uint buttonState = 0;
-            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0) buttonState |= 1; // Tip
-            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0) buttonState |= 8; // Barrel
+            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
+            {
+                buttonState |= 1; // Tip
+            }
+            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
+            {
+                buttonState |= 2; // Button2
+            }
+
             return buttonState;
         }
 
-        private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
+        private void HandlePenMessage(int msg)
         {
 
 
@@ -131,7 +138,7 @@ namespace WinInkHelloWorld
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(this._drawingState.PointerData.CanvasPoint);
+                HandlePointerDown();
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
@@ -139,11 +146,11 @@ namespace WinInkHelloWorld
             }
             else // UPDATE
             {
-                HandlePointerUpdate(penInfo.pointerInfo, this._drawingState.PointerData.CanvasPoint, this._drawingState.PointerData.PressureNormalized);
+                HandlePointerUpdate();
             }
         }
 
-        private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
+        private void HandlePointerMessage(int msg, int ptrType)
         {
 
             //string deviceName = pointer_type_to_name(ptrType);
@@ -151,7 +158,7 @@ namespace WinInkHelloWorld
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(this._drawingState.PointerData.CanvasPoint);
+                HandlePointerDown();
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
@@ -159,18 +166,25 @@ namespace WinInkHelloWorld
             }
             else
             {
-                HandlePointerUpdate(pointerInfo, this._drawingState.PointerData.CanvasPoint, this._drawingState.PointerData.PressureNormalized);
+                HandlePointerUpdate();
             }
         }
 
-        private void HandlePointerUpdate(POINTER_INFO pointerInfo, SevenLib.Geometry.PointD canvasPos, double pressure)
+        private void HandlePointerUpdate()
         {
-            bool inContact = (pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
+            bool pointer_in_contact = this._drawingState.PointerData.PressureNormalized > 0;
 
-            if (_drawingState.IsDrawing && inContact)
+            // the old logic
+            // bool pointer_in_contact = (pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
+            //
+            // https://learn.microsoft.com/en-us/windows/win32/inputmsg/pointer-flags-contants
+            // POINTER_FLAG_INCONTACT - Indicates that this pointer is in contact with the digitizer surface.
+            // When this flag is not set, it indicates a hovering pointer.
+
+            if (_drawingState.IsDrawing && pointer_in_contact)
             {
-                _renderer.DrawLineX(_drawingState.LastCanvasPoint, canvasPos, (float)(pressure *5));
-                _drawingState.LastCanvasPoint = canvasPos;
+                _renderer.DrawLineX(_drawingState.LastCanvasPoint, _drawingState.PointerData.CanvasPoint, (float)(_drawingState.PointerData.PressureNormalized * 5));
+                _drawingState.LastCanvasPoint = _drawingState.PointerData.CanvasPoint;
             }
         }
 
@@ -179,10 +193,10 @@ namespace WinInkHelloWorld
             _drawingState.IsDrawing = false;
         }
 
-        private void HandlePointerDown(SevenLib.Geometry.PointD canvasPos)
+        private void HandlePointerDown()
         {
             _drawingState.IsDrawing = true;
-            _drawingState.LastCanvasPoint = canvasPos;
+            _drawingState.LastCanvasPoint = this._drawingState.PointerData.CanvasPoint;
         }
 
 
