@@ -1,5 +1,4 @@
 using System;
-using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -123,7 +122,7 @@ namespace WinInkHelloWorld
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
                 _drawingState.IsDrawing = true;
-                _drawingState.LastPoint = _drawingState.PointerData.CanvasPoint;
+                _drawingState.LastCanvasPoint = _drawingState.PointerData.CanvasPoint;
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
@@ -135,8 +134,8 @@ namespace WinInkHelloWorld
                 
                 if (_drawingState.IsDrawing && inContact)
                 {
-                    _renderer.DrawLineX(_drawingState.LastPoint, _drawingState.PointerData.CanvasPoint, (float)(_drawingState.PointerData.PressureNormalized * 5));
-                    _drawingState.LastPoint = _drawingState.PointerData.CanvasPoint;
+                    _renderer.DrawLineX(_drawingState.LastCanvasPoint, _drawingState.PointerData.CanvasPoint, (float)(_drawingState.PointerData.PressureNormalized * 5));
+                    _drawingState.LastCanvasPoint = _drawingState.PointerData.CanvasPoint;
                 }
             }
         }
@@ -166,8 +165,8 @@ namespace WinInkHelloWorld
 
             if (_drawingState.IsDrawing && inContact)
             {
-                _renderer.DrawLineX(_drawingState.LastPoint, canvasPos, (float)(pressure *5));
-                _drawingState.LastPoint = canvasPos;
+                _renderer.DrawLineX(_drawingState.LastCanvasPoint, canvasPos, (float)(pressure *5));
+                _drawingState.LastCanvasPoint = canvasPos;
             }
         }
 
@@ -179,7 +178,7 @@ namespace WinInkHelloWorld
         private void HandlePointerDown(SevenLib.Geometry.PointD canvasPos)
         {
             _drawingState.IsDrawing = true;
-            _drawingState.LastPoint = canvasPos;
+            _drawingState.LastCanvasPoint = canvasPos;
         }
 
 
