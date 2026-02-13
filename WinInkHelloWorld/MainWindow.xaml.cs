@@ -206,7 +206,9 @@ namespace WinInkHelloWorld
             var pressure = this._drawingState.PointerData.PressureNormalized;
             var tiltX = this._drawingState.PointerData.TiltXYDeg.X;
             var tiltY = this._drawingState.PointerData.TiltXYDeg.Y;
-            StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY}";
+            var az = this._drawingState.PointerData.TiltAADeg.Azimuth;
+            var alt = this._drawingState.PointerData.TiltAADeg.Altitude;
+            StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0}";
         }
 
     }
