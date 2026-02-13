@@ -8,8 +8,7 @@ namespace WinInkHelloWorld
     public partial class MainWindow : Window
     {
         private BitmapCanvas _canvas;
-        private bool _isDrawing;
-        private Point _lastPoint;
+        private DrawingState _drawingState = new DrawingState();
         private const int CanvasWidth = 600;
         private const int CanvasHeight = 600;
 
@@ -85,33 +84,33 @@ namespace WinInkHelloWorld
         private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
         {
 
-            NativePoint screenPos = new NativePoint(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
-            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
+            var screenPos = new NativePoint(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
+            var canvasPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
 
             float pressure = penInfo.pressure / 1024.0f; 
             int tiltX = penInfo.tiltX;
             int tiltY = penInfo.tiltY;
 
-            UpdateStatus(clientPos, pressure, tiltX, tiltY, "Native Pen");
+            UpdateStatus(canvasPos, pressure, tiltX, tiltY, "Native Pen");
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                _isDrawing = true;
-                _lastPoint = clientPos;
+                _drawingState.IsDrawing = true;
+                _drawingState.LastPoint = canvasPos;
                 // Capture? In native Win32 usually implied, but we are just drawing.
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
-                _isDrawing = false;
+                _drawingState.IsDrawing = false;
             }
             else // UPDATE
             {
                 bool inContact = (penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
                 
-                if (_isDrawing && inContact)
+                if (_drawingState.IsDrawing && inContact)
                 {
-                    _canvas.DrawLine(_lastPoint, clientPos, pressure);
-                    _lastPoint = clientPos;
+                    _canvas.DrawLine(_drawingState.LastPoint, canvasPos, pressure);
+                    _drawingState.LastPoint = canvasPos;
                 }
             }
         }
@@ -129,20 +128,20 @@ namespace WinInkHelloWorld
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                _isDrawing = true;
-                _lastPoint = clientPos;
+                _drawingState.IsDrawing = true;
+                _drawingState.LastPoint = clientPos;
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
-                _isDrawing = false;
+                _drawingState.IsDrawing = false;
             }
             else
             {
                 bool inContact = (pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
-                if (_isDrawing && inContact)
+                if (_drawingState.IsDrawing && inContact)
                 {
-                    _canvas.DrawLine(_lastPoint, clientPos, pressure);
-                    _lastPoint = clientPos;
+                    _canvas.DrawLine(_drawingState.LastPoint, clientPos, pressure);
+                    _drawingState.LastPoint = clientPos;
                 }
             }
         }
