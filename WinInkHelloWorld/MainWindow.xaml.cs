@@ -1,10 +1,7 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace WinInkHelloWorld
 {
@@ -60,8 +57,9 @@ namespace WinInkHelloWorld
                 case NativeMethods.WM_POINTERUP:
                 case NativeMethods.WM_POINTERLEAVE:
                     uint pointerId = NativeMethods.GetPointerId(wParam);
+
                     int pointerType = 0;
-                    NativeMethods.GetPointerType(pointerId, out pointerType); // 1=Generic, 2=Touch, 3=Pen, 4=Mouse
+                    NativeMethods.GetPointerType(pointerId, out pointerType); 
 
                     if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
                     {
