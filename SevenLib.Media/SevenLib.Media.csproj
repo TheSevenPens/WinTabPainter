@@ -13,4 +13,8 @@
     <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -100,7 +100,7 @@ namespace SevenLib.Media
             });
         }
 
-        public void DrawLineX(Point start, Point end, float thickness)
+        public void DrawLineX(SevenLib.Geometry.PointD start, SevenLib.Geometry.PointD end, float thickness)
         {
              DrawOnCanvas(canvas =>
             {

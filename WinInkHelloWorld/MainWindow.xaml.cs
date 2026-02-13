@@ -1,4 +1,5 @@
 using System;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -58,24 +59,54 @@ namespace WinInkHelloWorld
                     uint pointerId = NativeMethods.GetPointerId(wParam);
 
                     int pointerType = 0;
-                    NativeMethods.GetPointerType(pointerId, out pointerType); 
+                    NativeMethods.GetPointerType(pointerId, out pointerType);
+
+
 
                     if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
                     {
                         // Handling when the pointer is a pen
+
+
+                        var clientPos = WritingCanvas.PointFromScreen(new Point(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y));
+
+                        this._drawingState.PointerData.Time = System.DateTime.Now;
+                        this._drawingState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
+                        this._drawingState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(clientPos.X, clientPos.Y);
+                        this._drawingState.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
+                        this._drawingState.PointerData.PressureNormalized= penInfo.pressure / 1024.0f;
+                        this._drawingState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
+                        this._drawingState.PointerData.TiltAADeg = this._drawingState.PointerData.TiltXYDeg.ToAA_deg();
+                        this._drawingState.PointerData.Twist = penInfo.rotation; 
+                        // _drawingState.PointerData.ButtonState = 0; // Could be derived from penInfo.pointerInfo.dwKeyStates but would require mapping to our ButtonState enum
+
+
                         HandlePenMessage(msg, penInfo);
                         handled = true;
                     }
                     else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
                     {
                         // Generic pointer handling
-                         HandlePointerMessage(msg, pointerInfo, pointerType);
+
+                        var clientPos = WritingCanvas.PointFromScreen(new Point(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y));
+
+                        this._drawingState.PointerData.Time = System.DateTime.Now;
+                        this._drawingState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
+                        this._drawingState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(clientPos.X, clientPos.Y);
+                        this._drawingState.PointerData.Height = 0; //
+                        this._drawingState.PointerData.PressureNormalized = 1.0;;
+                        this._drawingState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
+                        this._drawingState.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
+                        this._drawingState.PointerData.Twist = 0;
+                        // _drawingState.PointerData.ButtonState = 0; // Could be derived from penInfo.pointerInfo.dwKeyStates but would require mapping to our ButtonState enum
+
+                        HandlePointerMessage(msg, pointerInfo, pointerType);
                          handled = true;
                     }
                     else
                     {
                         // Debug log for failure
-                        UpdatePointerStats(new Point(0, 0), 0, 0, 0, $"Unknown Pointer ID:{pointerId} Type:{pointerType}");
+                        UpdatePointerStats();
                     }
                     break;
             }
@@ -86,20 +117,13 @@ namespace WinInkHelloWorld
         private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
         {
 
-            NativePoint screenPos = new NativePoint(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
-            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
 
-            float pressure = penInfo.pressure / 1024.0f; 
-            int tiltX = penInfo.tiltX;
-            int tiltY = penInfo.tiltY;
-
-            UpdatePointerStats(clientPos, pressure, tiltX, tiltY, "Native Pen");
+            UpdatePointerStats();
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
                 _drawingState.IsDrawing = true;
-                _drawingState.LastPoint = clientPos;
-                // Capture? In native Win32 usually implied, but we are just drawing.
+                _drawingState.LastPoint = _drawingState.PointerData.CanvasPoint;
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
@@ -111,24 +135,20 @@ namespace WinInkHelloWorld
                 
                 if (_drawingState.IsDrawing && inContact)
                 {
-                    _renderer.DrawLineX(_drawingState.LastPoint, clientPos, pressure*(float)5);
-                    _drawingState.LastPoint = clientPos;
+                    _renderer.DrawLineX(_drawingState.LastPoint, _drawingState.PointerData.CanvasPoint, (float)(_drawingState.PointerData.PressureNormalized * 5));
+                    _drawingState.LastPoint = _drawingState.PointerData.CanvasPoint;
                 }
             }
         }
         private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
         {
 
-            NativePoint screenPos = new NativePoint(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
-            Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
-
-            float pressure = 1.0f; // generic pointer has no pressure so treat it as max pressure
-            string deviceName = pointer_type_to_name(ptrType);
-            UpdatePointerStats(clientPos, pressure, 0, 0, deviceName);
+            //string deviceName = pointer_type_to_name(ptrType);
+            UpdatePointerStats();
 
             if (msg == NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(clientPos);
+                HandlePointerDown(this._drawingState.PointerData.CanvasPoint);
             }
             else if (msg == NativeMethods.WM_POINTERUP)
             {
@@ -136,17 +156,17 @@ namespace WinInkHelloWorld
             }
             else
             {
-                HandlePointerUpdate(pointerInfo, clientPos, pressure);
+                HandlePointerUpdate(pointerInfo, this._drawingState.PointerData.CanvasPoint, this._drawingState.PointerData.PressureNormalized);
             }
         }
 
-        private void HandlePointerUpdate(POINTER_INFO pointerInfo, Point canvasPos, float pressure)
+        private void HandlePointerUpdate(POINTER_INFO pointerInfo, SevenLib.Geometry.PointD canvasPos, double pressure)
         {
             bool inContact = (pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
 
             if (_drawingState.IsDrawing && inContact)
             {
-                _renderer.DrawLineX(_drawingState.LastPoint, canvasPos, pressure*(float)5);
+                _renderer.DrawLineX(_drawingState.LastPoint, canvasPos, (float)(pressure *5));
                 _drawingState.LastPoint = canvasPos;
             }
         }
@@ -156,7 +176,7 @@ namespace WinInkHelloWorld
             _drawingState.IsDrawing = false;
         }
 
-        private void HandlePointerDown(Point canvasPos)
+        private void HandlePointerDown(SevenLib.Geometry.PointD canvasPos)
         {
             _drawingState.IsDrawing = true;
             _drawingState.LastPoint = canvasPos;
@@ -180,8 +200,13 @@ namespace WinInkHelloWorld
             }
         }
 
-        private void UpdatePointerStats(Point pos, float pressure, int tiltX, int tiltY, string deviceType)
+        private void UpdatePointerStats()
         {
+            string deviceType = "UNK";
+            var pos = this._drawingState.PointerData.CanvasPoint;
+            var pressure = this._drawingState.PointerData.PressureNormalized;
+            var tiltX = this._drawingState.PointerData.TiltXYDeg.X;
+            var tiltY = this._drawingState.PointerData.TiltXYDeg.Y;
             StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY}";
         }
 
