@@ -51,17 +51,14 @@ namespace WinInkHelloWorld
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            const int WM_POINTERDOWN = 0x0246;
-            const int WM_POINTERUPDATE = 0x0245;
-            const int WM_POINTERUP = 0x0247;
-            const int WM_POINTERLEAVE = 0x024A;
+
 
             switch (msg)
             {
-                case WM_POINTERDOWN:
-                case WM_POINTERUPDATE:
-                case WM_POINTERUP:
-                case WM_POINTERLEAVE:
+                case NativeMethods.WM_POINTERDOWN:
+                case NativeMethods.WM_POINTERUPDATE:
+                case NativeMethods.WM_POINTERUP:
+                case NativeMethods.WM_POINTERLEAVE:
                     uint pointerId = NativeMethods.GetPointerId(wParam);
                     int pointerType = 0;
                     NativeMethods.GetPointerType(pointerId, out pointerType); // 1=Generic, 2=Touch, 3=Pen, 4=Mouse
@@ -89,8 +86,6 @@ namespace WinInkHelloWorld
 
         private void HandlePenMessage(int msg, POINTER_PEN_INFO penInfo)
         {
-            const int WM_POINTERDOWN = 0x0246;
-            const int WM_POINTERUP = 0x0247;
 
             NativePoint screenPos = new NativePoint(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
             Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
@@ -101,13 +96,13 @@ namespace WinInkHelloWorld
 
             UpdateStatus(clientPos, pressure, tiltX, tiltY, "Native Pen");
 
-            if (msg == WM_POINTERDOWN)
+            if (msg == NativeMethods.WM_POINTERDOWN)
             {
                 _isDrawing = true;
                 _lastPoint = clientPos;
                 // Capture? In native Win32 usually implied, but we are just drawing.
             }
-            else if (msg == WM_POINTERUP)
+            else if (msg == NativeMethods.WM_POINTERUP)
             {
                 _isDrawing = false;
             }
@@ -125,8 +120,6 @@ namespace WinInkHelloWorld
 
         private void HandlePointerMessage(int msg, POINTER_INFO pointerInfo, int ptrType)
         {
-            const int WM_POINTERDOWN = 0x0246;
-            const int WM_POINTERUP = 0x0247;
 
             NativePoint screenPos = new NativePoint(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
             Point clientPos = WritingCanvas.PointFromScreen(new Point(screenPos.X, screenPos.Y));
@@ -136,12 +129,12 @@ namespace WinInkHelloWorld
 
             UpdateStatus(clientPos, pressure, 0, 0, deviceName);
 
-            if (msg == WM_POINTERDOWN)
+            if (msg == NativeMethods.WM_POINTERDOWN)
             {
                 _isDrawing = true;
                 _lastPoint = clientPos;
             }
-            else if (msg == WM_POINTERUP)
+            else if (msg == NativeMethods.WM_POINTERUP)
             {
                 _isDrawing = false;
             }
@@ -157,14 +150,11 @@ namespace WinInkHelloWorld
         }
 
 
-
         private void UpdateStatus(Point pos, float pressure, int tiltX, int tiltY, string deviceType)
         {
             StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY}";
         }
 
-        // --- NATIVE INTEROP ---
-        // Moved to NativeMethods.cs
     }
 
 }
