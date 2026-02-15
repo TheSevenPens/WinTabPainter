@@ -6,7 +6,7 @@ public class DrawingState
 {
     public SevenLib.WinTab.Structs.WintabPacket WinTabPacket { get; set; }
 
-    public PointerData PointerData;
+    public SevenLib.Stylus.PointerData PointerData;
 
 
 }

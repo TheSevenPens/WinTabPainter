@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace WinTabHelloWorld;
+﻿namespace SevenLib.Stylus;
 
 public struct PointerData
 {
     // Meta
     public DateTime Time { get; set; }
-    
+
     // Position
 
     public SevenLib.Geometry.PointD DisplayPoint { get; set; }

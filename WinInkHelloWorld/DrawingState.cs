@@ -5,6 +5,6 @@ namespace WinInkHelloWorld
         public bool IsDrawing { get; set; }
         public SevenLib.Geometry.PointD LastCanvasPoint { get; set; }
 
-        public PointerData PointerData;
+        public SevenLib.Stylus.PointerData PointerData;
     }
 }

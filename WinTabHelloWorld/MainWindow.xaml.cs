@@ -54,7 +54,7 @@ public partial class MainWindow : Window
             try
             {
                 _drawingState.WinTabPacket = packet;
-                _drawingState.PointerData = new PointerData();
+                _drawingState.PointerData = new SevenLib.Stylus.PointerData();
                 _drawingState.PointerData.Time = DateTime.Now;
 
                 var screenPos = new Point(packet.pkX, packet.pkY);
