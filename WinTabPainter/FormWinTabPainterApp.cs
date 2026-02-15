@@ -29,7 +29,6 @@ namespace WinTabPainter
         string FileSaveDefaultFilename = "Untitled.png";
         string FileSaveDefaultExt = "png";
         string FileOpenDefaultExt = "png";
-        string DefaultTabletDeviceName = "UKNOWN_DEVICE";
 
         ColorARGB clr_black = new Painting.ColorARGB(255, 0, 0, 0);
         SevenLib.Numerics.OrderedRange SMOOTHING_TRACKBAR_RANGE = new SevenLib.Numerics.OrderedRange(-100, 100);
@@ -41,7 +40,6 @@ namespace WinTabPainter
             InitializeComponent();
         }
 
-        Graphics gfx_pressure_guage;
         Graphics gfx_pressure_guage2;
         Pen np_pressure_guage = new Pen(Color.Black, 11);
         Pen ep_pressure_guage = new Pen(Color.Red, 11);
@@ -151,7 +149,6 @@ namespace WinTabPainter
 
                  this.tabsession?.Dispose();
                  this.bitmap_doc?.Dispose();
-                 this.gfx_pressure_guage?.Dispose();
                  this.gfx_pressure_guage2?.Dispose();
                  this.np_pressure_guage?.Dispose();
                  this.ep_pressure_guage?.Dispose();
