@@ -13,7 +13,7 @@ namespace WinInkHelloWorld
         private const int CanvasHeight = 600;
 
         public MainWindow()
-        { // turbo
+        { 
             // Disable WPF's internal stylus support to prevent it from swallowing WM_POINTER messages
             AppContext.SetSwitch("Switch.System.Windows.Input.Stylus.DisableStylusAndTouchSupport", true);
             
