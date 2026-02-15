@@ -9,7 +9,7 @@ namespace WinInkHelloWorld
     {
         private SevenLib.Media.CanvasRenderer _renderer;
         private DrawingState _drawingState = new DrawingState();
-        private PointerMessageHandler _pointerHandler;
+        private WinInkSession _winink_session;
         private const int CanvasWidth = 600;
         private const int CanvasHeight = 600;
 
@@ -26,7 +26,7 @@ namespace WinInkHelloWorld
         {
             base.OnSourceInitialized(e);
             var source = PresentationSource.FromVisual(this) as HwndSource;
-            source?.AddHook(_pointerHandler.WndProc);
+            source?.AddHook(_winink_session.WndProc);
 
             // Enable mouse to act as a pointer device for testing
             NativeMethods.EnableMouseInPointer(true);
@@ -42,24 +42,49 @@ namespace WinInkHelloWorld
         {
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
-            _pointerHandler = new PointerMessageHandler(_drawingState, _renderer, WritingCanvas, UpdatePointerStats);
+            _winink_session = new WinInkSession( WritingCanvas, UpdatePointerStatsBar);
+            _winink_session._PointerUpdateCallback += HandlePointerUpdate;
+            _winink_session._PointerUpCallback += HandlePointerUp;
+            _winink_session._PointerDownCallback += HandlPointerDown;
+
         }
 
 
 
-        private void UpdatePointerStats()
+        private void UpdatePointerStatsBar()
         {
             string deviceType = "UNK";
-            var pos = this._drawingState.PointerData.CanvasPoint;
-            var pressure = this._drawingState.PointerData.PressureNormalized;
-            var tiltX = this._drawingState.PointerData.TiltXYDeg.X;
-            var tiltY = this._drawingState.PointerData.TiltXYDeg.Y;
-            var az = this._drawingState.PointerData.TiltAADeg.Azimuth;
-            var alt = this._drawingState.PointerData.TiltAADeg.Altitude;
-            var btns = this._drawingState.PointerData.ButtonState.ToString();
+            var pos = this._winink_session.PointerData.CanvasPoint;
+            var pressure = this._winink_session.PointerData.PressureNormalized;
+            var tiltX = this._winink_session.PointerData.TiltXYDeg.X;
+            var tiltY = this._winink_session.PointerData.TiltXYDeg.Y;
+            var az = this._winink_session.PointerData.TiltAADeg.Azimuth;
+            var alt = this._winink_session.PointerData.TiltAADeg.Altitude;
+            var btns = this._winink_session.PointerData.ButtonState.ToString();
             StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0} | Btn: {btns}";
         }
 
+        private void HandlePointerUpdate()
+        {
+        
+            bool pointer_in_contact = _winink_session.PointerData.PressureNormalized > 0;
+
+            if (_drawingState.IsDrawing && pointer_in_contact)
+            {
+                _renderer.DrawLineX(_winink_session.LastCanvasPoint, _winink_session.PointerData.CanvasPoint, (float)(_winink_session.PointerData.PressureNormalized * 5));
+                _winink_session.LastCanvasPoint = _winink_session.PointerData.CanvasPoint;
+            }
+        }
+
+        private void HandlePointerUp()
+        {
+            _drawingState.IsDrawing = false;
+        }
+
+        private void HandlPointerDown()
+        {
+            _drawingState.IsDrawing = true;
+        }
     }
 
 }
