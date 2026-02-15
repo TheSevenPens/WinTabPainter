@@ -9,6 +9,7 @@ namespace WinInkHelloWorld
     {
         private SevenLib.Media.CanvasRenderer _renderer;
         private DrawingState _drawingState = new DrawingState();
+        private PointerMessageHandler _pointerHandler;
         private const int CanvasWidth = 600;
         private const int CanvasHeight = 600;
 
@@ -41,162 +42,21 @@ namespace WinInkHelloWorld
         {
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
+            _pointerHandler = new PointerMessageHandler(_drawingState, _renderer, WritingCanvas);
         }
 
 
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-
-
-            switch (msg)
+            if (_pointerHandler.HandlePointerMessage(msg, wParam))
             {
-                case NativeMethods.WM_POINTERDOWN:
-                case NativeMethods.WM_POINTERUPDATE:
-                case NativeMethods.WM_POINTERUP:
-                case NativeMethods.WM_POINTERLEAVE:
-                    uint pointerId = NativeMethods.GetPointerId(wParam);
-
-                    int pointerType = 0;
-                    NativeMethods.GetPointerType(pointerId, out pointerType);
-
-
-
-                    if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
-                    {
-                        // Handling when the pointer is a pen
-
-
-                        var clientPos = WritingCanvas.PointFromScreen(new Point(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y));
-
-                        this._drawingState.PointerData.Time = System.DateTime.Now;
-                        this._drawingState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
-                        this._drawingState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(clientPos.X, clientPos.Y);
-                        this._drawingState.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
-                        this._drawingState.PointerData.PressureNormalized = penInfo.pressure / 1024.0f;
-                        this._drawingState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
-                        this._drawingState.PointerData.TiltAADeg = this._drawingState.PointerData.TiltXYDeg.ToAA_deg();
-                        this._drawingState.PointerData.Twist = penInfo.rotation;
-                        uint buttonState = MapWindowsButtonStates(penInfo);
-                        this._drawingState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
-
-
-                        HandlePenMessage(msg);
-                        handled = true;
-                    }
-                    else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
-                    {
-                        // Generic pointer handling
-
-                        var clientPos = WritingCanvas.PointFromScreen(new Point(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y));
-
-                        this._drawingState.PointerData.Time = System.DateTime.Now;
-                        this._drawingState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
-                        this._drawingState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(clientPos.X, clientPos.Y);
-                        this._drawingState.PointerData.Height = 0; //
-                        this._drawingState.PointerData.PressureNormalized = 1.0;;
-                        this._drawingState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
-                        this._drawingState.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
-                        this._drawingState.PointerData.Twist = 0;
-                        uint buttonState = MapWindowsButtonStates(penInfo);
-                        this._drawingState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
-
-                        HandlePointerMessage(msg, pointerType);
-                         handled = true;
-                    }
-                    else
-                    {
-                        // Debug log for failure
-                        UpdatePointerStats();
-                    }
-                    break;
+                UpdatePointerStats();
+                handled = true;
+                return IntPtr.Zero;
             }
 
             return IntPtr.Zero;
-        }
-
-        private static uint MapWindowsButtonStates(POINTER_PEN_INFO penInfo)
-        {
-            uint buttonState = 0;
-            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
-            {
-                buttonState |= 1; // Tip
-            }
-            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
-            {
-                buttonState |= 2; // Button2
-            }
-
-            return buttonState;
-        }
-
-        private void HandlePenMessage(int msg)
-        {
-
-
-            UpdatePointerStats();
-
-            if (msg == NativeMethods.WM_POINTERDOWN)
-            {
-                HandlePointerDown();
-            }
-            else if (msg == NativeMethods.WM_POINTERUP)
-            {
-                HandlePointerUp();
-            }
-            else // UPDATE
-            {
-                HandlePointerUpdate();
-            }
-        }
-
-        private void HandlePointerMessage(int msg, int ptrType)
-        {
-
-            //string deviceName = pointer_type_to_name(ptrType);
-            UpdatePointerStats();
-
-            if (msg == NativeMethods.WM_POINTERDOWN)
-            {
-                HandlePointerDown();
-            }
-            else if (msg == NativeMethods.WM_POINTERUP)
-            {
-                HandlePointerUp();
-            }
-            else
-            {
-                HandlePointerUpdate();
-            }
-        }
-
-        private void HandlePointerUpdate()
-        {
-            bool pointer_in_contact = this._drawingState.PointerData.PressureNormalized > 0;
-
-            // the old logic
-            // bool pointer_in_contact = (pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_INCONTACT) != 0;
-            //
-            // https://learn.microsoft.com/en-us/windows/win32/inputmsg/pointer-flags-contants
-            // POINTER_FLAG_INCONTACT - Indicates that this pointer is in contact with the digitizer surface.
-            // When this flag is not set, it indicates a hovering pointer.
-
-            if (_drawingState.IsDrawing && pointer_in_contact)
-            {
-                _renderer.DrawLineX(_drawingState.LastCanvasPoint, _drawingState.PointerData.CanvasPoint, (float)(_drawingState.PointerData.PressureNormalized * 5));
-                _drawingState.LastCanvasPoint = _drawingState.PointerData.CanvasPoint;
-            }
-        }
-
-        private void HandlePointerUp()
-        {
-            _drawingState.IsDrawing = false;
-        }
-
-        private void HandlePointerDown()
-        {
-            _drawingState.IsDrawing = true;
-            _drawingState.LastCanvasPoint = this._drawingState.PointerData.CanvasPoint;
         }
 
         private void UpdatePointerStats()
