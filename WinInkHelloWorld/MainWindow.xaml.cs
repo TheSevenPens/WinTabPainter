@@ -26,11 +26,11 @@ namespace WinInkHelloWorld
         {
             base.OnSourceInitialized(e);
             var source = PresentationSource.FromVisual(this) as HwndSource;
-            source?.AddHook(WndProc);
+            source?.AddHook(_pointerHandler.WndProc);
 
             // Enable mouse to act as a pointer device for testing
             NativeMethods.EnableMouseInPointer(true);
-            
+
             // Disable WPF Stylus features that might interfere
             Stylus.SetIsPressAndHoldEnabled(this, false);
             Stylus.SetIsFlicksEnabled(this, false);
@@ -42,22 +42,10 @@ namespace WinInkHelloWorld
         {
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
-            _pointerHandler = new PointerMessageHandler(_drawingState, _renderer, WritingCanvas);
+            _pointerHandler = new PointerMessageHandler(_drawingState, _renderer, WritingCanvas, UpdatePointerStats);
         }
 
 
-
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if (_pointerHandler.HandlePointerMessage(msg, wParam))
-            {
-                UpdatePointerStats();
-                handled = true;
-                return IntPtr.Zero;
-            }
-
-            return IntPtr.Zero;
-        }
 
         private void UpdatePointerStats()
         {

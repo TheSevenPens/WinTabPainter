@@ -8,12 +8,26 @@ namespace WinInkHelloWorld
         private DrawingState _drawingState;
         private SevenLib.Media.CanvasRenderer _renderer;
         private FrameworkElement _writingCanvas;
+        private Action _onPointerStatsUpdated;
 
-        public PointerMessageHandler(DrawingState drawingState, SevenLib.Media.CanvasRenderer renderer, FrameworkElement writingCanvas)
+        public PointerMessageHandler(DrawingState drawingState, SevenLib.Media.CanvasRenderer renderer, FrameworkElement writingCanvas, Action onPointerStatsUpdated = null)
         {
             _drawingState = drawingState;
             _renderer = renderer;
             _writingCanvas = writingCanvas;
+            _onPointerStatsUpdated = onPointerStatsUpdated;
+        }
+
+        public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (HandlePointerMessage(msg, wParam))
+            {
+                _onPointerStatsUpdated?.Invoke();
+                handled = true;
+                return IntPtr.Zero;
+            }
+
+            return IntPtr.Zero;
         }
 
         public bool HandlePointerMessage(int msg, IntPtr wParam)
