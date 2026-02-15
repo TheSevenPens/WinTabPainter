@@ -199,24 +199,6 @@ namespace WinInkHelloWorld
             _drawingState.LastCanvasPoint = this._drawingState.PointerData.CanvasPoint;
         }
 
-
-
-        private static string pointer_type_to_name(int ptrType)
-        {
-            if (ptrType == (int)POINTER_INPUT_TYPE.PT_MOUSE)
-            {
-                return "Mouse";
-            }
-            else if (ptrType == (int)POINTER_INPUT_TYPE.PT_TOUCH)
-            {
-                return ("Touch");
-            }
-            else
-            {
-                return ($"Generic({ptrType})");
-            }
-        }
-
         private void UpdatePointerStats()
         {
             string deviceType = "UNK";
