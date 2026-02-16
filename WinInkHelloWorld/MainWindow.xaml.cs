@@ -56,25 +56,25 @@ namespace WinInkHelloWorld
         private void HandlePointerStatsUpdate()
         {
             string deviceType = "UNK";
-            var pos = this._winink_session.PointerData.CanvasPoint;
-            var pressure = this._winink_session.PointerData.PressureNormalized;
-            var tiltX = this._winink_session.PointerData.TiltXYDeg.X;
-            var tiltY = this._winink_session.PointerData.TiltXYDeg.Y;
-            var az = this._winink_session.PointerData.TiltAADeg.Azimuth;
-            var alt = this._winink_session.PointerData.TiltAADeg.Altitude;
-            var btns = this._winink_session.PointerData.ButtonState.ToString();
+            var pos = this._winink_session.PointerState.PointerData.CanvasPoint;
+            var pressure = this._winink_session.PointerState.PointerData.PressureNormalized;
+            var tiltX = this._winink_session.PointerState.PointerData.TiltXYDeg.X;
+            var tiltY = this._winink_session.PointerState.PointerData.TiltXYDeg.Y;
+            var az = this._winink_session.PointerState.PointerData.TiltAADeg.Azimuth;
+            var alt = this._winink_session.PointerState.PointerData.TiltAADeg.Altitude;
+            var btns = this._winink_session.PointerState.PointerData.ButtonState.ToString();
             StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0} | Btn: {btns}";
         }
 
         private void HandlePointerUpdate()
         {
         
-            bool pointer_in_contact = _winink_session.PointerData.PressureNormalized > 0;
+            bool pointer_in_contact = _winink_session.PointerState.PointerData.PressureNormalized > 0;
 
             if (_drawingState.IsDrawing && pointer_in_contact)
             {
-                _renderer.DrawLineX(_winink_session.LastCanvasPoint, _winink_session.PointerData.CanvasPoint, (float)(_winink_session.PointerData.PressureNormalized * 5));
-                _winink_session.LastCanvasPoint = _winink_session.PointerData.CanvasPoint;
+                _renderer.DrawLineX(_winink_session.PointerState.LastCanvasPoint, _winink_session.PointerState.PointerData.CanvasPoint, (float)(_winink_session.PointerState.PointerData.PressureNormalized * 5));
+                _winink_session.PointerState.LastCanvasPoint = _winink_session.PointerState.PointerData.CanvasPoint;
             }
         }
 
