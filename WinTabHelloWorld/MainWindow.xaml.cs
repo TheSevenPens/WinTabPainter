@@ -10,7 +10,7 @@ namespace WinTabHelloWorld;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private SevenLib.WinTab.Tablet.WinTabSession _wintabsession;
+    private SevenLib.WinTab.Tablet.WinTabSession2 _wintabsession;
     private SevenLib.Media.CanvasRenderer _renderer;
     private string _buttonStateText = "None";
     private const int DefaultCanvasWidth = 800;
@@ -40,7 +40,7 @@ public partial class MainWindow : Window
 
     private void InitializeTablet()
     {
-        _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession();
+        _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession2();
         _wintabsession.OnRawPacketReceived = HandleRawPacket;
         _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
         _wintabsession.OnPointerEvent = this.HandlePointerEvent;
