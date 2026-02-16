@@ -1,9 +1,48 @@
+using System;
+using System.Threading;
+
 namespace WinInkHelloWorld
 {
     public class DrawingState
     {
-        public SevenLib.Geometry.PointD LastCanvasPoint { get; set; }
-        public bool IsDrawing { get; set; }
+        private SevenLib.Geometry.PointD _lastCanvasPoint;
+        private bool _isDrawing;
+        private readonly object _lockObj = new object();
 
+        public SevenLib.Geometry.PointD LastCanvasPoint
+        {
+            get 
+            { 
+                lock (_lockObj) 
+                { 
+                    return _lastCanvasPoint; 
+                } 
+            }
+            set 
+            { 
+                lock (_lockObj) 
+                { 
+                    _lastCanvasPoint = value; 
+                } 
+            }
+        }
+
+        public bool IsDrawing
+        {
+            get 
+            { 
+                lock (_lockObj) 
+                { 
+                    return _isDrawing; 
+                } 
+            }
+            set 
+            { 
+                lock (_lockObj) 
+                { 
+                    _isDrawing = value; 
+                } 
+            }
+        }
     }
 }
