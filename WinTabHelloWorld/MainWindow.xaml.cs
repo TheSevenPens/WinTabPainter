@@ -10,7 +10,7 @@ namespace WinTabHelloWorld;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private SevenLib.WinTab.Utils.TabletSession _wintabsession;
+    private SevenLib.WinTab.Tablet.TabletSession _wintabsession;
     private SevenLib.Media.CanvasRenderer _renderer;
     private DrawingState _drawingState = new DrawingState();
     private string _buttonStatus = "None";
@@ -41,10 +41,10 @@ public partial class MainWindow : Window
 
     private void InitializeTablet()
     {
-        _wintabsession = new SevenLib.WinTab.Utils.TabletSession();
+        _wintabsession = new SevenLib.WinTab.Tablet.TabletSession();
         _wintabsession.PacketHandler = HandleWinTabPointerPacket;
         _wintabsession.StylusButtonChangedHandler = OnButtonChange;
-        _wintabsession.Open(SevenLib.WinTab.Utils.TabletContextType.System);
+        _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
     private void HandleWinTabPointerPacket(SevenLib.WinTab.Structs.WintabPacket packet)

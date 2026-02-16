@@ -20,7 +20,7 @@ namespace WinTabPainter
 
 
 
-        private SevenLib.WinTab.Utils.TabletSession tabsession;
+        private SevenLib.WinTab.Tablet.TabletSession tabsession;
         public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
         Painting.PaintData old_paintdata;
 
@@ -71,9 +71,9 @@ namespace WinTabPainter
             this.EraseCanvas();
 
 
-            this.tabsession = new SevenLib.WinTab.Utils.TabletSession();
+            this.tabsession = new SevenLib.WinTab.Tablet.TabletSession();
             this.tabsession.PacketHandler = this.PacketHandler;
-            this.tabsession.Open(SevenLib.WinTab.Utils.TabletContextType.System);
+            this.tabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
 
             this.tabsession.StylusButtonChangedHandler = this.HandleButtonChange;
 

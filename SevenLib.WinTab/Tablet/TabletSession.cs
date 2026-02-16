@@ -1,7 +1,7 @@
 ﻿
 using SevenLib.WinTab.Stylus;
 
-namespace SevenLib.WinTab.Utils;
+namespace SevenLib.WinTab.Tablet;
 
 
 public class TabletSession : System.IDisposable

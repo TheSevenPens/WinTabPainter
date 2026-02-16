@@ -20,7 +20,7 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.appstate.wintab_session = new SevenLib.WinTab.Utils.TabletSession();
+            this.appstate.wintab_session = new SevenLib.WinTab.Tablet.TabletSession();
             this.appstate.scale_session = new ScaleSession();
 
 
@@ -231,7 +231,7 @@ namespace WinTabPressureTester
         {
             this.appstate.wintab_session.PacketHandler = this.PacketHandler;
             this.appstate.wintab_session.StylusButtonChangedHandler = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(SevenLib.WinTab.Utils.TabletContextType.System);
+            this.appstate.wintab_session.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
         }
 
         private void StopWinTabSession()
