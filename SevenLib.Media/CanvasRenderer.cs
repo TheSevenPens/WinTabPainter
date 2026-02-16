@@ -62,6 +62,22 @@ namespace SevenLib.Media
             });
         }
 
+
+        public void DrawPoint(SevenLib.Geometry.Point pos, float size)
+        {
+            DrawOnCanvas(canvas =>
+            {
+                using (var paint = new SKPaint
+                {
+                    Color = SKColors.Black,
+                    Style = SKPaintStyle.Fill
+                })
+                {
+                    canvas.DrawRect(pos.X - size / 2, pos.Y - size / 2, size, size, paint);
+                }
+            });
+        }
+
         public void DrawRectangle(int x, int y, int width, int height, int color)
         {
              DrawOnCanvas(canvas =>

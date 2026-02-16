@@ -48,20 +48,22 @@ public partial class MainWindow : Window
 
     public void HandlePointerEvent(SevenLib.Stylus.PointerData pointerData) 
     {
+        if (pointerData.PressureNormalized <= 0)
+            return;
+
         Dispatcher.Invoke(() =>
         {
-            if (pointerData.PressureNormalized > 0)
-            {
-                var canvasPos = CanvasImage.PointFromScreen(new Point(
-                    pointerData.DisplayPoint.X,
-                    pointerData.DisplayPoint.Y));
-
-                var cp = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
-
-                const double brush_size = 15;
-                _renderer.DrawPoint((int)cp.X, (int)cp.Y, (float)(pointerData.PressureNormalized * brush_size));
-            }
+            var cp = this. ScreenToCanvas(pointerData.DisplayPoint);
+            const double max_brush_size = 15;
+            float brush_size = (float)(pointerData.PressureNormalized * max_brush_size);
+            _renderer.DrawPoint(cp.ToPoint(), brush_size);
         });
+    }
+
+    public SevenLib.Geometry.PointD ScreenToCanvas(SevenLib.Geometry.PointD screenPoint)
+    {
+        var canvasPos = CanvasImage.PointFromScreen(new Point(screenPoint.X, screenPoint.Y));
+        return new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
     }
 
     private void HandleButtonStateChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
