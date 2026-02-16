@@ -42,7 +42,8 @@ namespace WinInkHelloWorld
         {
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
-            _winink_session = new WinInkSession( WritingCanvas, UpdatePointerStatsBar);
+            _winink_session = new WinInkSession( WritingCanvas );
+            _winink_session._onPointerStatsUpdated += HandlePointerStatsUpdate;
             _winink_session._PointerUpdateCallback += HandlePointerUpdate;
             _winink_session._PointerUpCallback += HandlePointerUp;
             _winink_session._PointerDownCallback += HandlPointerDown;
@@ -51,7 +52,7 @@ namespace WinInkHelloWorld
 
 
 
-        private void UpdatePointerStatsBar()
+        private void HandlePointerStatsUpdate()
         {
             string deviceType = "UNK";
             var pos = this._winink_session.PointerData.CanvasPoint;

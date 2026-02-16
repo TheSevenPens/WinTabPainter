@@ -14,10 +14,9 @@ namespace WinInkHelloWorld
         public Action _PointerDownCallback;
         public Action _PointerUpdateCallback;
 
-        public WinInkSession(FrameworkElement canvas, Action HandlePointerStatsUXUpdate = null)
+        public WinInkSession(FrameworkElement canvas)
         {
             _canvas = canvas;
-            _onPointerStatsUpdated = HandlePointerStatsUXUpdate;
         }
 
         public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
