@@ -1,10 +1,9 @@
-
-namespace SevenLib.WinTab.Utils;
+namespace SevenLib.WinTab.Stylus;
 
 public class StylusUtils
 {
 
-    public static SevenLib.Stylus.StylusButtonState  Update(SevenLib.Stylus.StylusButtonState state, SevenLib.WinTab.Utils.StylusButtonChange change)
+    public static SevenLib.Stylus.StylusButtonState  Update(SevenLib.Stylus.StylusButtonState state, StylusButtonChange change)
     {
         uint _state = state.Value;
 

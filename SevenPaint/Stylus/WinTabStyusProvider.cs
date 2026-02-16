@@ -1,5 +1,6 @@
 using System.Windows;
-using SevenLib.WinTab.Utils;
+using SevenLib.WinTab.Stylus;
+
 //
 namespace SevenPaint.Stylus
 {
@@ -94,7 +95,7 @@ namespace SevenPaint.Stylus
                 };
                 return args;
             }
-            private void OnButtonChanged(SevenLib.WinTab.Structs.WintabPacket packet, SevenLib.WinTab.Utils.StylusButtonChange change)
+            private void OnButtonChanged(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange change)
             {
                 if (!IsActive) return;
     
@@ -102,7 +103,7 @@ namespace SevenPaint.Stylus
                 {
                     if (!IsActive) return;
     
-                    bool isPressed = change.Change == SevenLib.WinTab.Utils.StylusButtonChangeType.Pressed;
+                    bool isPressed = change.Change == StylusButtonChangeType.Pressed;
                     string btnName = change.ButtonId.ToString();
                     int btnId = (int)change.ButtonId;
                     var btnState = _session.StylusButtonState;

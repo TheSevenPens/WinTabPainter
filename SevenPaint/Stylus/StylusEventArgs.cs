@@ -1,3 +1,5 @@
+using SevenLib.WinTab.Stylus;
+
 namespace SevenPaint.Stylus
 {
     public struct StylusEventArgs
@@ -13,7 +15,7 @@ namespace SevenPaint.Stylus
         public double Twist { get; set; } // Barrel Rotation
         public int PenButtonRaw { get; set; }
         public SevenLib.Stylus.StylusButtonState ButtonState { get; set; }
-        public SevenLib.WinTab.Utils.StylusButtonChange PenButtonChange { get; set; }
+        public StylusButtonChange PenButtonChange { get; set; }
         public long Timestamp { get; set; } // Ticks
     }
 }

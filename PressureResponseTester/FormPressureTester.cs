@@ -1,4 +1,5 @@
 using ScottPlot;
+using SevenLib.WinTab.Stylus;
 using System.IO.Ports;
 using System.Text;
 
@@ -141,20 +142,20 @@ namespace WinTabPressureTester
 
 
 
-        private static bool get_press_change_as_letter(SevenLib.WinTab.Utils.StylusButtonChangeType change)
+        private static bool get_press_change_as_letter(StylusButtonChangeType change)
         {
             return change switch
             {
-                SevenLib.WinTab.Utils.StylusButtonChangeType.Pressed => true,
-                SevenLib.WinTab.Utils.StylusButtonChangeType.Released => false,
+                StylusButtonChangeType.Pressed => true,
+                StylusButtonChangeType.Released => false,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
         private void PacketHandler(SevenLib.WinTab.Structs.WintabPacket wintab_pkt)
         {
 
-            var button_info = new SevenLib.WinTab.Utils.StylusButtonChange(wintab_pkt.pkButtons);
-            if (button_info.Change != SevenLib.WinTab.Utils.StylusButtonChangeType.NoChange)
+            var button_info = new SevenLib.WinTab.Stylus.StylusButtonChange(wintab_pkt.pkButtons);
+            if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 if (button_info.ButtonId == SevenLib.Stylus.StylusButtonId.Tip)
                 {
@@ -209,9 +210,9 @@ namespace WinTabPressureTester
 
         }
 
-        private void ButtonChangeHandler(SevenLib.WinTab.Structs.WintabPacket wintab_pkt, SevenLib.WinTab.Utils.StylusButtonChange buttonchange)
+        private void ButtonChangeHandler(SevenLib.WinTab.Structs.WintabPacket wintab_pkt, StylusButtonChange buttonchange)
         {
-            if (buttonchange.Change == SevenLib.WinTab.Utils.StylusButtonChangeType.Released)
+            if (buttonchange.Change == StylusButtonChangeType.Released)
             {
                 this.appstate.scale_session.logical_pressure_moving_average.Clear();
             }

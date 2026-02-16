@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SevenLib.WinTab.Stylus;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -83,7 +84,7 @@ public partial class MainWindow : Window
         });
     }
 
-    private void OnButtonChange(SevenLib.WinTab.Structs.WintabPacket packet, SevenLib.WinTab.Utils.StylusButtonChange buttonChange)
+    private void OnButtonChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
     {
         _buttonStatus = _wintabsession.StylusButtonState.ToString();
     }

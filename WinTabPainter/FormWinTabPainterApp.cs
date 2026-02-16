@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SevenLib.WinTab.Stylus;
+using System;
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
 // https://github.com/DennisWacom/InkPlatform/tree/master/WintabDN
@@ -158,10 +159,10 @@ namespace WinTabPainter
         }
 
         char[] button_status = new char[4] {
-            get_press_change_as_letter(SevenLib.WinTab.Utils.StylusButtonChangeType.Released),
-            get_press_change_as_letter(SevenLib.WinTab.Utils.StylusButtonChangeType.Released),
-            get_press_change_as_letter(SevenLib.WinTab.Utils.StylusButtonChangeType.Released),
-            get_press_change_as_letter(SevenLib.WinTab.Utils.StylusButtonChangeType.Released),};
+            get_press_change_as_letter(StylusButtonChangeType.Released),
+            get_press_change_as_letter(StylusButtonChangeType.Released),
+            get_press_change_as_letter(StylusButtonChangeType.Released),
+            get_press_change_as_letter(StylusButtonChangeType.Released),};
 
         private void PacketHandler(SevenLib.WinTab.Structs.WintabPacket wintab_pkt)
         {
@@ -169,7 +170,7 @@ namespace WinTabPainter
             {
                 RecordPacket(wintab_pkt);
             }
-            var button_info = new SevenLib.WinTab.Utils.StylusButtonChange(wintab_pkt.pkButtons);
+            var button_info = new SevenLib.WinTab.Stylus.StylusButtonChange(wintab_pkt.pkButtons);
 
             Update_UI_Button_status(button_info);
 
@@ -182,9 +183,9 @@ namespace WinTabPainter
 
 
 
-        private void Update_UI_Button_status(SevenLib.WinTab.Utils.StylusButtonChange button_info)
+        private void Update_UI_Button_status(StylusButtonChange button_info)
         {
-            if (button_info.Change != SevenLib.WinTab.Utils.StylusButtonChangeType.NoChange)
+            if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 int index = button_info.ButtonId switch
                 {
@@ -202,12 +203,12 @@ namespace WinTabPainter
             this.label_ButtonsValue.Text = new string(this.button_status);
         }
 
-        private static char get_press_change_as_letter(SevenLib.WinTab.Utils.StylusButtonChangeType change)
+        private static char get_press_change_as_letter(StylusButtonChangeType change)
         {
             return change switch
             {
-                SevenLib.WinTab.Utils.StylusButtonChangeType.Pressed => 'D',
-                SevenLib.WinTab.Utils.StylusButtonChangeType.Released => 'U',
+                StylusButtonChangeType.Pressed => 'D',
+                StylusButtonChangeType.Released => 'U',
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
@@ -251,11 +252,11 @@ namespace WinTabPainter
 
         }
 
-        public void HandleButtonChange(SevenLib.WinTab.Structs.WintabPacket pkt, SevenLib.WinTab.Utils.StylusButtonChange change)
+        public void HandleButtonChange(SevenLib.WinTab.Structs.WintabPacket pkt, StylusButtonChange change)
         {
             if (change.ButtonId == SevenLib.Stylus.StylusButtonId.Tip)
             {
-                if (change.Change == SevenLib.WinTab.Utils.StylusButtonChangeType.Pressed)
+                if (change.Change == StylusButtonChangeType.Pressed)
                 {
                     // we need to reset the smoothing 
                     // whenever the pen tip touches the tablet

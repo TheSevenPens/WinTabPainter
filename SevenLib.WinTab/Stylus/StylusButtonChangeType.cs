@@ -1,4 +1,4 @@
-﻿namespace SevenLib.WinTab.Utils;
+﻿namespace SevenLib.WinTab.Stylus;
 
 public enum StylusButtonChangeType
 {

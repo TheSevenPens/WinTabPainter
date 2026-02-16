@@ -1,4 +1,6 @@
 ﻿
+using SevenLib.WinTab.Stylus;
+
 namespace SevenLib.WinTab.Utils;
 
 
@@ -90,7 +92,7 @@ public class TabletSession : System.IDisposable
             if (button_info.Change != StylusButtonChangeType.NoChange)
             {
                 // there's been some change to the buttons
-                this.StylusButtonState = SevenLib.WinTab.Utils.StylusUtils.Update(this.StylusButtonState, button_info);
+                this.StylusButtonState = StylusUtils.Update(this.StylusButtonState, button_info);
             }
 
 
