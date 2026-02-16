@@ -29,21 +29,11 @@ namespace WinInkHelloWorld
         {
             base.OnSourceInitialized(e);
             
-            // Check if _winink_session was initialized
-            if (_winink_session == null)
+            if (this._winink_session == null)
                 return;
-                
-            var source = PresentationSource.FromVisual(this) as HwndSource;
-            source?.AddHook(_winink_session.WndProc);
 
-            // Enable mouse to act as a pointer device for testing
-            SevenLib.WinInk.Interop.NativeMethods.EnableMouseInPointer(true);
+            this._winink_session.AttachToWindow(this);
 
-            // Disable WPF Stylus features that might interfere
-            Stylus.SetIsPressAndHoldEnabled(this, false);
-            Stylus.SetIsFlicksEnabled(this, false);
-            Stylus.SetIsTapFeedbackEnabled(this, false);
-            Stylus.SetIsTouchFeedbackEnabled(this, false);
         }
 
         private void InitializeCanvas()

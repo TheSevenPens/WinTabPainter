@@ -1,4 +1,6 @@
 using System;
+using System.Windows;
+using System.Windows.Interop;
 
 namespace SevenLib.WinInk
 {
@@ -18,11 +20,26 @@ namespace SevenLib.WinInk
             this.PointerState= new PointerState();
         }
 
-        public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        public void AttachToWindow(System.Windows.Window window)
         {
-            if (HandlePointerMessage(msg, wParam))
+            var source = PresentationSource.FromVisual(window) as HwndSource;
+            source?.AddHook(this._WndProc);
+
+            // Enable mouse to act as a pointer device for testing
+            SevenLib.WinInk.Interop.NativeMethods.EnableMouseInPointer(true);
+
+            // Disable WPF Stylus features that might interfere
+            System.Windows.Input.Stylus.SetIsPressAndHoldEnabled(window, false);
+            System.Windows.Input.Stylus.SetIsFlicksEnabled(window, false);
+            System.Windows.Input.Stylus.SetIsTapFeedbackEnabled(window, false);
+            System.Windows.Input.Stylus.SetIsTouchFeedbackEnabled(window, false);
+        }
+
+        private IntPtr _WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (_HandlePointerMessage(msg, wParam))
             {
-                _onPointerStatsUpdated?.Invoke(this.PointerData);
+
                 handled = true;
                 return IntPtr.Zero;
             }
@@ -30,7 +47,7 @@ namespace SevenLib.WinInk
             return IntPtr.Zero;
         }
 
-        public bool HandlePointerMessage(int msg, IntPtr wParam)
+        private bool _HandlePointerMessage(int msg, IntPtr wParam)
         {
             switch (msg)
             {
@@ -96,7 +113,7 @@ namespace SevenLib.WinInk
             // Using default button state instead
             this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
 
-            HandlePointerMessage(msg, pointerType);
+            _HandlePointerMessage(msg, pointerType);
         }
 
         private static uint MapWindowsButtonStates(Interop.POINTER_PEN_INFO penInfo)
