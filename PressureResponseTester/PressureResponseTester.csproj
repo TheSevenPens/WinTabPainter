@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
-    <ProjectReference Include="..\SevenUtils\SevenLib.csproj" />
 	  <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
 
   </ItemGroup>
