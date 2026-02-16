@@ -1,4 +1,4 @@
-namespace SevenLib.WinInk
+namespace SevenLib.WinInk.Interop
 {
     public enum POINTER_INPUT_TYPE
     {

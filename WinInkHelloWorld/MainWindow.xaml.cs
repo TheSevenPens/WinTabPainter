@@ -30,7 +30,7 @@ namespace WinInkHelloWorld
             source?.AddHook(_winink_session.WndProc);
 
             // Enable mouse to act as a pointer device for testing
-            NativeMethods.EnableMouseInPointer(true);
+            SevenLib.WinInk.Interop.NativeMethods.EnableMouseInPointer(true);
 
             // Disable WPF Stylus features that might interfere
             Stylus.SetIsPressAndHoldEnabled(this, false);

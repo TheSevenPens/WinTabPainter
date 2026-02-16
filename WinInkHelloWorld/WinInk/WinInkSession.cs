@@ -35,22 +35,22 @@ namespace SevenLib.WinInk
         {
             switch (msg)
             {
-                case NativeMethods.WM_POINTERDOWN:
-                case NativeMethods.WM_POINTERUPDATE:
-                case NativeMethods.WM_POINTERUP:
-                case NativeMethods.WM_POINTERLEAVE:
-                    uint pointerId = NativeMethods.GetPointerId(wParam);
+                case Interop.NativeMethods.WM_POINTERDOWN:
+                case Interop.NativeMethods.WM_POINTERUPDATE:
+                case Interop.NativeMethods.WM_POINTERUP:
+                case Interop.NativeMethods.WM_POINTERLEAVE:
+                    uint pointerId = Interop.NativeMethods.GetPointerId(wParam);
 
                     int pointerType = 0;
-                    NativeMethods.GetPointerType(pointerId, out pointerType);
+                    Interop.NativeMethods.GetPointerType(pointerId, out pointerType);
 
-                    if (NativeMethods.GetPointerPenInfo(pointerId, out POINTER_PEN_INFO penInfo))
+                    if (Interop.NativeMethods.GetPointerPenInfo(pointerId, out Interop.POINTER_PEN_INFO penInfo))
                     {
                         // Handling when the pointer is a pen
                         ProcessPenInfo(msg, penInfo);
                         return true;
                     }
-                    else if (NativeMethods.GetPointerInfo(pointerId, out POINTER_INFO pointerInfo))
+                    else if (Interop.NativeMethods.GetPointerInfo(pointerId, out Interop.POINTER_INFO pointerInfo))
                     {
                         // Generic pointer handling
                         ProcessPointerInfo(msg, pointerType, pointerInfo);
@@ -66,7 +66,7 @@ namespace SevenLib.WinInk
             return false;
         }
 
-        private void ProcessPenInfo(int msg, POINTER_PEN_INFO penInfo)
+        private void ProcessPenInfo(int msg, Interop.POINTER_PEN_INFO penInfo)
         {
             var canvasPos = _canvas.PointFromScreen(new Point(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y));
 
@@ -84,7 +84,7 @@ namespace SevenLib.WinInk
             HandlePenMessage(msg);
         }
 
-        private void ProcessPointerInfo(int msg, int pointerType, POINTER_INFO pointerInfo)
+        private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
         {
             var clientPos = _canvas.PointFromScreen(new Point(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y));
 
@@ -104,14 +104,14 @@ namespace SevenLib.WinInk
             HandlePointerMessage(msg, pointerType);
         }
 
-        private static uint MapWindowsButtonStates(POINTER_PEN_INFO penInfo)
+        private static uint MapWindowsButtonStates(Interop.POINTER_PEN_INFO penInfo)
         {
             uint buttonState = 0;
-            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
+            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
             {
                 buttonState |= 1; // Tip
             }
-            if ((penInfo.pointerInfo.pointerFlags & NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
+            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
             {
                 buttonState |= 2; // Button2
             }
@@ -121,11 +121,11 @@ namespace SevenLib.WinInk
 
         private void HandlePenMessage(int msg)
         {
-            if (msg == NativeMethods.WM_POINTERDOWN)
+            if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
                 HandlePointerDown();
             }
-            else if (msg == NativeMethods.WM_POINTERUP)
+            else if (msg == Interop.NativeMethods.WM_POINTERUP)
             {
                 HandlePointerUp();
             }
@@ -137,11 +137,11 @@ namespace SevenLib.WinInk
 
         private void HandlePointerMessage(int msg, int ptrType)
         {
-            if (msg == NativeMethods.WM_POINTERDOWN)
+            if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
                 HandlePointerDown();
             }
-            else if (msg == NativeMethods.WM_POINTERUP)
+            else if (msg == Interop.NativeMethods.WM_POINTERUP)
             {
                 HandlePointerUp();
             }

@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace SevenLib.WinInk
+namespace SevenLib.WinInk.Interop
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct NativePoint 
