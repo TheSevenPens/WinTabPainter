@@ -1,5 +1,3 @@
-using System.Windows;
-
 namespace SevenLib.WinInk
 {
     public class WinInkSession
@@ -19,7 +17,7 @@ namespace SevenLib.WinInk
 
         public void AttachToWindow(System.Windows.Window window)
         {
-            var source = PresentationSource.FromVisual(window) as System.Windows.Interop.HwndSource;
+            var source = System.Windows.PresentationSource.FromVisual(window) as System.Windows.Interop.HwndSource;
             source?.AddHook(this._WndProc);
 
             // Enable mouse to act as a pointer device for testing
