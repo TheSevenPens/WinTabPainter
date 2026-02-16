@@ -12,7 +12,7 @@ public partial class MainWindow : Window
 {
     private SevenLib.WinTab.Tablet.TabletSession _wintabsession;
     private SevenLib.Media.CanvasRenderer _renderer;
-    private PointerState _drawingState = new PointerState();
+    private SevenLib.WinTab.Tablet.PointerState _drawingState = new SevenLib.WinTab.Tablet.PointerState();
     private string _buttonStatus = "None";
     private const int DefaultCanvasWidth = 800;
     private const int DefaultCanvasHeight = 600;

@@ -1,5 +1,5 @@
 ﻿
-namespace WinTabHelloWorld;
+namespace SevenLib.WinTab.Tablet;
 
 public class PointerState
 {
