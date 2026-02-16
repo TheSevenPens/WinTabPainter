@@ -1,10 +1,11 @@
 ﻿
 using SevenLib.WinTab.Stylus;
+using System;
 
 namespace SevenLib.WinTab.Tablet;
 
 
-public class TabletSession : System.IDisposable
+public class WinTabSession : System.IDisposable
 {
 
     public SevenLib.WinTab.Tablet.PointerState PointerState = new SevenLib.WinTab.Tablet.PointerState();
@@ -15,9 +16,16 @@ public class TabletSession : System.IDisposable
     public TabletContextType ContextType;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnRawButtonChanged = null;
+
+    public Action _onPointerStatsUpdated;
+    public Action _PointerUpCallback;
+    public Action _PointerDownCallback;
+    public Action _PointerUpdateCallback;
+
+
     public SevenLib.Stylus.StylusButtonState StylusButtonState;
 
-    public TabletSession()
+    public WinTabSession()
     {
         this.TabletInfo = new TabletInfo();
         this.PointerState = new SevenLib.WinTab.Tablet.PointerState();

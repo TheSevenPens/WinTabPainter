@@ -6,7 +6,7 @@ namespace SevenPaint.Stylus
 {
     public class WinTabStyusProvider
     {
-        private SevenLib.WinTab.Tablet.TabletSession _session;
+        private SevenLib.WinTab.Tablet.WinTabSession _session;
         private FrameworkElement _targetElement;
         
 #pragma warning disable 67
@@ -19,7 +19,7 @@ namespace SevenPaint.Stylus
         public WinTabStyusProvider(FrameworkElement targetElement)
         {
             _targetElement = targetElement;
-            _session = new SevenLib.WinTab.Tablet.TabletSession();
+            _session = new SevenLib.WinTab.Tablet.WinTabSession();
             _session.OnRawPacketReceived = OnWintabPacket;
             _session.OnRawButtonChanged = OnButtonChanged;
         }

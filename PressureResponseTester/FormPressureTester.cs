@@ -20,7 +20,7 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.appstate.wintab_session = new SevenLib.WinTab.Tablet.TabletSession();
+            this.appstate.wintab_session = new SevenLib.WinTab.Tablet.WinTabSession();
             this.appstate.scale_session = new ScaleSession();
 
 
