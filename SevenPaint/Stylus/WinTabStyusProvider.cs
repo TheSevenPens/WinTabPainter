@@ -21,7 +21,7 @@ namespace SevenPaint.Stylus
             _targetElement = targetElement;
             _session = new SevenLib.WinTab.Tablet.WinTabSession();
             _session.OnRawPacketReceived = OnWintabPacket;
-            _session.OnRawButtonChanged = OnButtonChanged;
+            _session.OnButtonStateChanged = OnButtonChanged;
         }
 
         public void Open()

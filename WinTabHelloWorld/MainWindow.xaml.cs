@@ -12,7 +12,7 @@ public partial class MainWindow : Window
 {
     private SevenLib.WinTab.Tablet.WinTabSession _wintabsession;
     private SevenLib.Media.CanvasRenderer _renderer;
-    private string _buttonStatus = "None";
+    private string _buttonStateText = "None";
     private const int DefaultCanvasWidth = 800;
     private const int DefaultCanvasHeight = 600;
 
@@ -42,7 +42,7 @@ public partial class MainWindow : Window
     {
         _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession();
         _wintabsession.OnRawPacketReceived = HandleRawPacket;
-        _wintabsession.OnRawButtonChanged = HandleRawButtonChange;
+        _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
@@ -83,9 +83,9 @@ public partial class MainWindow : Window
         });
     }
 
-    private void HandleRawButtonChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
+    private void HandleButtonStateChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
     {
-        _buttonStatus = _wintabsession.StylusButtonState.ToString();
+        _buttonStateText = _wintabsession.StylusButtonState.ToString();
     }
 
     private void UpdatePointerStats(object sender, EventArgs e)
@@ -104,7 +104,7 @@ public partial class MainWindow : Window
             ValAz.Text = this._wintabsession.PointerState.PointerData.TiltAADeg.Azimuth.ToString();
             ValAlt.Text = this._wintabsession.PointerState.PointerData.TiltAADeg.Altitude.ToString();
 
-            ValBtn.Text = _buttonStatus;
+            ValBtn.Text = _buttonStateText;
         }
         else
         {
