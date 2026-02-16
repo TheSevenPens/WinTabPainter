@@ -1,5 +1,4 @@
 using System.Windows;
-using System.Windows.Interop;
 
 namespace SevenLib.WinInk
 {
@@ -20,7 +19,7 @@ namespace SevenLib.WinInk
 
         public void AttachToWindow(System.Windows.Window window)
         {
-            var source = PresentationSource.FromVisual(window) as HwndSource;
+            var source = PresentationSource.FromVisual(window) as System.Windows.Interop.HwndSource;
             source?.AddHook(this._WndProc);
 
             // Enable mouse to act as a pointer device for testing
