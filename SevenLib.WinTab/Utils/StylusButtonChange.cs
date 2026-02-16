@@ -6,7 +6,7 @@ namespace SevenLib.WinTab.Utils;
 public struct StylusButtonChange
 {
     public readonly StylusButtonChangeType Change;
-    public readonly StylusButtonId ButtonId;
+    public readonly SevenLib.Stylus.StylusButtonId ButtonId;
 
     public StylusButtonChange(UInt32 pkt_button)
     {
@@ -23,10 +23,10 @@ public struct StylusButtonChange
 
         this.ButtonId = button_id switch
         {
-            0 => StylusButtonId.Tip,
-            1 => StylusButtonId.LowerButton,
-            2 => StylusButtonId.UpperButton,
-            3 => StylusButtonId.BarrelButton,
+            0 => SevenLib.Stylus.StylusButtonId.Tip,
+            1 => SevenLib.Stylus.StylusButtonId.LowerButton,
+            2 => SevenLib.Stylus.StylusButtonId.UpperButton,
+            3 => SevenLib.Stylus.StylusButtonId.BarrelButton,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }

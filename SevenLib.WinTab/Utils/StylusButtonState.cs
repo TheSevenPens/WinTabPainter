@@ -10,38 +10,38 @@ public class StylusUtils
 
         if (change.Change == StylusButtonChangeType.Pressed)
         {
-            if (change.ButtonId == StylusButtonId.Tip)
+            if (change.ButtonId == SevenLib.Stylus.StylusButtonId.Tip)
             {
                 _state |= SevenLib.Stylus.StylusButtonState.TipMask;
             }
-            else if (change.ButtonId == StylusButtonId.LowerButton)
+            else if (change.ButtonId == SevenLib.Stylus.StylusButtonId.LowerButton)
             {
                 _state |= SevenLib.Stylus.StylusButtonState.LowerMask;
             }
-            else if (change.ButtonId == StylusButtonId.UpperButton)
+            else if (change.ButtonId == SevenLib.Stylus.StylusButtonId.UpperButton)
             {
                 _state |= SevenLib.Stylus.StylusButtonState.UpperMask;
             }
-            else if (change.ButtonId == StylusButtonId.BarrelButton)
+            else if (change.ButtonId == SevenLib.Stylus.StylusButtonId.BarrelButton)
             {
                 _state |= SevenLib.Stylus.StylusButtonState.BarrelMask;
             }
         }
         else if (change.Change == StylusButtonChangeType.Released)
         {
-            if (change.ButtonId == StylusButtonId.Tip)
+            if (change.ButtonId == SevenLib.Stylus.StylusButtonId.Tip)
             {
                 _state &= ~SevenLib.Stylus.StylusButtonState.TipMask;
             }
-            else if (change.ButtonId == StylusButtonId.LowerButton)
+            else if (change.ButtonId == SevenLib.Stylus.StylusButtonId.LowerButton)
             {
                 _state &= ~SevenLib.Stylus.StylusButtonState.LowerMask;
             }
-            else if (change.ButtonId == StylusButtonId.UpperButton)
+            else if (change.ButtonId == SevenLib.Stylus.StylusButtonId.UpperButton)
             {
                 _state &= ~SevenLib.Stylus.StylusButtonState.UpperMask;
             }
-            else if (change.ButtonId == StylusButtonId.BarrelButton)
+            else if (change.ButtonId == SevenLib.Stylus.StylusButtonId.BarrelButton)
             {
                 _state &= ~SevenLib.Stylus.StylusButtonState.BarrelMask;
             }

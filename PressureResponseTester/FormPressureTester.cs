@@ -156,15 +156,15 @@ namespace WinTabPressureTester
             var button_info = new SevenLib.WinTab.Utils.StylusButtonChange(wintab_pkt.pkButtons);
             if (button_info.Change != SevenLib.WinTab.Utils.StylusButtonChangeType.NoChange)
             {
-                if (button_info.ButtonId == SevenLib.WinTab.Utils.StylusButtonId.Tip)
+                if (button_info.ButtonId == SevenLib.Stylus.StylusButtonId.Tip)
                 {
                     this.checkBox_tipdown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == SevenLib.WinTab.Utils.StylusButtonId.LowerButton)
+                else if (button_info.ButtonId == SevenLib.Stylus.StylusButtonId.LowerButton)
                 {
                     this.checkBox_lowerbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else if (button_info.ButtonId == SevenLib.WinTab.Utils.StylusButtonId.UpperButton)
+                else if (button_info.ButtonId == SevenLib.Stylus.StylusButtonId.UpperButton)
                 {
                     this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }

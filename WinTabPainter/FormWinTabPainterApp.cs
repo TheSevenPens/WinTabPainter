@@ -188,10 +188,10 @@ namespace WinTabPainter
             {
                 int index = button_info.ButtonId switch
                 {
-                    SevenLib.WinTab.Utils.StylusButtonId.Tip => 0,
-                    SevenLib.WinTab.Utils.StylusButtonId.LowerButton => 1,
-                    SevenLib.WinTab.Utils.StylusButtonId.UpperButton => 2,
-                    SevenLib.WinTab.Utils.StylusButtonId.BarrelButton => 3,
+                    SevenLib.Stylus.StylusButtonId.Tip => 0,
+                    SevenLib.Stylus.StylusButtonId.LowerButton => 1,
+                    SevenLib.Stylus.StylusButtonId.UpperButton => 2,
+                    SevenLib.Stylus.StylusButtonId.BarrelButton => 3,
                     _ => throw new System.ArgumentOutOfRangeException()
                 };
 
@@ -253,7 +253,7 @@ namespace WinTabPainter
 
         public void HandleButtonChange(SevenLib.WinTab.Structs.WintabPacket pkt, SevenLib.WinTab.Utils.StylusButtonChange change)
         {
-            if (change.ButtonId == SevenLib.WinTab.Utils.StylusButtonId.Tip)
+            if (change.ButtonId == SevenLib.Stylus.StylusButtonId.Tip)
             {
                 if (change.Change == SevenLib.WinTab.Utils.StylusButtonChangeType.Pressed)
                 {
