@@ -7,6 +7,7 @@ namespace SevenLib.WinTab.Tablet;
 public class TabletSession : System.IDisposable
 {
 
+    public SevenLib.WinTab.Tablet.PointerState PointerState = new SevenLib.WinTab.Tablet.PointerState();
 
     public SevenLib.WinTab.CWintabContext Context = null;
     public SevenLib.WinTab.CWintabData Data = null;
@@ -19,6 +20,7 @@ public class TabletSession : System.IDisposable
     public TabletSession()
     {
         this.TabletInfo = new TabletInfo();
+        this.PointerState = new SevenLib.WinTab.Tablet.PointerState();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
     }
 
