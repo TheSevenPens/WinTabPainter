@@ -1,4 +1,5 @@
-﻿using SevenLib.WinTab.Stylus;
+﻿using SevenLib.Stylus;
+using SevenLib.WinTab.Stylus;
 using System;
 using System.Windows;
 using System.Windows.Threading;
@@ -78,8 +79,11 @@ public partial class MainWindow : Window
         {
             ValGx.Text = this._wintabsession.PointerData.DisplayPoint.X.ToString();
             ValGy.Text = this._wintabsession.PointerData.DisplayPoint.Y.ToString();
-            //ValCx.Text = this._wintabsession.PointerData.CanvasPoint.X.ToString("F0");
-            //ValCy.Text = this._wintabsession.PointerData.CanvasPoint.Y.ToString("F0");
+
+            var cp = this.ScreenToCanvas(this._wintabsession.PointerData.DisplayPoint);
+
+            ValCx.Text = cp.X.ToString("F0");
+            ValCy.Text = cp.Y.ToString("F0");
 
             ValZ.Text = this._wintabsession.PointerData.Height.ToString();
             ValP.Text = this._wintabsession.PointerData.PressureNormalized.ToString();
