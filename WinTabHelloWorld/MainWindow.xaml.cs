@@ -41,44 +41,9 @@ public partial class MainWindow : Window
     private void InitializeTablet()
     {
         _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession2();
-        _wintabsession.OnRawPacketReceived = HandleRawPacket;
         _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
         _wintabsession.OnPointerEvent = this.HandlePointerEvent;
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
-    }
-
-    private void HandleRawPacket(SevenLib.WinTab.Structs.WintabPacket packet)
-    {
-
-        Dispatcher.Invoke(() =>
-        {
-            try
-            {
-                this._wintabsession.WinTabPacket = packet;
-                this._wintabsession.PointerData = new SevenLib.Stylus.PointerData2();
-                this._wintabsession.PointerData.Time = DateTime.Now;
-
-                var screenPos = new Point(packet.pkX, packet.pkY);
-                this._wintabsession.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(screenPos.X, screenPos.Y);
-
-                this._wintabsession.PointerData.Height = packet.pkZ;
-                float normalized_pressure = (float)packet.pkNormalPressure / _wintabsession.TabletInfo.MaxPressure;
-                this._wintabsession.PointerData.PressureNormalized = normalized_pressure;
-                this._wintabsession.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(packet.pkOrientation.orAzimuth/10, packet.pkOrientation.orAltitude/10);
-                this._wintabsession.PointerData.TiltXYDeg = this._wintabsession.PointerData.TiltAADeg.ToXY_Deg();
-                this._wintabsession.PointerData.Twist = packet.pkOrientation.orTwist;
-                this._wintabsession.PointerData.ButtonState = this._wintabsession.StylusButtonState;
-
-                if (this.HandlePointerEvent!=null)
-                {
-                    this.HandlePointerEvent();
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error mapping coordinates: {ex.Message}");
-            }
-        });
     }
 
     public void HandlePointerEvent() 

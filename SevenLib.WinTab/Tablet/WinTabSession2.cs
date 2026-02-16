@@ -14,7 +14,7 @@ public class WinTabSession2 : System.IDisposable
     public SevenLib.WinTab.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
-    public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
+    private  System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
     public System.Action OnPointerEvent=null;
 
@@ -31,6 +31,7 @@ public class WinTabSession2 : System.IDisposable
         this.TabletInfo = new TabletInfo();
         this.PointerData = new SevenLib.Stylus.PointerData2();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
+        this.OnRawPacketReceived = HandleRawPacket;
     }
 
     public void Open(TabletContextType context_type)
@@ -148,4 +149,29 @@ public class WinTabSession2 : System.IDisposable
             }
         }
     }
+
+    private void HandleRawPacket(SevenLib.WinTab.Structs.WintabPacket packet)
+    {
+
+        this.WinTabPacket = packet;
+        this.PointerData = new SevenLib.Stylus.PointerData2();
+        this.PointerData.Time = DateTime.Now;
+
+        var screenPos = new SevenLib.Geometry.Point(packet.pkX, packet.pkY);
+        this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(screenPos.X, screenPos.Y);
+
+        this.PointerData.Height = packet.pkZ;
+        float normalized_pressure = (float)packet.pkNormalPressure / this.TabletInfo.MaxPressure;
+        this.PointerData.PressureNormalized = normalized_pressure;
+        this.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(packet.pkOrientation.orAzimuth / 10, packet.pkOrientation.orAltitude / 10);
+        this.PointerData.TiltXYDeg = this.PointerData.TiltAADeg.ToXY_Deg();
+        this.PointerData.Twist = packet.pkOrientation.orTwist;
+        this.PointerData.ButtonState = this.StylusButtonState;
+
+        if (this.OnPointerEvent != null)
+        {
+            this.OnPointerEvent();
+        }
+    }
+
 }
