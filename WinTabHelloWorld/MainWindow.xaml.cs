@@ -43,6 +43,7 @@ public partial class MainWindow : Window
         _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession();
         _wintabsession.OnRawPacketReceived = HandleRawPacket;
         _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
+        _wintabsession.OnPointerEvent = this.HandlePointerEvent;
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
@@ -70,10 +71,9 @@ public partial class MainWindow : Window
                 this._wintabsession.PointerState.PointerData.Twist = packet.pkOrientation.orTwist;
                 this._wintabsession.PointerState.PointerData.ButtonState = this._wintabsession.StylusButtonState;
 
-                if (this._wintabsession.PointerState.PointerData.PressureNormalized > 0)
+                if (this.HandlePointerEvent!=null)
                 {
-                    const double brush_size = 15;
-                    _renderer.DrawPoint((int)canvasPos.X, (int)canvasPos.Y, (float) (this._wintabsession.PointerState.PointerData.PressureNormalized * brush_size));
+                    this.HandlePointerEvent();
                 }
             }
             catch (Exception ex)
@@ -81,6 +81,16 @@ public partial class MainWindow : Window
                 System.Diagnostics.Debug.WriteLine($"Error mapping coordinates: {ex.Message}");
             }
         });
+    }
+
+    public void HandlePointerEvent() 
+    {
+        if (this._wintabsession.PointerState.PointerData.PressureNormalized > 0)
+        {
+            var cp = this._wintabsession.PointerState.PointerData.CanvasPoint;
+            const double brush_size = 15;
+            _renderer.DrawPoint((int)cp.X, (int)cp.Y, (float)(this._wintabsession.PointerState.PointerData.PressureNormalized * brush_size));
+        }
     }
 
     private void HandleButtonStateChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)

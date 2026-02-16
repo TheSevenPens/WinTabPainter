@@ -16,6 +16,7 @@ public class WinTabSession : System.IDisposable
     public TabletContextType ContextType;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
+    public System.Action OnPointerEvent=null;
 
     public Action _onPointerStatsUpdated;
     public Action _PointerUpCallback;
