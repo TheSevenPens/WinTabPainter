@@ -16,7 +16,7 @@ public class WinTabSession2 : System.IDisposable
     public TabletContextType ContextType;
     private  System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
-    public System.Action OnPointerEvent=null;
+    public System.Action<SevenLib.Stylus.PointerData2> OnPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
     public Action _PointerUpCallback;
@@ -170,7 +170,7 @@ public class WinTabSession2 : System.IDisposable
 
         if (this.OnPointerEvent != null)
         {
-            this.OnPointerEvent();
+            this.OnPointerEvent(this.PointerData);
         }
     }
 

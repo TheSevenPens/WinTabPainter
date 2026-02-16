@@ -46,21 +46,22 @@ public partial class MainWindow : Window
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
-    public void HandlePointerEvent() 
+    public void HandlePointerEvent(SevenLib.Stylus.PointerData2 pointerData) 
     {
-        if (this._wintabsession.PointerData.PressureNormalized > 0)
+        Dispatcher.Invoke(() =>
         {
+            if (pointerData.PressureNormalized > 0)
+            {
+                var canvasPos = CanvasImage.PointFromScreen(new Point(
+                    pointerData.DisplayPoint.X,
+                    pointerData.DisplayPoint.Y));
 
-            var canvasPos = CanvasImage.PointFromScreen( new Point(
-                this._wintabsession.PointerData.DisplayPoint.X,
-                this._wintabsession.PointerData.DisplayPoint.Y) );
+                var cp = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
 
-
-            var cp = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
-
-            const double brush_size = 15;
-            _renderer.DrawPoint((int)cp.X, (int)cp.Y, (float)(this._wintabsession.PointerData.PressureNormalized * brush_size));
-        }
+                const double brush_size = 15;
+                _renderer.DrawPoint((int)cp.X, (int)cp.Y, (float)(pointerData.PressureNormalized * brush_size));
+            }
+        });
     }
 
     private void HandleButtonStateChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
