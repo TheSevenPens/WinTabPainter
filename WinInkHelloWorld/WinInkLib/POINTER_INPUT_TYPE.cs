@@ -1,4 +1,4 @@
-namespace WinInkHelloWorld
+namespace WinInkHelloWorld.WinInkLib
 {
     public enum POINTER_INPUT_TYPE
     {

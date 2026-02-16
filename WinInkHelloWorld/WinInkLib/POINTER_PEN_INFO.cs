@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace WinInkHelloWorld
+namespace WinInkHelloWorld.WinInkLib
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct POINTER_PEN_INFO

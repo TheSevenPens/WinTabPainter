@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using WinInkHelloWorld.WinInkLib;
 
 namespace WinInkHelloWorld
 {
@@ -9,7 +10,7 @@ namespace WinInkHelloWorld
     {
         private SevenLib.Media.CanvasRenderer _renderer;
         private DrawingState _drawingState = new DrawingState();
-        private WinInkSession _winink_session;
+        private WinInkLib.WinInkSession _winink_session;
         private const int CanvasWidth = 600;
         private const int CanvasHeight = 600;
 
@@ -42,7 +43,7 @@ namespace WinInkHelloWorld
         {
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
-            _winink_session = new WinInkSession( WritingCanvas );
+            _winink_session = new WinInkLib.WinInkSession( WritingCanvas );
             _winink_session._onPointerStatsUpdated += HandlePointerStatsUpdate;
             _winink_session._PointerUpdateCallback += HandlePointerUpdate;
             _winink_session._PointerUpCallback += HandlePointerUp;
