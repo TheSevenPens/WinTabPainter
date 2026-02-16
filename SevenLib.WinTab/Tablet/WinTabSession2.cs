@@ -14,14 +14,11 @@ public class WinTabSession2 : System.IDisposable
     public SevenLib.WinTab.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
-    private  System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
+    public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
     public System.Action<SevenLib.Stylus.PointerData2> OnPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
-    public Action _PointerUpCallback;
-    public Action _PointerDownCallback;
-    public Action _PointerUpdateCallback;
 
 
     public SevenLib.Stylus.StylusButtonState StylusButtonState;
