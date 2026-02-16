@@ -20,8 +20,8 @@ namespace SevenPaint.Stylus
         {
             _targetElement = targetElement;
             _session = new SevenLib.WinTab.Tablet.TabletSession();
-            _session.PacketHandler = OnWintabPacket;
-            _session.StylusButtonChangedHandler = OnButtonChanged;
+            _session.OnPacketReceived = OnWintabPacket;
+            _session.OnButtonChanged = OnButtonChanged;
         }
 
         public void Open()

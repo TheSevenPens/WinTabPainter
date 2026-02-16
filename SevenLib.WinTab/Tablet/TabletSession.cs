@@ -13,8 +13,8 @@ public class TabletSession : System.IDisposable
     public SevenLib.WinTab.CWintabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
-    public System.Action<SevenLib.WinTab.Structs.WintabPacket> PacketHandler = null;
-    public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> StylusButtonChangedHandler = null;
+    public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnPacketReceived = null;
+    public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonChanged = null;
     public SevenLib.Stylus.StylusButtonState StylusButtonState;
 
     public TabletSession()
@@ -53,7 +53,7 @@ public class TabletSession : System.IDisposable
 
         // HANDLER
 
-        if (this.PacketHandler != null)
+        if (this.OnPacketReceived != null)
         {
             this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
         }
@@ -100,12 +100,12 @@ public class TabletSession : System.IDisposable
 
             if (button_info.Change != StylusButtonChangeType.NoChange)
             {
-                this.StylusButtonChangedHandler?.Invoke(wintab_pkt, button_info);
+                this.OnButtonChanged?.Invoke(wintab_pkt, button_info);
             }
 
-            if (this.PacketHandler != null) 
+            if (this.OnPacketReceived != null) 
             {
-                this.PacketHandler(wintab_pkt);
+                this.OnPacketReceived(wintab_pkt);
             }
         }
     }

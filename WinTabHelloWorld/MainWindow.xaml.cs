@@ -41,8 +41,8 @@ public partial class MainWindow : Window
     private void InitializeTablet()
     {
         _wintabsession = new SevenLib.WinTab.Tablet.TabletSession();
-        _wintabsession.PacketHandler = HandleWinTabPointerPacket;
-        _wintabsession.StylusButtonChangedHandler = OnButtonChange;
+        _wintabsession.OnPacketReceived = HandleWinTabPointerPacket;
+        _wintabsession.OnButtonChanged = HandleButtonChange;
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
@@ -83,7 +83,7 @@ public partial class MainWindow : Window
         });
     }
 
-    private void OnButtonChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
+    private void HandleButtonChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
     {
         _buttonStatus = _wintabsession.StylusButtonState.ToString();
     }
