@@ -1,7 +1,4 @@
-using SevenLib.Stylus;
 using System;
-using System.Security.Cryptography.Xml;
-using System.Windows;
 
 namespace SevenLib.WinInk
 {
@@ -128,22 +125,6 @@ namespace SevenLib.WinInk
                 HandlePointerUp(pointerdata);
             }
             else // UPDATE
-            {
-                HandlePointerUpdate(pointerdata);
-            }
-        }
-
-        private void HandlePointerMessage(int msg, int ptrType, SevenLib.Stylus.PointerDataNew pointerdata)
-        {
-            if (msg == Interop.NativeMethods.WM_POINTERDOWN)
-            {
-                HandlePointerDown(pointerdata);
-            }
-            else if (msg == Interop.NativeMethods.WM_POINTERUP)
-            {
-                HandlePointerUp(pointerdata);
-            }
-            else
             {
                 HandlePointerUpdate(pointerdata);
             }
