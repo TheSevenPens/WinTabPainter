@@ -8,7 +8,6 @@ public struct PointerData2
     // Position
 
     public SevenLib.Geometry.PointD DisplayPoint { get; set; }
-    public SevenLib.Geometry.PointD CanvasPoint { get; set; }
     public double Height { get; set; }
     public double PressureNormalized { get; set; }
 
