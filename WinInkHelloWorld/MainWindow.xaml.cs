@@ -75,10 +75,10 @@ namespace WinInkHelloWorld
 
         private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerData)
         {
+            bool pointer_in_contact = pointerData.PressureNormalized > 0;
+
             Dispatcher.Invoke(() =>
             {
-                bool pointer_in_contact = pointerData.PressureNormalized > 0;
-
                 if (_drawingState.IsDrawing && pointer_in_contact)
                 {
                     var canvasPos = WritingCanvas.PointFromScreen(new Point(pointerData.DisplayPoint.X, pointerData.DisplayPoint.Y));
