@@ -69,7 +69,10 @@ namespace WinInkHelloWorld
                 var az = pointerData.TiltAADeg.Azimuth;
                 var alt = pointerData.TiltAADeg.Altitude;
                 var btns = pointerData.ButtonState.ToString();
-                StatusText.Text = $"Device: {deviceType} | Pos: {pos.X:F0},{pos.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0} | Btn: {btns}";
+
+                var cp = this.ScreenToCanvas(pointerData.DisplayPoint);
+
+                StatusText.Text = $"Device: {deviceType} | Pos: {cp.X:F0},{cp.Y:F0} | Press: {pressure:F2} | Tilt: {tiltX},{tiltY} | Az/Alt: {az:F0},{alt:F0} | Btn: {btns}";
             });
         }
 
@@ -81,12 +84,18 @@ namespace WinInkHelloWorld
             {
                 if (_drawingState.IsDrawing && pointer_in_contact)
                 {
-                    var canvasPos = WritingCanvas.PointFromScreen(new Point(pointerData.DisplayPoint.X, pointerData.DisplayPoint.Y));
-                    var cp = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
+                    var cp = ScreenToCanvas(pointerData.DisplayPoint);
                     _renderer.DrawLineX(_drawingState.LastCanvasPoint, cp, (float)(pointerData.PressureNormalized * 5));
                     _drawingState.LastCanvasPoint = cp;
                 }
             });
+        }
+
+        private SevenLib.Geometry.PointD ScreenToCanvas(SevenLib.Geometry.PointD screenpoint)
+        {
+            var canvasPos = WritingCanvas.PointFromScreen(new Point(screenpoint.X, screenpoint.Y));
+            var cp = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
+            return cp;
         }
 
         private void HandlePointerUp(SevenLib.Stylus.PointerData pointerdata)
@@ -101,7 +110,9 @@ namespace WinInkHelloWorld
         {
             Dispatcher.Invoke(() =>
             {
+                var cp = this.ScreenToCanvas(pointerdata.DisplayPoint);
                 _drawingState.IsDrawing = true;
+                _drawingState.LastCanvasPoint = cp;
             });
         }
     }
