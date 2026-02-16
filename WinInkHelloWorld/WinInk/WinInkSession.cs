@@ -1,4 +1,3 @@
-using System;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -10,10 +9,9 @@ namespace SevenLib.WinInk
         public SevenLib.WinInk.PointerState PointerState;
         public SevenLib.Stylus.PointerData PointerData;
 
-        public Action<SevenLib.Stylus.PointerData> _onPointerStatsUpdated;
-        public Action<SevenLib.Stylus.PointerData> _PointerUpCallback;
-        public Action<SevenLib.Stylus.PointerData> _PointerDownCallback;
-        public Action<SevenLib.Stylus.PointerData> _PointerUpdateCallback;
+        public System.Action<SevenLib.Stylus.PointerData> _PointerUpCallback;
+        public System.Action<SevenLib.Stylus.PointerData> _PointerDownCallback;
+        public System.Action<SevenLib.Stylus.PointerData> _PointerUpdateCallback;
 
         public WinInkSession()
         {
@@ -35,19 +33,19 @@ namespace SevenLib.WinInk
             System.Windows.Input.Stylus.SetIsTouchFeedbackEnabled(window, false);
         }
 
-        private IntPtr _WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private System.IntPtr _WndProc(System.IntPtr hwnd, int msg, System.IntPtr wParam, System.IntPtr lParam, ref bool handled)
         {
             if (_HandlePointerMessage(msg, wParam))
             {
 
                 handled = true;
-                return IntPtr.Zero;
+                return System.IntPtr.Zero;
             }
 
-            return IntPtr.Zero;
+            return System.IntPtr.Zero;
         }
 
-        private bool _HandlePointerMessage(int msg, IntPtr wParam)
+        private bool _HandlePointerMessage(int msg, System.IntPtr wParam)
         {
             switch (msg)
             {

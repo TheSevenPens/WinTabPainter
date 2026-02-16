@@ -1,9 +1,5 @@
-using SevenLib.Stylus;
-using SevenLib.WinInk;
 using System;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interop;
 
 namespace WinInkHelloWorld
 {
@@ -41,7 +37,6 @@ namespace WinInkHelloWorld
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
             _winink_session = new SevenLib.WinInk.WinInkSession();
-            _winink_session._onPointerStatsUpdated += HandlePointerStatsUpdate;
             _winink_session._PointerUpdateCallback += HandlePointerUpdate;
             _winink_session._PointerUpCallback += HandlePointerUp;
             _winink_session._PointerDownCallback += HandlePointerDown;
@@ -66,18 +61,20 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerData)
+        private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerdata)
         {
-            bool pointer_in_contact = pointerData.PressureNormalized > 0;
+            bool pointer_in_contact = pointerdata.PressureNormalized > 0;
 
             Dispatcher.Invoke(() =>
             {
                 if (_drawingState.IsDrawing && pointer_in_contact)
                 {
-                    var cp = ScreenToCanvas(pointerData.DisplayPoint);
-                    _renderer.DrawLineX(_drawingState.LastCanvasPoint, cp, (float)(pointerData.PressureNormalized * 5));
+                    var cp = ScreenToCanvas(pointerdata.DisplayPoint);
+                    _renderer.DrawLineX(_drawingState.LastCanvasPoint, cp, (float)(pointerdata.PressureNormalized * 5));
                     _drawingState.LastCanvasPoint = cp;
                 }
+
+                HandlePointerStatsUpdate(pointerdata);
             });
         }
 
@@ -93,6 +90,7 @@ namespace WinInkHelloWorld
             Dispatcher.Invoke(() =>
             {
                 _drawingState.IsDrawing = false;
+                HandlePointerStatsUpdate(pointerdata);
             });
         }
 
@@ -103,6 +101,7 @@ namespace WinInkHelloWorld
                 var cp = this.ScreenToCanvas(pointerdata.DisplayPoint);
                 _drawingState.IsDrawing = true;
                 _drawingState.LastCanvasPoint = cp;
+                HandlePointerStatsUpdate(pointerdata);
             });
         }
     }
