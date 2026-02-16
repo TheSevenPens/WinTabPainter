@@ -57,7 +57,7 @@ namespace WinInkHelloWorld
             _winink_session._PointerDownCallback += HandlePointerDown;
         }
 
-        private void HandlePointerStatsUpdate(SevenLib.Stylus.PointerDataNew pointerData)
+        private void HandlePointerStatsUpdate(SevenLib.Stylus.PointerData pointerData)
         {
             Dispatcher.Invoke(() =>
             {
@@ -73,7 +73,7 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerUpdate(SevenLib.Stylus.PointerDataNew pointerData)
+        private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerData)
         {
             Dispatcher.Invoke(() =>
             {
@@ -89,7 +89,7 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerUp(SevenLib.Stylus.PointerDataNew pointerdata)
+        private void HandlePointerUp(SevenLib.Stylus.PointerData pointerdata)
         {
             Dispatcher.Invoke(() =>
             {
@@ -97,7 +97,7 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerDown(SevenLib.Stylus.PointerDataNew pointerdata)
+        private void HandlePointerDown(SevenLib.Stylus.PointerData pointerdata)
         {
             Dispatcher.Invoke(() =>
             {

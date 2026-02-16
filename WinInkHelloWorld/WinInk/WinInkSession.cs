@@ -6,12 +6,12 @@ namespace SevenLib.WinInk
     {
 
         public SevenLib.WinInk.PointerState PointerState;
-        public SevenLib.Stylus.PointerDataNew PointerData;
+        public SevenLib.Stylus.PointerData PointerData;
 
-        public Action<SevenLib.Stylus.PointerDataNew> _onPointerStatsUpdated;
-        public Action<SevenLib.Stylus.PointerDataNew> _PointerUpCallback;
-        public Action<SevenLib.Stylus.PointerDataNew> _PointerDownCallback;
-        public Action<SevenLib.Stylus.PointerDataNew> _PointerUpdateCallback;
+        public Action<SevenLib.Stylus.PointerData> _onPointerStatsUpdated;
+        public Action<SevenLib.Stylus.PointerData> _PointerUpCallback;
+        public Action<SevenLib.Stylus.PointerData> _PointerDownCallback;
+        public Action<SevenLib.Stylus.PointerData> _PointerUpdateCallback;
 
         public WinInkSession()
         {
@@ -114,7 +114,7 @@ namespace SevenLib.WinInk
             return buttonState;
         }
 
-        private void HandlePenMessage(int msg, SevenLib.Stylus.PointerDataNew pointerdata)
+        private void HandlePenMessage(int msg, SevenLib.Stylus.PointerData pointerdata)
         {
             if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
@@ -130,17 +130,17 @@ namespace SevenLib.WinInk
             }
         }
 
-        private void HandlePointerDown(SevenLib.Stylus.PointerDataNew pointerdata)
+        private void HandlePointerDown(SevenLib.Stylus.PointerData pointerdata)
         {
             _PointerDownCallback?.Invoke(pointerdata);
         }
 
-        private void HandlePointerUpdate(SevenLib.Stylus.PointerDataNew pointerdata)
+        private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerdata)
         {
             _PointerUpdateCallback?.Invoke(pointerdata);
         }
 
-        private void HandlePointerUp(SevenLib.Stylus.PointerDataNew pointerdata)
+        private void HandlePointerUp(SevenLib.Stylus.PointerData pointerdata)
         {
             _PointerUpCallback?.Invoke(pointerdata);
         }

@@ -46,7 +46,7 @@ public partial class MainWindow : Window
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
-    public void HandlePointerEvent(SevenLib.Stylus.PointerDataNew pointerData) 
+    public void HandlePointerEvent(SevenLib.Stylus.PointerData pointerData) 
     {
         Dispatcher.Invoke(() =>
         {
