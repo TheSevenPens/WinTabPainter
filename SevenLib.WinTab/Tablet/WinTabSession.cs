@@ -5,9 +5,9 @@ using System;
 namespace SevenLib.WinTab.Tablet;
 
 
-public class WinTabSession2 : System.IDisposable
+public class WinTabSession : System.IDisposable
 {
-    public SevenLib.Stylus.PointerData2 PointerData = new SevenLib.Stylus.PointerData2();
+    public SevenLib.Stylus.PointerDataNew PointerData = new SevenLib.Stylus.PointerDataNew();
     public SevenLib.WinTab.Structs.WintabPacket WinTabPacket;
 
     public SevenLib.WinTab.CWintabContext Context = null;
@@ -16,17 +16,17 @@ public class WinTabSession2 : System.IDisposable
     public TabletContextType ContextType;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
-    public System.Action<SevenLib.Stylus.PointerData2> OnPointerEvent =null;
+    public System.Action<SevenLib.Stylus.PointerDataNew> OnPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
 
 
     public SevenLib.Stylus.StylusButtonState StylusButtonState;
 
-    public WinTabSession2()
+    public WinTabSession()
     {
         this.TabletInfo = new TabletInfo();
-        this.PointerData = new SevenLib.Stylus.PointerData2();
+        this.PointerData = new SevenLib.Stylus.PointerDataNew();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
         this.OnRawPacketReceived = HandleRawPacket;
     }
@@ -151,7 +151,7 @@ public class WinTabSession2 : System.IDisposable
     {
 
         this.WinTabPacket = packet;
-        this.PointerData = new SevenLib.Stylus.PointerData2();
+        this.PointerData = new SevenLib.Stylus.PointerDataNew();
         this.PointerData.Time = DateTime.Now;
 
         var screenPos = new SevenLib.Geometry.Point(packet.pkX, packet.pkY);

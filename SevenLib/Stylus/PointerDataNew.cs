@@ -1,6 +1,6 @@
 ﻿namespace SevenLib.Stylus;
 
-public struct PointerData2
+public struct PointerDataNew
 {
     // Meta
     public DateTime Time { get; set; }
