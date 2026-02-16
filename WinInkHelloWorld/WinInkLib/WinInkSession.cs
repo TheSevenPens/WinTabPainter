@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 
-namespace WinInkHelloWorld.WinInkLib
+namespace SevenLib.WinInk
 {
     public class WinInkSession
     {

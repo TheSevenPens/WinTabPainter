@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WinInkHelloWorld.WinInkLib
+namespace SevenLib.WinInk
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct POINTER_INFO
@@ -12,10 +12,10 @@ namespace WinInkHelloWorld.WinInkLib
         public uint pointerFlags;
         public IntPtr sourceDevice;
         public IntPtr hwndTarget;
-        public NativePoint ptPixelLocation;
-        public NativePoint ptHimetricLocation;
-        public NativePoint ptPixelLocationRaw;
-        public NativePoint ptHimetricLocationRaw;
+        public SevenLib.WinInk.NativePoint ptPixelLocation;
+        public SevenLib.WinInk.NativePoint ptHimetricLocation;
+        public SevenLib.WinInk.NativePoint ptPixelLocationRaw;
+        public SevenLib.WinInk.NativePoint ptHimetricLocationRaw;
         public uint dwTime;
         public uint historyCount;
         public int InputData;

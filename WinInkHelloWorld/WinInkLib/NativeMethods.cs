@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WinInkHelloWorld.WinInkLib
+namespace SevenLib.WinInk
 {
 
     public static class NativeMethods
