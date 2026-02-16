@@ -1,21 +1,23 @@
+using SevenLib.Stylus;
 using System;
+using System.Security.Cryptography.Xml;
 using System.Windows;
 
 namespace SevenLib.WinInk
 {
     public class WinInkSession
     {
-        public SevenLib.WinInk.PointerState PointerState;
-        
-        private FrameworkElement _canvas;
-        public Action _onPointerStatsUpdated;
-        public Action _PointerUpCallback;
-        public Action _PointerDownCallback;
-        public Action _PointerUpdateCallback;
 
-        public WinInkSession(FrameworkElement canvas)
+        public SevenLib.WinInk.PointerState PointerState;
+        public SevenLib.Stylus.PointerDataNew PointerData;
+
+        public Action<SevenLib.Stylus.PointerDataNew> _onPointerStatsUpdated;
+        public Action<SevenLib.Stylus.PointerDataNew> _PointerUpCallback;
+        public Action<SevenLib.Stylus.PointerDataNew> _PointerDownCallback;
+        public Action<SevenLib.Stylus.PointerDataNew> _PointerUpdateCallback;
+
+        public WinInkSession()
         {
-            _canvas = canvas;
             this.PointerState= new PointerState();
         }
 
@@ -23,7 +25,7 @@ namespace SevenLib.WinInk
         {
             if (HandlePointerMessage(msg, wParam))
             {
-                _onPointerStatsUpdated?.Invoke();
+                _onPointerStatsUpdated?.Invoke(this.PointerData);
                 handled = true;
                 return IntPtr.Zero;
             }
@@ -68,38 +70,34 @@ namespace SevenLib.WinInk
 
         private void ProcessPenInfo(int msg, Interop.POINTER_PEN_INFO penInfo)
         {
-            var canvasPos = _canvas.PointFromScreen(new Point(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y));
 
-            this.PointerState.PointerData.Time = System.DateTime.Now;
-            this.PointerState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
-            this.PointerState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
-            this.PointerState.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
-            this.PointerState.PointerData.PressureNormalized = penInfo.pressure / 1024.0f;
-            this.PointerState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
-            this.PointerState.PointerData.TiltAADeg = this.PointerState.PointerData.TiltXYDeg.ToAA_deg();
-            this.PointerState.PointerData.Twist = penInfo.rotation;
+            this.PointerData.Time = System.DateTime.Now;
+            this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
+
+            this.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
+            this.PointerData.PressureNormalized = penInfo.pressure / 1024.0f;
+            this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
+            this.PointerData.TiltAADeg = this.PointerData.TiltXYDeg.ToAA_deg();
+            this.PointerData.Twist = penInfo.rotation;
             uint buttonState = MapWindowsButtonStates(penInfo);
-            this.PointerState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
+            this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
-            HandlePenMessage(msg);
+            HandlePenMessage(msg, this.PointerData);
         }
 
         private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
         {
-            var clientPos = _canvas.PointFromScreen(new Point(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y));
 
-            this.PointerState.PointerData.Time = System.DateTime.Now;
-            this.PointerState.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
-            this.PointerState.PointerData.CanvasPoint = new SevenLib.Geometry.PointD(clientPos.X, clientPos.Y);
-            this.PointerState.PointerData.Height = 0;
-            this.PointerState.PointerData.PressureNormalized = 1.0;
-            this.PointerState.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
-            this.PointerState.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
-            this.PointerState.PointerData.Twist = 0;
+            this.PointerData.Time = System.DateTime.Now;
+            this.PointerData.Height = 0;
+            this.PointerData.PressureNormalized = 1.0;
+            this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
+            this.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
+            this.PointerData.Twist = 0;
             
             // Note: this line in original had a bug - penInfo is undefined in this context
             // Using default button state instead
-            this.PointerState.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
+            this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
 
             HandlePointerMessage(msg, pointerType);
         }
@@ -119,52 +117,51 @@ namespace SevenLib.WinInk
             return buttonState;
         }
 
-        private void HandlePenMessage(int msg)
+        private void HandlePenMessage(int msg, SevenLib.Stylus.PointerDataNew pointerdata)
         {
             if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown();
+                HandlePointerDown(pointerdata);
             }
             else if (msg == Interop.NativeMethods.WM_POINTERUP)
             {
-                HandlePointerUp();
+                HandlePointerUp(pointerdata);
             }
             else // UPDATE
             {
-                HandlePointerUpdate();
+                HandlePointerUpdate(pointerdata);
             }
         }
 
-        private void HandlePointerMessage(int msg, int ptrType)
+        private void HandlePointerMessage(int msg, int ptrType, SevenLib.Stylus.PointerDataNew pointerdata)
         {
             if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown();
+                HandlePointerDown(pointerdata);
             }
             else if (msg == Interop.NativeMethods.WM_POINTERUP)
             {
-                HandlePointerUp();
+                HandlePointerUp(pointerdata);
             }
             else
             {
-                HandlePointerUpdate();
+                HandlePointerUpdate(pointerdata);
             }
         }
 
-        private void HandlePointerDown()
+        private void HandlePointerDown(SevenLib.Stylus.PointerDataNew pointerdata)
         {
-            _PointerDownCallback?.Invoke();
-            this.PointerState.LastCanvasPoint = this.PointerState.PointerData.CanvasPoint;
+            _PointerDownCallback?.Invoke(pointerdata);
         }
 
-        private void HandlePointerUpdate()
+        private void HandlePointerUpdate(SevenLib.Stylus.PointerDataNew pointerdata)
         {
-            _PointerUpdateCallback?.Invoke();
+            _PointerUpdateCallback?.Invoke(pointerdata);
         }
 
-        private void HandlePointerUp()
+        private void HandlePointerUp(SevenLib.Stylus.PointerDataNew pointerdata)
         {
-            _PointerUpCallback?.Invoke();
+            _PointerUpCallback?.Invoke(pointerdata);
         }
 
     }
