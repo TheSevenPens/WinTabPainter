@@ -72,10 +72,10 @@ namespace WinTabPainter
 
 
             this.tabsession = new SevenLib.WinTab.Tablet.TabletSession();
-            this.tabsession.OnPacketReceived = this.PacketHandler;
+            this.tabsession.OnRawPacketReceived = this.PacketHandler;
             this.tabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
 
-            this.tabsession.OnButtonChanged = this.HandleButtonChange;
+            this.tabsession.OnRawButtonChanged = this.HandleButtonChange;
 
             this.labelMaxPressure.Text = this.tabsession.TabletInfo.MaxPressure.ToString();
             Reposition_app();
