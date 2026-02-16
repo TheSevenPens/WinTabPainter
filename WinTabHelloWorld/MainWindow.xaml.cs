@@ -54,7 +54,7 @@ public partial class MainWindow : Window
         {
             try
             {
-                this._wintabsession.PointerState.WinTabPacket = packet;
+                this._wintabsession.WinTabPacket = packet;
                 this._wintabsession.PointerData = new SevenLib.Stylus.PointerData2();
                 this._wintabsession.PointerData.Time = DateTime.Now;
 

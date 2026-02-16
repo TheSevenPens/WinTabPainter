@@ -8,7 +8,7 @@ namespace SevenLib.WinTab.Tablet;
 public class WinTabSession2 : System.IDisposable
 {
     public SevenLib.Stylus.PointerData2 PointerData = new SevenLib.Stylus.PointerData2();
-    public SevenLib.WinTab.Tablet.PointerState PointerState = new SevenLib.WinTab.Tablet.PointerState();
+    public SevenLib.WinTab.Structs.WintabPacket WinTabPacket;
 
     public SevenLib.WinTab.CWintabContext Context = null;
     public SevenLib.WinTab.CWintabData Data = null;
