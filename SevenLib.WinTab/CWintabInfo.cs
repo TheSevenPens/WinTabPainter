@@ -7,7 +7,7 @@ namespace SevenLib.WinTab;
 /// <summary>
 /// Class to access Wintab interface data.
 /// </summary>
-public class CWintabInfo
+public static class CWintabInfo
 {
     public const int MAX_STRING_SIZE = 256;
 
