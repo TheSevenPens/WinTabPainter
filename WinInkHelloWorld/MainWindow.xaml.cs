@@ -61,7 +61,7 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerUpdate(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             bool pointer_in_contact = pointerdata.PressureNormalized > 0;
 
@@ -85,7 +85,7 @@ namespace WinInkHelloWorld
             return cp;
         }
 
-        private void HandlePointerUp(SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerUp(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             Dispatcher.Invoke(() =>
             {
@@ -94,7 +94,7 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerDown(SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerDown(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             Dispatcher.Invoke(() =>
             {

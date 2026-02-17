@@ -1,5 +1,3 @@
-using System.Diagnostics.PerformanceData;
-
 namespace SevenLib.WinInk
 {
     public class WinInkSession
@@ -8,9 +6,9 @@ namespace SevenLib.WinInk
         public SevenLib.WinInk.PointerState PointerState;
         public SevenLib.Stylus.PointerData PointerData;
 
-        public System.Action<SevenLib.Stylus.PointerData> _PointerUpCallback;
-        public System.Action<SevenLib.Stylus.PointerData> _PointerDownCallback;
-        public System.Action<SevenLib.Stylus.PointerData> _PointerUpdateCallback;
+        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerUpCallback;
+        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerDownCallback;
+        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerUpdateCallback;
 
         public WinInkSession()
         {
@@ -84,7 +82,6 @@ namespace SevenLib.WinInk
 
             this.PointerData.Time = System.DateTime.Now;
             this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
-
             this.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
             this.PointerData.PressureNormalized = penInfo.pressure / 1024.0f;
             this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
@@ -101,17 +98,15 @@ namespace SevenLib.WinInk
         {
 
             this.PointerData.Time = System.DateTime.Now;
+            this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
             this.PointerData.Height = 0;
             this.PointerData.PressureNormalized = 1.0;
             this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
             this.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
-            this.PointerData.Twist = 0;
-            
-            // Note: this line in original had a bug - penInfo is undefined in this context
-            // Using default button state instead
+            this.PointerData.Twist = 0;          
             this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
 
-            _HandleWndProcPointerMessage(msg, pointerType);
+            HandlePenMessage(msg, pointerType, this.PointerData);
         }
 
         private void HandlePenMessage(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
@@ -132,17 +127,17 @@ namespace SevenLib.WinInk
 
         private void HandlePointerDown(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
-            _PointerDownCallback?.Invoke(pointerdata);
+            _PointerDownCallback?.Invoke(msg, pointerType, pointerdata);
         }
 
         private void HandlePointerUpdate(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
-            _PointerUpdateCallback?.Invoke(pointerdata);
+            _PointerUpdateCallback?.Invoke(msg, pointerType, pointerdata);
         }
 
         private void HandlePointerUp(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
-            _PointerUpCallback?.Invoke(pointerdata);
+            _PointerUpCallback?.Invoke(msg, pointerType, pointerdata);
         }
 
         private static uint MapWindowsButtonStates(uint powerflags)
