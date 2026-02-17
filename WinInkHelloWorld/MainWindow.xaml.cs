@@ -24,12 +24,7 @@ namespace WinInkHelloWorld
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            
-            if (this._winink_session == null)
-                return;
-
             this._winink_session.AttachToWindow(this);
-
         }
 
         private void InitializeCanvas()
