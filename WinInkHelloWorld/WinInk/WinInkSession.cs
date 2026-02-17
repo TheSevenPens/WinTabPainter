@@ -58,7 +58,7 @@ namespace SevenLib.WinInk
                     if (Interop.NativeMethods.GetPointerPenInfo(pointerId, out Interop.POINTER_PEN_INFO penInfo))
                     {
                         // Handling when the pointer is a pen
-                        ProcessPenInfo(msg, penInfo);
+                        ProcessPenInfo(msg, pointerType, penInfo);
                         return true;
                     }
                     else if (Interop.NativeMethods.GetPointerInfo(pointerId, out Interop.POINTER_INFO pointerInfo))
@@ -77,7 +77,7 @@ namespace SevenLib.WinInk
             return false;
         }
 
-        private void ProcessPenInfo(int msg, Interop.POINTER_PEN_INFO penInfo)
+        private void ProcessPenInfo(int msg, int pointerType, Interop.POINTER_PEN_INFO penInfo)
         {
 
             this.PointerData.Time = System.DateTime.Now;
