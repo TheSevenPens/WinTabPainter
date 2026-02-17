@@ -90,7 +90,7 @@ namespace SevenLib.WinInk
             this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
             this.PointerData.TiltAADeg = this.PointerData.TiltXYDeg.ToAA_deg();
             this.PointerData.Twist = penInfo.rotation;
-            uint buttonState = MapWindowsButtonStates(penInfo);
+            uint buttonState = MapWindowsButtonStates(penInfo.pointerInfo.pointerFlags);
             this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
             HandlePenMessage(msg, pointerType, this.PointerData);
@@ -145,14 +145,14 @@ namespace SevenLib.WinInk
             _PointerUpCallback?.Invoke(pointerdata);
         }
 
-        private static uint MapWindowsButtonStates(Interop.POINTER_PEN_INFO penInfo)
+        private static uint MapWindowsButtonStates(uint powerflags)
         {
             uint buttonState = 0;
-            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
+            if ((powerflags & Interop.NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
             {
                 buttonState |= 1; // Tip
             }
-            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
+            if ((powerflags & Interop.NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
             {
                 buttonState |= 2; // Button2
             }
