@@ -6,9 +6,7 @@ namespace SevenLib.WinInk
         public SevenLib.WinInk.PointerState PointerState;
         public SevenLib.Stylus.PointerData PointerData;
 
-        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerUpCallback;
-        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerDownCallback;
-        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerUpdateCallback;
+        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerCallback;
 
         public WinInkSession()
         {
@@ -111,18 +109,7 @@ namespace SevenLib.WinInk
 
         private void HandlePenMessage(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
-            if (msg == Interop.NativeMethods.WM_POINTERDOWN)
-            {
-                _PointerDownCallback?.Invoke(msg, pointerType, pointerdata);
-            }
-            else if (msg == Interop.NativeMethods.WM_POINTERUP)
-            {
-                _PointerUpdateCallback?.Invoke(msg, pointerType, pointerdata);
-            }
-            else // UPDATE
-            {
-                _PointerUpdateCallback?.Invoke(msg, pointerType, pointerdata);
-            }
+            _PointerCallback?.Invoke(msg, pointerType, pointerdata);
         }
 
         private static uint MapWindowsButtonStates(uint powerflags)
