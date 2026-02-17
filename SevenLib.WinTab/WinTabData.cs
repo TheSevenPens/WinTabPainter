@@ -7,15 +7,15 @@ namespace SevenLib.WinTab;
 /// <summary>
 /// Class to support capture and management of Wintab daa.
 /// </summary>
-public class CWintabData : IDisposable
+public class WinTabData : IDisposable
 {
-    private CWintabContext m_context;
+    private WinTabContext m_context;
 
     /// <summary>
     /// CWintabData constructor
     /// </summary>
     /// <param name="context">logical context for this data object</param>
-    public CWintabData(CWintabContext context)
+    public WinTabData(WinTabContext context)
     {
         Init(context);
     }
@@ -24,7 +24,7 @@ public class CWintabData : IDisposable
     /// Initialize this data object.
     /// </summary>
     /// <param name="context">logical context for this data object</param>
-    private void Init(CWintabContext context)
+    private void Init(WinTabContext context)
     {
         if (context == null)
         {

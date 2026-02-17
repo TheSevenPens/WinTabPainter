@@ -7,7 +7,7 @@ namespace SevenLib.WinTab;
 /// <summary>
 /// Class to support access to Wintab context management.
 /// </summary>
-public class CWintabContext : IDisposable
+public class WinTabContext : IDisposable
 {
     // Context data
     private Structs.WintabLogContext m_logicalcontext = new Structs.WintabLogContext();
@@ -16,7 +16,7 @@ public class CWintabContext : IDisposable
     /// <summary>
     /// Default constructor sets all data bits to be captured.
     /// </summary>
-    public CWintabContext()
+    public WinTabContext()
     {
         // Init with all bits set (The Full Monty) to get all non-extended data types.
         PktData = (uint)
@@ -97,7 +97,7 @@ public class CWintabContext : IDisposable
         }
     }
 
-    ~CWintabContext()
+    ~WinTabContext()
     {
         Dispose(false);
     }

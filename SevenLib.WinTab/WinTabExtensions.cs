@@ -21,7 +21,7 @@ namespace SevenLib.WinTab;
 /// Similarly, an application can define actions for Touch Ring and Touch Strip button
 /// modes, and respond to user swipes on those controls to provide customized behavior.
 /// </summary>
-public class CWintabExtensions
+public class WinTabExtensions
 {
     /// <summary>
     /// Return the extension mask for the given tag.
@@ -311,7 +311,7 @@ public class CWintabExtensions
     /// <param name="imageFilePath_I">path to PNG image file</param>
     /// <returns>true if successful and tablet supports property</returns>
     public static bool SetDisplayProperty(
-        CWintabContext context_I,
+        WinTabContext context_I,
         Enums.EWTXExtensionTag extTagIndex_I,
         UInt32 tabletIndex_I,
         UInt32 controlIndex_I,
@@ -327,7 +327,7 @@ public class CWintabExtensions
             return false;
         }
 
-        if (!CWintabExtensions.ControlPropertyGet(
+        if (!WinTabExtensions.ControlPropertyGet(
             context_I.HCtx,
             (byte)extTagIndex_I,
             (byte)tabletIndex_I,
@@ -343,7 +343,7 @@ public class CWintabExtensions
             UInt32 iconWidth = 0;
             UInt32 iconHeight = 0;
 
-            if (!CWintabExtensions.ControlPropertyGet(
+            if (!WinTabExtensions.ControlPropertyGet(
                 context_I.HCtx,
                 (byte)extTagIndex_I,
                 (byte)tabletIndex_I,
@@ -353,7 +353,7 @@ public class CWintabExtensions
                 ref iconWidth))
             { throw new Exception("Oops - Failed ControlPropertyGet for TABLET_PROPERTY_ICON_WIDTH"); }
 
-            if (!CWintabExtensions.ControlPropertyGet(
+            if (!WinTabExtensions.ControlPropertyGet(
                 context_I.HCtx,
                 (byte)extTagIndex_I,
                 (byte)tabletIndex_I,
@@ -382,14 +382,14 @@ public class CWintabExtensions
     /// <param name="functionIndex_I">the index of the control function being set</param>
     /// <param name="imageFilePath_I">path to PNG image file</param>
     private static bool SetIcon(
-        CWintabContext context_I,
+        WinTabContext context_I,
         Enums.EWTXExtensionTag extTagIndex_I,
         UInt32 tabletIndex_I,
         UInt32 controlIndex_I,
         UInt32 functionIndex_I,
         String imageFilePath_I)
     {
-        if (!CWintabExtensions.ControlPropertySetImage(
+        if (!WinTabExtensions.ControlPropertySetImage(
             context_I.HCtx,
             (byte)extTagIndex_I,
             (byte)tabletIndex_I,

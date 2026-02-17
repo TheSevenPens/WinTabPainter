@@ -7,7 +7,7 @@ namespace SevenLib.WinTab;
 /// <summary>
 /// Class to access Wintab system-level interface data.
 /// </summary>
-public static class CWintabSystem
+public static class WinTabSystem
 {
     /// <summary>
     /// Returns TRUE if Wintab service is running and responsive.

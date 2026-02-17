@@ -7,7 +7,7 @@ namespace SevenLib.WinTab;
 /// <summary>
 /// Class to access Wintab device capabilities and properties.
 /// </summary>
-public static class CWintabDevice
+public static class WinTabDevice
 {
     /// <summary>
     /// Returns a string containing device name.

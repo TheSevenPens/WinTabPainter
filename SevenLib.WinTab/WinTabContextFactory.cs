@@ -7,7 +7,7 @@ namespace SevenLib.WinTab;
 /// <summary>
 /// Class to create and configure Wintab contexts.
 /// </summary>
-public static class CWintabContextFactory
+public static class WinTabContextFactory
 {
     /// <summary>
     /// Returns the default system context or digitizer, with useful context overrides.
@@ -15,7 +15,7 @@ public static class CWintabContextFactory
     /// <param name="cat">EWTICategoryIndex.WTI_DEFCONTEXT for digitizer context. EWTICategoryIndex.WTI_DEFSYSCTX for system context</param>
     /// <param name="options_I">caller's options; OR'd into context options</param>
     /// <returns>A configured WintabContext</returns>
-    public static CWintabContext GetDefaultContext(Enums.EWTICategoryIndex cat, Enums.ECTXOptionValues options_I = 0)
+    public static WinTabContext GetDefaultContext(Enums.EWTICategoryIndex cat, Enums.ECTXOptionValues options_I = 0)
     {
         // In the original code this is made up of two separate methods that
         // do almost the exact same thing. Merged them with the cat parameter
@@ -68,9 +68,9 @@ public static class CWintabContextFactory
     /// </summary>
     /// <param name="contextIndex_I">Use WTI_DEFCONTEXT for digital context or WTI_DEFSYSCTX for system context</param>
     /// <returns>Returns the default context or null on error.</returns>
-    private static CWintabContext GetDefaultContextCore(Enums.EWTICategoryIndex contextIndex_I)
+    private static WinTabContext GetDefaultContextCore(Enums.EWTICategoryIndex contextIndex_I)
     {
-        var context = new CWintabContext();
+        var context = new WinTabContext();
         context.LogicalContext = Interop.WinTabFunctions.WTInfoAObject<Structs.WintabLogContext>((uint)contextIndex_I, 0);
         return context;
     }

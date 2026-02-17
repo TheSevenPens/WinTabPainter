@@ -10,8 +10,8 @@ public class WinTabSession : System.IDisposable
     public SevenLib.Stylus.PointerData PointerData = new SevenLib.Stylus.PointerData();
     public SevenLib.WinTab.Structs.WintabPacket WinTabPacket;
 
-    public SevenLib.WinTab.CWintabContext Context = null;
-    public SevenLib.WinTab.CWintabData Data = null;
+    public SevenLib.WinTab.WinTabContext Context = null;
+    public SevenLib.WinTab.WinTabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
     public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
@@ -38,7 +38,7 @@ public class WinTabSession : System.IDisposable
 
         // CREATE CONTEXT
          var options = SevenLib.WinTab.Enums.ECTXOptionValues.CXO_MESSAGES;
-         this.Context = SevenLib.WinTab.CWintabContextFactory.GetDefaultContext(wt_context_type, options);
+         this.Context = SevenLib.WinTab.WinTabContextFactory.GetDefaultContext(wt_context_type, options);
 
         if (this.Context == null)
         {
@@ -53,7 +53,7 @@ public class WinTabSession : System.IDisposable
 
         // CREATE DATA
 
-        this.Data = new SevenLib.WinTab.CWintabData(this.Context);
+        this.Data = new SevenLib.WinTab.WinTabData(this.Context);
 
 
         this.TabletInfo.Initialize();
