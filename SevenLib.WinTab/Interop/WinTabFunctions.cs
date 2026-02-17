@@ -11,7 +11,7 @@ using P_HWND = System.IntPtr;
 /// P/Invoke wrappers for Wintab functions.
 /// See Wintab_v140.doc (Wintab 1.4 spec) and related Wintab documentation for details.
 /// </summary>
-public class WintabFuncs
+public class WinTabFunctions
 {
     /// <summary>
     /// This function returns global information about the interface in an application-supplied buffer. 
@@ -175,7 +175,7 @@ public class WintabFuncs
     {
         using (var buf = Interop.UnmanagedBuffer.CreateForString())
         {
-            int size = (int)WintabFuncs.WTInfoA(cat, index, buf.Pointer);
+            int size = (int)WinTabFunctions.WTInfoA(cat, index, buf.Pointer);
             string val = buf.MarshalStringFromBuffer(size);
             return val;
         }
@@ -185,7 +185,7 @@ public class WintabFuncs
     {
         using (var buf = Interop.UnmanagedBuffer.CreateForObject<T>())
         {
-            int size = (int)WintabFuncs.WTInfoA(cat, index, buf.Pointer);
+            int size = (int)WinTabFunctions.WTInfoA(cat, index, buf.Pointer);
             T val = buf.MarshallObjectFromBuffer<T>(size);
             return val;
         }

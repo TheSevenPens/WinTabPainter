@@ -36,7 +36,7 @@ public class CWintabExtensions
         // Supported if extIndex != -1
         if (extIndex != 0xFFFFFFFF)
         {
-            extMask = Interop.WintabFuncs.WTInfoAObject<UInt32>((uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
+            extMask = Interop.WinTabFunctions.WTInfoAObject<UInt32>((uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (uint)extIndex,
                 (uint)Enums.EWTIExtensionIndex.EXT_MASK);
         }
 
@@ -58,7 +58,7 @@ public class CWintabExtensions
 
             for (Int32 loopIdx = 0, size = -1; size != 0; loopIdx++)
             {
-                size = (int)Interop.WintabFuncs.WTInfoA(
+                size = (int)Interop.WinTabFunctions.WTInfoA(
                     (uint)Enums.EWTICategoryIndex.WTI_EXTENSIONS + (UInt32)loopIdx,
                     (uint)Enums.EWTIExtensionIndex.EXT_TAG, buf.Pointer);
 
@@ -116,7 +116,7 @@ public class CWintabExtensions
         {
             buf.MarshalObjectlIntoBuffer(extProperty);
 
-            bool status = Interop.WintabFuncs.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
+            bool status = Interop.WinTabFunctions.WTExtGet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
             if (status)
             {
@@ -174,7 +174,7 @@ public class CWintabExtensions
         {
 
             buf.MarshalObjectlIntoBuffer(extProperty.data);
-            retStatus = Interop.WintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
+            retStatus = Interop.WinTabFunctions.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
             return retStatus;
         }
     }
@@ -225,7 +225,7 @@ public class CWintabExtensions
 
             buf.MarshalObjectlIntoBuffer(extProperty);
 
-            retStatus = Interop.WintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
+            retStatus = Interop.WinTabFunctions.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
             return retStatus;
         }
@@ -292,7 +292,7 @@ public class CWintabExtensions
 
             buf.MarshalObjectlIntoBuffer(extProperty);
 
-            retStatus = Interop.WintabFuncs.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
+            retStatus = Interop.WinTabFunctions.WTExtSet((UInt32)context_I, (UInt32)extTagIndex_I, buf.Pointer);
 
 
             return retStatus;

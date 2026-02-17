@@ -45,7 +45,7 @@ public class CWintabContext : IDisposable
     /// <returns>Returns non-zero context handle if successful.</returns>
     public Structs.HCTX Open(Structs.HWND hwnd_I, bool enable_I)
     {
-        m_hCTX = SevenLib.WinTab.Interop.WintabFuncs.WTOpenA(hwnd_I, ref m_logicalcontext, enable_I);
+        m_hCTX = SevenLib.WinTab.Interop.WinTabFunctions.WTOpenA(hwnd_I, ref m_logicalcontext, enable_I);
 
 
         return m_hCTX;
@@ -61,7 +61,7 @@ public class CWintabContext : IDisposable
         // static (global) object, so there's only one of these at a time.
         var hwnd = WinForms.MessageEvents.WindowHandle;
 
-        m_hCTX = Interop.WintabFuncs.WTOpenA(hwnd, ref m_logicalcontext, true);
+        m_hCTX = Interop.WinTabFunctions.WTOpenA(hwnd, ref m_logicalcontext, true);
 
         return (m_hCTX > 0);
     }
@@ -91,7 +91,7 @@ public class CWintabContext : IDisposable
     {
         if (m_hCTX != 0)
         {
-            Interop.WintabFuncs.WTClose(m_hCTX);
+            Interop.WinTabFunctions.WTClose(m_hCTX);
             m_hCTX = 0;
             m_logicalcontext = new Structs.WintabLogContext();
         }
@@ -116,7 +116,7 @@ public class CWintabContext : IDisposable
             throw new Exception("EnableContext: invalid context");
         }
 
-        status = Interop.WintabFuncs.WTEnable(m_hCTX, enable_I);
+        status = Interop.WinTabFunctions.WTEnable(m_hCTX, enable_I);
 
 
         return status;
@@ -136,7 +136,7 @@ public class CWintabContext : IDisposable
             throw new Exception("EnableContext: invalid context");
         }
 
-        status = Interop.WintabFuncs.WTOverlap(m_hCTX, toTop_I);
+        status = Interop.WinTabFunctions.WTOverlap(m_hCTX, toTop_I);
 
 
         return status;
