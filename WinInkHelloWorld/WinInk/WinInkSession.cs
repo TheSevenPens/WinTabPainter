@@ -94,6 +94,7 @@ namespace SevenLib.WinInk
             HandlePenMessage(msg, this.PointerData);
         }
 
+
         private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
         {
 
@@ -109,21 +110,6 @@ namespace SevenLib.WinInk
             this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
 
             _HandlePointerMessage(msg, pointerType);
-        }
-
-        private static uint MapWindowsButtonStates(Interop.POINTER_PEN_INFO penInfo)
-        {
-            uint buttonState = 0;
-            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
-            {
-                buttonState |= 1; // Tip
-            }
-            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
-            {
-                buttonState |= 2; // Button2
-            }
-
-            return buttonState;
         }
 
         private void HandlePenMessage(int msg, SevenLib.Stylus.PointerData pointerdata)
@@ -157,5 +143,19 @@ namespace SevenLib.WinInk
             _PointerUpCallback?.Invoke(pointerdata);
         }
 
+        private static uint MapWindowsButtonStates(Interop.POINTER_PEN_INFO penInfo)
+        {
+            uint buttonState = 0;
+            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_FIRSTBUTTON) != 0)
+            {
+                buttonState |= 1; // Tip
+            }
+            if ((penInfo.pointerInfo.pointerFlags & Interop.NativeMethods.POINTER_FLAG_SECONDBUTTON) != 0)
+            {
+                buttonState |= 2; // Button2
+            }
+
+            return buttonState;
+        }
     }
 }
