@@ -1,11 +1,5 @@
 ﻿using System;
 
-// References:
-// https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
-// https://github.com/DennisWacom/InkPlatform/tree/master/WintabDN
-// https://developer-docs.wacom.com/docs/icbt/windows/wintab/wintab-basics/
-// https://www.nuget.org/packages/WacomSolutionPartner.WintabDotNet
-// https://github.com/Wacom-Developer/wacom-device-kit-windows/tree/master/Wintab%20TiltTest
 
 using System.Collections.Generic;
 using System.Text.Json;
@@ -27,7 +21,7 @@ namespace WinTabPainter
             public int NumPackets { get => numPackets; set => numPackets = value; }
             public List<SerPacket> Packets { get => packets; set => packets = value; }
 
-            public PacketRecording(List<WinTab.Structs.WintabPacket> pkts)
+            public PacketRecording(List<SevenLib.WinTab.Structs.WintabPacket> pkts)
             {
                 this.App = "WinTabPainter";
                 this.AppVer = "1.0";

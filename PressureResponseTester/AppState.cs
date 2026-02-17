@@ -3,7 +3,7 @@ namespace WinTabPressureTester
     public class AppState
     {
         // Sessions with devices
-        public WinTab.Utils.TabletSession wintab_session;
+        public SevenLib.WinTab.Tablet.WinTabSession wintab_session;
         public ScaleSession scale_session;
 
 
@@ -19,7 +19,7 @@ namespace WinTabPressureTester
 
         public PressureRecordCollection record_collection;
         public int logical_pressure_queue_size = 400;
-        public SevenUtils.Numerics.IndexedQueue<double> queue_logical;
+        public SevenLib.Numerics.IndexedQueue<double> queue_logical;
 
 
     }

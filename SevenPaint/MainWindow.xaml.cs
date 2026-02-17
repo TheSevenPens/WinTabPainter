@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using WinTab.Utils;
+using SevenLib.WinTab.Tablet;
 
 namespace SevenPaint
 {
@@ -25,7 +25,7 @@ namespace SevenPaint
         private SevenPaint.View.ViewManager _viewManager;
 
         // Ribbon Tracking
-        private SevenUtils.Geometry.PointD _lastPoint = new SevenUtils.Geometry.PointD(0, 0);
+        private SevenLib.Geometry.PointD _lastPoint = new SevenLib.Geometry.PointD(0, 0);
         private long _lastTime = 0;
         private double _lastVelocity = 0;
         private double _lastDirection = 0;
@@ -34,7 +34,7 @@ namespace SevenPaint
         private long _lastWintabTime = 0;
 
         // Button State Tracking
-        private WinTab.Utils.StylusButtonState _lastButtonState = new StylusButtonState(0);
+        private SevenLib.Stylus.StylusButtonState _lastButtonState = new SevenLib.Stylus.StylusButtonState(0);
         private int _lastButtonsRaw = 0;
 
         public MainWindow()
@@ -257,7 +257,7 @@ namespace SevenPaint
             // Convert to Pixel Coordinates for display
             double pixelX = logicalPoint.X * _dpiScale;
             double pixelY = logicalPoint.Y * _dpiScale;
-            var pixelPoint = new SevenUtils.Geometry.PointD(pixelX, pixelY);
+            var pixelPoint = new SevenLib.Geometry.PointD(pixelX, pixelY);
 
             int mouse_buttons = 0;
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed) mouse_buttons |= 1;
@@ -297,11 +297,11 @@ namespace SevenPaint
                 {
                     LocalPos = pixelPoint,
                     PressureNormalized = 0,
-                    TiltXYDeg = new SevenUtils.Trigonometry.TiltXY(0, 0),
-                    TiltAADeg = new SevenUtils.Trigonometry.TiltAA(0, 0),
+                    TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0),
+                    TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 0),
                     Twist = 0,
                     PenButtonRaw = 0,
-                    PenButtonChange = new StylusButtonChange(0),
+                    PenButtonChange = new SevenLib.WinTab.Stylus.StylusButtonChange(0),
                     HoverDistance = 0
                 };
 
@@ -384,7 +384,7 @@ namespace SevenPaint
                 // Velocity in px/s: (dist / dt_ms) * 1000
                 double velocity = (dist / dt) * 1000.0;
                 double dirRad = Math.Atan2(deltapos.X, deltapos.Y);
-                double dirDeg = SevenUtils.Trigonometry.Angles.RadiansToDegrees(dirRad);
+                double dirDeg = SevenLib.Trigonometry.Angles.RadiansToDegrees(dirRad);
                 if (dirDeg < 0) dirDeg += 360.0;
 
                 // Simple smoothing could be added, but user asked for raw-ish values
@@ -427,7 +427,7 @@ namespace SevenPaint
             // We need to modify args.LocalPos if we pass it around
             // args is a struct, so modifying copy is safe but we need to pass the copy
             var processedArgs = args;
-            processedArgs.LocalPos = new SevenUtils.Geometry.PointD(pixelX, pixelY);
+            processedArgs.LocalPos = new SevenLib.Geometry.PointD(pixelX, pixelY);
             
             double scaleFactor = processedArgs.PressureNormalized;
 

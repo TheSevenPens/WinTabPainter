@@ -10,13 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot.WinForms" Version="5.0.55" />
-    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
+    <PackageReference Include="ScottPlot.WinForms" Version="5.1.57" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SevenUtils\SevenUtils.csproj" />
-    <ProjectReference Include="..\WinTab\WinTab.csproj" />
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+	  <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
 
   </ItemGroup>
 

@@ -9,9 +9,9 @@ public static class HelperExtensions
         var s = string.Format(format, args);
         sb.AppendLine(s);
     }
-    public static SevenUtils.Geometry.Point ToPoint(this SD.Point p)
+    public static SevenLib.Geometry.Point ToPoint(this SD.Point p)
     {
-        var np = new SevenUtils.Geometry.Point(p.X, p.Y);
+        var np = new SevenLib.Geometry.Point(p.X, p.Y);
         return np;
     }
     public static string ToStringXY(this SD.Point p)
@@ -19,12 +19,12 @@ public static class HelperExtensions
         return string.Format("({0}x{1})", p.X, p.Y);
     }
 
-    public static SevenUtils.Geometry.PointD Smooth(this SevenUtils.Geometry.PointD p, SevenUtils.Numerics.EMAPositionSmoother smoother)
+    public static SevenLib.Geometry.PointD Smooth(this SevenLib.Geometry.PointD p, SevenLib.Numerics.EMAPositionSmoother smoother)
     {
         return smoother.GetNextSmoothed(p);
     }
 
-    public static double Smooth(this double v, SevenUtils.Numerics.EMASmoother smoother)
+    public static double Smooth(this double v, SevenLib.Numerics.EMASmoother smoother)
     {
         return smoother.GetNextSmoothed(v);
     }

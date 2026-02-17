@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SevenLib.Stylus;
+using SevenLib.WinTab.Stylus;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -9,12 +11,11 @@ namespace WinTabHelloWorld;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private WinTab.Utils.TabletSession _session;
-    private CanvasRenderer _renderer;
-    private PacketState _packetstate = new PacketState();
-    private string _buttonStatus = "None";
-    private const int BitmapWidth = 800;
-    private const int BitmapHeight = 600;
+    private SevenLib.WinTab.Tablet.WinTabSession _wintabsession;
+    private SevenLib.Media.CanvasRenderer _renderer;
+    private string _buttonStateText = "None";
+    private const int DefaultCanvasWidth = 800;
+    private const int DefaultCanvasHeight = 600;
 
     private DispatcherTimer _uiTimer;
 
@@ -23,7 +24,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         _uiTimer = new DispatcherTimer();
         _uiTimer.Interval = TimeSpan.FromMilliseconds(16); // ~60 FPS
-        _uiTimer.Tick += UpdateUI;
+        _uiTimer.Tick += UpdatePointerStats;
         _uiTimer.Start();
 
         DataContext = this;
@@ -34,76 +35,63 @@ public partial class MainWindow : Window
 
     private void InitializeCanvas()
     {
-        _renderer = new CanvasRenderer(BitmapWidth, BitmapHeight);
+        _renderer = new SevenLib.Media.CanvasRenderer(DefaultCanvasWidth, DefaultCanvasHeight);
         CanvasImage.Source = _renderer.ImageSource;
     }
 
     private void InitializeTablet()
     {
-        try
-        {
-            _session = new WinTab.Utils.TabletSession();
-            _session.PacketHandler = OnPacket;
-            _session.StylusButtonChangedHandler = OnButtonChange;
-            _session.Open(WinTab.Utils.TabletContextType.System);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error opening tablet session: {ex.Message}");
-        }
+        _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession();
+        _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
+        _wintabsession.OnPointerEvent = this.HandlePointerEvent;
+        _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
     }
 
-    private void OnPacket(WinTab.Structs.WintabPacket packet)
+    public void HandlePointerEvent(SevenLib.Stylus.PointerData pointerData) 
     {
-        _packetstate.Packet = packet;
-        _packetstate.Time = DateTime.Now;
+        if (pointerData.PressureNormalized <= 0)
+            return;
 
         Dispatcher.Invoke(() =>
         {
-            try
-            {
-                // SevenPaint Logic: Directly map System Coordinate to Element Coordinate
-                // WinTab (with CXO_SYSTEM) returns screen coordinates.
-                Point screenPos = new Point(packet.pkX, packet.pkY);
-                Point canvasPos = CanvasImage.PointFromScreen(screenPos);
-
-                _packetstate.LocalPoint = canvasPos;
-
-                if (packet.pkNormalPressure > 0)
-                {
-                    _renderer.DrawPoint((int)canvasPos.X, (int)canvasPos.Y, packet.pkNormalPressure);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error mapping coordinates: {ex.Message}");
-            }
+            var cp = this. ScreenToCanvas(pointerData.DisplayPoint);
+            const double max_brush_size = 15;
+            float brush_size = (float)(pointerData.PressureNormalized * max_brush_size);
+            _renderer.DrawPoint(cp.ToPoint(), brush_size);
         });
     }
 
-    private void OnButtonChange(WinTab.Structs.WintabPacket packet, WinTab.Utils.StylusButtonChange buttonChange)
+    public SevenLib.Geometry.PointD ScreenToCanvas(SevenLib.Geometry.PointD screenPoint)
     {
-        _buttonStatus = _session.StylusButtonState.ToString();
-        //_buttonStatus = $"{buttonChange.ButtonId}: {buttonChange.Change}";
+        var canvasPos = CanvasImage.PointFromScreen(new Point(screenPoint.X, screenPoint.Y));
+        return new SevenLib.Geometry.PointD(canvasPos.X, canvasPos.Y);
     }
 
-    private void UpdateUI(object sender, EventArgs e)
+    private void HandleButtonStateChange(SevenLib.WinTab.Structs.WintabPacket packet, StylusButtonChange buttonChange)
+    {
+        _buttonStateText = _wintabsession.StylusButtonState.ToString();
+    }
+
+    private void UpdatePointerStats(object sender, EventArgs e)
     {
         // Update UI with last packet info
-        if ((DateTime.Now - _packetstate.Time).TotalSeconds < 1.0)
+        if ((DateTime.Now - this._wintabsession.PointerData.Time).TotalSeconds < 1.0)
         {
-            ValGx.Text = _packetstate.Packet.pkX.ToString();
-            ValGy.Text = _packetstate.Packet.pkY.ToString();
-            ValCx.Text = _packetstate.LocalPoint.X.ToString("F0");
-            ValCy.Text = _packetstate.LocalPoint.Y.ToString("F0");
+            ValGx.Text = this._wintabsession.PointerData.DisplayPoint.X.ToString();
+            ValGy.Text = this._wintabsession.PointerData.DisplayPoint.Y.ToString();
 
-            ValZ.Text = _packetstate.Packet.pkZ.ToString();
-            ValP.Text = _packetstate.Packet.pkNormalPressure.ToString();
+            var cp = this.ScreenToCanvas(this._wintabsession.PointerData.DisplayPoint);
 
-            ValAz.Text = _packetstate.Packet.pkOrientation.orAzimuth.ToString();
-            ValAlt.Text = _packetstate.Packet.pkOrientation.orAltitude.ToString();
+            ValCx.Text = cp.X.ToString("F0");
+            ValCy.Text = cp.Y.ToString("F0");
 
-            ValBtn.Text = _buttonStatus;
+            ValZ.Text = this._wintabsession.PointerData.Height.ToString();
+            ValP.Text = this._wintabsession.PointerData.PressureNormalized.ToString();
+
+            ValAz.Text = this._wintabsession.PointerData.TiltAADeg.Azimuth.ToString();
+            ValAlt.Text = this._wintabsession.PointerData.TiltAADeg.Altitude.ToString();
+
+            ValBtn.Text = _buttonStateText;
         }
         else
         {
@@ -117,10 +105,10 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (_session != null)
+        if (_wintabsession != null)
         {
-            _session.Close();
-            _session = null;
+            _wintabsession.Close();
+            _wintabsession = null;
         }
     }
 

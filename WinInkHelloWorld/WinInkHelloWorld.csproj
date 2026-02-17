@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -9,5 +9,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SevenLib.Media\SevenLib.Media.csproj" />
+    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+  </ItemGroup>
 
 </Project>
