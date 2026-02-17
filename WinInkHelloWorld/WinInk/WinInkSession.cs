@@ -1,3 +1,5 @@
+using System.Diagnostics.PerformanceData;
+
 namespace SevenLib.WinInk
 {
     public class WinInkSession
@@ -32,7 +34,7 @@ namespace SevenLib.WinInk
 
         private System.IntPtr _WndProc(System.IntPtr hwnd, int msg, System.IntPtr wParam, System.IntPtr lParam, ref bool handled)
         {
-            if (_HandlePointerMessage(msg, wParam))
+            if (_HandleWndProcPointerMessage(msg, wParam))
             {
 
                 handled = true;
@@ -42,7 +44,7 @@ namespace SevenLib.WinInk
             return System.IntPtr.Zero;
         }
 
-        private bool _HandlePointerMessage(int msg, System.IntPtr wParam)
+        private bool _HandleWndProcPointerMessage(int msg, System.IntPtr wParam)
         {
             switch (msg)
             {
@@ -91,7 +93,7 @@ namespace SevenLib.WinInk
             uint buttonState = MapWindowsButtonStates(penInfo);
             this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
-            HandlePenMessage(msg, this.PointerData);
+            HandlePenMessage(msg, pointerType, this.PointerData);
         }
 
 
@@ -109,36 +111,36 @@ namespace SevenLib.WinInk
             // Using default button state instead
             this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
 
-            _HandlePointerMessage(msg, pointerType);
+            _HandleWndProcPointerMessage(msg, pointerType);
         }
 
-        private void HandlePenMessage(int msg, SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePenMessage(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(pointerdata);
+                HandlePointerDown(msg, pointerType, pointerdata);
             }
             else if (msg == Interop.NativeMethods.WM_POINTERUP)
             {
-                HandlePointerUp(pointerdata);
+                HandlePointerUp(msg, pointerType, pointerdata);
             }
             else // UPDATE
             {
-                HandlePointerUpdate(pointerdata);
+                HandlePointerUpdate(msg, pointerType, pointerdata);
             }
         }
 
-        private void HandlePointerDown(SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerDown(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             _PointerDownCallback?.Invoke(pointerdata);
         }
 
-        private void HandlePointerUpdate(SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerUpdate(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             _PointerUpdateCallback?.Invoke(pointerdata);
         }
 
-        private void HandlePointerUp(SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerUp(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             _PointerUpCallback?.Invoke(pointerdata);
         }
