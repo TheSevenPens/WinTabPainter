@@ -11,14 +11,14 @@ public class TabletInfo
 
 
     public void Initialize()
-    {
-        this.XAxis = SevenLib.WinTab.CWintabInfo.GetTabletAxis(SevenLib.WinTab.Enums.EAxisDimension.AXIS_X);
-        this.YAxis = SevenLib.WinTab.CWintabInfo.GetTabletAxis(SevenLib.WinTab.Enums.EAxisDimension.AXIS_Y);
-        this.MaxPressure = SevenLib.WinTab.CWintabInfo.GetMaxPressure();
-        this.Name = SevenLib.WinTab.CWintabInfo.GetDeviceInfo();
+     {
+         this.XAxis = SevenLib.WinTab.CWintabDevice.GetTabletAxis(SevenLib.WinTab.Enums.EAxisDimension.AXIS_X);
+         this.YAxis = SevenLib.WinTab.CWintabDevice.GetTabletAxis(SevenLib.WinTab.Enums.EAxisDimension.AXIS_Y);
+         this.MaxPressure = SevenLib.WinTab.CWintabDevice.GetMaxPressure();
+         this.Name = SevenLib.WinTab.CWintabDevice.GetDeviceInfo();
 
-        bool b;
-        var arr = SevenLib.WinTab.CWintabInfo.GetDeviceOrientation(out b);
-        this.TiltSupport = b;
-    }
+         bool b;
+         var arr = SevenLib.WinTab.CWintabDevice.GetDeviceOrientation(out b);
+         this.TiltSupport = b;
+     }
 }

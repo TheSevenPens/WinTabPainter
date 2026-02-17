@@ -49,13 +49,13 @@ public class UnmanagedBuffer : IDisposable
         return buf;
     }
     public static UnmanagedBuffer CreateForString()
-    {
-        var buf = new UnmanagedBuffer();
-        buf.Pointer = System.Runtime.InteropServices.Marshal.AllocHGlobal(CWintabInfo.MAX_STRING_SIZE);
-        buf.disposed = false;
-        buf.expected_type = typeof(string);
-        return buf;
-    }
+     {
+         var buf = new UnmanagedBuffer();
+         buf.Pointer = System.Runtime.InteropServices.Marshal.AllocHGlobal(CWintabConstants.MAX_STRING_SIZE);
+         buf.disposed = false;
+         buf.expected_type = typeof(string);
+         return buf;
+     }
 
     private void assert_type(Type t)
     {

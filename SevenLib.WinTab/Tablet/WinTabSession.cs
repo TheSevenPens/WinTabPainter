@@ -37,8 +37,8 @@ public class WinTabSession : System.IDisposable
         var wt_context_type = context_type_to_index(context_type);
 
         // CREATE CONTEXT
-        var options = SevenLib.WinTab.Enums.ECTXOptionValues.CXO_MESSAGES;
-        this.Context = SevenLib.WinTab.CWintabInfo.GetDefaultContext(wt_context_type, options);
+         var options = SevenLib.WinTab.Enums.ECTXOptionValues.CXO_MESSAGES;
+         this.Context = SevenLib.WinTab.CWintabContextFactory.GetDefaultContext(wt_context_type, options);
 
         if (this.Context == null)
         {
