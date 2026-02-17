@@ -113,31 +113,16 @@ namespace SevenLib.WinInk
         {
             if (msg == Interop.NativeMethods.WM_POINTERDOWN)
             {
-                HandlePointerDown(msg, pointerType, pointerdata);
+                _PointerDownCallback?.Invoke(msg, pointerType, pointerdata);
             }
             else if (msg == Interop.NativeMethods.WM_POINTERUP)
             {
-                HandlePointerUp(msg, pointerType, pointerdata);
+                _PointerUpdateCallback?.Invoke(msg, pointerType, pointerdata);
             }
             else // UPDATE
             {
-                HandlePointerUpdate(msg, pointerType, pointerdata);
+                _PointerUpdateCallback?.Invoke(msg, pointerType, pointerdata);
             }
-        }
-
-        private void HandlePointerDown(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
-        {
-            _PointerDownCallback?.Invoke(msg, pointerType, pointerdata);
-        }
-
-        private void HandlePointerUpdate(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
-        {
-            _PointerUpdateCallback?.Invoke(msg, pointerType, pointerdata);
-        }
-
-        private void HandlePointerUp(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
-        {
-            _PointerUpCallback?.Invoke(msg, pointerType, pointerdata);
         }
 
         private static uint MapWindowsButtonStates(uint powerflags)
