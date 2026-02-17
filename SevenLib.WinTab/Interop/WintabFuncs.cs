@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace SevenLib.WinTab;
+namespace SevenLib.WinTab.Interop;
 using P_HCTX = UInt32;
 using P_HWND = System.IntPtr;
 
@@ -11,7 +11,7 @@ using P_HWND = System.IntPtr;
 /// P/Invoke wrappers for Wintab functions.
 /// See Wintab_v140.doc (Wintab 1.4 spec) and related Wintab documentation for details.
 /// </summary>
-public class CWintabFuncs
+public class WintabFuncs
 {
     /// <summary>
     /// This function returns global information about the interface in an application-supplied buffer. 
@@ -175,7 +175,7 @@ public class CWintabFuncs
     {
         using (var buf = Interop.UnmanagedBuffer.CreateForString())
         {
-            int size = (int)CWintabFuncs.WTInfoA(cat, index, buf.Pointer);
+            int size = (int)WintabFuncs.WTInfoA(cat, index, buf.Pointer);
             string val = buf.MarshalStringFromBuffer(size);
             return val;
         }
@@ -185,7 +185,7 @@ public class CWintabFuncs
     {
         using (var buf = Interop.UnmanagedBuffer.CreateForObject<T>())
         {
-            int size = (int)CWintabFuncs.WTInfoA(cat, index, buf.Pointer);
+            int size = (int)WintabFuncs.WTInfoA(cat, index, buf.Pointer);
             T val = buf.MarshallObjectFromBuffer<T>(size);
             return val;
         }

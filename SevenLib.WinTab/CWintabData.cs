@@ -68,7 +68,7 @@ public class CWintabData : IDisposable
         bool status = false;
 
         CheckForValidHCTX(nameof(SetPacketQueueSize));
-        status = CWintabFuncs.WTQueueSizeSet(m_context.HCtx, NumPkts_I);
+        status = Interop.WintabFuncs.WTQueueSizeSet(m_context.HCtx, NumPkts_I);
 
 
         return status;
@@ -83,7 +83,7 @@ public class CWintabData : IDisposable
         UInt32 numPkts = 0;
 
         CheckForValidHCTX(nameof(GetPacketQueueSize));
-        numPkts = CWintabFuncs.WTQueueSizeGet(m_context.HCtx);
+        numPkts = Interop.WintabFuncs.WTQueueSizeGet(m_context.HCtx);
 
 
         return numPkts;
@@ -109,7 +109,7 @@ public class CWintabData : IDisposable
         using (var buf = SevenLib.WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacketExt>())
         {
 
-            bool status = CWintabFuncs.WTPacket(hCtx_I, pktId_I, buf.Pointer);
+            bool status = Interop.WintabFuncs.WTPacket(hCtx_I, pktId_I, buf.Pointer);
 
             Structs.WintabPacketExt[] packets = null;
             if (status)
@@ -160,7 +160,7 @@ public class CWintabData : IDisposable
 
         using (var buf = SevenLib.WinTab.Interop.UnmanagedBuffer.CreateForObject<Structs.WintabPacket>())
         {
-            bool status = CWintabFuncs.WTPacket(hCtx_I, pktId_I, buf.Pointer);
+            bool status = Interop.WintabFuncs.WTPacket(hCtx_I, pktId_I, buf.Pointer);
 
             if (status)
             {
@@ -186,7 +186,7 @@ public class CWintabData : IDisposable
     public void FlushDataPackets(uint NumPkts_I)
     {
         CheckForValidHCTX(nameof(FlushDataPackets));
-        CWintabFuncs.WTPacketsGet(m_context.HCtx, NumPkts_I, IntPtr.Zero);
+        Interop.WintabFuncs.WTPacketsGet(m_context.HCtx, NumPkts_I, IntPtr.Zero);
     }
 
 
@@ -220,7 +220,7 @@ public class CWintabData : IDisposable
             if (remove)
             {
                 // Return data packets and remove packets from queue.
-                NumPkts_I = CWintabFuncs.WTPacketsGet(m_context.HCtx, MaxPkts_I, buf.Pointer);
+                NumPkts_I = Interop.WintabFuncs.WTPacketsGet(m_context.HCtx, MaxPkts_I, buf.Pointer);
 
                 if (NumPkts_I > 0)
                 {
@@ -235,7 +235,7 @@ public class CWintabData : IDisposable
 
                 // Get oldest and newest packet identifiers in the queue.  These will bound the
                 // packets that are actually returned.
-                if (CWintabFuncs.WTQueuePacketsEx(m_context.HCtx, ref pktIDOldest, ref pktIDNewest))
+                if (Interop.WintabFuncs.WTQueuePacketsEx(m_context.HCtx, ref pktIDOldest, ref pktIDNewest))
                 {
                     UInt32 pktIDStart = pktIDOldest;
                     UInt32 pktIDEnd = pktIDNewest;
@@ -251,7 +251,7 @@ public class CWintabData : IDisposable
                     }
 
                     // Peek up to the max number of packets specified.
-                    UInt32 numFoundPkts = CWintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, MaxPkts_I, buf.Pointer, ref NumPkts_I);
+                    UInt32 numFoundPkts = Interop.WintabFuncs.WTDataPeek(m_context.HCtx, pktIDStart, pktIDEnd, MaxPkts_I, buf.Pointer, ref NumPkts_I);
 
                     if (numFoundPkts > 0 && numFoundPkts < NumPkts_I)
                     {
