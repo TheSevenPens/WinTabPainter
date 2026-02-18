@@ -76,6 +76,19 @@ namespace SevenLib.WinInk
 
         private void ProcessPenInfo(int msg, int pointerType, Interop.POINTER_PEN_INFO penInfo)
         {
+            var pointerdata = create_pointer_data_from_pen_info(penInfo);
+
+            HandlePenMessage(msg, pointerType, pointerdata);
+        }
+
+        private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
+        {
+            var pointerdata = create_pointer_data_from_pointer_info(pointerInfo);
+            HandlePenMessage(msg, pointerType, pointerdata);
+        }
+
+        private static Stylus.PointerData create_pointer_data_from_pen_info(Interop.POINTER_PEN_INFO penInfo)
+        {
             SevenLib.Stylus.PointerData pointerdata = new Stylus.PointerData();
             pointerdata.Time = System.DateTime.Now;
             pointerdata.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
@@ -86,12 +99,10 @@ namespace SevenLib.WinInk
             pointerdata.Twist = penInfo.rotation;
             uint buttonState = MapWindowsButtonStates(penInfo.pointerInfo.pointerFlags);
             pointerdata.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
-
-            HandlePenMessage(msg, pointerType, pointerdata);
+            return pointerdata;
         }
 
-
-        private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
+        private static Stylus.PointerData create_pointer_data_from_pointer_info(Interop.POINTER_INFO pointerInfo)
         {
             SevenLib.Stylus.PointerData pointerdata = new Stylus.PointerData();
             pointerdata.Time = System.DateTime.Now;
@@ -100,10 +111,9 @@ namespace SevenLib.WinInk
             pointerdata.PressureNormalized = 1.0;
             pointerdata.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
             pointerdata.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
-            pointerdata.Twist = 0;          
+            pointerdata.Twist = 0;
             pointerdata.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
-
-            HandlePenMessage(msg, pointerType, pointerdata);
+            return pointerdata;
         }
 
         private void HandlePenMessage(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
