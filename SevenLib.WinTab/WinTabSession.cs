@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 
 namespace SevenLib.WinTab;
 
@@ -6,7 +7,6 @@ namespace SevenLib.WinTab;
 public class WinTabSession : System.IDisposable
 {
     public SevenLib.Stylus.PointerData PointerData = new SevenLib.Stylus.PointerData();
-    public Structs.WintabPacket WinTabPacket;
 
     public WinTabContext Context = null;
     public WinTabData Data = null;
@@ -28,42 +28,35 @@ public class WinTabSession : System.IDisposable
         this.TabletInfo = new SevenLib.WinTab.Tablet.TabletInfo();
         this.PointerData = new SevenLib.Stylus.PointerData();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
-        this.OnWinTabPacketReceived = HandleRawPacket;
     }
 
     public void Open(SevenLib.WinTab.Tablet.TabletContextType context_type)
     {
-        // convert the context type to something wintab understands
+        // Convert the context type to something wintab understands
         var wt_context_type = context_type_to_index(context_type);
 
-        // CREATE CONTEXT
-         var options = SevenLib.WinTab.Enums.ECTXOptionValues.CXO_MESSAGES;
-         this.Context = SevenLib.WinTab.WinTabContextFactory.GetDefaultContext(wt_context_type, options);
-
+        // Create WinTab context with options to receive messages
+        var options = SevenLib.WinTab.Enums.ECTXOptionValues.CXO_MESSAGES;
+        this.Context = SevenLib.WinTab.WinTabContextFactory.GetDefaultContext(wt_context_type, options);
         if (this.Context == null)
         {
             throw new System.ApplicationException("Failed to get digitizing context");
         }
-
         this.Context.Options |= (uint)SevenLib.WinTab.Enums.ECTXOptionValues.CXO_SYSTEM;
-
         // Move origin from lower-left to upper left so it matches screen origin
+        // Invert Y values to match the screen coordinates (where Y increases downwards)
+        // This is commonly needed for Windows apps so do this out of convenience for consumers of this library
         this.Context.OutExtY = -this.Context.OutExtY;
         var status = this.Context.Open();
 
-        // CREATE DATA
-
+        // Create data
         this.Data = new WinTabData(this.Context);
 
-
+        // Collect information about the tablet
         this.TabletInfo.Initialize();
 
-        // HANDLER
-
-        if (this.OnWinTabPacketReceived != null)
-        {
-            this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
-        }
+        // Attach event handler for receiving wintab packets
+        this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
     }
 
     private static Enums.EWTICategoryIndex context_type_to_index(SevenLib.WinTab.Tablet.TabletContextType context_type)
@@ -110,9 +103,31 @@ public class WinTabSession : System.IDisposable
                 this.OnButtonStateChanged?.Invoke(wintab_pkt, button_info);
             }
 
-            if (this.OnWinTabPacketReceived != null) 
+            if (this.OnWinTabPacketReceived != null)
             {
+                // Some callers want the raw wintab packet
                 this.OnWinTabPacketReceived(wintab_pkt);
+            }
+
+            if (this.OnStandardPointerEvent != null)
+            {
+                // other callers will want the standardized pointer event 
+                // which simplified things for the caller
+                this.PointerData = new SevenLib.Stylus.PointerData();
+                this.PointerData.Time = DateTime.Now;
+
+                var screenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
+                this.PointerData.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
+
+                this.PointerData.Height = wintab_pkt.pkZ;
+                float normalized_pressure = (float)wintab_pkt.pkNormalPressure / this.TabletInfo.MaxPressure;
+                this.PointerData.PressureNormalized = normalized_pressure;
+                this.PointerData.TiltAADeg = new Trigonometry.TiltAA(wintab_pkt.pkOrientation.orAzimuth / 10, wintab_pkt.pkOrientation.orAltitude / 10);
+                this.PointerData.TiltXYDeg = this.PointerData.TiltAADeg.ToXY_Deg();
+                this.PointerData.Twist = wintab_pkt.pkOrientation.orTwist;
+                this.PointerData.ButtonState = this.StylusButtonState;
+
+                this.OnStandardPointerEvent(this.PointerData);
             }
         }
     }
@@ -147,28 +162,5 @@ public class WinTabSession : System.IDisposable
         }
     }
 
-    private void HandleRawPacket(Structs.WintabPacket packet)
-    {
-
-        this.WinTabPacket = packet;
-        this.PointerData = new SevenLib.Stylus.PointerData();
-        this.PointerData.Time = DateTime.Now;
-
-        var screenPos = new Geometry.Point(packet.pkX, packet.pkY);
-        this.PointerData.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
-
-        this.PointerData.Height = packet.pkZ;
-        float normalized_pressure = (float)packet.pkNormalPressure / this.TabletInfo.MaxPressure;
-        this.PointerData.PressureNormalized = normalized_pressure;
-        this.PointerData.TiltAADeg = new Trigonometry.TiltAA(packet.pkOrientation.orAzimuth / 10, packet.pkOrientation.orAltitude / 10);
-        this.PointerData.TiltXYDeg = this.PointerData.TiltAADeg.ToXY_Deg();
-        this.PointerData.Twist = packet.pkOrientation.orTwist;
-        this.PointerData.ButtonState = this.StylusButtonState;
-
-        if (this.OnStandardPointerEvent != null)
-        {
-            this.OnStandardPointerEvent(this.PointerData);
-        }
-    }
 
 }
