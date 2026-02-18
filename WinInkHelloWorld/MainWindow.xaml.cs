@@ -32,7 +32,8 @@ namespace WinInkHelloWorld
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
             _winink_session = new SevenLib.WinInk.WinInkSession();
-            _winink_session._PointerDataCallback += HandlePointerMessage;
+            _winink_session._PointerPenInfoCallback += this.HandlePointerPenInfo;
+            _winink_session._PointerInfoCallback += this.HandlePointerInfo;
         }
 
         private void HandlePointerStatsUpdate(SevenLib.Stylus.PointerData pointerData)
@@ -54,7 +55,20 @@ namespace WinInkHelloWorld
             });
         }
 
-        private void HandlePointerMessage(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
+        private void HandlePointerPenInfo(int msg, int pointerType, SevenLib.WinInk.Interop.POINTER_PEN_INFO penInfo)
+        {
+            var pointerdata = SevenLib.WinInk.WinInkSession.create_pointer_data_from_pen_info(penInfo);
+            this.HandlePointerData(msg, pointerType, pointerdata);
+        }
+
+        private void HandlePointerInfo(int msg, int pointerType, SevenLib.WinInk.Interop.POINTER_INFO pointerInfo)
+        {
+            var pointerdata = SevenLib.WinInk.WinInkSession.create_pointer_data_from_pointer_info(pointerInfo);
+            this.HandlePointerData(msg, pointerType, pointerdata);
+        }
+
+
+        private void HandlePointerData(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
         {
             if (msg == SevenLib.WinInk.Interop.NativeMethods.WM_POINTERDOWN)
             {
