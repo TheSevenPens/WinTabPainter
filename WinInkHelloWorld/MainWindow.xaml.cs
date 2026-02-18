@@ -14,11 +14,15 @@ namespace WinInkHelloWorld
 
         public MainWindow()
         { 
-            // Disable WPF's internal stylus support to prevent it from swallowing WM_POINTER messages
             AppContext.SetSwitch("Switch.System.Windows.Input.Stylus.DisableStylusAndTouchSupport", true);
-            
+
+            // Initialize session before InitializeComponent so it's ready for OnSourceInitialized
+            _winink_session = new SevenLib.WinInk.WinInkSession();
+            _winink_session._PointerPenInfoCallback += this.HandlePointerPenInfo;
+            _winink_session._PointerInfoCallback += this.HandlePointerInfo;
+
             InitializeComponent();
-            InitializeCanvas();  // Must be before OnSourceInitialized runs
+            InitializeCanvas();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -31,9 +35,6 @@ namespace WinInkHelloWorld
         {
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
-            _winink_session = new SevenLib.WinInk.WinInkSession();
-            _winink_session._PointerPenInfoCallback += this.HandlePointerPenInfo;
-            _winink_session._PointerInfoCallback += this.HandlePointerInfo;
         }
 
         private void HandlePointerStatsUpdate(SevenLib.Stylus.PointerData pointerData)
