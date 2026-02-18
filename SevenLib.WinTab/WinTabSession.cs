@@ -95,7 +95,10 @@ public class WinTabSession : System.IDisposable
 
             if (button_info.Change != SevenLib.WinTab.Stylus.StylusButtonChangeType.NoChange)
             {
-                this.OnButtonStateChanged?.Invoke(wintab_pkt, button_info);
+                if (this.OnButtonStateChanged != null)
+                {
+                    this.OnButtonStateChanged(wintab_pkt, button_info);
+                }
             }
 
             if (this.OnWinTabPacketReceived != null)
