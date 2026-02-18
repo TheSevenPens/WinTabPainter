@@ -55,14 +55,12 @@ namespace SevenLib.WinInk
 
                     if (Interop.NativeMethods.GetPointerPenInfo(pointerId, out Interop.POINTER_PEN_INFO penInfo))
                     {
-                        // Handling when the pointer is a pen
-                        ProcessPenInfo(msg, pointerType, penInfo);
+                        _PointerPenInfoCallback?.Invoke(msg, pointerType, penInfo);
                         return true;
                     }
                     else if (Interop.NativeMethods.GetPointerInfo(pointerId, out Interop.POINTER_INFO pointerInfo))
                     {
-                        // Generic pointer handling
-                        ProcessPointerInfo(msg, pointerType, pointerInfo);
+                        _PointerInfoCallback?.Invoke(msg, pointerType, pointerInfo);
                         return true;
                     }
                     else
@@ -73,16 +71,6 @@ namespace SevenLib.WinInk
             }
 
             return false;
-        }
-
-        private void ProcessPenInfo(int msg, int pointerType, Interop.POINTER_PEN_INFO penInfo)
-        {
-            _PointerPenInfoCallback?.Invoke(msg, pointerType, penInfo);
-        }
-
-        private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
-        {
-            _PointerInfoCallback?.Invoke(msg, pointerType, pointerInfo);
         }
 
         public static Stylus.PointerData create_pointer_data_from_pen_info(Interop.POINTER_PEN_INFO penInfo)
