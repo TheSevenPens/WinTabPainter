@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace WinTabPainter
 {
@@ -13,10 +11,10 @@ namespace WinTabPainter
 
         public SevenLib.WinTab.WinTabDeviceInfo tablet_info;
 
-        private void FormTablet_Load(object sender, EventArgs e)
+        private void FormTablet_Load(object sender, System.EventArgs e)
         {
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new System.Text.StringBuilder();
             sb.AppendFormatLine("Tablet name: {0}", this.tablet_info.Name);
 
             sb.AppendFormatLine("X Axis Min: {0}", this.tablet_info.XAxis.axMin);
@@ -36,7 +34,7 @@ namespace WinTabPainter
 
         }
 
-        private void button_Close_Click(object sender, EventArgs e)
+        private void button_Close_Click(object sender, System.EventArgs e)
         {
             this.Close();
         }
