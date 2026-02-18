@@ -55,12 +55,19 @@ namespace SevenLib.WinInk
 
                     if (Interop.NativeMethods.GetPointerPenInfo(pointerId, out Interop.POINTER_PEN_INFO penInfo))
                     {
-                        _PointerPenInfoCallback?.Invoke(msg, pointerType, penInfo);
+                        if (_PointerPenInfoCallback != null) 
+                        {
+                            _PointerPenInfoCallback(msg, pointerType, penInfo);
+                        }
+
                         return true;
                     }
                     else if (Interop.NativeMethods.GetPointerInfo(pointerId, out Interop.POINTER_INFO pointerInfo))
                     {
-                        _PointerInfoCallback?.Invoke(msg, pointerType, pointerInfo);
+                        if (_PointerInfoCallback!=null)
+                        {
+                            _PointerInfoCallback(msg, pointerType, pointerInfo);
+                        }
                         return true;
                     }
                     else
