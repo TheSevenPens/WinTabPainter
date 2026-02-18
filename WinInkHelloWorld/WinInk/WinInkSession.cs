@@ -7,7 +7,6 @@ namespace SevenLib.WinInk
 
         public System.Action<int, int, Interop.POINTER_PEN_INFO> _PointerPenInfoCallback;
         public System.Action<int, int, Interop.POINTER_INFO> _PointerInfoCallback;
-        public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerDataCallback;
 
         public WinInkSession()
         {
@@ -79,21 +78,11 @@ namespace SevenLib.WinInk
         private void ProcessPenInfo(int msg, int pointerType, Interop.POINTER_PEN_INFO penInfo)
         {
             _PointerPenInfoCallback?.Invoke(msg, pointerType, penInfo);
-            if (_PointerDataCallback != null)
-            {
-                var pointerdata = create_pointer_data_from_pen_info(penInfo);
-                _PointerDataCallback.Invoke(msg, pointerType, pointerdata);
-            }
         }
 
         private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
         {
             _PointerInfoCallback?.Invoke(msg, pointerType, pointerInfo);
-            if (_PointerDataCallback != null) 
-            {
-                var pointerdata = create_pointer_data_from_pointer_info(pointerInfo);
-                _PointerDataCallback.Invoke(msg, pointerType, pointerdata);
-            }
         }
 
         public static Stylus.PointerData create_pointer_data_from_pen_info(Interop.POINTER_PEN_INFO penInfo)
