@@ -15,6 +15,8 @@ public partial class MainWindow : Window
     private WinTabSession _wintabsession;
     private SevenLib.Media.CanvasRenderer _renderer;
     private string _buttonStateText = "None";
+    private SevenLib.Stylus.PointerData _lastPointerData;
+    private DateTime? _lastPointerDataTime;
     private const int DefaultCanvasWidth = 800;
     private const int DefaultCanvasHeight = 600;
 
@@ -50,12 +52,15 @@ public partial class MainWindow : Window
 
     public void HandlePointerEvent(SevenLib.Stylus.PointerData pointerData) 
     {
-        if (pointerData.PressureNormalized <= 0)
-            return;
-
         Dispatcher.Invoke(() =>
         {
-            var cp = this. ScreenToCanvas(pointerData.DisplayPoint);
+            _lastPointerData = pointerData;
+            _lastPointerDataTime = DateTime.Now;
+
+            if (pointerData.PressureNormalized <= 0)
+                return;
+
+            var cp = this.ScreenToCanvas(pointerData.DisplayPoint);
             const double max_brush_size = 15;
             float brush_size = (float)(pointerData.PressureNormalized * max_brush_size);
             _renderer.DrawPoint(cp.ToPoint(), brush_size);
@@ -75,22 +80,22 @@ public partial class MainWindow : Window
 
     private void UpdatePointerStats(object sender, EventArgs e)
     {
-        // Update UI with last packet info
-        if ((DateTime.Now - this._wintabsession.PointerData.Time).TotalSeconds < 1.0)
+        // Update UI with last pointer data if recent
+        if (_lastPointerDataTime.HasValue && (DateTime.Now - _lastPointerDataTime.Value).TotalSeconds < 1.0)
         {
-            ValGx.Text = this._wintabsession.PointerData.DisplayPoint.X.ToString();
-            ValGy.Text = this._wintabsession.PointerData.DisplayPoint.Y.ToString();
+            ValGx.Text = _lastPointerData.DisplayPoint.X.ToString();
+            ValGy.Text = _lastPointerData.DisplayPoint.Y.ToString();
 
-            var cp = this.ScreenToCanvas(this._wintabsession.PointerData.DisplayPoint);
+            var cp = this.ScreenToCanvas(_lastPointerData.DisplayPoint);
 
             ValCx.Text = cp.X.ToString("F0");
             ValCy.Text = cp.Y.ToString("F0");
 
-            ValZ.Text = this._wintabsession.PointerData.Height.ToString();
-            ValP.Text = this._wintabsession.PointerData.PressureNormalized.ToString();
+            ValZ.Text = _lastPointerData.Height.ToString();
+            ValP.Text = _lastPointerData.PressureNormalized.ToString();
 
-            ValAz.Text = this._wintabsession.PointerData.TiltAADeg.Azimuth.ToString();
-            ValAlt.Text = this._wintabsession.PointerData.TiltAADeg.Altitude.ToString();
+            ValAz.Text = _lastPointerData.TiltAADeg.Azimuth.ToString();
+            ValAlt.Text = _lastPointerData.TiltAADeg.Altitude.ToString();
 
             ValBtn.Text = _buttonStateText;
         }

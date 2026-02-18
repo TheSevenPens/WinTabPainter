@@ -6,8 +6,6 @@ namespace SevenLib.WinTab;
 
 public class WinTabSession : System.IDisposable
 {
-    public SevenLib.Stylus.PointerData PointerData = new SevenLib.Stylus.PointerData();
-
     public WinTabContext Context = null;
     public WinTabData Data = null;
     public SevenLib.WinTab.Tablet.TabletInfo TabletInfo;
@@ -26,7 +24,6 @@ public class WinTabSession : System.IDisposable
     public WinTabSession()
     {
         this.TabletInfo = new SevenLib.WinTab.Tablet.TabletInfo();
-        this.PointerData = new SevenLib.Stylus.PointerData();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
     }
 
@@ -113,21 +110,21 @@ public class WinTabSession : System.IDisposable
             {
                 // other callers will want the standardized pointer event 
                 // which simplified things for the caller
-                this.PointerData = new SevenLib.Stylus.PointerData();
-                this.PointerData.Time = DateTime.Now;
+                var pointerdata = new SevenLib.Stylus.PointerData();
+                pointerdata.Time = DateTime.Now;
 
                 var screenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
-                this.PointerData.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
+                pointerdata.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
 
-                this.PointerData.Height = wintab_pkt.pkZ;
+                pointerdata.Height = wintab_pkt.pkZ;
                 float normalized_pressure = (float)wintab_pkt.pkNormalPressure / this.TabletInfo.MaxPressure;
-                this.PointerData.PressureNormalized = normalized_pressure;
-                this.PointerData.TiltAADeg = new Trigonometry.TiltAA(wintab_pkt.pkOrientation.orAzimuth / 10, wintab_pkt.pkOrientation.orAltitude / 10);
-                this.PointerData.TiltXYDeg = this.PointerData.TiltAADeg.ToXY_Deg();
-                this.PointerData.Twist = wintab_pkt.pkOrientation.orTwist;
-                this.PointerData.ButtonState = this.StylusButtonState;
+                pointerdata.PressureNormalized = normalized_pressure;
+                pointerdata.TiltAADeg = new Trigonometry.TiltAA(wintab_pkt.pkOrientation.orAzimuth / 10, wintab_pkt.pkOrientation.orAltitude / 10);
+                pointerdata.TiltXYDeg = pointerdata.TiltAADeg.ToXY_Deg();
+                pointerdata.Twist = wintab_pkt.pkOrientation.orTwist;
+                pointerdata.ButtonState = this.StylusButtonState;
 
-                this.OnStandardPointerEvent(this.PointerData);
+                this.OnStandardPointerEvent(pointerdata);
             }
         }
     }
