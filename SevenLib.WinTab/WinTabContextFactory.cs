@@ -1,7 +1,5 @@
 // See copright.md for copyright information.
 
-using System;
-
 namespace SevenLib.WinTab;
 
 /// <summary>

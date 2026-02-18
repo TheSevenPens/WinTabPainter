@@ -74,7 +74,7 @@ namespace WinTabPainter
 
             this.tabsession = new SevenLib.WinTab.WinTabSession();
             this.tabsession.OnWinTabPacketReceived = this.PacketHandler;
-            this.tabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
+            this.tabsession.Open(SevenLib.WinTab.Enums.TabletContextType.System);
 
             this.tabsession.OnButtonStateChanged = this.HandleButtonChange;
 

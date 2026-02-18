@@ -44,7 +44,7 @@ public struct PaintData
     }
 
     static System.Random random  = new System.Random();
-    public PaintData(SevenLib.WinTab.Structs.WintabPacket pkt, SevenLib.WinTab.Tablet.TabletInfo tablet, PaintSettings paintsettings, System.Func<SevenLib.Geometry.Point,SevenLib.Geometry.Point> to_canv)
+    public PaintData(SevenLib.WinTab.Structs.WintabPacket pkt, SevenLib.WinTab.WinTabDeviceInfo tablet, PaintSettings paintsettings, System.Func<SevenLib.Geometry.Point,SevenLib.Geometry.Point> to_canv)
     {
         // STATUS
         this.Status = PaintDataStatus.VALID;

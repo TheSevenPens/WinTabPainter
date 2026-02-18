@@ -231,7 +231,7 @@ namespace WinTabPressureTester
         {
             this.appstate.wintab_session.OnWinTabPacketReceived = this.PacketHandler;
             this.appstate.wintab_session.OnButtonStateChanged = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
+            this.appstate.wintab_session.Open(SevenLib.WinTab.Enums.TabletContextType.System);
         }
 
         private void StopWinTabSession()

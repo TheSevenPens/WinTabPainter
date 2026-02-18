@@ -47,7 +47,7 @@ public partial class MainWindow : Window
         _wintabsession = new SevenLib.WinTab.WinTabSession();
         _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
         _wintabsession.OnStandardPointerEvent = this.HandlePointerEvent;
-        _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
+        _wintabsession.Open(SevenLib.WinTab.Enums.TabletContextType.System);
     }
 
     public void HandlePointerEvent(SevenLib.Stylus.PointerData pointerData) 

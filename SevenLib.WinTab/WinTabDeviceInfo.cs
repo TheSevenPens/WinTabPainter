@@ -1,9 +1,9 @@
-﻿namespace SevenLib.WinTab.Tablet;
+﻿namespace SevenLib.WinTab;
 
-public class TabletInfo
+public class WinTabDeviceInfo
 {
-    public SevenLib.WinTab.Structs.WintabAxis XAxis {  private set; get ;}
-    public SevenLib.WinTab.Structs.WintabAxis YAxis { private set; get; }
+    public WinTab.Structs.WintabAxis XAxis {  private set; get ;}
+    public WinTab.Structs.WintabAxis YAxis { private set; get; }
     public int MaxPressure {  private set; get ;}
     public string Name { private set; get; }
 

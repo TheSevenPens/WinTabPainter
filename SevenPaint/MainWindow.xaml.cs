@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SevenLib.WinTab.Tablet;
 
 namespace SevenPaint
 {

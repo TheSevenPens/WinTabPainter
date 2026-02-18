@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 
 namespace SevenLib.WinTab;
 
@@ -8,8 +7,8 @@ public class WinTabSession : System.IDisposable
 {
     public WinTabContext Context = null;
     public WinTabData Data = null;
-    public SevenLib.WinTab.Tablet.TabletInfo TabletInfo;
-    public SevenLib.WinTab.Tablet.TabletContextType ContextType;
+    public WinTabDeviceInfo TabletInfo;
+    public SevenLib.WinTab.Enums.TabletContextType ContextType;
     
     // callbacks for consumers
     public System.Action<Structs.WintabPacket, SevenLib.WinTab.Stylus.StylusButtonChange> OnButtonStateChanged = null;
@@ -23,11 +22,11 @@ public class WinTabSession : System.IDisposable
 
     public WinTabSession()
     {
-        this.TabletInfo = new SevenLib.WinTab.Tablet.TabletInfo();
+        this.TabletInfo = new SevenLib.WinTab.WinTabDeviceInfo();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
     }
 
-    public void Open(SevenLib.WinTab.Tablet.TabletContextType context_type)
+    public void Open(SevenLib.WinTab.Enums.TabletContextType context_type)
     {
         // Convert the context type to something wintab understands
         var wt_context_type = context_type_to_index(context_type);
@@ -56,12 +55,12 @@ public class WinTabSession : System.IDisposable
         this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
     }
 
-    private static Enums.EWTICategoryIndex context_type_to_index(SevenLib.WinTab.Tablet.TabletContextType context_type)
+    private static Enums.EWTICategoryIndex context_type_to_index(SevenLib.WinTab.Enums.TabletContextType context_type)
     {
         return context_type switch
         {
-            SevenLib.WinTab.Tablet.TabletContextType.System => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
-            SevenLib.WinTab.Tablet.TabletContextType.Digitizer => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
+            SevenLib.WinTab.Enums.TabletContextType.System => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
+            SevenLib.WinTab.Enums.TabletContextType.Digitizer => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }

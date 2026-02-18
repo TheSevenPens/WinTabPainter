@@ -29,7 +29,7 @@ namespace SevenPaint.Stylus
         {
             try
             {
-                _session.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
+                _session.Open(SevenLib.WinTab.Enums.TabletContextType.System);
                 IsActive = true;
             }
             catch (Exception)
