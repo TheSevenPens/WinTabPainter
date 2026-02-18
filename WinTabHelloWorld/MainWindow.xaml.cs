@@ -46,7 +46,11 @@ public partial class MainWindow : Window
     {
         _wintabsession = new SevenLib.WinTab.WinTabSession();
         _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
-        _wintabsession.OnStandardPointerEvent = this.HandlePointerEvent;
+        _wintabsession.OnWinTabPacketReceived = (packet) =>
+        {
+            var pointerData = _wintabsession.create_pointerdata_from_wintabpacket(packet);
+            HandlePointerEvent(pointerData);
+        };
         _wintabsession.Open(SevenLib.WinTab.Enums.TabletContextType.System);
     }
 

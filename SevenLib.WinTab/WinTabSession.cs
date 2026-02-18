@@ -13,7 +13,6 @@ public class WinTabSession : System.IDisposable
     // callbacks for consumers
     public System.Action<Structs.WintabPacket, SevenLib.WinTab.Stylus.StylusButtonChange> OnButtonStateChanged = null;
     public System.Action<Structs.WintabPacket> OnWinTabPacketReceived = null;
-    public System.Action<SevenLib.Stylus.PointerData> OnStandardPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
 
@@ -104,28 +103,25 @@ public class WinTabSession : System.IDisposable
                 // Some callers want the raw wintab packet
                 this.OnWinTabPacketReceived(wintab_pkt);
             }
-
-            if (this.OnStandardPointerEvent != null)
-            {
-                // other callers will want the standardized pointer event 
-                // which simplified things for the caller
-                var pointerdata = new SevenLib.Stylus.PointerData();
-                pointerdata.Time = DateTime.Now;
-
-                var screenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
-                pointerdata.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
-
-                pointerdata.Height = wintab_pkt.pkZ;
-                float normalized_pressure = (float)wintab_pkt.pkNormalPressure / this.TabletInfo.MaxPressure;
-                pointerdata.PressureNormalized = normalized_pressure;
-                pointerdata.TiltAADeg = new Trigonometry.TiltAA(wintab_pkt.pkOrientation.orAzimuth / 10, wintab_pkt.pkOrientation.orAltitude / 10);
-                pointerdata.TiltXYDeg = pointerdata.TiltAADeg.ToXY_Deg();
-                pointerdata.Twist = wintab_pkt.pkOrientation.orTwist;
-                pointerdata.ButtonState = this.StylusButtonState;
-
-                this.OnStandardPointerEvent(pointerdata);
-            }
         }
+    }
+
+    public SevenLib.Stylus.PointerData create_pointerdata_from_wintabpacket(Structs.WintabPacket wintab_pkt)
+    {
+        var pointerdata = new SevenLib.Stylus.PointerData();
+        pointerdata.Time = DateTime.Now;
+
+        var screenPos = new Geometry.Point(wintab_pkt.pkX, wintab_pkt.pkY);
+        pointerdata.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
+
+        pointerdata.Height = wintab_pkt.pkZ;
+        float normalized_pressure = (float)wintab_pkt.pkNormalPressure / this.TabletInfo.MaxPressure;
+        pointerdata.PressureNormalized = normalized_pressure;
+        pointerdata.TiltAADeg = new Trigonometry.TiltAA(wintab_pkt.pkOrientation.orAzimuth / 10, wintab_pkt.pkOrientation.orAltitude / 10);
+        pointerdata.TiltXYDeg = pointerdata.TiltAADeg.ToXY_Deg();
+        pointerdata.Twist = wintab_pkt.pkOrientation.orTwist;
+        pointerdata.ButtonState = this.StylusButtonState;
+        return pointerdata;
     }
 
     public void Close()
