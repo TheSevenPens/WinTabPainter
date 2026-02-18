@@ -77,7 +77,6 @@ namespace SevenLib.WinInk
         private void ProcessPenInfo(int msg, int pointerType, Interop.POINTER_PEN_INFO penInfo)
         {
             var pointerdata = create_pointer_data_from_pen_info(penInfo);
-
             HandlePenMessage(msg, pointerType, pointerdata);
         }
 
@@ -87,7 +86,7 @@ namespace SevenLib.WinInk
             HandlePenMessage(msg, pointerType, pointerdata);
         }
 
-        private static Stylus.PointerData create_pointer_data_from_pen_info(Interop.POINTER_PEN_INFO penInfo)
+        public static Stylus.PointerData create_pointer_data_from_pen_info(Interop.POINTER_PEN_INFO penInfo)
         {
             SevenLib.Stylus.PointerData pointerdata = new Stylus.PointerData();
             pointerdata.Time = System.DateTime.Now;
@@ -102,7 +101,7 @@ namespace SevenLib.WinInk
             return pointerdata;
         }
 
-        private static Stylus.PointerData create_pointer_data_from_pointer_info(Interop.POINTER_INFO pointerInfo)
+        public static Stylus.PointerData create_pointer_data_from_pointer_info(Interop.POINTER_INFO pointerInfo)
         {
             SevenLib.Stylus.PointerData pointerdata = new Stylus.PointerData();
             pointerdata.Time = System.DateTime.Now;
