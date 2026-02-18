@@ -2,15 +2,11 @@ namespace SevenLib.WinInk
 {
     public class WinInkSession
     {
-
-        public SevenLib.WinInk.PointerState PointerState;
-
         public System.Action<int, int, Interop.POINTER_PEN_INFO> _PointerPenInfoCallback;
         public System.Action<int, int, Interop.POINTER_INFO> _PointerInfoCallback;
 
         public WinInkSession()
         {
-            this.PointerState= new PointerState();
         }
 
         public void AttachToWindow(System.Windows.Window window)
