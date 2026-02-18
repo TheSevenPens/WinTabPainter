@@ -32,7 +32,7 @@ namespace WinInkHelloWorld
             _renderer = new SevenLib.Media.CanvasRenderer(CanvasWidth, CanvasHeight);
             WritingCanvas.Source = _renderer.ImageSource;
             _winink_session = new SevenLib.WinInk.WinInkSession();
-            _winink_session._PointerCallback += HandlePointerMessage;
+            _winink_session._PointerDataCallback += HandlePointerMessage;
         }
 
         private void HandlePointerStatsUpdate(SevenLib.Stylus.PointerData pointerData)
