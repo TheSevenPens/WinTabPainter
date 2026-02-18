@@ -4,6 +4,7 @@
   </Folder>
   <Project Path="PressureResponseTester\PressureResponseTester.csproj" />
   <Project Path="SevenLib.Media/SevenLib.Media.csproj" Id="b7e815e5-b705-41cf-8c53-ec734a85b977" />
+  <Project Path="SevenLib.WinInk/SevenLib.WinInk.csproj" Id="1fb87389-8f15-4185-9cd8-13178d8e7e7f" />
   <Project Path="SevenLib.WinTab/SevenLib.WinTab.csproj" />
   <Project Path="SevenLib/SevenLib.csproj" />
   <Project Path="SevenPaint\SevenPaint.csproj" />
