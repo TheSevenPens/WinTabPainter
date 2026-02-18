@@ -4,7 +4,6 @@ namespace SevenLib.WinInk
     {
 
         public SevenLib.WinInk.PointerState PointerState;
-        public SevenLib.Stylus.PointerData PointerData;
 
         public System.Action<int, int, SevenLib.Stylus.PointerData> _PointerCallback;
 
@@ -77,34 +76,34 @@ namespace SevenLib.WinInk
 
         private void ProcessPenInfo(int msg, int pointerType, Interop.POINTER_PEN_INFO penInfo)
         {
-
-            this.PointerData.Time = System.DateTime.Now;
-            this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
-            this.PointerData.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
-            this.PointerData.PressureNormalized = penInfo.pressure / 1024.0f;
-            this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
-            this.PointerData.TiltAADeg = this.PointerData.TiltXYDeg.ToAA_deg();
-            this.PointerData.Twist = penInfo.rotation;
+            SevenLib.Stylus.PointerData pointerdata = new Stylus.PointerData();
+            pointerdata.Time = System.DateTime.Now;
+            pointerdata.DisplayPoint = new SevenLib.Geometry.PointD(penInfo.pointerInfo.ptPixelLocation.X, penInfo.pointerInfo.ptPixelLocation.Y);
+            pointerdata.Height = penInfo.pressure == 0 ? 256 : 0; // use pressure to simulate height 
+            pointerdata.PressureNormalized = penInfo.pressure / 1024.0f;
+            pointerdata.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(penInfo.tiltX, penInfo.tiltY);
+            pointerdata.TiltAADeg = pointerdata.TiltXYDeg.ToAA_deg();
+            pointerdata.Twist = penInfo.rotation;
             uint buttonState = MapWindowsButtonStates(penInfo.pointerInfo.pointerFlags);
-            this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
+            pointerdata.ButtonState = new SevenLib.Stylus.StylusButtonState(buttonState);
 
-            HandlePenMessage(msg, pointerType, this.PointerData);
+            HandlePenMessage(msg, pointerType, pointerdata);
         }
 
 
         private void ProcessPointerInfo(int msg, int pointerType, Interop.POINTER_INFO pointerInfo)
         {
+            SevenLib.Stylus.PointerData pointerdata = new Stylus.PointerData();
+            pointerdata.Time = System.DateTime.Now;
+            pointerdata.DisplayPoint = new SevenLib.Geometry.PointD(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
+            pointerdata.Height = 0;
+            pointerdata.PressureNormalized = 1.0;
+            pointerdata.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
+            pointerdata.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
+            pointerdata.Twist = 0;          
+            pointerdata.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
 
-            this.PointerData.Time = System.DateTime.Now;
-            this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(pointerInfo.ptPixelLocation.X, pointerInfo.ptPixelLocation.Y);
-            this.PointerData.Height = 0;
-            this.PointerData.PressureNormalized = 1.0;
-            this.PointerData.TiltXYDeg = new SevenLib.Trigonometry.TiltXY(0, 0);
-            this.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(0, 90);
-            this.PointerData.Twist = 0;          
-            this.PointerData.ButtonState = new SevenLib.Stylus.StylusButtonState(0);
-
-            HandlePenMessage(msg, pointerType, this.PointerData);
+            HandlePenMessage(msg, pointerType, pointerdata);
         }
 
         private void HandlePenMessage(int msg, int pointerType, SevenLib.Stylus.PointerData pointerdata)
