@@ -1,4 +1,5 @@
-﻿using SevenLib.WinTab.Stylus;
+﻿using SevenLib.WinTab;
+using SevenLib.WinTab.Stylus;
 using System;
 // References:
 // https://github.com/DennisWacom/WintabControl/tree/master/WintabControl
@@ -20,7 +21,7 @@ namespace WinTabPainter
 
 
 
-        private SevenLib.WinTab.Tablet.WinTabSession tabsession;
+        private WinTabSession tabsession;
         public Painting.PaintSettings paint_settings = new Painting.PaintSettings();
         Painting.PaintData old_paintdata;
 
@@ -71,7 +72,7 @@ namespace WinTabPainter
             this.EraseCanvas();
 
 
-            this.tabsession = new SevenLib.WinTab.Tablet.WinTabSession();
+            this.tabsession = new SevenLib.WinTab.WinTabSession();
             this.tabsession.OnRawPacketReceived = this.PacketHandler;
             this.tabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
 

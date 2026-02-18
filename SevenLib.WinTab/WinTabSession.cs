@@ -1,21 +1,21 @@
-﻿
-using SevenLib.WinTab.Stylus;
+﻿using SevenLib.WinTab.Stylus;
+using SevenLib.WinTab.Tablet;
 using System;
 
-namespace SevenLib.WinTab.Tablet;
+namespace SevenLib.WinTab;
 
 
 public class WinTabSession : System.IDisposable
 {
     public SevenLib.Stylus.PointerData PointerData = new SevenLib.Stylus.PointerData();
-    public SevenLib.WinTab.Structs.WintabPacket WinTabPacket;
+    public Structs.WintabPacket WinTabPacket;
 
-    public SevenLib.WinTab.WinTabContext Context = null;
-    public SevenLib.WinTab.WinTabData Data = null;
+    public WinTabContext Context = null;
+    public WinTabData Data = null;
     public TabletInfo TabletInfo;
     public TabletContextType ContextType;
-    public System.Action<SevenLib.WinTab.Structs.WintabPacket> OnRawPacketReceived = null;
-    public System.Action<SevenLib.WinTab.Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
+    public System.Action<Structs.WintabPacket> OnRawPacketReceived = null;
+    public System.Action<Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
     public System.Action<SevenLib.Stylus.PointerData> OnPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
@@ -53,7 +53,7 @@ public class WinTabSession : System.IDisposable
 
         // CREATE DATA
 
-        this.Data = new SevenLib.WinTab.WinTabData(this.Context);
+        this.Data = new WinTabData(this.Context);
 
 
         this.TabletInfo.Initialize();
@@ -66,7 +66,7 @@ public class WinTabSession : System.IDisposable
         }
     }
 
-    private static SevenLib.WinTab.Enums.EWTICategoryIndex context_type_to_index(TabletContextType context_type)
+    private static Enums.EWTICategoryIndex context_type_to_index(TabletContextType context_type)
     {
         return context_type switch
         {
@@ -76,7 +76,7 @@ public class WinTabSession : System.IDisposable
         };
     }
 
-    private void WinTabPacketHandler(System.Object sender, SevenLib.WinTab.WinForms.MessageReceivedEventArgs args)
+    private void WinTabPacketHandler(System.Object sender, WinForms.MessageReceivedEventArgs args)
     {
         if (this.Data == null)
         {
@@ -147,20 +147,20 @@ public class WinTabSession : System.IDisposable
         }
     }
 
-    private void HandleRawPacket(SevenLib.WinTab.Structs.WintabPacket packet)
+    private void HandleRawPacket(Structs.WintabPacket packet)
     {
 
         this.WinTabPacket = packet;
         this.PointerData = new SevenLib.Stylus.PointerData();
         this.PointerData.Time = DateTime.Now;
 
-        var screenPos = new SevenLib.Geometry.Point(packet.pkX, packet.pkY);
-        this.PointerData.DisplayPoint = new SevenLib.Geometry.PointD(screenPos.X, screenPos.Y);
+        var screenPos = new Geometry.Point(packet.pkX, packet.pkY);
+        this.PointerData.DisplayPoint = new Geometry.PointD(screenPos.X, screenPos.Y);
 
         this.PointerData.Height = packet.pkZ;
         float normalized_pressure = (float)packet.pkNormalPressure / this.TabletInfo.MaxPressure;
         this.PointerData.PressureNormalized = normalized_pressure;
-        this.PointerData.TiltAADeg = new SevenLib.Trigonometry.TiltAA(packet.pkOrientation.orAzimuth / 10, packet.pkOrientation.orAltitude / 10);
+        this.PointerData.TiltAADeg = new Trigonometry.TiltAA(packet.pkOrientation.orAzimuth / 10, packet.pkOrientation.orAltitude / 10);
         this.PointerData.TiltXYDeg = this.PointerData.TiltAADeg.ToXY_Deg();
         this.PointerData.Twist = packet.pkOrientation.orTwist;
         this.PointerData.ButtonState = this.StylusButtonState;

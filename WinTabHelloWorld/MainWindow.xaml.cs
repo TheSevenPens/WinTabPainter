@@ -1,4 +1,5 @@
 ﻿using SevenLib.Stylus;
+using SevenLib.WinTab;
 using SevenLib.WinTab.Stylus;
 using System;
 using System.Windows;
@@ -11,7 +12,7 @@ namespace WinTabHelloWorld;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private SevenLib.WinTab.Tablet.WinTabSession _wintabsession;
+    private WinTabSession _wintabsession;
     private SevenLib.Media.CanvasRenderer _renderer;
     private string _buttonStateText = "None";
     private const int DefaultCanvasWidth = 800;
@@ -41,7 +42,7 @@ public partial class MainWindow : Window
 
     private void InitializeTablet()
     {
-        _wintabsession = new SevenLib.WinTab.Tablet.WinTabSession();
+        _wintabsession = new SevenLib.WinTab.WinTabSession();
         _wintabsession.OnButtonStateChanged = HandleButtonStateChange;
         _wintabsession.OnPointerEvent = this.HandlePointerEvent;
         _wintabsession.Open(SevenLib.WinTab.Tablet.TabletContextType.System);
