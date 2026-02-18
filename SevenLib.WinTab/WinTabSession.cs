@@ -15,8 +15,8 @@ public class WinTabSession : System.IDisposable
     
     // callbacks for consumers
     public System.Action<Structs.WintabPacket, SevenLib.WinTab.Stylus.StylusButtonChange> OnButtonStateChanged = null;
-    public System.Action<Structs.WintabPacket> OnRawPacketReceived = null;
-    public System.Action<SevenLib.Stylus.PointerData> OnPointerEvent =null;
+    public System.Action<Structs.WintabPacket> OnWinTabPacketReceived = null;
+    public System.Action<SevenLib.Stylus.PointerData> OnStandardPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
 
@@ -28,7 +28,7 @@ public class WinTabSession : System.IDisposable
         this.TabletInfo = new SevenLib.WinTab.Tablet.TabletInfo();
         this.PointerData = new SevenLib.Stylus.PointerData();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
-        this.OnRawPacketReceived = HandleRawPacket;
+        this.OnWinTabPacketReceived = HandleRawPacket;
     }
 
     public void Open(SevenLib.WinTab.Tablet.TabletContextType context_type)
@@ -60,7 +60,7 @@ public class WinTabSession : System.IDisposable
 
         // HANDLER
 
-        if (this.OnRawPacketReceived != null)
+        if (this.OnWinTabPacketReceived != null)
         {
             this.Data.SetWTPacketEventHandler(WinTabPacketHandler);
         }
@@ -110,9 +110,9 @@ public class WinTabSession : System.IDisposable
                 this.OnButtonStateChanged?.Invoke(wintab_pkt, button_info);
             }
 
-            if (this.OnRawPacketReceived != null) 
+            if (this.OnWinTabPacketReceived != null) 
             {
-                this.OnRawPacketReceived(wintab_pkt);
+                this.OnWinTabPacketReceived(wintab_pkt);
             }
         }
     }
@@ -165,9 +165,9 @@ public class WinTabSession : System.IDisposable
         this.PointerData.Twist = packet.pkOrientation.orTwist;
         this.PointerData.ButtonState = this.StylusButtonState;
 
-        if (this.OnPointerEvent != null)
+        if (this.OnStandardPointerEvent != null)
         {
-            this.OnPointerEvent(this.PointerData);
+            this.OnStandardPointerEvent(this.PointerData);
         }
     }
 
