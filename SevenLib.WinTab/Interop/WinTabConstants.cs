@@ -1,6 +1,6 @@
 // See copright.md for copyright information.
 
-namespace SevenLib.WinTab;
+namespace SevenLib.WinTab.Interop;
 
 /// <summary>
 /// Constants used throughout the WinTab API wrapper.
