@@ -1,6 +1,4 @@
-﻿using SevenLib.WinTab.Stylus;
-using SevenLib.WinTab.Tablet;
-using System;
+﻿using System;
 
 namespace SevenLib.WinTab;
 
@@ -12,10 +10,10 @@ public class WinTabSession : System.IDisposable
 
     public WinTabContext Context = null;
     public WinTabData Data = null;
-    public TabletInfo TabletInfo;
-    public TabletContextType ContextType;
+    public SevenLib.WinTab.Tablet.TabletInfo TabletInfo;
+    public SevenLib.WinTab.Tablet.TabletContextType ContextType;
     public System.Action<Structs.WintabPacket> OnRawPacketReceived = null;
-    public System.Action<Structs.WintabPacket, StylusButtonChange> OnButtonStateChanged = null;
+    public System.Action<Structs.WintabPacket, SevenLib.WinTab.Stylus.StylusButtonChange> OnButtonStateChanged = null;
     public System.Action<SevenLib.Stylus.PointerData> OnPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
@@ -25,13 +23,13 @@ public class WinTabSession : System.IDisposable
 
     public WinTabSession()
     {
-        this.TabletInfo = new TabletInfo();
+        this.TabletInfo = new SevenLib.WinTab.Tablet.TabletInfo();
         this.PointerData = new SevenLib.Stylus.PointerData();
         this.StylusButtonState = new SevenLib.Stylus.StylusButtonState(0); // Initialize to indicate no buttons are pressed
         this.OnRawPacketReceived = HandleRawPacket;
     }
 
-    public void Open(TabletContextType context_type)
+    public void Open(SevenLib.WinTab.Tablet.TabletContextType context_type)
     {
         // convert the context type to something wintab understands
         var wt_context_type = context_type_to_index(context_type);
@@ -66,12 +64,12 @@ public class WinTabSession : System.IDisposable
         }
     }
 
-    private static Enums.EWTICategoryIndex context_type_to_index(TabletContextType context_type)
+    private static Enums.EWTICategoryIndex context_type_to_index(SevenLib.WinTab.Tablet.TabletContextType context_type)
     {
         return context_type switch
         {
-            TabletContextType.System => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
-            TabletContextType.Digitizer => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
+            SevenLib.WinTab.Tablet.TabletContextType.System => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFSYSCTX,
+            SevenLib.WinTab.Tablet.TabletContextType.Digitizer => SevenLib.WinTab.Enums.EWTICategoryIndex.WTI_DEFCONTEXT,
             _ => throw new System.ArgumentOutOfRangeException()
         };
     }
@@ -96,16 +94,16 @@ public class WinTabSession : System.IDisposable
 
         if (wintab_pkt.pkContext == this.Context.HCtx)
         {
-            var button_info = new StylusButtonChange(wintab_pkt.pkButtons);
+            var button_info = new SevenLib.WinTab.Stylus.StylusButtonChange(wintab_pkt.pkButtons);
 
-            if (button_info.Change != StylusButtonChangeType.NoChange)
+            if (button_info.Change != SevenLib.WinTab.Stylus.StylusButtonChangeType.NoChange)
             {
                 // there's been some change to the buttons
-                this.StylusButtonState = StylusUtils.Update(this.StylusButtonState, button_info);
+                this.StylusButtonState = SevenLib.WinTab.Stylus.StylusUtils.Update(this.StylusButtonState, button_info);
             }
 
 
-            if (button_info.Change != StylusButtonChangeType.NoChange)
+            if (button_info.Change != SevenLib.WinTab.Stylus.StylusButtonChangeType.NoChange)
             {
                 this.OnButtonStateChanged?.Invoke(wintab_pkt, button_info);
             }
