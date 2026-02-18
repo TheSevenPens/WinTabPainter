@@ -15,7 +15,7 @@ public class WinTabDeviceInfo
          this.XAxis = SevenLib.WinTab.WinTabDevice.GetTabletAxis(SevenLib.WinTab.Enums.EAxisDimension.AXIS_X);
          this.YAxis = SevenLib.WinTab.WinTabDevice.GetTabletAxis(SevenLib.WinTab.Enums.EAxisDimension.AXIS_Y);
          this.MaxPressure = SevenLib.WinTab.WinTabDevice.GetMaxPressure();
-         this.Name = SevenLib.WinTab.WinTabDevice.GetDeviceInfo();
+         this.Name = SevenLib.WinTab.WinTabDevice.GetDeviceName();
 
          bool b;
          var arr = SevenLib.WinTab.WinTabDevice.GetDeviceOrientation(out b);

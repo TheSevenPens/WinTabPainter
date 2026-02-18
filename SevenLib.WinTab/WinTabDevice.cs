@@ -13,7 +13,7 @@ public static class WinTabDevice
     /// Returns a string containing device name.
     /// </summary>
     /// <returns></returns>
-    public static String GetDeviceInfo()
+    public static String GetDeviceName()
     {
         string s = Interop.WinTabFunctions.WTInfoAString(
             (uint)Enums.EWTICategoryIndex.WTI_DEVICES,
