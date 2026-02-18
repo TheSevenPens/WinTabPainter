@@ -12,8 +12,10 @@ public class WinTabSession : System.IDisposable
     public WinTabData Data = null;
     public SevenLib.WinTab.Tablet.TabletInfo TabletInfo;
     public SevenLib.WinTab.Tablet.TabletContextType ContextType;
-    public System.Action<Structs.WintabPacket> OnRawPacketReceived = null;
+    
+    // callbacks for consumers
     public System.Action<Structs.WintabPacket, SevenLib.WinTab.Stylus.StylusButtonChange> OnButtonStateChanged = null;
+    public System.Action<Structs.WintabPacket> OnRawPacketReceived = null;
     public System.Action<SevenLib.Stylus.PointerData> OnPointerEvent =null;
 
     public Action _onPointerStatsUpdated;
