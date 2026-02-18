@@ -28,7 +28,16 @@ namespace WinInkHelloWorld
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            this._winink_session.AttachToWindow(this);
+
+            // Get native window handle and attach
+            var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            this._winink_session.AttachToWindow(hwnd);
+
+            // Disable WPF Stylus features that might interfere
+            System.Windows.Input.Stylus.SetIsPressAndHoldEnabled(this, false);
+            System.Windows.Input.Stylus.SetIsFlicksEnabled(this, false);
+            System.Windows.Input.Stylus.SetIsTapFeedbackEnabled(this, false);
+            System.Windows.Input.Stylus.SetIsTouchFeedbackEnabled(this, false);
         }
 
         private void InitializeCanvas()

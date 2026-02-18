@@ -5,35 +5,36 @@ namespace SevenLib.WinInk
         public System.Action<int, int, Interop.POINTER_PEN_INFO> _PointerPenInfoCallback;
         public System.Action<int, int, Interop.POINTER_INFO> _PointerInfoCallback;
 
+        private System.IntPtr _windowHandle;
+        private Interop.SubclassWndProc _subclassProc;
+
         public WinInkSession()
         {
         }
 
-        public void AttachToWindow(System.Windows.Window window)
+        public void AttachToWindow(System.IntPtr hwnd)
         {
-            var source = System.Windows.PresentationSource.FromVisual(window) as System.Windows.Interop.HwndSource;
-            source?.AddHook(this._WndProc);
+            _windowHandle = hwnd;
+
+            // Keep the delegate alive as an instance field
+            _subclassProc = new Interop.SubclassWndProc(HandleWindowMessage);
+
+            // Subclass the window using Windows API directly (no WPF dependency)
+            Interop.NativeMethods.SetWindowSubclass(hwnd, _subclassProc, System.IntPtr.Zero, System.IntPtr.Zero);
 
             // Enable mouse to act as a pointer device for testing
-            SevenLib.WinInk.Interop.NativeMethods.EnableMouseInPointer(true);
-
-            // Disable WPF Stylus features that might interfere
-            System.Windows.Input.Stylus.SetIsPressAndHoldEnabled(window, false);
-            System.Windows.Input.Stylus.SetIsFlicksEnabled(window, false);
-            System.Windows.Input.Stylus.SetIsTapFeedbackEnabled(window, false);
-            System.Windows.Input.Stylus.SetIsTouchFeedbackEnabled(window, false);
+            Interop.NativeMethods.EnableMouseInPointer(true);
         }
 
-        private System.IntPtr _WndProc(System.IntPtr hwnd, int msg, System.IntPtr wParam, System.IntPtr lParam, ref bool handled)
+        private System.IntPtr HandleWindowMessage(System.IntPtr hwnd, uint msg, System.IntPtr wParam, System.IntPtr lParam, System.IntPtr uIdSubclass, System.IntPtr dwRefData)
         {
-            if (_HandleWndProcPointerMessage(msg, wParam))
+            if (_HandleWndProcPointerMessage((int)msg, wParam))
             {
-
-                handled = true;
                 return System.IntPtr.Zero;
             }
 
-            return System.IntPtr.Zero;
+            // Call the original window procedure
+            return Interop.NativeMethods.DefSubclassProc(hwnd, msg, wParam, lParam);
         }
 
         private bool _HandleWndProcPointerMessage(int msg, System.IntPtr wParam)

@@ -45,7 +45,17 @@ namespace SevenLib.WinInk.Interop
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetPointerInfo(uint pointerId, out POINTER_INFO pointerInfo);
+
+        [DllImport("comctl32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowSubclass(IntPtr hWnd, SubclassWndProc pfnSubclass, IntPtr uIdSubclass, IntPtr dwRefData);
+
+        [DllImport("comctl32.dll")]
+        public static extern IntPtr DefSubclassProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
     }
+
+    [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+    public delegate IntPtr SubclassWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr uIdSubclass, IntPtr dwRefData);
 
 
 
