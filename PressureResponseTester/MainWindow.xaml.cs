@@ -4,6 +4,7 @@ using OxyPlot.Series;
 using SevenLib.WinTab.Stylus;
 using System.IO.Ports;
 using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -564,4 +565,103 @@ public partial class MainWindow : Window
                 break;
         }
     }
+
+    private void Window_DragOver(object sender, System.Windows.DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+        {
+            string[] files = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
+            if (files.Any(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)))
+            {
+                e.Effects = System.Windows.DragDropEffects.Copy;
+                e.Handled = true;
+            }
+            else
+            {
+                e.Effects = System.Windows.DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void Window_Drop(object sender, System.Windows.DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+        {
+            string[] files = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
+            string? jsonFile = files.FirstOrDefault(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrEmpty(jsonFile))
+            {
+                try
+                {
+                    LoadJSONFile(jsonFile);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading JSON file: {ex.Message}", "Load Error");
+                }
+            }
+        }
+    }
+
+    private void LoadJSONFile(string filePath)
+    {
+        string json = System.IO.File.ReadAllText(filePath);
+        var data = System.Text.Json.JsonSerializer.Deserialize<PressureTestData>(json);
+
+        if (data?.records != null && data.records.Count > 0)
+        {
+            appstate!.RecordCollection!.Clear();
+
+            foreach (var record in data.records)
+            {
+                if (record.Count >= 2)
+                {
+                    appstate.RecordCollection.Add(record[0], record[1] / 100.0);
+                }
+            }
+
+            // Update metadata from JSON
+            if (!string.IsNullOrEmpty(data.brand))
+                textBox_brand.Text = data.brand;
+            if (!string.IsNullOrEmpty(data.pen))
+                textBox_Pen.Text = data.pen;
+            if (!string.IsNullOrEmpty(data.inventoryid))
+                textBox_inventoryid.Text = data.inventoryid;
+            if (!string.IsNullOrEmpty(data.date))
+                textBox_date.Text = data.date;
+            if (!string.IsNullOrEmpty(data.user))
+                textBox_User.Text = data.user;
+            if (!string.IsNullOrEmpty(data.tablet))
+                textBox_Tablet.Text = data.tablet;
+            if (!string.IsNullOrEmpty(data.driver))
+                textBox_driver.Text = data.driver;
+            if (!string.IsNullOrEmpty(data.os))
+                textBox_OS.Text = data.os;
+
+            UpdateCharTitle();
+            updatedata();
+            MessageBox.Show($"Loaded {appstate.RecordCollection.Count} records from {System.IO.Path.GetFileName(filePath)}", "Load Success");
+        }
+        else
+        {
+            MessageBox.Show("No valid records found in JSON file", "Load Error");
+        }
+    }
+}
+
+internal class PressureTestData
+{
+    public string? brand { get; set; }
+    public string? pen { get; set; }
+    public string? penfamily { get; set; }
+    public string? inventoryid { get; set; }
+    public string? date { get; set; }
+    public string? user { get; set; }
+    public string? tablet { get; set; }
+    public string? driver { get; set; }
+    public string? os { get; set; }
+    public string? notes { get; set; }
+    public List<List<double>>? records { get; set; }
 }
