@@ -25,8 +25,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="148.778"/>
-            <ColumnDefinition Width="251.222"/>
+            <ColumnDefinition Width="119"/>
+            <ColumnDefinition Width="201"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
@@ -41,8 +41,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Log Pressure (raw):" FontWeight="Bold"/>
-                        <Label x:Name="label_pressure_raw" Grid.Column="1" Content="-----" FontFamily="Consolas"/>
+                        <Label Grid.Column="0" Content="Log Pressure (raw):" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_pressure_raw" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -50,8 +50,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Log Pressure (norm):" FontWeight="Bold"/>
-                        <Label x:Name="label_normalized_pressure" Grid.Column="1" Content="-----"/>
+                        <Label Grid.Column="0" Content="Log Pressure (norm):" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_normalized_pressure" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -59,8 +59,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Log Pressure (smooth):" FontWeight="Bold"/>
-                        <Label x:Name="label_normalizedpressure_ma" Grid.Column="1" Content="-----"/>
+                        <Label Grid.Column="0" Content="Log Pressure (smooth):" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_normalizedpressure_ma" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -68,8 +68,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Phys Presssure:" FontWeight="Bold"/>
-                        <Label x:Name="label_force" Grid.Column="1" Content="-----" FontSize="14" FontWeight="Bold" Foreground="DarkRed"/>
+                        <Label Grid.Column="0" Content="Phys Presssure:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_force" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11" FontWeight="Bold" Foreground="DarkRed"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -77,8 +77,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Azimuth:" FontWeight="Bold"/>
-                        <Label x:Name="label_or_azimuth" Grid.Column="1" Content="-----"/>
+                        <Label Grid.Column="0" Content="Azimuth:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_or_azimuth" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -86,8 +86,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Altitude:" FontWeight="Bold"/>
-                        <Label x:Name="label_or_altitude" Grid.Column="1" Content="-----"/>
+                        <Label Grid.Column="0" Content="Altitude:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_or_altitude" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -95,8 +95,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Tilt X:" FontWeight="Bold"/>
-                        <Label x:Name="label_tiltx" Grid.Column="1" Content="-----"/>
+                        <Label Grid.Column="0" Content="Tilt X:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_tiltx" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -104,8 +104,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Tilt Y:" FontWeight="Bold"/>
-                        <Label x:Name="label_tilty" Grid.Column="1" Content="-----"/>
+                        <Label Grid.Column="0" Content="Tilt Y:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_tilty" Grid.Column="1" Content="-----" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <GroupBox Header="Button State" Margin="0,10,0,0">
@@ -124,8 +124,8 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="COM Port:" FontWeight="Bold"/>
-                        <ComboBox x:Name="comboBoxcomport" Grid.Column="1"/>
+                        <Label Grid.Column="0" Content="COM Port:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <ComboBox x:Name="comboBoxcomport" Grid.Column="1" FontFamily="Segoe UI" FontSize="11"/>
                     </Grid>
 
                     <StackPanel Orientation="Horizontal" Margin="0,10">
@@ -161,11 +161,11 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Records:" FontWeight="Bold"/>
-                        <Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="14"/>
+                        <Label Grid.Column="0" Content="Records:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11"/>
+                        <Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="11" FontFamily="Segoe UI"/>
                     </Grid>
 
-                    <DataGrid x:Name="dataGrid_records" Height="150" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,5" FontFamily="Consolas" FontSize="10" GridLinesVisibility="All" BorderThickness="1" BorderBrush="#CCCCCC" HorizontalAlignment="Stretch">
+                    <DataGrid x:Name="dataGrid_records" Height="150" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,5" FontFamily="Segoe UI" FontSize="12" GridLinesVisibility="All" BorderThickness="1" BorderBrush="#CCCCCC" HorizontalAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Physical (gf)" Binding="{Binding PhysicalPressure, StringFormat=0.0}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Logical (%)" Width="*" IsReadOnly="True">
@@ -185,12 +185,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
-                                <Label Content="Brand:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_brand" Text="BRAND" FontSize="10" Padding="5,3"/>
+                                <Label Content="Brand:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_brand" Text="BRAND" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <Label Content="ID:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_inventoryid" Text="--P.0000" FontSize="10" Padding="5,3"/>
+                                <Label Content="ID:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_inventoryid" Text="--P.0000" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
 
@@ -202,12 +202,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
-                                <Label Content="Pen:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_Pen" Text="PEN" FontSize="10" Padding="5,3"/>
+                                <Label Content="Pen:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_Pen" Text="PEN" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <Label Content="User:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_User" FontSize="10" Padding="5,3"/>
+                                <Label Content="User:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_User" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
 
@@ -219,12 +219,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
-                                <Label Content="Family:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_penfamily" FontSize="10" Padding="5,3"/>
+                                <Label Content="Family:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_penfamily" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <Label Content="Tablet:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_Tablet" FontSize="10" Padding="5,3"/>
+                                <Label Content="Tablet:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_Tablet" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
 
@@ -236,36 +236,36 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
-                                <Label Content="Date:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_date" Text="2024-01-01" FontSize="10" Padding="5,3"/>
+                                <Label Content="Date:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_date" Text="2024-01-01" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <Label Content="Driver:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_driver" FontSize="10" Padding="5,3"/>
+                                <Label Content="Driver:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_driver" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
 
                         <!-- Fifth Row: OS -->
                         <Grid Margin="0,0,0,5" HorizontalAlignment="Stretch">
                             <StackPanel>
-                                <Label Content="OS:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_OS" FontSize="10" Padding="5,3"/>
+                                <Label Content="OS:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_OS" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
 
                         <!-- Sixth Row: Tags -->
                         <Grid Margin="0,0,0,10" HorizontalAlignment="Stretch">
                             <StackPanel>
-                                <Label Content="Tags:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_tags" FontSize="10" Padding="5,3"/>
+                                <Label Content="Tags:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_tags" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
 
                         <!-- Seventh Row: Notes -->
                         <Grid Margin="0,0,0,10" HorizontalAlignment="Stretch">
                             <StackPanel>
-                                <Label Content="Notes:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
-                                <TextBox x:Name="textBox_notes" Height="50" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontSize="10" Padding="5,3" AcceptsReturn="True"/>
+                                <Label Content="Notes:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_notes" Height="50" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontSize="12" Padding="5,3" AcceptsReturn="True" FontFamily="Segoe UI"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
