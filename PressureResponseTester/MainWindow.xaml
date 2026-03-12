@@ -49,7 +49,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Pressure (raw):" FontWeight="Bold"/>
+                        <Label Grid.Column="0" Content="Log Pressure (raw):" FontWeight="Bold"/>
                         <Label x:Name="label_pressure_raw" Grid.Column="1" Content="-----" FontFamily="Consolas"/>
                     </Grid>
 
@@ -58,7 +58,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Pressure (normalized):" FontWeight="Bold"/>
+                        <Label Grid.Column="0" Content="Log Pressure (norm):" FontWeight="Bold"/>
                         <Label x:Name="label_normalized_pressure" Grid.Column="1" Content="-----"/>
                     </Grid>
 
@@ -67,8 +67,17 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Pressure (Moving Avg):" FontWeight="Bold"/>
+                        <Label Grid.Column="0" Content="Log Pressure (smooth):" FontWeight="Bold"/>
                         <Label x:Name="label_normalizedpressure_ma" Grid.Column="1" Content="-----"/>
+                    </Grid>
+
+                    <Grid Margin="0,1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Phys Presssure:" FontWeight="Bold"/>
+                        <Label x:Name="label_force" Grid.Column="1" Content="-----" FontSize="14" FontWeight="Bold" Foreground="DarkRed"/>
                     </Grid>
 
                     <Grid Margin="0,1">
@@ -107,26 +116,17 @@
                         <Label x:Name="label_tilty" Grid.Column="1" Content="-----"/>
                     </Grid>
 
-                    <Grid Margin="0,1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Force:" FontWeight="Bold"/>
-                        <Label x:Name="label_force" Grid.Column="1" Content="-----" FontSize="14" FontWeight="Bold" Foreground="DarkRed"/>
-                    </Grid>
-
                     <GroupBox Header="Button State" Margin="0,10,0,0">
                         <StackPanel Margin="10">
-                            <CheckBox x:Name="checkBox_tipdown" Content="Tip Down" Margin="0,5" IsEnabled="False"/>
-                            <CheckBox x:Name="checkBox_lowerbuttondown" Content="Lower Button Down" Margin="0,5" IsEnabled="False"/>
-                            <CheckBox x:Name="checkBox_upperbuttondown" Content="Upper Button Down" Margin="0,5" IsEnabled="False"/>
+                            <CheckBox x:Name="checkBox_tipdown" Content="Tip" Margin="0,5" IsEnabled="False"/>
+                            <CheckBox x:Name="checkBox_lowerbuttondown" Content="Button1" Margin="0,5" IsEnabled="False"/>
+                            <CheckBox x:Name="checkBox_upperbuttondown" Content="Button1" Margin="0,5" IsEnabled="False"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Scale Readings" Margin="0,10,0,0">
+            <GroupBox Header="Scale control" Margin="0,10,0,0">
                 <StackPanel Margin="10">
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
