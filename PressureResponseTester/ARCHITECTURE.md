@@ -33,11 +33,11 @@ PressureResponseTester/
 - Define UI layout via XAML
 - Handle user interactions (button clicks, input changes)
 - Display data from AppState
-- Update charts and sensor readings
+- Update charts and Tablet readings
 - Manage window lifecycle
 
 **Key Components**:
-- **Sensor Panel**: Real-time pressure/orientation readings
+- **Tablet Panel**: Real-time pressure/orientation readings
 - **Chart Panel**: ScottPlot visualization
 - **Recording Panel**: Data collection and export
 - **Metadata Panel**: Test parameters and annotations
@@ -68,7 +68,7 @@ PressureResponseTester/
 
 **Responsibilities**:
 - Store application state
-- Manage sensor sessions
+- Manage tablet sessions
 - Hold measurement data
 - Provide collection operations
 
@@ -98,7 +98,7 @@ AppState
 
 ## Data Flow
 
-### **Sensor Reading Flow**
+### **Tablet Reading Flow**
 ```
 WinTab Device
     ↓

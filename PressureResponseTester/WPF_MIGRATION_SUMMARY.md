@@ -43,7 +43,7 @@ The `PressureResponseTester` project has been successfully migrated from **WinFo
 #### **MainWindow.xaml**
 - Complete UI redesign using XAML
 - Three-column layout:
-  - **Left Panel**: Sensor readings and controls
+  - **Left Panel**: Tablet readings and controls
   - **Center Panel**: Real-time pressure response chart
   - **Right Panel**: Data recording and metadata
 

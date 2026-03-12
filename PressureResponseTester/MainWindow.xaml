@@ -22,9 +22,9 @@
             <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left Panel: Sensor Readings -->
+        <!-- Left Panel: Tablet Readings -->
         <StackPanel Grid.Column="0" Margin="10">
-            <GroupBox Header="Sensor Readings" Margin="0,0,0,10">
+            <GroupBox Header="Tablet Readings" Margin="0,0,0,10">
                 <StackPanel Margin="10">
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
@@ -52,8 +52,6 @@
                         <Label Grid.Column="0" Content="Moving Avg:" FontWeight="Bold"/>
                         <Label x:Name="label_normalizedpressure_ma" Grid.Column="1" Content="-----"/>
                     </Grid>
-
-                    <Separator Margin="0,10"/>
 
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
@@ -91,8 +89,6 @@
                         <Label x:Name="label_tilty" Grid.Column="1" Content="-----"/>
                     </Grid>
 
-                    <Separator Margin="0,10"/>
-
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"/>
@@ -101,8 +97,6 @@
                         <Label Grid.Column="0" Content="Force:" FontWeight="Bold"/>
                         <Label x:Name="label_force" Grid.Column="1" Content="-----" FontSize="14" FontWeight="Bold" Foreground="DarkRed"/>
                     </Grid>
-
-                    <Separator Margin="0,10"/>
 
                     <GroupBox Header="Button State" Margin="0,10,0,0">
                         <StackPanel Margin="10">
