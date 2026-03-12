@@ -31,16 +31,6 @@
             <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Ribbon Bar -->
-        <Border Grid.Row="0" Grid.ColumnSpan="4" Background="#F0F0F0" Padding="10">
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="button_record" Content="Record (R)" Click="button_record_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
-                <Button x:Name="button_load_sample_data" Content="Sample (L)" Click="button_load_sample_data_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
-                <Button x:Name="button_clearlast" Content="Clear Last (C)" Click="button_clearlast_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
-                <Button x:Name="button_clearlog" Content="Clear All (A)" Click="button_clearlog_Click" Padding="8,5" MinHeight="32"/>
-            </StackPanel>
-        </Border>
-
         <!-- Left Panel: Tablet Readings -->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10,10,10" Grid.ColumnSpan="2">
             <GroupBox Header="Tablet Readings" Margin="0,0,0,10">
@@ -155,6 +145,17 @@
         <StackPanel Grid.Row="1" Grid.Column="3" Margin="10,10,10,10">
             <GroupBox Header="Data" Margin="0,0,0,10">
                 <StackPanel Margin="10">
+                    <!-- Ribbon Buttons -->
+                    <WrapPanel Margin="0,0,0,10">
+                        <Button x:Name="button_record" Content="Record (R)" Click="button_record_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_load_sample_data" Content="Sample (L)" Click="button_load_sample_data_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_clearlast" Content="Clear Last (C)" Click="button_clearlast_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_clearlog" Content="Clear All (A)" Click="button_clearlog_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_copytext" Content="Copy" Click="button_copytext_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_save" Content="Save (Ctrl+S)" Click="button_save_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5" IsEnabled="False"/>
+                        <Button x:Name="button_export" Content="Export" Click="button_export_Click" Padding="8,3" MinHeight="28" MinWidth="80"/>
+                    </WrapPanel>
+
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
@@ -270,11 +271,7 @@
                         </Grid>
 
                         <!-- Buttons Row -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                            <Button x:Name="button_copytext" Content="Copy" Click="button_copytext_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
-                            <Button x:Name="button_save" Content="Save (Ctrl+S)" Click="button_save_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0" IsEnabled="False"/>
-                            <Button x:Name="button_export" Content="Export" Click="button_export_Click" Padding="8,5" MinHeight="32"/>
-                        </StackPanel>
+
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
