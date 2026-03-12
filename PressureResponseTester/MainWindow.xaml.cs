@@ -498,12 +498,12 @@ public partial class MainWindow : Window
         // Create line series to connect points
         var lineSeries = new LineSeries
         {
-            Color = OxyColors.Blue,
+            Color = OxyColors.Black,
             StrokeThickness = 2,
             MarkerType = MarkerType.Circle,
-            MarkerSize = 6,
-            MarkerStroke = OxyColors.Blue,
-            MarkerFill = OxyColors.Blue
+            MarkerSize = 4,
+            MarkerStroke = OxyColors.Black,
+            MarkerFill = OxyColors.Black
         };
 
         for (int i = 0; i < dataX.Count; i++)
