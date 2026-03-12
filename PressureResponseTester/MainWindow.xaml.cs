@@ -797,6 +797,19 @@ public partial class MainWindow : Window
         {
             appstate!.RecordCollection!.Clear();
 
+            // Clear all metadata fields first
+            textBox_brand.Text = string.Empty;
+            textBox_Pen.Text = string.Empty;
+            textBox_penfamily.Text = string.Empty;
+            textBox_inventoryid.Text = string.Empty;
+            textBox_date.Text = string.Empty;
+            textBox_User.Text = string.Empty;
+            textBox_Tablet.Text = string.Empty;
+            textBox_driver.Text = string.Empty;
+            textBox_OS.Text = string.Empty;
+            textBox_tags.Text = string.Empty;
+            textBox_notes.Text = string.Empty;
+
             foreach (var record in data.records)
             {
                 if (record.Count >= 2)
