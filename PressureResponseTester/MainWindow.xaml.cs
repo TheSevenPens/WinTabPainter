@@ -14,7 +14,7 @@ namespace WinTabPressureTester;
 public partial class MainWindow : Window
 {
     private const int SerialPortReadDelay = 10;
-    private const int PlotFontSize = 20;
+    private const int PlotFontSize = 28;
     private const int PlotAxisLimit = 1000;
     private const int PlotPressureLimit = 110;
     private const char ScaleReadingMgSuffix = 'M';
@@ -88,6 +88,11 @@ public partial class MainWindow : Window
         plot.Axes.SetLimits(0, PlotAxisLimit, 0, PlotPressureLimit);
 
         formsPlot1.Refresh();
+    }
+
+    private void formsPlot1_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        e.Handled = true;
     }
 
     public void UpdateCharTitle()
