@@ -24,6 +24,7 @@ public partial class MainWindow : Window
     private const char ScaleReadingGramSuffix = 'g';
 
     private AppState? appstate;
+    private string? currentLoadedFilePath;
 
     public MainWindow()
     {
@@ -527,6 +528,34 @@ public partial class MainWindow : Window
         }
     }
 
+    private void button_save_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(currentLoadedFilePath))
+        {
+            MessageBox.Show("No file loaded. Use Export JSON to save to a new file.", "Save Error");
+            return;
+        }
+
+        try
+        {
+            string json = CreateJSONContent();
+            System.IO.File.WriteAllText(currentLoadedFilePath, json);
+            MessageBox.Show($"File saved: {currentLoadedFilePath}", "Save Successful");
+        }
+        catch (System.IO.IOException ex)
+        {
+            MessageBox.Show($"Error saving file - IO Error: {ex.Message}", "Save Error");
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            MessageBox.Show($"Error saving file - Access Denied: {ex.Message}", "Save Error");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error saving file: {ex.Message}", "Save Error");
+        }
+    }
+
     private void button_copy_chart_Click(object sender, RoutedEventArgs e)
     {
         UpdateCharTitle();
@@ -537,6 +566,18 @@ public partial class MainWindow : Window
     {
         if (e.IsRepeat)
             return;
+
+        // Check for Ctrl+S (Save)
+        if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || 
+            System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl))
+        {
+            if (e.Key == System.Windows.Input.Key.S)
+            {
+                button_save_Click(null!, null!);
+                e.Handled = true;
+                return;
+            }
+        }
 
         switch (e.Key)
         {
@@ -646,6 +687,10 @@ public partial class MainWindow : Window
                 textBox_tags.Text = data.tags;
             if (!string.IsNullOrEmpty(data.notes))
                 textBox_notes.Text = data.notes;
+
+            // Store the file path for saving later
+            currentLoadedFilePath = filePath;
+            button_save.IsEnabled = true;
 
             UpdateCharTitle();
             updatedata();
