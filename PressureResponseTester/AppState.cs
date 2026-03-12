@@ -4,27 +4,23 @@ namespace WinTabPressureTester
 {
     public class AppState
     {
+        private const int DefaultLogicalPressureQueueSize = 400;
+
         // Sessions with devices
-        public WinTabSession wintab_session;
-        public ScaleSession scale_session;
+        public WinTabSession WinTabSession { get; set; }
+        public ScaleSession ScaleSession { get; set; }
 
+        // Pressure readings
+        public double PhysicalPressure { get; set; }
+        public double LogicalPressure { get; set; }
 
-        // store in a different place? ???
-        public double physi_pressure;
-        public double log_pressure;
-        
-        // move to scalesession
-        public System.IO.Ports.SerialPort serial_port;
+        // Serial port and scale session management
+        public System.IO.Ports.SerialPort SerialPort { get; set; }
+        public CancellationTokenSource ScaleCts { get; set; }
+        public bool ScaleIsReading { get; set; }
 
-        public CancellationTokenSource scale_cts;
-        public bool scale_isReading = false;
-
-        public PressureRecordCollection record_collection;
-        public int logical_pressure_queue_size = 400;
-        public SevenLib.Numerics.IndexedQueue<double> queue_logical;
-
-
+        public PressureRecordCollection RecordCollection { get; set; }
+        public int LogicalPressureQueueSize { get; } = DefaultLogicalPressureQueueSize;
+        public SevenLib.Numerics.IndexedQueue<double> QueueLogical { get; set; }
     }
-
-
 }

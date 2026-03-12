@@ -7,6 +7,11 @@ namespace WinTabPressureTester
 {
     public partial class FormPressureTester : Form
     {
+        private const int SerialPortReadDelay = 10;
+        private const int PlotFontSize = 27;
+        private const int PlotAxisLimit = 1000;
+        private const int PlotPressureLimit = 110;
+
         AppState appstate = new AppState();
 
 
@@ -20,14 +25,14 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.appstate.wintab_session = new SevenLib.WinTab.WinTabSession();
-            this.appstate.scale_session = new ScaleSession();
+            this.appstate.WinTabSession = new SevenLib.WinTab.WinTabSession();
+            this.appstate.ScaleSession = new ScaleSession();
 
 
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
 
-            if (this.comboBoxcomport.Items!=null)
+            if (this.comboBoxcomport.Items != null)
             {
                 var portnames = SerialPort.GetPortNames();
                 this.comboBoxcomport.Items.AddRange(portnames);
@@ -38,37 +43,35 @@ namespace WinTabPressureTester
             formsPlot1.Plot.XLabel("Physical pressure (gf)");
             formsPlot1.Plot.YLabel("Logical pressure (%)");
 
-            formsPlot1.Plot.Axes.Title.Label.FontSize = 27;
+            formsPlot1.Plot.Axes.Title.Label.FontSize = PlotFontSize;
 
-            //formsPlot1.Plot.Axes.Left.Label.FontName = "Consolas";
-            formsPlot1.Plot.Axes.Left.Label.FontSize = 27;
-            //formsPlot1.Plot.Axes.Bottom.Label.FontName = "Segoe";
-            formsPlot1.Plot.Axes.Bottom.Label.FontSize = 27;
+            formsPlot1.Plot.Axes.Left.Label.FontSize = PlotFontSize;
+            formsPlot1.Plot.Axes.Bottom.Label.FontSize = PlotFontSize;
 
-            formsPlot1.Plot.Axes.SetLimits(0, 1000, 0, 110);
-            formsPlot1.UserInputProcessor.IsEnabled = false; // prevent the user from scrolling or panning the plot
+            formsPlot1.Plot.Axes.SetLimits(0, PlotAxisLimit, 0, PlotPressureLimit);
+            formsPlot1.UserInputProcessor.IsEnabled = false;
 
             formsPlot1.Plot.Grid.MajorLineColor = Colors.Black.WithOpacity(.1);
             formsPlot1.Plot.Grid.MajorLineWidth = 2;
 
-            formsPlot1.Plot.Axes.Left.TickLabelStyle.FontSize = 27;
-            formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 27;
+            formsPlot1.Plot.Axes.Left.TickLabelStyle.FontSize = PlotFontSize;
+            formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = PlotFontSize;
 
 
-            this.appstate.queue_logical = new SevenLib.Numerics.IndexedQueue<double>(this.appstate.logical_pressure_queue_size);
+            this.appstate.QueueLogical = new SevenLib.Numerics.IndexedQueue<double>(this.appstate.LogicalPressureQueueSize);
 
             string comportname = GetSelectedComPortName();
             if (!string.IsNullOrEmpty(comportname))
             {
-               this.appstate.serial_port = new SerialPort(comportname);
+               this.appstate.SerialPort = new SerialPort(comportname);
             }
             else
             {
-               this.appstate.serial_port = null;
+               this.appstate.SerialPort = null;
             }
-            this.appstate.scale_cts = new CancellationTokenSource();
+            this.appstate.ScaleCts = new CancellationTokenSource();
 
-            this.appstate.record_collection = new PressureRecordCollection();
+            this.appstate.RecordCollection = new PressureRecordCollection();
             this.button_start.Select();
         }
 
@@ -119,17 +122,13 @@ namespace WinTabPressureTester
                 }
 
                 // WinTab Session
-                this.appstate.wintab_session?.Dispose();
-                
+                this.appstate.WinTabSession?.Dispose();
+
                 // Scale Session Resources
-                this.appstate.scale_cts?.Cancel();
-                this.appstate.scale_cts?.Dispose();
-                
-                if (this.appstate.serial_port != null)
-                {
-                   if (this.appstate.serial_port.IsOpen) this.appstate.serial_port.Close();
-                   this.appstate.serial_port.Dispose();
-                }
+                this.appstate.ScaleCts?.Cancel();
+                this.appstate.ScaleCts?.Dispose();
+
+                CloseAndDisposeSerialPort();
 
                 // GDI+ Resources
                 this.np_pressure_guage?.Dispose();
@@ -138,6 +137,18 @@ namespace WinTabPressureTester
                 this.gfx_picbox1?.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void CloseAndDisposeSerialPort()
+        {
+            if (appstate.SerialPort is not null)
+            {
+                if (appstate.SerialPort.IsOpen)
+                {
+                    appstate.SerialPort.Close();
+                }
+                appstate.SerialPort.Dispose();
+            }
         }
 
 
@@ -169,44 +180,37 @@ namespace WinTabPressureTester
                 {
                     this.checkBox_upperbuttondown.Checked = get_press_change_as_letter(button_info.Change);
                 }
-                else
-                {
-                    // do Nothing
-                }
             }
 
 
             uint raw_pressure = wintab_pkt.pkNormalPressure;
-            double normalized_raw_pressure = (raw_pressure / (1.0 * this.appstate.wintab_session.TabletInfo.MaxPressure));
+            double normalized_raw_pressure = (raw_pressure / (1.0 * this.appstate.WinTabSession.TabletInfo.MaxPressure));
 
-            string str_pressure = string.Format("{0:00.000}%", normalized_raw_pressure * 100.0);
-            this.appstate.log_pressure = normalized_raw_pressure;
+            this.appstate.LogicalPressure = normalized_raw_pressure;
 
             SevenLib.Trigonometry.TiltAA tiltAA = new(wintab_pkt.pkOrientation.orAzimuth / 10.0, wintab_pkt.pkOrientation.orAltitude / 10.0);
             var tiltxy_deg = tiltAA.ToXY_Deg();
 
             this.label_pressure_raw.Text = wintab_pkt.pkNormalPressure.ToString();
-            this.label_normalized_pressure.Text = str_pressure.ToString();
+            this.label_normalized_pressure.Text = $"{normalized_raw_pressure * 100.0:00.000}%";
 
-            this.label_or_altitude.Text = (wintab_pkt.pkOrientation.orAltitude / 10.0).ToString() + "°";
-            this.label_or_azimuth.Text = (wintab_pkt.pkOrientation.orAzimuth / 10.0).ToString() + "°";
-            this.label_tiltx.Text = string.Format("{0:00.000}°", tiltxy_deg.X);
-            this.label_tilty.Text = string.Format("{0:00.000}°", tiltxy_deg.Y);
+            this.label_or_altitude.Text = $"{wintab_pkt.pkOrientation.orAltitude / 10.0:F0}°";
+            this.label_or_azimuth.Text = $"{wintab_pkt.pkOrientation.orAzimuth / 10.0:F0}°";
+            this.label_tiltx.Text = $"{tiltxy_deg.X:00.000}°";
+            this.label_tilty.Text = $"{tiltxy_deg.Y:00.000}°";
 
+            this.appstate.ScaleSession.LogicalPressureMovingAverage.AddSample(normalized_raw_pressure);
+            double cur_logical_pressure_ma = this.appstate.ScaleSession.LogicalPressureMovingAverage.GetAverage();
+            this.label_normalizedpressure_ma.Text = $"{cur_logical_pressure_ma * 100.0:00.00}%";
 
-
-            this.appstate.scale_session.logical_pressure_moving_average.AddSample(normalized_raw_pressure);
-            double cur_logical_pressure_ma = this.appstate.scale_session.logical_pressure_moving_average.GetAverage();
-            this.label_normalizedpressure_ma.Text = string.Format("{0:00.00}%", cur_logical_pressure_ma * 100.0);
-
-            if (this.appstate.queue_logical.Count >= this.appstate.logical_pressure_queue_size)
+            if (this.appstate.QueueLogical.Count >= this.appstate.LogicalPressureQueueSize)
             {
-                if (this.appstate.queue_logical.Count > 0)
+                if (this.appstate.QueueLogical.Count > 0)
                 {
-                    this.appstate.queue_logical.Dequeue();
+                    this.appstate.QueueLogical.Dequeue();
                 }
             }
-            this.appstate.queue_logical.Enqueue(cur_logical_pressure_ma);
+            this.appstate.QueueLogical.Enqueue(cur_logical_pressure_ma);
 
         }
 
@@ -214,14 +218,14 @@ namespace WinTabPressureTester
         {
             if (buttonchange.Change == StylusButtonChangeType.Released)
             {
-                this.appstate.scale_session.logical_pressure_moving_average.Clear();
+                this.appstate.ScaleSession.LogicalPressureMovingAverage.Clear();
             }
         }
 
         private async void button_start_Click(object sender, EventArgs e)
         {
 
-            if (!appstate.scale_isReading)
+            if (!appstate.ScaleIsReading)
             {
                 await StartScaleSession();
             }
@@ -229,58 +233,51 @@ namespace WinTabPressureTester
 
         private void StartWinTabSession()
         {
-            this.appstate.wintab_session.OnWinTabPacketReceived = this.PacketHandler;
-            this.appstate.wintab_session.OnButtonStateChanged = this.ButtonChangeHandler;
-            this.appstate.wintab_session.Open(SevenLib.WinTab.Enums.TabletContextType.System);
+            this.appstate.WinTabSession.OnWinTabPacketReceived = this.PacketHandler;
+            this.appstate.WinTabSession.OnButtonStateChanged = this.ButtonChangeHandler;
+            this.appstate.WinTabSession.Open(SevenLib.WinTab.Enums.TabletContextType.System);
         }
 
         private void StopWinTabSession()
         {
-            this.appstate.wintab_session?.Close();
+            this.appstate.WinTabSession?.Close();
         }
 
         private async Task StartScaleSession()
         {
             try
             {
-                if (appstate.serial_port != null && !appstate.serial_port.IsOpen)
+                if (appstate.SerialPort is not null && !appstate.SerialPort.IsOpen)
                 {
-                    appstate.serial_port.Open();
+                    appstate.SerialPort.Open();
                 }
 
-                if (appstate.serial_port == null)
-                {
-                     // Simulate or just wait if no serial port
-                     // For now just return or let it run simulated?
-                     // appstate.serial_port is used in ReadSerialPortAsync, need to check there too
-                }
-
-                appstate.scale_isReading = true;
-                await ReadSerialPortAsync(appstate.scale_cts.Token);
+                appstate.ScaleIsReading = true;
+                await ReadSerialPortAsync(appstate.ScaleCts.Token);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show($"Failed to open COM Port - Access Denied\r\n{ex.Message}");
+            }
+            catch (System.IO.IOException ex)
+            {
+                MessageBox.Show($"Failed to open COM Port - IO Error\r\n{ex.Message}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ERROR Failed to open COM Port\r\n" +
-                    $"{ex.GetType().FullName}\r\n" +
-                $"{ex.Message}");
+                MessageBox.Show($"Failed to open COM Port\r\n{ex.GetType().FullName}\r\n{ex.Message}");
             }
             finally
             {
-                await ReadSerialPortAsync(appstate.scale_cts.Token);
-                if (appstate.serial_port != null && appstate.serial_port.IsOpen)
-                {
-                    appstate.serial_port.Close();
-                }
-                appstate.scale_isReading = false;
+                CloseAndDisposeSerialPort();
+                appstate.ScaleIsReading = false;
             }
         }
 
         private void StopScaleSession()
         {
-            // Cancel the reading operation
-            appstate.scale_cts.Cancel();
-            // Create new CancellationTokenSource for next operation
-            appstate.scale_cts = new CancellationTokenSource();
+            appstate.ScaleCts.Cancel();
+            appstate.ScaleCts = new CancellationTokenSource();
         }
 
         public static string TrimLastCharIf(string s, char c)
@@ -311,76 +308,41 @@ namespace WinTabPressureTester
 
         public static ScaleParsedLine ParseScaleLine(string line)
         {
-            if (line == null)
+            if (line is null)
             {
-                var r1 = new ScaleParsedLine();
-                r1.Input = line;
-                r1.Parsed = false;
-                r1.ScaleRecord = null;
-                r1.Error = "Line was null";
-                return r1;
+                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = "Line was null" };
             }
 
             line = line.Trim();
 
             if (line.Length == 0)
             {
-                var r2 = new ScaleParsedLine();
-                r2.Input = line;
-                r2.Parsed = false;
-                r2.ScaleRecord = null;
-                r2.Error = "Line was empty";
-
-                return r2;
+                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = "Line was empty" };
             }
 
             var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             if (tokens.Length == 0)
             {
-                var r3 = new ScaleParsedLine();
-                r3.Input = line;
-                r3.Parsed = false;
-                r3.ScaleRecord = null;
-                r3.Error = "No tokens in line";
-                return r3;
+                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = "No tokens in line" };
             }
 
             string str_force = tokens[^1];
             str_force = TrimLastCharIf(str_force, 'M');
             str_force = TrimLastCharIf(str_force, 'g');
 
-            //physi_pressure = double.Parse(str_force);
-
-
-            var sr = new ScaleRecord();
-
-
-            sr.Line = line;
-            sr.ReadingAsString = str_force;
-
+            var sr = new ScaleRecord { Line = line, ReadingAsString = str_force };
 
             try
             {
                 sr.ReadingAsDouble = double.Parse(str_force);
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                var r4 = new ScaleParsedLine();
-                r4.Input = line;
-                r4.Parsed = false;
-                r4.ScaleRecord = null;
-                r4.Error = "Failed to parse force \"" + str_force + "\"";
-                return r4;
+                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = $"Failed to parse force \"{str_force}\"" };
             }
 
-
-            var r = new ScaleParsedLine();
-            r.Input = line;
-            r.Parsed = true;
-            r.ScaleRecord = sr;
-            r.Error = string.Empty;
-            return r;
+            return new ScaleParsedLine { Input = line, Parsed = true, ScaleRecord = sr, Error = string.Empty };
         }
 
         private async Task ReadSerialPortAsync(CancellationToken cancellationToken)
@@ -389,36 +351,28 @@ namespace WinTabPressureTester
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (appstate.serial_port != null && appstate.serial_port.IsOpen && appstate.serial_port.BytesToRead > 0)
+                    if (appstate.SerialPort is not null && appstate.SerialPort.IsOpen && appstate.SerialPort.BytesToRead > 0)
                     {
-                        string line = await Task.Run(() => appstate.serial_port.ReadLine());
+                        string line = await Task.Run(() => appstate.SerialPort.ReadLine(), cancellationToken);
                         var sr_parse = ParseScaleLine(line);
 
-                        if (sr_parse.Parsed == false)
+                        if (sr_parse.Parsed && sr_parse.ScaleRecord is not null)
                         {
-                            // line was not parsed
-
+                            this.appstate.PhysicalPressure = sr_parse.ScaleRecord.ReadingAsDouble;
+                            Update_Scale_UI_Elements(sr_parse.ScaleRecord.ReadingAsString);
                         }
-                        else
-                        {
-                            // line was parsed
-                            var sr = sr_parse.ScaleRecord;
-                            if (sr != null)
-                            {
-                                this.appstate.physi_pressure = sr.ReadingAsDouble;
-                                Update_Scale_UI_Elements(sr.ReadingAsString);
-                            }
-                        }
-
                     }
-                    // Small delay to prevent CPU overuse
-                    await Task.Delay(10, cancellationToken);
+
+                    await Task.Delay(SerialPortReadDelay, cancellationToken);
                 }
             }
             catch (OperationCanceledException)
             {
-                // Cancellation was requested
-                this.textBox_log.AppendText("Reading cancelled" + Environment.NewLine);
+                this.textBox_log.AppendText($"Reading cancelled{Environment.NewLine}");
+            }
+            catch (System.IO.IOException ex)
+            {
+                MessageBox.Show($"Serial port IO error: {ex.Message}");
             }
             catch (Exception ex)
             {
@@ -430,17 +384,11 @@ namespace WinTabPressureTester
         {
             if (InvokeRequired)
             {
-                //Invoke(new Action(() => this.textBox_Log.AppendText(line + Environment.NewLine)));
-                //Invoke(new Action(() => this.label_mps.Text = str_mps));
-                //Invoke(new Action(() => this.label_num_measuremnts.Text = str_force));
+                Invoke(new Action(() => this.label_force.Text = $"{str_force} gf"));
             }
             else
             {
-                //this.textBox_Log.AppendText(line + Environment.NewLine);
-                //this.label_mps.Text = str_mps;
-                //this.label_num_measuremnts.Text = str_nm;
-                string str_force_with_unit = str_force + " gf";
-                this.label_force.Text = str_force_with_unit;
+                this.label_force.Text = $"{str_force} gf";
             }
         }
 
@@ -453,24 +401,14 @@ namespace WinTabPressureTester
 
         private void FormPressureTester_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-            appstate.scale_cts.Cancel();
-            if (appstate.serial_port != null && appstate.serial_port.IsOpen)
-            {
-                appstate.serial_port.Close();
-                appstate.serial_port.Dispose();
-            }
-
+            appstate.ScaleCts.Cancel();
+            CloseAndDisposeSerialPort();
         }
 
         private void button_record_Click(object sender, EventArgs e)
         {
-            this.appstate.record_collection.Add(this.appstate.physi_pressure, this.appstate.scale_session.logical_pressure_moving_average.GetAverage());
-
+            this.appstate.RecordCollection.Add(this.appstate.PhysicalPressure, this.appstate.ScaleSession.LogicalPressureMovingAverage.GetAverage());
             this.updatedata();
-
-
-
         }
 
         private void FormPressureTester_KeyDown(object sender, KeyEventArgs e)
@@ -490,78 +428,62 @@ namespace WinTabPressureTester
 
         private string CreateJSONContent()
         {
-
             var sb = new StringBuilder();
             sb.AppendLine("{");
             sb.AppendLine($@"    ""brand"": ""{textBox_brand.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""pen"": ""{textBox_Pen.Text.Trim().ToUpper()}"" , ");
-            sb.AppendLine($@"    ""penfamily"": ""{string.Empty.Trim().ToUpper()}"" , ");
+            sb.AppendLine($@"    ""penfamily"": """" , ");
             sb.AppendLine($@"    ""inventoryid"": ""{textBox_inventoryid.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""date"": ""{this.textBox_date.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""user"": ""{this.textBox_User.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""tablet"": ""{this.textBox_Tablet.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""driver"": ""{this.textBox_driver.Text.Trim().ToUpper()}"" , ");
             sb.AppendLine($@"    ""os"": ""{this.textBox_OS.Text.Trim().ToUpper()}"" , ");
-            sb.AppendLine($@"    ""notes"": ""{string.Empty}"" , ");
+            sb.AppendLine($@"    ""notes"": """" , ");
             sb.AppendLine("    \"records\": [  ");
-            sb.AppendLine(this.appstate.record_collection.GetRecordsJSON());
+            sb.AppendLine(this.appstate.RecordCollection.GetRecordsJSON());
             sb.AppendLine("    ]");
             sb.AppendLine("}");
-
-            string text_content = sb.ToString();
-            return text_content;
+            return sb.ToString();
         }
 
         private void button_clearlog_Click(object sender, EventArgs e)
         {
-            this.appstate.record_collection.Clear();
+            this.appstate.RecordCollection.Clear();
             this.updatedata();
-        }
-
-        private void textBox_log_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox_log_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button_clearlast_Click(object sender, EventArgs e)
         {
-            if (this.appstate.record_collection.Count < 1)
+            if (this.appstate.RecordCollection.Count < 1)
             {
                 return;
             }
 
-            this.appstate.record_collection.ClearLast();
-
+            this.appstate.RecordCollection.ClearLast();
             this.updatedata();
-
         }
 
         private void button_load_sample_data_Click(object sender, EventArgs e)
         {
-            this.appstate.record_collection.Add(10, 0.01);
-            this.appstate.record_collection.Add(100, 0.40);
-            this.appstate.record_collection.Add(150, 0.50);
-            this.appstate.record_collection.Add(400, 0.85);
-            this.appstate.record_collection.Add(500, 1.00);
+            this.appstate.RecordCollection.Add(10, 0.01);
+            this.appstate.RecordCollection.Add(100, 0.40);
+            this.appstate.RecordCollection.Add(150, 0.50);
+            this.appstate.RecordCollection.Add(400, 0.85);
+            this.appstate.RecordCollection.Add(500, 1.00);
             this.updatedata();
         }
 
         public void updatedata()
         {
-            this.label_recordcount.Text = this.appstate.record_collection.Count.ToString();
-            this.textBox_log.Text = this.appstate.record_collection.GetRecordsText();
+            this.label_recordcount.Text = this.appstate.RecordCollection.Count.ToString();
+            this.textBox_log.Text = this.appstate.RecordCollection.GetRecordsText();
 
             textBox_log.SelectionStart = textBox_log.TextLength;
             textBox_log.ScrollToCaret();
 
-
-            double[] dataX = this.appstate.record_collection.items.Select(i => i.PhysicalPressure).ToArray();
-            double[] dataY = this.appstate.record_collection.items.Select(i => i.LogicalPressure * 100).ToArray();
+            double[] dataX = this.appstate.RecordCollection.items.Select(i => i.PhysicalPressure).ToArray();
+            double[] dataY = this.appstate.RecordCollection.items.Select(i => i.LogicalPressure * 100).ToArray();
 
             formsPlot1.Plot.Clear();
             var scatter = formsPlot1.Plot.Add.Scatter(dataX, dataY);
@@ -576,35 +498,26 @@ namespace WinTabPressureTester
             string inventoryid = this.textBox_inventoryid.Text.Trim().ToUpper();
             string filename = $"{inventoryid}_{datestring}.json";
 
-
-
             string myDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string filePath = Path.Combine(myDocumentsPath, filename);
 
             try
             {
                 File.WriteAllText(filePath, json);
-                MessageBox.Show("File saved " + filePath);
+                MessageBox.Show($"File saved {filePath}");
+            }
+            catch (System.IO.IOException ex)
+            {
+                MessageBox.Show($"Error saving file - IO Error: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show($"Error saving file - Access Denied: {ex.Message}");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error saving file: {ex.Message}");
             }
-        }
-
-        private void textBox_brand_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox_brand_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void textBox_brand_KeyUp(object sender, KeyEventArgs e)
-        {
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -615,17 +528,6 @@ namespace WinTabPressureTester
         private void button4_Click(object sender, EventArgs e)
         {
             // not implemented yet
-
-        }
-
-        private void textBox_inventoryid_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void formsPlot1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

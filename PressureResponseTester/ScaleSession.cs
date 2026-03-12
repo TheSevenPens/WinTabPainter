@@ -2,13 +2,13 @@
 {
     public class ScaleSession
     {
-        public SevenLib.Numerics.MovingAverage logical_pressure_moving_average;
+        private const int DefaultMovingAverageWindowSize = 200;
+
+        public SevenLib.Numerics.MovingAverage LogicalPressureMovingAverage { get; }
 
         public ScaleSession()
         {
-            this.logical_pressure_moving_average = new SevenLib.Numerics.MovingAverage(200);
-
+            LogicalPressureMovingAverage = new SevenLib.Numerics.MovingAverage(DefaultMovingAverageWindowSize);
         }
-
     }
 }

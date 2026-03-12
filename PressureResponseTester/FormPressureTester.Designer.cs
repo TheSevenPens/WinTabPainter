@@ -243,8 +243,6 @@
             textBox_log.Size = new Size(316, 310);
             textBox_log.TabIndex = 15;
             textBox_log.TabStop = false;
-            textBox_log.TextChanged += textBox_log_TextChanged;
-            textBox_log.Enter += textBox_log_Enter;
             // 
             // button_start
             // 
@@ -366,7 +364,6 @@
             formsPlot1.Name = "formsPlot1";
             formsPlot1.Size = new Size(929, 839);
             formsPlot1.TabIndex = 26;
-            formsPlot1.Load += formsPlot1_Load;
             // 
             // button_load_sample_data
             // 
@@ -399,9 +396,6 @@
             textBox_brand.Size = new Size(177, 32);
             textBox_brand.TabIndex = 29;
             textBox_brand.Text = "BRAND";
-            textBox_brand.TextChanged += textBox_brand_TextChanged;
-            textBox_brand.KeyDown += textBox_brand_KeyDown;
-            textBox_brand.KeyUp += textBox_brand_KeyUp;
             // 
             // textBox_Pen
             // 
@@ -434,7 +428,6 @@
             textBox_inventoryid.Size = new Size(177, 32);
             textBox_inventoryid.TabIndex = 33;
             textBox_inventoryid.Text = "--P.0000";
-            textBox_inventoryid.TextChanged += textBox_inventoryid_TextChanged;
             // 
             // label11
             // 
