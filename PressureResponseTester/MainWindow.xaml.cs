@@ -381,7 +381,7 @@ public partial class MainWindow : Window
         catch (OperationCanceledException)
         {
             Dispatcher.Invoke(() => 
-                textBox_log.AppendText($"Reading cancelled{Environment.NewLine}"));
+                MessageBox.Show("Reading cancelled", "Information"));
         }
         catch (System.IO.IOException ex)
         {
@@ -464,9 +464,8 @@ public partial class MainWindow : Window
     public void updatedata()
     {
         label_recordcount.Content = appstate!.RecordCollection!.Count.ToString();
-        textBox_log.Text = appstate.RecordCollection.GetRecordsText();
-
-        textBox_log.ScrollToEnd();
+        dataGrid_records.ItemsSource = appstate.RecordCollection.items;
+        dataGrid_records.Items.Refresh();
 
         if (plotView1.Model is not PlotModel model)
             return;

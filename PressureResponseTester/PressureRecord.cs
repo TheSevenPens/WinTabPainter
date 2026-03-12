@@ -2,8 +2,9 @@
 {
     public class PressureRecord
     {
-        public readonly double PhysicalPressure;
-        public readonly double LogicalPressure;
+        public double PhysicalPressure { get; }
+        public double LogicalPressure { get; }
+
         public PressureRecord(double physical, double logical)
         {
             this.PhysicalPressure = physical;

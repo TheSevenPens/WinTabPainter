@@ -160,7 +160,16 @@
 						<Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="14"/>
 					</Grid>
 
-					<TextBox x:Name="textBox_log" Height="150" TextWrapping="Wrap" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="0,5" FontFamily="Consolas" FontSize="10"/>
+					<DataGrid x:Name="dataGrid_records" Height="150" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,5" FontFamily="Consolas" FontSize="10" GridLinesVisibility="All" BorderThickness="1" BorderBrush="#CCCCCC">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Physical (gf)" Binding="{Binding PhysicalPressure, StringFormat=0.0}" Width="*" IsReadOnly="True"/>
+							<DataGridTextColumn Header="Logical (%)" Width="*" IsReadOnly="True">
+								<DataGridTextColumn.Binding>
+									<Binding Path="LogicalPressure" StringFormat="{}{0:P2}"/>
+								</DataGridTextColumn.Binding>
+							</DataGridTextColumn>
+						</DataGrid.Columns>
+					</DataGrid>
 
 
                     <GroupBox Header="Metadata" Margin="0,10,0,0">
