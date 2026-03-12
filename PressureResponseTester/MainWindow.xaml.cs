@@ -25,6 +25,7 @@ public partial class MainWindow : Window
 
     private AppState? appstate;
     private string? currentLoadedFilePath;
+    private ScatterSeries? highlightedPointSeries;
 
     public MainWindow()
     {
@@ -512,7 +513,37 @@ public partial class MainWindow : Window
         }
 
         model.Series.Add(lineSeries);
+
+        // Create scatter series for highlighted point
+        highlightedPointSeries = new ScatterSeries
+        {
+            MarkerType = MarkerType.Circle,
+            MarkerSize = 6,
+            MarkerStroke = OxyColors.Red,
+            MarkerFill = OxyColors.Red
+        };
+        model.Series.Add(highlightedPointSeries);
+
         plotView1.InvalidatePlot(false);
+    }
+
+    private void dataGrid_records_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (dataGrid_records.SelectedItem is PressureRecord selectedRecord && highlightedPointSeries is not null)
+        {
+            // Clear previous highlighted points
+            highlightedPointSeries.Points.Clear();
+
+            // Add the selected point to the highlighted series in red
+            var dataPoint = new ScatterPoint(selectedRecord.PhysicalPressure, selectedRecord.LogicalPressure * 100);
+            highlightedPointSeries.Points.Add(dataPoint);
+
+            // Refresh the plot to show the highlighted point
+            if (plotView1.Model is not null)
+            {
+                plotView1.InvalidatePlot(false);
+            }
+        }
     }
 
     private void button_export_Click(object sender, RoutedEventArgs e)

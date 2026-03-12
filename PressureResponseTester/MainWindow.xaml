@@ -165,7 +165,7 @@
                         <Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="11" FontFamily="Segoe UI"/>
                     </Grid>
 
-                    <DataGrid x:Name="dataGrid_records" Height="150" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,5" FontFamily="Segoe UI" FontSize="12" GridLinesVisibility="All" BorderThickness="1" BorderBrush="#CCCCCC" HorizontalAlignment="Stretch">
+                    <DataGrid x:Name="dataGrid_records" Height="150" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,5" FontFamily="Segoe UI" FontSize="12" GridLinesVisibility="All" BorderThickness="1" BorderBrush="#CCCCCC" HorizontalAlignment="Stretch" PreviewMouseLeftButtonUp="dataGrid_records_MouseUp">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Physical (gf)" Binding="{Binding PhysicalPressure, StringFormat=0.0}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Logical (%)" Width="*" IsReadOnly="True">
