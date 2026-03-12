@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="WinTab Pressure Response Tester" Height="1100" Width="1700"
-        WindowStartupLocation="CenterScreen">
+        Title="WinTab Pressure Response Tester"
+        Height="850"
+        Width="1200"
+        MinHeight="600"
+        MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Normal"
+        ResizeMode="CanResize"
+        Background="White">
     
     <Grid Background="White">
         <Grid.ColumnDefinitions>
