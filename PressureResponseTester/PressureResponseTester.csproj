@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="ScottPlot.WPF" Version="5.1.57" />
+	<PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
 	<PackageReference Include="System.IO.Ports" Version="10.0.3" />
   </ItemGroup>
 

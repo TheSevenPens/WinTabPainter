@@ -1,4 +1,6 @@
-using ScottPlot;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 using SevenLib.WinTab.Stylus;
 using System.IO.Ports;
 using System.Text;
@@ -14,7 +16,7 @@ namespace WinTabPressureTester;
 public partial class MainWindow : Window
 {
     private const int SerialPortReadDelay = 10;
-    private const int PlotFontSize = 28;
+    private const int PlotFontSize = 14;
     private const int PlotAxisLimit = 1000;
     private const int PlotPressureLimit = 110;
     private const char ScaleReadingMgSuffix = 'M';
@@ -81,16 +83,41 @@ public partial class MainWindow : Window
 
     private void InitializePlot()
     {
-        var plot = formsPlot1.Plot;
-        plot.Title("Pressure response");
-        plot.XLabel("Physical pressure (gf)");
-        plot.YLabel("Logical pressure (%)");
-        plot.Axes.SetLimits(0, PlotAxisLimit, 0, PlotPressureLimit);
+        var model = new PlotModel
+        {
+            Title = "Pressure response",
+            TitleFontSize = PlotFontSize,
+            Background = OxyColors.White
+        };
 
-        formsPlot1.Refresh();
+        // Add X-axis
+        var xAxis = new LinearAxis
+        {
+            Position = AxisPosition.Bottom,
+            Title = "Physical pressure (gf)",
+            Minimum = 0,
+            Maximum = PlotAxisLimit,
+            TitleFontSize = PlotFontSize * 0.9,
+            FontSize = PlotFontSize * 0.75
+        };
+        model.Axes.Add(xAxis);
+
+        // Add Y-axis
+        var yAxis = new LinearAxis
+        {
+            Position = AxisPosition.Left,
+            Title = "Logical pressure (%)",
+            Minimum = 0,
+            Maximum = PlotPressureLimit,
+            TitleFontSize = PlotFontSize * 0.9,
+            FontSize = PlotFontSize * 0.75
+        };
+        model.Axes.Add(yAxis);
+
+        plotView1.Model = model;
     }
 
-    private void formsPlot1_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+    private void plotView1_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
     {
         e.Handled = true;
     }
@@ -100,8 +127,11 @@ public partial class MainWindow : Window
         var brandText = textBox_brand.Text;
         var penText = textBox_Pen.Text;
         var dateText = textBox_date.Text;
-        formsPlot1.Plot.Title($"Pressure response {brandText} {penText} ({dateText})");
-        formsPlot1.Refresh();
+        if (plotView1.Model is PlotModel model)
+        {
+            model.Title = $"Pressure response {brandText} {penText} ({dateText})";
+            plotView1.InvalidatePlot(false);
+        }
     }
 
     private string? GetSelectedComPortName()
@@ -438,15 +468,33 @@ public partial class MainWindow : Window
 
         textBox_log.ScrollToEnd();
 
-        double[] dataX = [..appstate.RecordCollection.items.Select(i => i.PhysicalPressure)];
-        double[] dataY = [..appstate.RecordCollection.items.Select(i => i.LogicalPressure * 100)];
+        if (plotView1.Model is not PlotModel model)
+            return;
 
-        var plot = formsPlot1.Plot;
-        plot.Clear();
-        var scatter = plot.Add.Scatter(dataX, dataY);
-        scatter.LineWidth = 3;
-        scatter.MarkerSize = 8;
-        formsPlot1.Refresh();
+        // Clear existing series
+        model.Series.Clear();
+
+        var dataX = appstate.RecordCollection.items.Select(i => i.PhysicalPressure).ToList();
+        var dataY = appstate.RecordCollection.items.Select(i => i.LogicalPressure * 100).ToList();
+
+        // Create line series to connect points
+        var lineSeries = new LineSeries
+        {
+            Color = OxyColors.Blue,
+            StrokeThickness = 2,
+            MarkerType = MarkerType.Circle,
+            MarkerSize = 6,
+            MarkerStroke = OxyColors.Blue,
+            MarkerFill = OxyColors.Blue
+        };
+
+        for (int i = 0; i < dataX.Count; i++)
+        {
+            lineSeries.Points.Add(new DataPoint(dataX[i], dataY[i]));
+        }
+
+        model.Series.Add(lineSeries);
+        plotView1.InvalidatePlot(false);
     }
 
     private void button_export_Click(object sender, RoutedEventArgs e)
