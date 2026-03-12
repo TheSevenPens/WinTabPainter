@@ -413,14 +413,15 @@ public partial class MainWindow : Window
         sb.AppendLine("{");
         sb.AppendLine($@"    ""brand"": ""{textBox_brand.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""pen"": ""{textBox_Pen.Text.Trim().ToUpper()}"" , ");
-        sb.AppendLine($@"    ""penfamily"": """" , ");
+        sb.AppendLine($@"    ""penfamily"": ""{textBox_penfamily.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""inventoryid"": ""{textBox_inventoryid.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""date"": ""{textBox_date.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""user"": ""{textBox_User.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""tablet"": ""{textBox_Tablet.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""driver"": ""{textBox_driver.Text.Trim().ToUpper()}"" , ");
         sb.AppendLine($@"    ""os"": ""{textBox_OS.Text.Trim().ToUpper()}"" , ");
-        sb.AppendLine($@"    ""notes"": """" , ");
+        sb.AppendLine($@"    ""tags"": ""{textBox_tags.Text.Trim()}"" , ");
+        sb.AppendLine($@"    ""notes"": ""{textBox_notes.Text.Trim()}"" , ");
         sb.AppendLine("    \"records\": [  ");
         sb.AppendLine(appstate!.RecordCollection!.GetRecordsJSON());
         sb.AppendLine("    ]");
@@ -627,6 +628,8 @@ public partial class MainWindow : Window
                 textBox_brand.Text = data.brand;
             if (!string.IsNullOrEmpty(data.pen))
                 textBox_Pen.Text = data.pen;
+            if (!string.IsNullOrEmpty(data.penfamily))
+                textBox_penfamily.Text = data.penfamily;
             if (!string.IsNullOrEmpty(data.inventoryid))
                 textBox_inventoryid.Text = data.inventoryid;
             if (!string.IsNullOrEmpty(data.date))
@@ -639,6 +642,10 @@ public partial class MainWindow : Window
                 textBox_driver.Text = data.driver;
             if (!string.IsNullOrEmpty(data.os))
                 textBox_OS.Text = data.os;
+            if (!string.IsNullOrEmpty(data.tags))
+                textBox_tags.Text = data.tags;
+            if (!string.IsNullOrEmpty(data.notes))
+                textBox_notes.Text = data.notes;
 
             UpdateCharTitle();
             updatedata();
@@ -662,6 +669,7 @@ internal class PressureTestData
     public string? tablet { get; set; }
     public string? driver { get; set; }
     public string? os { get; set; }
+    public string? tags { get; set; }
     public string? notes { get; set; }
     public List<List<double>>? records { get; set; }
 }

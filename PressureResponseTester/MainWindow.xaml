@@ -176,89 +176,106 @@
 
 
                     <GroupBox Header="Metadata" Margin="0,10,0,0">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="200">
-                            <StackPanel Margin="10">
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="Brand:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_brand" Grid.Column="1" Text="BRAND" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                        <StackPanel Margin="10">
+                            <!-- First Row: Brand and ID -->
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Brand:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_brand" Text="BRAND" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <Label Content="ID:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_inventoryid" Text="--P.0000" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="Pen:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_Pen" Grid.Column="1" Text="PEN" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                            <!-- Second Row: Pen and User -->
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Pen:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_Pen" Text="PEN" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <Label Content="User:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_User" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="ID:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_inventoryid" Grid.Column="1" Text="--P.0000" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                            <!-- Third Row: Family and Tablet -->
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Family:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_penfamily" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <Label Content="Tablet:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_Tablet" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="Date:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_date" Grid.Column="1" Text="2024-01-01" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                            <!-- Fourth Row: Date and Driver -->
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Date:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_date" Text="2024-01-01" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <Label Content="Driver:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_driver" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="User:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_User" Grid.Column="1" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                            <!-- Fifth Row: OS -->
+                            <Grid Margin="0,0,0,5">
+                                <StackPanel>
+                                    <Label Content="OS:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_OS" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="Tablet:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_Tablet" Grid.Column="1" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                            <!-- Sixth Row: Tags -->
+                            <Grid Margin="0,0,0,10">
+                                <StackPanel>
+                                    <Label Content="Tags:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_tags" FontSize="10" Padding="5,3"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="Driver:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_driver" Grid.Column="1" FontSize="10" Margin="5,0"/>
-                                </Grid>
+                            <!-- Seventh Row: Notes -->
+                            <Grid Margin="0,0,0,10">
+                                <StackPanel>
+                                    <Label Content="Notes:" FontWeight="Bold" FontSize="10" Padding="0,0,0,2"/>
+                                    <TextBox x:Name="textBox_notes" Height="50" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontSize="10" Padding="5,3" AcceptsReturn="True"/>
+                                </StackPanel>
+                            </Grid>
 
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="OS:" FontWeight="Bold" FontSize="10"/>
-                                    <TextBox x:Name="textBox_OS" Grid.Column="1" FontSize="10" Margin="5,0"/>
-                                </Grid>
-
-                                <Separator Margin="0,10"/>
-
-                                <Button x:Name="button_copy_chart" Content="Copy Chart Title" Click="button_copy_chart_Click" Padding="5,3" FontSize="10" Margin="0,5"/>
-
-                                <Button x:Name="button_copytext" Content="Copy to Clipboard" Click="button_copytext_Click" Padding="5,3" FontSize="10" Margin="0,5"/>
-
-                                <Button x:Name="button_export" Content="Export JSON" Click="button_export_Click" Padding="5,3" FontSize="10" Margin="0,5" Background="Green" Foreground="White"/>
+                            <!-- Buttons Row -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <Button x:Name="button_copy_chart" Content="Copy Chart Title" Click="button_copy_chart_Click" Padding="5,3" FontSize="10" Margin="0,0,5,0"/>
+                                <Button x:Name="button_copytext" Content="Copy to Clipboard" Click="button_copytext_Click" Padding="5,3" FontSize="10" Margin="0,0,5,0"/>
+                                <Button x:Name="button_export" Content="Export JSON" Click="button_export_Click" Padding="5,3" FontSize="10" Background="Green" Foreground="White"/>
                             </StackPanel>
-                        </ScrollViewer>
+                        </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </GroupBox>
