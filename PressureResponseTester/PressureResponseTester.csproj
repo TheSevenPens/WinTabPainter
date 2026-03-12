@@ -1,23 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>14</LangVersion>
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net10.0-windows</TargetFramework>
+	<Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<LangVersion>14</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot.WinForms" Version="5.1.57" />
-    <PackageReference Include="System.IO.Ports" Version="10.0.3" />
+	<PackageReference Include="ScottPlot.WPF" Version="5.1.57" />
+	<PackageReference Include="System.IO.Ports" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SevenLib\SevenLib.csproj" />
-	  <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
+    <Page Include="App.xaml" />
+  </ItemGroup>
 
+  <ItemGroup>
+	<ProjectReference Include="..\SevenLib\SevenLib.csproj" />
+	  <ProjectReference Include="..\SevenLib.WinTab\SevenLib.WinTab.csproj" />
   </ItemGroup>
 
 </Project>
