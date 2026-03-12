@@ -156,11 +156,10 @@
 							<ColumnDefinition Width="100"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<Label Grid.Column="0" Content="Count:" FontWeight="Bold"/>
+						<Label Grid.Column="0" Content="Records:" FontWeight="Bold"/>
 						<Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="14"/>
 					</Grid>
 
-					<Label Content="Records:" FontWeight="Bold"/>
 					<TextBox x:Name="textBox_log" Height="150" TextWrapping="Wrap" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="0,5" FontFamily="Consolas" FontSize="10"/>
 
 
