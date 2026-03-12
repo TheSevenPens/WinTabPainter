@@ -26,6 +26,7 @@ public partial class MainWindow : Window
     private AppState? appstate;
     private string? currentLoadedFilePath;
     private ScatterSeries? highlightedPointSeries;
+    private string selectedAxisRangeMode = "Default";
 
     public MainWindow()
     {
@@ -483,7 +484,10 @@ public partial class MainWindow : Window
 
     public void updatedata()
     {
-        label_recordcount.Content = appstate!.RecordCollection!.Count.ToString();
+        if (appstate?.RecordCollection is null)
+            return;
+
+        label_recordcount.Content = appstate.RecordCollection.Count.ToString();
         dataGrid_records.ItemsSource = appstate.RecordCollection.items;
         dataGrid_records.Items.Refresh();
 
@@ -524,7 +528,97 @@ public partial class MainWindow : Window
         };
         model.Series.Add(highlightedPointSeries);
 
+        // Apply axis ranges based on selected mode
+        ApplyAxisRange(model, dataX, dataY);
+
         plotView1.InvalidatePlot(false);
+    }
+
+    private void ApplyAxisRange(PlotModel model, List<double> dataX, List<double> dataY)
+    {
+        var xAxis = model.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom) as LinearAxis;
+        var yAxis = model.Axes.FirstOrDefault(a => a.Position == AxisPosition.Left) as LinearAxis;
+
+        if (xAxis is null || yAxis is null)
+            return;
+
+        switch (selectedAxisRangeMode)
+        {
+            case "Default":
+                xAxis.Minimum = 0;
+                xAxis.Maximum = PlotAxisLimit;
+                yAxis.Minimum = 0;
+                yAxis.Maximum = PlotPressureLimit;
+                break;
+
+            case "Full":
+                if (dataX.Count > 0)
+                {
+                    xAxis.Minimum = 0;
+                    xAxis.Maximum = Math.Max(dataX.Max() * 1.1, PlotAxisLimit);
+                }
+                else
+                {
+                    xAxis.Minimum = 0;
+                    xAxis.Maximum = PlotAxisLimit;
+                }
+                yAxis.Minimum = 0;
+                yAxis.Maximum = PlotPressureLimit;
+                break;
+
+            case "IAF":
+                if (dataX.Count > 0)
+                {
+                    double minX = dataX.Min();
+                    xAxis.Minimum = 0;
+                    xAxis.Maximum = minX + 2;
+                }
+                else
+                {
+                    xAxis.Minimum = 0;
+                    xAxis.Maximum = 2;
+                }
+                yAxis.Minimum = 0;
+                yAxis.Maximum = 5;
+                break;
+
+            case "max":
+                yAxis.Minimum = 95;
+                yAxis.Maximum = 100;
+                // For X axis, find the range of X values where Y is between 95-100
+                if (dataY.Count > 0)
+                {
+                    var matchingX = dataX
+                        .Where((x, i) => i < dataY.Count && dataY[i] >= 95 && dataY[i] <= 100)
+                        .ToList();
+
+                    if (matchingX.Count > 0)
+                    {
+                        xAxis.Minimum = Math.Max(0, matchingX.Min() - 0.5);
+                        xAxis.Maximum = matchingX.Max() + 0.5;
+                    }
+                    else
+                    {
+                        xAxis.Minimum = 0;
+                        xAxis.Maximum = PlotAxisLimit;
+                    }
+                }
+                else
+                {
+                    xAxis.Minimum = 0;
+                    xAxis.Maximum = PlotAxisLimit;
+                }
+                break;
+        }
+    }
+
+    private void comboBox_axisRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (comboBox_axisRange is null || comboBox_axisRange.SelectedItem is not ComboBoxItem selectedItem)
+            return;
+
+        selectedAxisRangeMode = selectedItem.Content?.ToString() ?? "Default";
+        updatedata();
     }
 
     private void dataGrid_records_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

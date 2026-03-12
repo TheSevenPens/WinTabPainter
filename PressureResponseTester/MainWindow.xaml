@@ -136,8 +136,27 @@
             </GroupBox>
         </StackPanel>
 
-        <!-- Center Panel: Chart -->
-        <oxy:PlotView x:Name="plotView1" Grid.Row="1" Grid.Column="2" Margin="10,10,10,10" PreviewMouseDown="plotView1_MouseDown" PreviewMouseWheel="plotView1_PreviewMouseWheel"/>
+        <!-- Center Panel: Chart with Range Control -->
+        <Grid Grid.Row="1" Grid.Column="2" Margin="10,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="0,0,0,10" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Axis Range:" FontWeight="Bold" FontFamily="Segoe UI" FontSize="11" VerticalAlignment="Center"/>
+                <ComboBox x:Name="comboBox_axisRange" Grid.Column="1" FontFamily="Segoe UI" FontSize="11" SelectedIndex="0" SelectionChanged="comboBox_axisRange_SelectionChanged">
+                    <ComboBoxItem Content="Default"/>
+                    <ComboBoxItem Content="Full"/>
+                    <ComboBoxItem Content="IAF"/>
+                    <ComboBoxItem Content="max"/>
+                </ComboBox>
+            </Grid>
+            <oxy:PlotView Grid.Row="1" x:Name="plotView1" MinHeight="300" PreviewMouseDown="plotView1_MouseDown" PreviewMouseWheel="plotView1_PreviewMouseWheel"/>
+        </Grid>
 
         <!-- Right Panel: Data Recording -->
         <StackPanel Grid.Row="1" Grid.Column="3" Margin="10,10,10,10" HorizontalAlignment="Stretch">
