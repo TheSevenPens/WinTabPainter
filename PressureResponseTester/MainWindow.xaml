@@ -270,7 +270,6 @@
 
                             <!-- Buttons Row -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                <Button x:Name="button_copy_chart" Content="Copy Chart Title" Click="button_copy_chart_Click" Padding="5,3" FontSize="10" Margin="0,0,5,0"/>
                                 <Button x:Name="button_copytext" Content="Copy to Clipboard" Click="button_copytext_Click" Padding="5,3" FontSize="10" Margin="0,0,5,0"/>
                                 <Button x:Name="button_save" Content="Save (Ctrl+S)" Click="button_save_Click" Padding="5,3" FontSize="10" Margin="0,0,5,0" Background="Navy" Foreground="White" IsEnabled="False"/>
                                 <Button x:Name="button_export" Content="Export JSON" Click="button_export_Click" Padding="5,3" FontSize="10" Background="Green" Foreground="White"/>
