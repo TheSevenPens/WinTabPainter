@@ -34,8 +34,8 @@
         <!-- Ribbon Bar -->
         <Border Grid.Row="0" Grid.ColumnSpan="4" Background="#F0F0F0" Padding="10">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="button_record" Content="Record Current (R)" Click="button_record_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
-                <Button x:Name="button_load_sample_data" Content="Load Sample Data (L)" Click="button_load_sample_data_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
+                <Button x:Name="button_record" Content="Record (R)" Click="button_record_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
+                <Button x:Name="button_load_sample_data" Content="Sample (L)" Click="button_load_sample_data_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
                 <Button x:Name="button_clearlast" Content="Clear Last (C)" Click="button_clearlast_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
                 <Button x:Name="button_clearlog" Content="Clear All (A)" Click="button_clearlog_Click" Padding="8,5" MinHeight="32"/>
             </StackPanel>

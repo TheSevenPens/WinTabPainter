@@ -89,7 +89,8 @@ public partial class MainWindow : Window
         {
             Title = "Pressure response",
             TitleFontSize = PlotFontSize,
-            Background = OxyColors.White
+            Background = OxyColors.White,
+            PlotAreaBackground = OxyColor.FromRgb(250, 250, 250)
         };
 
         // Add X-axis
