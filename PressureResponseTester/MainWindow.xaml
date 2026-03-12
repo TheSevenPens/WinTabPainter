@@ -186,11 +186,11 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
                                 <Label Content="Brand:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
-                                <TextBox x:Name="textBox_brand" Text="BRAND" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_brand" Text="BRAND" FontSize="12" Padding="5,3" FontFamily="Segoe UI" TextChanged="OnChartTitleFieldChanged"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <Label Content="ID:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
-                                <TextBox x:Name="textBox_inventoryid" Text="--P.0000" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_inventoryid" Text="--P.0000" FontSize="12" Padding="5,3" FontFamily="Segoe UI" TextChanged="OnChartTitleFieldChanged"/>
                             </StackPanel>
                         </Grid>
 
@@ -237,7 +237,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
                                 <Label Content="Date:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>
-                                <TextBox x:Name="textBox_date" Text="2024-01-01" FontSize="12" Padding="5,3" FontFamily="Segoe UI"/>
+                                <TextBox x:Name="textBox_date" Text="2024-01-01" FontSize="12" Padding="5,3" FontFamily="Segoe UI" TextChanged="OnChartTitleFieldChanged"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <Label Content="Driver:" FontWeight="Bold" FontSize="12" Padding="0,0,0,2" FontFamily="Segoe UI"/>

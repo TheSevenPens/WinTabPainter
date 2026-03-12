@@ -79,8 +79,6 @@ public partial class MainWindow : Window
         {
             appstate.SerialPort = new SerialPort(comportname);
         }
-
-        UpdateCharTitle();
     }
 
     private void InitializePlot()
@@ -132,14 +130,25 @@ public partial class MainWindow : Window
 
     public void UpdateCharTitle()
     {
-        var brandText = textBox_brand.Text;
-        var penText = textBox_Pen.Text;
-        var dateText = textBox_date.Text;
+        // Safely handle null controls during initialization
+        if (textBox_brand is null || textBox_inventoryid is null || textBox_date is null || plotView1 is null)
+        {
+            return;
+        }
+
+        var brandText = textBox_brand.Text?.Trim() ?? "BRAND";
+        var idText = textBox_inventoryid.Text?.Trim() ?? "ID";
+        var dateText = textBox_date.Text?.Trim() ?? "YYYY-MM-DD";
         if (plotView1.Model is PlotModel model)
         {
-            model.Title = $"Pressure response {brandText} {penText} ({dateText})";
+            model.Title = $"{brandText}/{idText}/{dateText}";
             plotView1.InvalidatePlot(false);
         }
+    }
+
+    private void OnChartTitleFieldChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateCharTitle();
     }
 
     private string? GetSelectedComPortName()
@@ -155,6 +164,7 @@ public partial class MainWindow : Window
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        UpdateCharTitle();
         StartWinTabSession();
     }
 
