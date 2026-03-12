@@ -129,8 +129,8 @@
                     </Grid>
 
                     <StackPanel Orientation="Horizontal" Margin="0,10">
-                        <Button x:Name="button_start" Content="Start (S)" Click="button_start_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
-                        <Button x:Name="button_stop" Content="Stop (T)" Click="button_stop_Click" Padding="8,5" MinHeight="32"/>
+                        <Button x:Name="button_start" Content="Start (Ctrl+S)" Click="button_start_Click" Padding="8,5" MinHeight="32" Margin="0,0,5,0"/>
+                        <Button x:Name="button_stop" Content="Stop (Ctrl+T)" Click="button_stop_Click" Padding="8,5" MinHeight="32"/>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
@@ -166,10 +166,10 @@
 
                     <!-- Ribbon Buttons -->
                     <WrapPanel Margin="0,0,0,10" HorizontalAlignment="Left">
-                        <Button x:Name="button_record" Content="Record (R)" Click="button_record_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
-                        <Button x:Name="button_load_sample_data" Content="Sample (L)" Click="button_load_sample_data_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
-                        <Button x:Name="button_clearlast" Content="Clear Last (C)" Click="button_clearlast_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
-                        <Button x:Name="button_clearlog" Content="Clear All (A)" Click="button_clearlog_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_record" Content="Record (Ctrl+R)" Click="button_record_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_load_sample_data" Content="Sample (Ctrl+L)" Click="button_load_sample_data_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_clearlast" Content="Clear Last (Ctrl+C)" Click="button_clearlast_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
+                        <Button x:Name="button_clearlog" Content="Clear All (Ctrl+A)" Click="button_clearlog_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
                         <Button x:Name="button_copytext" Content="Copy" Click="button_copytext_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5"/>
                         <Button x:Name="button_save" Content="Save (Ctrl+S)" Click="button_save_Click" Padding="8,3" MinHeight="28" MinWidth="80" Margin="0,0,5,5" IsEnabled="False"/>
                         <Button x:Name="button_export" Content="Export" Click="button_export_Click" Padding="8,3" MinHeight="28" MinWidth="80"/>

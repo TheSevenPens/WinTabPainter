@@ -708,17 +708,12 @@ public partial class MainWindow : Window
         if (e.IsRepeat)
             return;
 
-        // Check for Ctrl+S (Save)
-        if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || 
-            System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl))
-        {
-            if (e.Key == System.Windows.Input.Key.S)
-            {
-                button_save_Click(null!, null!);
-                e.Handled = true;
-                return;
-            }
-        }
+        // Check if Ctrl is pressed
+        bool isCtrlPressed = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || 
+                             System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl);
+
+        if (!isCtrlPressed)
+            return;
 
         switch (e.Key)
         {
@@ -739,7 +734,7 @@ public partial class MainWindow : Window
                 e.Handled = true;
                 break;
             case System.Windows.Input.Key.S:
-                button_start_Click(null!, null!);
+                button_save_Click(null!, null!);
                 e.Handled = true;
                 break;
             case System.Windows.Input.Key.T:
