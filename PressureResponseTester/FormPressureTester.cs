@@ -11,6 +11,8 @@ namespace WinTabPressureTester
         private const int PlotFontSize = 27;
         private const int PlotAxisLimit = 1000;
         private const int PlotPressureLimit = 110;
+        private const char ScaleReadingMgSuffix = 'M';
+        private const char ScaleReadingGramSuffix = 'g';
 
         AppState appstate = new AppState();
 
@@ -77,33 +79,33 @@ namespace WinTabPressureTester
 
         private string GetSelectedComPortName()
         {
-            var portnames= SerialPort.GetPortNames();
-            if (portnames == null || portnames.Length == 0)
+            var portnames = SerialPort.GetPortNames();
+            if (portnames is null || portnames.Length == 0)
             {
                 return null;
             }
-            
+
             if (this.comboBoxcomport.Items.Count > 0)
             {
-                var lastitem = this.comboBoxcomport.Items[this.comboBoxcomport.Items.Count - 1];
-                this.comboBoxcomport.Text = lastitem.ToString();
-                return this.comboBoxcomport.Text.ToUpper();
+                var lastitem = this.comboBoxcomport.Items[^1].ToString();
+                this.comboBoxcomport.Text = lastitem;
+                return lastitem.ToUpper();
             }
-            
+
             return null;
         }
 
         Graphics gfx_picbox1;
         Pen np_pressure_guage = new Pen(System.Drawing.Color.Black, 11);
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void FormPressureTester_Load(object sender, EventArgs e)
         {
             StartWinTabSession();
         }
 
 
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormPressureTester_FormClosed(object sender, FormClosedEventArgs e)
         {
             StopScaleSession();
         }
@@ -134,7 +136,6 @@ namespace WinTabPressureTester
                 this.np_pressure_guage?.Dispose();
                 this.pictureBox1.Image?.Dispose();
                 this.pictureBox1?.Dispose();
-                this.gfx_picbox1?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -280,56 +281,35 @@ namespace WinTabPressureTester
             appstate.ScaleCts = new CancellationTokenSource();
         }
 
-        public static string TrimLastCharIf(string s, char c)
-        {
-            if (s == null) { return s; }
-            if (s.Length == 0) { return s; }
+        public static string TrimLastCharIf(string s, char c) 
+            => (s is null or "") ? s : (s[^1] == c ? s[..^1] : s);
 
-            char lastchar = s[^1];
-            if (c == lastchar)
-            {
-                return s.Substring(0, s.Length - 1);
-            }
-            else
-            {
-                return s;
-            }
-
-        }
-
-        public class ScaleParsedLine
-        {
-            public string Input;
-            public bool Parsed;
-            public ScaleRecord ScaleRecord;
-            public string Error;
-
-        }
+        public record ScaleParsedLine(string Input, bool Parsed, ScaleRecord ScaleRecord, string Error);
 
         public static ScaleParsedLine ParseScaleLine(string line)
         {
             if (line is null)
             {
-                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = "Line was null" };
+                return new ScaleParsedLine(line, false, null, "Line was null");
             }
 
             line = line.Trim();
 
             if (line.Length == 0)
             {
-                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = "Line was empty" };
+                return new ScaleParsedLine(line, false, null, "Line was empty");
             }
 
             var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             if (tokens.Length == 0)
             {
-                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = "No tokens in line" };
+                return new ScaleParsedLine(line, false, null, "No tokens in line");
             }
 
             string str_force = tokens[^1];
-            str_force = TrimLastCharIf(str_force, 'M');
-            str_force = TrimLastCharIf(str_force, 'g');
+            str_force = TrimLastCharIf(str_force, ScaleReadingMgSuffix);
+            str_force = TrimLastCharIf(str_force, ScaleReadingGramSuffix);
 
             var sr = new ScaleRecord { Line = line, ReadingAsString = str_force };
 
@@ -339,10 +319,10 @@ namespace WinTabPressureTester
             }
             catch (FormatException)
             {
-                return new ScaleParsedLine { Input = line, Parsed = false, ScaleRecord = null, Error = $"Failed to parse force \"{str_force}\"" };
+                return new ScaleParsedLine(line, false, null, $"Failed to parse force \"{str_force}\"");
             }
 
-            return new ScaleParsedLine { Input = line, Parsed = true, ScaleRecord = sr, Error = string.Empty };
+            return new ScaleParsedLine(line, true, sr, string.Empty);
         }
 
         private async Task ReadSerialPortAsync(CancellationToken cancellationToken)
@@ -409,15 +389,6 @@ namespace WinTabPressureTester
         {
             this.appstate.RecordCollection.Add(this.appstate.PhysicalPressure, this.appstate.ScaleSession.LogicalPressureMovingAverage.GetAverage());
             this.updatedata();
-        }
-
-        private void FormPressureTester_KeyDown(object sender, KeyEventArgs e)
-        {
-        }
-
-        private void FormPressureTester_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)

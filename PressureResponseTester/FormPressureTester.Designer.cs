@@ -679,10 +679,8 @@
             Name = "FormPressureTester";
             Text = "WinTabPressureTester";
             FormClosing += FormPressureTester_FormClosing;
-            FormClosed += Form1_FormClosed;
-            Load += Form1_Load;
-            KeyDown += FormPressureTester_KeyDown;
-            KeyPress += FormPressureTester_KeyPress;
+            FormClosed += FormPressureTester_FormClosed;
+            Load += FormPressureTester_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
