@@ -147,7 +147,7 @@
 
         <!-- Center Panel: Chart -->
         <GroupBox Grid.Row="1" Grid.Column="1" Header="Pressure Response" Margin="10">
-            <oxy:PlotView x:Name="plotView1" Margin="10" PreviewMouseDown="plotView1_MouseDown"/>
+            <oxy:PlotView x:Name="plotView1" Margin="10" PreviewMouseDown="plotView1_MouseDown" PreviewMouseWheel="plotView1_PreviewMouseWheel"/>
         </GroupBox>
 
         <!-- Right Panel: Data Recording -->
@@ -175,7 +175,6 @@
 					</DataGrid>
 
 
-                    <GroupBox Header="Metadata" Margin="0,10,0,0">
                         <StackPanel Margin="10">
                             <!-- First Row: Brand and ID -->
                             <Grid Margin="0,0,0,5">
@@ -277,7 +276,6 @@
                                 <Button x:Name="button_export" Content="Export JSON" Click="button_export_Click" Padding="5,3" FontSize="10" Background="Green" Foreground="White"/>
                             </StackPanel>
                         </StackPanel>
-                    </GroupBox>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

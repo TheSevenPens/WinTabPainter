@@ -19,7 +19,7 @@ public partial class MainWindow : Window
     private const int SerialPortReadDelay = 10;
     private const int PlotFontSize = 14;
     private const int PlotAxisLimit = 1000;
-    private const int PlotPressureLimit = 110;
+    private const int PlotPressureLimit = 100;
     private const char ScaleReadingMgSuffix = 'M';
     private const char ScaleReadingGramSuffix = 'g';
 
@@ -120,6 +120,11 @@ public partial class MainWindow : Window
     }
 
     private void plotView1_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        e.Handled = true;
+    }
+
+    private void plotView1_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
         e.Handled = true;
     }
