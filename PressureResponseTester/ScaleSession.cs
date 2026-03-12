@@ -1,10 +1,10 @@
 ﻿namespace WinTabPressureTester
 {
-    public class ScaleSession
+    public record class ScaleSession
     {
         private const int DefaultMovingAverageWindowSize = 200;
 
-        public SevenLib.Numerics.MovingAverage LogicalPressureMovingAverage { get; }
+        public SevenLib.Numerics.MovingAverage LogicalPressureMovingAverage { get; init; }
 
         public ScaleSession()
         {

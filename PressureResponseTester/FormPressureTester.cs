@@ -14,7 +14,7 @@ namespace WinTabPressureTester
         private const char ScaleReadingMgSuffix = 'M';
         private const char ScaleReadingGramSuffix = 'g';
 
-        AppState appstate = new AppState();
+        AppState? appstate;
 
 
 
@@ -27,9 +27,20 @@ namespace WinTabPressureTester
         public FormPressureTester()
         {
             InitializeComponent();
-            this.appstate.WinTabSession = new SevenLib.WinTab.WinTabSession();
-            this.appstate.ScaleSession = new ScaleSession();
 
+            // Initialize AppState with required members
+            var winTabSession = new SevenLib.WinTab.WinTabSession();
+            var scaleSession = new ScaleSession();
+            var recordCollection = new PressureRecordCollection();
+            var scaleCts = new CancellationTokenSource();
+
+            this.appstate = new AppState
+            {
+                WinTabSession = winTabSession,
+                ScaleSession = scaleSession,
+                RecordCollection = recordCollection,
+                ScaleCts = scaleCts
+            };
 
             this.textBox_date.Text = DateTime.Today.ToString("yyyy-MM-dd");
             this.textBox_User.Text = System.Environment.UserName.ToUpper().Trim();
@@ -62,25 +73,19 @@ namespace WinTabPressureTester
 
             this.appstate.QueueLogical = new SevenLib.Numerics.IndexedQueue<double>(this.appstate.LogicalPressureQueueSize);
 
-            string comportname = GetSelectedComPortName();
+            string? comportname = GetSelectedComPortName();
             if (!string.IsNullOrEmpty(comportname))
             {
                this.appstate.SerialPort = new SerialPort(comportname);
             }
-            else
-            {
-               this.appstate.SerialPort = null;
-            }
-            this.appstate.ScaleCts = new CancellationTokenSource();
 
-            this.appstate.RecordCollection = new PressureRecordCollection();
             this.button_start.Select();
         }
 
-        private string GetSelectedComPortName()
+        private string? GetSelectedComPortName()
         {
             var portnames = SerialPort.GetPortNames();
-            if (portnames is null || portnames.Length == 0)
+            if (portnames is null or [])
             {
                 return null;
             }
@@ -284,9 +289,7 @@ namespace WinTabPressureTester
         public static string TrimLastCharIf(string s, char c) 
             => (s is null or "") ? s : (s[^1] == c ? s[..^1] : s);
 
-        public record ScaleParsedLine(string Input, bool Parsed, ScaleRecord ScaleRecord, string Error);
-
-        public static ScaleParsedLine ParseScaleLine(string line)
+        public static ScaleParsedLine ParseScaleLine(string? line)
         {
             if (line is null)
             {
@@ -453,8 +456,8 @@ namespace WinTabPressureTester
             textBox_log.SelectionStart = textBox_log.TextLength;
             textBox_log.ScrollToCaret();
 
-            double[] dataX = this.appstate.RecordCollection.items.Select(i => i.PhysicalPressure).ToArray();
-            double[] dataY = this.appstate.RecordCollection.items.Select(i => i.LogicalPressure * 100).ToArray();
+            double[] dataX = [..this.appstate.RecordCollection.items.Select(i => i.PhysicalPressure)];
+            double[] dataY = [..this.appstate.RecordCollection.items.Select(i => i.LogicalPressure * 100)];
 
             formsPlot1.Plot.Clear();
             var scatter = formsPlot1.Plot.Add.Scatter(dataX, dataY);

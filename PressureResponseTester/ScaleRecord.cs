@@ -1,10 +1,10 @@
 ﻿namespace WinTabPressureTester
 {
-    public class ScaleRecord
+    public record class ScaleRecord
     {
-        public string Line;
-        public string ReadingAsString;
-        public double ReadingAsDouble;
+        public string Line { get; set; }
+        public string ReadingAsString { get; set; }
+        public double ReadingAsDouble { get; set; }
 
         public ScaleRecord()
         {
