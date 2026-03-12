@@ -478,4 +478,38 @@ public partial class MainWindow : Window
         UpdateCharTitle();
         MessageBox.Show("Chart title updated", "Success");
     }
+
+    private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.IsRepeat)
+            return;
+
+        switch (e.Key)
+        {
+            case System.Windows.Input.Key.R:
+                button_record_Click(null!, null!);
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.L:
+                button_load_sample_data_Click(null!, null!);
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.C:
+                button_clearlast_Click(null!, null!);
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.A:
+                button_clearlog_Click(null!, null!);
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.S:
+                button_start_Click(null!, null!);
+                e.Handled = true;
+                break;
+            case System.Windows.Input.Key.T:
+                button_stop_Click(null!, null!);
+                e.Handled = true;
+                break;
+        }
+    }
 }
