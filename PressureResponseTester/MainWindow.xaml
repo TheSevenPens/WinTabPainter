@@ -46,7 +46,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Raw Pressure:" FontWeight="Bold"/>
+                        <Label Grid.Column="0" Content="Pressure (raw):" FontWeight="Bold"/>
                         <Label x:Name="label_pressure_raw" Grid.Column="1" Content="-----" FontFamily="Consolas"/>
                     </Grid>
 
@@ -55,7 +55,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Normalized:" FontWeight="Bold"/>
+                        <Label Grid.Column="0" Content="Pressure (normalized):" FontWeight="Bold"/>
                         <Label x:Name="label_normalized_pressure" Grid.Column="1" Content="-----"/>
                     </Grid>
 
@@ -64,7 +64,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Moving Avg:" FontWeight="Bold"/>
+                        <Label Grid.Column="0" Content="Pressure (Moving Avg):" FontWeight="Bold"/>
                         <Label x:Name="label_normalizedpressure_ma" Grid.Column="1" Content="-----"/>
                     </Grid>
 
