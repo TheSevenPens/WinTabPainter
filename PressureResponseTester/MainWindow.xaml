@@ -151,28 +151,18 @@
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="10">
             <GroupBox Header="Data" Margin="0,0,0,10">
                 <StackPanel Margin="10">
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Count:" FontWeight="Bold"/>
-                        <Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="14"/>
-                    </Grid>
+					<Grid Margin="0,5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Label Grid.Column="0" Content="Count:" FontWeight="Bold"/>
+						<Label x:Name="label_recordcount" Grid.Column="1" Content="0" FontWeight="Bold" FontSize="14"/>
+					</Grid>
 
+					<Label Content="Records:" FontWeight="Bold"/>
+					<TextBox x:Name="textBox_log" Height="150" TextWrapping="Wrap" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="0,5" FontFamily="Consolas" FontSize="10"/>
 
-                    <Label Content="Records:" FontWeight="Bold"/>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Records:" FontWeight="Bold"/>
-                        <Label Grid.Column="1" Content="{Binding ElementName=label_recordcount, Path=Content}" FontWeight="Bold"/>
-                    </Grid>
-                    <TextBox x:Name="textBox_log" Height="150" TextWrapping="Wrap" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="0,5" FontFamily="Consolas" FontSize="10"/>
-
-                    <Separator Margin="0,10"/>
 
                     <GroupBox Header="Metadata" Margin="0,10,0,0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="200">
