@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(micromamba activate:*)",
+      "Bash(npm --version)"
+    ]
+  }
+}

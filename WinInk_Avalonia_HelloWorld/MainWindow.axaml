@@ -1,0 +1,25 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="WinInk_Avalonia_HelloWorld.MainWindow"
+        Title="WinInk Avalonia Hello World" Height="650" Width="650">
+    <Grid RowDefinitions="Auto,*">
+        <TextBlock x:Name="StatusText"
+                   Grid.Row="0"
+                   Padding="5"
+                   Background="#EEEEEE"
+                   Text="Ready"
+                   FontFamily="Consolas"/>
+
+        <Border Grid.Row="1" Background="#EEEEEE" Padding="20" Margin="5">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Image x:Name="WritingCanvas"
+                       Stretch="None"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"/>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>
