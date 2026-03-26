@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(micromamba activate:*)",
-      "Bash(npm --version)"
+      "Bash(npm --version)",
+      "Bash(grep -E \"\\\\.\\(cs|csproj|xaml\\)$\")"
     ]
   }
 }
