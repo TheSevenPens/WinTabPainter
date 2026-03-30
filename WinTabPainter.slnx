@@ -8,7 +8,5 @@
   <Project Path="SevenLib.WinTab/SevenLib.WinTab.csproj" />
   <Project Path="SevenLib/SevenLib.csproj" />
   <Project Path="SevenPaint\SevenPaint.csproj" />
-  <Project Path="WinTab_Avalonia_HelloWorld\WinTab_Avalonia_HelloWorld.csproj" />
-  <Project Path="WinTabHelloWorld\WinTabHelloWorld.csproj" />
   <Project Path="WinTabPainter\WinTabPainter.csproj" />
 </Solution>
